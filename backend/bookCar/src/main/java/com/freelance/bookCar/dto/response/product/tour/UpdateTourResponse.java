@@ -1,6 +1,5 @@
-package com.freelance.bookCar.dto.request.product;
+package com.freelance.bookCar.dto.response.product.tour;
 
-import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,7 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateTourRequest {
+public class UpdateTourResponse {
+    private Integer id;
     private String name;
     private String description;
     private String startLocation;
