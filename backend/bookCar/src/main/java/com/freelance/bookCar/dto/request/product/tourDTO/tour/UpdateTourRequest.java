@@ -1,4 +1,4 @@
-package com.freelance.bookCar.dto.response.product.tour;
+package com.freelance.bookCar.dto.request.product.tourDTO.tour;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetTourResponse {
+public class UpdateTourRequest {
     private Integer id;
     private String name;
     private String description;

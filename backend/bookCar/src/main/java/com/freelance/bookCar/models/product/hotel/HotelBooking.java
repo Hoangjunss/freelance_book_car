@@ -1,4 +1,4 @@
-package com.freelance.bookCar.models.invoice;
+package com.freelance.bookCar.models.product.hotel;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -13,16 +13,19 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Invoice {
+public class HotelBooking {
     @Id
     private Integer id;
 
-    private LocalDateTime invoiceDate;
-    private double totalAmount;
-    private String paymentStatus;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
+    private double totalPrice;
 
 
-    private Integer booking;
+    private Integer hotel;
+
+
+
 
     // Getters and Setters
 }

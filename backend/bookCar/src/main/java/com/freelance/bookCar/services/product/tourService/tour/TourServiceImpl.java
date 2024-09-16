@@ -1,10 +1,10 @@
-package com.freelance.bookCar.services.product.tour;
+package com.freelance.bookCar.services.product.tourService.tour;
 
-import com.freelance.bookCar.dto.request.product.tour.CreateTourRequest;
-import com.freelance.bookCar.dto.request.product.tour.UpdateTourRequest;
-import com.freelance.bookCar.dto.response.product.tour.CreateTourResponse;
-import com.freelance.bookCar.dto.response.product.tour.GetTourResponse;
-import com.freelance.bookCar.dto.response.product.tour.UpdateTourResponse;
+import com.freelance.bookCar.dto.request.product.tourDTO.tour.CreateTourRequest;
+import com.freelance.bookCar.dto.request.product.tourDTO.tour.UpdateTourRequest;
+import com.freelance.bookCar.dto.response.product.tourDTO.tour.CreateTourResponse;
+import com.freelance.bookCar.dto.response.product.tourDTO.tour.GetTourResponse;
+import com.freelance.bookCar.dto.response.product.tourDTO.tour.UpdateTourResponse;
 import com.freelance.bookCar.models.product.tour.Tour;
 import com.freelance.bookCar.respository.product.TourRepository;
 import org.modelmapper.ModelMapper;

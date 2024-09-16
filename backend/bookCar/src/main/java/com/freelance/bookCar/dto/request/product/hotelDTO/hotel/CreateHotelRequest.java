@@ -1,4 +1,4 @@
-package com.freelance.bookCar.models.user;
+package com.freelance.bookCar.dto.request.product.hotelDTO.hotel;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -11,15 +11,16 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-public class User {
-    @Id
-    private Long id;
+
+public class CreateHotelRequest {
+
 
     private String name;
-    private String phone;
-    private String address;
-    private String type;
+    private String contactInfo;
+    private double pricePerNight;
+    private String location;
+    private String status;
+    private double rating;
 
 
 

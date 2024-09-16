@@ -1,4 +1,4 @@
-package com.freelance.bookCar.models.invoice;
+package com.freelance.bookCar.models.product.ticket;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -13,16 +13,17 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Invoice {
+public class Ticket {
     @Id
     private Integer id;
 
-    private LocalDateTime invoiceDate;
-    private double totalAmount;
-    private String paymentStatus;
+    private LocalDateTime startDate;
+    private double tourPrice;
 
 
-    private Integer booking;
+    private Integer tourism;
+
+
 
     // Getters and Setters
 }

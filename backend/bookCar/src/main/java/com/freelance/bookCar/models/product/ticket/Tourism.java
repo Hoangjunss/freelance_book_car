@@ -1,6 +1,7 @@
-package com.freelance.bookCar.dto.request.product.tour;
+package com.freelance.bookCar.models.product.ticket;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,9 +11,17 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateTourRequest {
+@Entity
+public class Tourism {
+    @Id
+    private Long id;
+
     private String name;
+    private String location;
     private String description;
-    private String startLocation;
-    private String endLocation;
+    private double rating;
+
+
+
+    // Getters and Setters
 }

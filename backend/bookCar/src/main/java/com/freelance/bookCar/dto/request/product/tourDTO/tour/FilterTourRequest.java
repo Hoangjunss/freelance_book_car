@@ -1,4 +1,4 @@
-package com.freelance.bookCar.dto.request.product.tour;
+package com.freelance.bookCar.dto.request.product.tourDTO.tour;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

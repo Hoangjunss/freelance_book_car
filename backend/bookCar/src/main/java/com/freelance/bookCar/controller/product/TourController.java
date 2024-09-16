@@ -1,12 +1,12 @@
 package com.freelance.bookCar.controller.product;
 
 import com.freelance.bookCar.dto.ApiResponse;
-import com.freelance.bookCar.dto.request.product.tour.CreateTourRequest;
-import com.freelance.bookCar.dto.request.product.tour.UpdateTourRequest;
-import com.freelance.bookCar.dto.response.product.tour.CreateTourResponse;
-import com.freelance.bookCar.dto.response.product.tour.GetTourResponse;
-import com.freelance.bookCar.dto.response.product.tour.UpdateTourResponse;
-import com.freelance.bookCar.services.product.tour.TourService;
+import com.freelance.bookCar.dto.request.product.tourDTO.tour.CreateTourRequest;
+import com.freelance.bookCar.dto.request.product.tourDTO.tour.UpdateTourRequest;
+import com.freelance.bookCar.dto.response.product.tourDTO.tour.CreateTourResponse;
+import com.freelance.bookCar.dto.response.product.tourDTO.tour.GetTourResponse;
+import com.freelance.bookCar.dto.response.product.tourDTO.tour.UpdateTourResponse;
+import com.freelance.bookCar.services.product.tourService.tour.TourService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
