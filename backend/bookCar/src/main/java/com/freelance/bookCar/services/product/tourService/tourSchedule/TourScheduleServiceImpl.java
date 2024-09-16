@@ -6,7 +6,7 @@ import com.freelance.bookCar.dto.response.product.tourDTO.tourSchedule.CreateTou
 import com.freelance.bookCar.dto.response.product.tourDTO.tourSchedule.GetTourScheduleResponse;
 import com.freelance.bookCar.dto.response.product.tourDTO.tourSchedule.UpdateTourScheduleResponse;
 import com.freelance.bookCar.models.product.tour.TourSchedule;
-import com.freelance.bookCar.respository.product.TourScheduleRepository;
+import com.freelance.bookCar.respository.product.tour.TourScheduleRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -6,7 +6,7 @@ import com.freelance.bookCar.dto.response.product.tourDTO.tour.CreateTourRespons
 import com.freelance.bookCar.dto.response.product.tourDTO.tour.GetTourResponse;
 import com.freelance.bookCar.dto.response.product.tourDTO.tour.UpdateTourResponse;
 import com.freelance.bookCar.models.product.tour.Tour;
-import com.freelance.bookCar.respository.product.TourRepository;
+import com.freelance.bookCar.respository.product.tour.TourRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
