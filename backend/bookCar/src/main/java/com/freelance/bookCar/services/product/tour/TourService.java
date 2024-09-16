@@ -13,5 +13,4 @@ public interface TourService {
     CreateTourResponse createTour(CreateTourRequest createTourRequest);
     UpdateTourResponse updateTour(UpdateTourRequest updateTourRequest);
     GetTourResponse findById(Integer id);
-    List<GetTourResponse> filterTour(FilterTourRequest filterTourRequest);
 }
