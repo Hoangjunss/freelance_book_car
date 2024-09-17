@@ -54,7 +54,6 @@ public enum Error {
     TOUR_SCHEDULE_UNABLE_TO_SAVE(1403, "Unable to save tour schedule", HttpStatus.INTERNAL_SERVER_ERROR),
     TOUR_SCHEDULE_UNABLE_TO_UPDATE(1404, "Unable to update tour schedule", HttpStatus.INTERNAL_SERVER_ERROR),
     TOUR_SCHEDULE_UNABLE_TO_DELETE(1405, "Unable to delete tour schedule", HttpStatus.INTERNAL_SERVER_ERROR),
-    // TourSchedule Error trong enum Error
     TOUR_SCHEDULE_INVALID_START_TIME(1406, "Tour start time is missing or invalid", HttpStatus.BAD_REQUEST),
     TOUR_SCHEDULE_INVALID_END_TIME(1407, "Tour end time is missing or invalid", HttpStatus.BAD_REQUEST),
     TOUR_SCHEDULE_MISSING_TOUR_ID(1408, "Tour ID is missing", HttpStatus.BAD_REQUEST),
@@ -89,7 +88,15 @@ public enum Error {
     HOTEL_BOOKING_INVALID_END_DATE(1707, "Invalid end date", HttpStatus.BAD_REQUEST),
     HOTEL_BOOKING_INVALID_NUMBER_OF_DAYS(1708, "Invalid number of days", HttpStatus.BAD_REQUEST),
     HOTEL_BOOKING_INVALID_CHECK_IN_TIME(1709, "Invalid check-in time", HttpStatus.BAD_REQUEST),
-
+    //Invoice error
+    INVOICE_NOT_FOUND(1801, "Invoice not found", HttpStatus.NOT_FOUND),
+    INVOICE_ALREADY_EXISTS(1802, "Invoice already exists", HttpStatus.CONFLICT),
+    INVOICE_UNABLE_TO_SAVE(1803, "Unable to save invoice", HttpStatus.INTERNAL_SERVER_ERROR),
+    INVOICE_UNABLE_TO_UPDATE(1804, "Unable to update invoice", HttpStatus.INTERNAL_SERVER_ERROR),
+    INVOICE_UNABLE_TO_DELETE(1805, "Unable to delete invoice", HttpStatus.INTERNAL_SERVER_ERROR),
+    INVOICE_INVALID_TOTAL_AMOUNT(1806, "Invalid total amount", HttpStatus.BAD_REQUEST),
+    INVOICE_INVALID_PAYMENT_STATUS(1807, "Invalid payment status", HttpStatus.BAD_REQUEST),
+    INVOICE_INVALID_ID_BOOKING(1808, "Invalid id booking", HttpStatus.BAD_REQUEST),
     ;
 
     private final int code;

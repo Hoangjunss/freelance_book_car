@@ -1,20 +1,17 @@
-package com.freelance.bookCar.models.invoice;
+package com.freelance.bookCar.dto.request.product.invoiceDTO;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-public class Invoice {
-    @Id
+public class UpdateInvoiceRequest {
     private Integer id;
     private LocalDateTime invoiceDate;
     private double totalAmount;
