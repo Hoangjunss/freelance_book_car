@@ -5,13 +5,21 @@ import com.freelance.bookCar.dto.request.product.tourDTO.tourSchedule.UpdateTour
 import com.freelance.bookCar.dto.response.product.tourDTO.tourSchedule.CreateTourScheduleResponse;
 import com.freelance.bookCar.dto.response.product.tourDTO.tourSchedule.GetTourScheduleResponse;
 import com.freelance.bookCar.dto.response.product.tourDTO.tourSchedule.UpdateTourScheduleResponse;
+import com.freelance.bookCar.exception.CustomException;
+import com.freelance.bookCar.exception.Error;
 import com.freelance.bookCar.models.product.tour.TourSchedule;
 import com.freelance.bookCar.respository.product.tour.TourScheduleRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+@Service
+@Slf4j
 public class TourScheduleServiceImpl implements TourScheduleService  {
     @Autowired
     private TourScheduleRepository tourScheduleRepository;
@@ -21,23 +29,22 @@ public class TourScheduleServiceImpl implements TourScheduleService  {
 
     @Override
     public CreateTourScheduleResponse createTourSchedule(CreateTourScheduleRequest createTourScheduleRequest) {
+        log.info("Create tour schedule");
         if (createTourScheduleRequest.getTimeStartTour() == null) {
-
+            throw new CustomException(Error.TOUR_SCHEDULE_INVALID_START_TIME);
         }
         if (createTourScheduleRequest.getTimeEndTour() == null) {
-
+            throw new CustomException(Error.TOUR_SCHEDULE_INVALID_END_TIME);
         }
         if (createTourScheduleRequest.getIdTour() == null) {
-
+            throw new CustomException(Error.TOUR_SCHEDULE_MISSING_TOUR_ID);
         }
-        if (createTourScheduleRequest.getQuantity() == null) {
-
+        if (createTourScheduleRequest.getQuantity() == null || createTourScheduleRequest.getQuantity() <= 0) {
+            throw new CustomException(Error.TOUR_SCHEDULE_INVALID_QUANTITY);
         }
-        if (createTourScheduleRequest.getPriceTour() == null) {
-
+        if (createTourScheduleRequest.getPriceTour() == null || createTourScheduleRequest.getPriceTour() <= 0) {
+            throw new CustomException(Error.TOUR_SCHEDULE_INVALID_PRICE);
         }
-
-
         TourSchedule tourSchedule = TourSchedule.builder()
                 .id(getGenerationId())
                 .timeStartTour(createTourScheduleRequest.getTimeStartTour())
@@ -47,34 +54,56 @@ public class TourScheduleServiceImpl implements TourScheduleService  {
                 .quantity(createTourScheduleRequest.getQuantity())
                 .build();
 
-        return modelMapper.map(tourScheduleRepository.save(tourSchedule), CreateTourScheduleResponse.class);
+        try {
+            return modelMapper.map(tourScheduleRepository.save(tourSchedule), CreateTourScheduleResponse.class);
+        } catch (DataIntegrityViolationException e) {
+            log.error("Data integrity violation occurred while saving TourSchedule: {}", e.getMessage(), e);
+            throw new CustomException(Error.TOUR_SCHEDULE_UNABLE_TO_SAVE);
+        } catch (DataAccessException e) {
+            log.error("Database access error occurred: {}", e.getMessage(), e);
+            throw new CustomException(Error.DATABASE_ACCESS_ERROR);
+        }
     }
+
 
     @Override
     public UpdateTourScheduleResponse updateTourSchedule(UpdateTourScheduleRequest updateTourScheduleRequest) {
+        log.info("Update Tour Schedule by id: {}", updateTourScheduleRequest.getId());
         if (updateTourScheduleRequest.getId() == null) {
-
+            throw new CustomException(Error.TOUR_SCHEDULE_NOT_FOUND);
         }
         if (updateTourScheduleRequest.getTimeStartTour() == null) {
-
+            throw new CustomException(Error.TOUR_SCHEDULE_INVALID_START_TIME);
         }
         if (updateTourScheduleRequest.getTimeEndTour() == null) {
-
+            throw new CustomException(Error.TOUR_SCHEDULE_INVALID_END_TIME);
         }
 
+        // Tìm tour schedule bằng id và ném lỗi nếu không tìm thấy
         TourSchedule tourSchedule = modelMapper.map(findById(updateTourScheduleRequest.getId()), TourSchedule.class);
+
         tourSchedule.setTimeStartTour(updateTourScheduleRequest.getTimeStartTour());
         tourSchedule.setTimeEndTour(updateTourScheduleRequest.getTimeEndTour());
         tourSchedule.setIdTour(updateTourScheduleRequest.getIdTour());
         tourSchedule.setPriceTour(updateTourScheduleRequest.getPriceTour());
         tourSchedule.setQuantity(updateTourScheduleRequest.getQuantity());
-        return modelMapper.map(tourScheduleRepository.save(tourSchedule), UpdateTourScheduleResponse.class);
+
+        try {
+            return modelMapper.map(tourScheduleRepository.save(tourSchedule), UpdateTourScheduleResponse.class);
+        }  catch (DataIntegrityViolationException e) {
+            log.error("Data integrity violation occurred while updating TourSchedule: {}", e.getMessage(), e);
+            throw new CustomException(Error.TOUR_SCHEDULE_UNABLE_TO_SAVE);
+        } catch (DataAccessException e) {
+            log.error("Database access error occurred: {}", e.getMessage(), e);
+            throw new CustomException(Error.DATABASE_ACCESS_ERROR);
+        }
+
     }
 
     @Override
     public GetTourScheduleResponse findById(Integer id) {
         return modelMapper.map(tourScheduleRepository.findById(id).orElseThrow(
-                () -> new IllegalArgumentException("Schedule not found")), GetTourScheduleResponse.class);
+                () -> new CustomException(Error.TOUR_SCHEDULE_NOT_FOUND)), GetTourScheduleResponse.class);
     }
 
     private Integer getGenerationId() {

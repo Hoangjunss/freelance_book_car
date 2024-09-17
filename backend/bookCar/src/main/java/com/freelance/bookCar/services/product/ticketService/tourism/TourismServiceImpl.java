@@ -5,13 +5,19 @@ import com.freelance.bookCar.dto.request.product.ticketDTO.tourism.UpdateTourism
 import com.freelance.bookCar.dto.response.product.ticketDTO.tourism.CreateTourismResponse;
 import com.freelance.bookCar.dto.response.product.ticketDTO.tourism.GetTourismResponse;
 import com.freelance.bookCar.dto.response.product.ticketDTO.tourism.UpdateTourismResponse;
+import com.freelance.bookCar.exception.CustomException;
+import com.freelance.bookCar.exception.Error;
 import com.freelance.bookCar.models.product.ticket.Tourism;
 import com.freelance.bookCar.respository.product.ticket.TourismRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+@Service
+@Slf4j
 public class TourismServiceImpl implements TourismService {
     @Autowired
     private TourismRepository tourismRepository;
@@ -19,17 +25,20 @@ public class TourismServiceImpl implements TourismService {
     private ModelMapper modelMapper;
     @Override
     public CreateTourismResponse createTourism(CreateTourismRequest createTourismRequest) {
+        log.info("Creating tourism with name: {}", createTourismRequest.getName());
+
+        // Validation
         if (createTourismRequest.getName() == null) {
-            throw new IllegalArgumentException("Name cannot be null");
+            throw new CustomException(Error.TOURISM_INVALID_NAME);
         }
         if (createTourismRequest.getLocation() == null) {
-            throw new IllegalArgumentException("Location cannot be null");
+            throw new CustomException(Error.TOURISM_INVALID_LOCATION);
         }
         if (createTourismRequest.getDescription() == null) {
-            throw new IllegalArgumentException("Description cannot be null");
+            throw new CustomException(Error.TOURISM_INVALID_DESCRIPTION);
         }
         if (createTourismRequest.getRating() <= 0) {
-            throw new IllegalArgumentException("Rating must be greater than zero");
+            throw new CustomException(Error.TOURISM_INVALID_RATING);
         }
 
         Tourism tourism = Tourism.builder()
@@ -40,17 +49,24 @@ public class TourismServiceImpl implements TourismService {
                 .rating(createTourismRequest.getRating())
                 .build();
 
-        return modelMapper.map(tourismRepository.save(tourism), CreateTourismResponse.class);
+        try {
+            return modelMapper.map(tourismRepository.save(tourism), CreateTourismResponse.class);
+        } catch (Exception e) {
+            log.error("Error occurred while saving tourism: {}", e.getMessage(), e);
+            throw new CustomException(Error.TOURISM_UNABLE_TO_SAVE);
+        }
     }
 
     @Override
     public UpdateTourismResponse updateTourism(UpdateTourismRequest updateTourismRequest) {
+        log.info("Updating tourism with id: {}", updateTourismRequest.getId());
+
         if (updateTourismRequest.getId() == null) {
-            throw new IllegalArgumentException("ID cannot be null");
+            throw new CustomException(Error.TOURISM_NOT_FOUND);
         }
 
         Tourism existingTourism = tourismRepository.findById(updateTourismRequest.getId())
-                .orElseThrow(() -> new IllegalArgumentException("Tourism not found"));
+                .orElseThrow(() -> new CustomException(Error.TOURISM_NOT_FOUND));
 
         if (updateTourismRequest.getName() != null) {
             existingTourism.setName(updateTourismRequest.getName());
@@ -65,13 +81,19 @@ public class TourismServiceImpl implements TourismService {
             existingTourism.setRating(updateTourismRequest.getRating());
         }
 
-        return modelMapper.map(tourismRepository.save(existingTourism), UpdateTourismResponse.class);
+        try {
+            return modelMapper.map(tourismRepository.save(existingTourism), UpdateTourismResponse.class);
+        } catch (Exception e) {
+            log.error("Error occurred while updating tourism: {}", e.getMessage(), e);
+            throw new CustomException(Error.TOURISM_UNABLE_TO_UPDATE);
+        }
     }
 
     @Override
     public GetTourismResponse findById(Integer id) {
+        log.info("Finding tourism with id: {}", id);
         Tourism tourism = tourismRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Tourism not found"));
+                .orElseThrow(() -> new CustomException(Error.TOURISM_NOT_FOUND));
 
         return modelMapper.map(tourism, GetTourismResponse.class);
     }

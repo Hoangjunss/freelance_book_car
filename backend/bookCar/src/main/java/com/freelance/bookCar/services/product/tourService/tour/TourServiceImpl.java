@@ -5,13 +5,21 @@ import com.freelance.bookCar.dto.request.product.tourDTO.tour.UpdateTourRequest;
 import com.freelance.bookCar.dto.response.product.tourDTO.tour.CreateTourResponse;
 import com.freelance.bookCar.dto.response.product.tourDTO.tour.GetTourResponse;
 import com.freelance.bookCar.dto.response.product.tourDTO.tour.UpdateTourResponse;
+import com.freelance.bookCar.exception.CustomException;
+import com.freelance.bookCar.exception.Error;
 import com.freelance.bookCar.models.product.tour.Tour;
 import com.freelance.bookCar.respository.product.tour.TourRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+@Service
+@Slf4j
 public class TourServiceImpl implements TourService {
     @Autowired
     private TourRepository tourRepository;
@@ -19,55 +27,79 @@ public class TourServiceImpl implements TourService {
     private ModelMapper modelMapper;
     @Override
     public CreateTourResponse createTour(CreateTourRequest createTourRequest) {
-        if (createTourRequest.getName() == null){
-            //
+        log.info("Create tour");
+        if (createTourRequest.getName() == null || createTourRequest.getName().isEmpty()) {
+            throw new CustomException(Error.TOUR_INVALID_NAME);
         }
-        if (createTourRequest.getDescription() == null){
-            //
+        if (createTourRequest.getDescription() == null || createTourRequest.getDescription().isEmpty()) {
+            throw new CustomException(Error.TOUR_INVALID_DESCRIPTION);
         }
-        if (createTourRequest.getEndLocation() == null){
-            //
+        if (createTourRequest.getEndLocation() == null || createTourRequest.getEndLocation().isEmpty()) {
+            throw new CustomException(Error.TOUR_INVALID_END_LOCATION);
         }
-        if (createTourRequest.getStartLocation()==null){
+        if (createTourRequest.getStartLocation() == null || createTourRequest.getStartLocation().isEmpty()) {
+            throw new CustomException(Error.TOUR_INVALID_START_LOCATION);
+        }
 
-        }
-        Tour tourSave =Tour.builder()
+        // Tạo và lưu đối tượng Tour mới
+        Tour tourSave = Tour.builder()
                 .id(getGenerationId())
                 .description(createTourRequest.getDescription())
                 .endLocation(createTourRequest.getEndLocation())
                 .startLocation(createTourRequest.getStartLocation())
+                .name(createTourRequest.getName())
                 .build();
-        return modelMapper.map(tourRepository.save(tourSave), CreateTourResponse.class);
+
+        try {
+            return modelMapper.map(tourRepository.save(tourSave), CreateTourResponse.class);
+        } catch (DataIntegrityViolationException e) {
+            log.error("Data integrity violation occurred while saving Tour: {}", e.getMessage(), e);
+            throw new CustomException(Error.TOUR_SCHEDULE_UNABLE_TO_SAVE);
+        } catch (DataAccessException e) {
+            log.error("Database access error occurred: {}", e.getMessage(), e);
+            throw new CustomException(Error.DATABASE_ACCESS_ERROR);
+        }
     }
 
     @Override
     public UpdateTourResponse updateTour(UpdateTourRequest updateTourRequest) {
-        if(updateTourRequest.getId()==null){
-
+        log.info("Update Tour by id: {}", updateTourRequest.getId());
+        if (updateTourRequest.getId() == null) {
+            throw new CustomException(Error.TOUR_NOT_FOUND);
         }
-        if(updateTourRequest.getDescription()==null){
-
+        if (updateTourRequest.getDescription() == null || updateTourRequest.getDescription().isEmpty()) {
+            throw new CustomException(Error.TOUR_INVALID_DESCRIPTION);
         }
-        if(updateTourRequest.getEndLocation()==null){
-
+        if (updateTourRequest.getEndLocation() == null || updateTourRequest.getEndLocation().isEmpty()) {
+            throw new CustomException(Error.TOUR_INVALID_END_LOCATION);
         }
-        if(updateTourRequest.getStartLocation()==null){
-
+        if (updateTourRequest.getStartLocation() == null || updateTourRequest.getStartLocation().isEmpty()) {
+            throw new CustomException(Error.TOUR_INVALID_START_LOCATION);
+        }
+        if (updateTourRequest.getName() == null || updateTourRequest.getName().isEmpty()) {
+            throw new CustomException(Error.TOUR_INVALID_NAME);
         }
 
-        if(updateTourRequest.getName()==null){
+        Tour tour = modelMapper.map(findById(updateTourRequest.getId()), Tour.class);
 
-        }
-        Tour tour = modelMapper.map(findById(updateTourRequest.getId()),Tour.class);
-        tour.setId(updateTourRequest.getId());
         tour.setDescription(updateTourRequest.getDescription());
         tour.setName(updateTourRequest.getName());
         tour.setEndLocation(updateTourRequest.getEndLocation());
         tour.setStartLocation(updateTourRequest.getStartLocation());
-        return modelMapper.map(tourRepository.save(tour), UpdateTourResponse.class);
+
+        try {
+            return modelMapper.map(tourRepository.save(tour), UpdateTourResponse.class);
+        }  catch (DataIntegrityViolationException e) {
+            log.error("Data integrity violation occurred while updating Tour: {}", e.getMessage(), e);
+            throw new CustomException(Error.TOUR_SCHEDULE_UNABLE_TO_SAVE);
+        } catch (DataAccessException e) {
+            log.error("Database access error occurred: {}", e.getMessage(), e);
+            throw new CustomException(Error.DATABASE_ACCESS_ERROR);
+        }
     }
    public GetTourResponse findById(Integer id){
-        return modelMapper.map(tourRepository.findById(id).orElseThrow(), GetTourResponse.class);
+        return modelMapper.map(tourRepository.findById(id).orElseThrow(()
+        -> new CustomException(Error.TOUR_NOT_FOUND)), GetTourResponse.class);
     }
 
     private Integer getGenerationId() {
