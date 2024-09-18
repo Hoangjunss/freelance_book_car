@@ -97,6 +97,12 @@ public enum Error {
     INVOICE_INVALID_TOTAL_AMOUNT(1806, "Invalid total amount", HttpStatus.BAD_REQUEST),
     INVOICE_INVALID_PAYMENT_STATUS(1807, "Invalid payment status", HttpStatus.BAD_REQUEST),
     INVOICE_INVALID_ID_BOOKING(1808, "Invalid id booking", HttpStatus.BAD_REQUEST),
+    //Booking Error
+    BOOKING_NOT_FOUND(1901, "Booking not found", HttpStatus.NOT_FOUND),
+    BOOKING_ALREADY_EXISTS(1902, "Booking already exists", HttpStatus.CONFLICT),
+    BOOKING_UNABLE_TO_SAVE(1903, "Unable to save booking", HttpStatus.INTERNAL_SERVER_ERROR),
+    BOOKING_UNABLE_TO_UPDATE(1904, "Unable to update booking", HttpStatus.INTERNAL_SERVER_ERROR),
+    BOOKING_UNABLE_TO_DELETE(1905, "Unable to delete booking", HttpStatus.INTERNAL_SERVER_ERROR),
     ;
 
     private final int code;
