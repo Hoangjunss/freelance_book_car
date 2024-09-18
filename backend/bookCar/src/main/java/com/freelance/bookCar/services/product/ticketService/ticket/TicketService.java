@@ -5,7 +5,9 @@ import com.freelance.bookCar.dto.request.product.ticketDTO.ticket.UpdateTicketRe
 import com.freelance.bookCar.dto.response.product.ticketDTO.ticket.CreateTicketResponse;
 import com.freelance.bookCar.dto.response.product.ticketDTO.ticket.GetTicketResponse;
 import com.freelance.bookCar.dto.response.product.ticketDTO.ticket.UpdateTicketResponse;
+import org.springframework.stereotype.Service;
 
+@Service
 public interface TicketService {
     CreateTicketResponse createTicket(CreateTicketRequest createTicketRequest);
     UpdateTicketResponse updateTicket(UpdateTicketRequest updateTicketRequest);

@@ -41,7 +41,6 @@ public class TourServiceImpl implements TourService {
             throw new CustomException(Error.TOUR_INVALID_START_LOCATION);
         }
 
-        // Tạo và lưu đối tượng Tour mới
         Tour tourSave = Tour.builder()
                 .id(getGenerationId())
                 .description(createTourRequest.getDescription())
@@ -67,25 +66,21 @@ public class TourServiceImpl implements TourService {
         if (updateTourRequest.getId() == null) {
             throw new CustomException(Error.TOUR_NOT_FOUND);
         }
-        if (updateTourRequest.getDescription() == null || updateTourRequest.getDescription().isEmpty()) {
-            throw new CustomException(Error.TOUR_INVALID_DESCRIPTION);
-        }
-        if (updateTourRequest.getEndLocation() == null || updateTourRequest.getEndLocation().isEmpty()) {
-            throw new CustomException(Error.TOUR_INVALID_END_LOCATION);
-        }
-        if (updateTourRequest.getStartLocation() == null || updateTourRequest.getStartLocation().isEmpty()) {
-            throw new CustomException(Error.TOUR_INVALID_START_LOCATION);
-        }
-        if (updateTourRequest.getName() == null || updateTourRequest.getName().isEmpty()) {
-            throw new CustomException(Error.TOUR_INVALID_NAME);
-        }
 
         Tour tour = modelMapper.map(findById(updateTourRequest.getId()), Tour.class);
 
-        tour.setDescription(updateTourRequest.getDescription());
-        tour.setName(updateTourRequest.getName());
-        tour.setEndLocation(updateTourRequest.getEndLocation());
-        tour.setStartLocation(updateTourRequest.getStartLocation());
+        if(updateTourRequest.getDescription()!=null){
+            tour.setDescription(updateTourRequest.getDescription());
+        }
+        if(updateTourRequest.getName()!=null){
+            tour.setName(updateTourRequest.getName());
+        }
+        if(updateTourRequest.getEndLocation()!=null){
+            tour.setEndLocation(updateTourRequest.getEndLocation());
+        }
+        if(updateTourRequest.getStartLocation()!=null){
+            tour.setStartLocation(updateTourRequest.getStartLocation());
+        }
 
         try {
             return modelMapper.map(tourRepository.save(tour), UpdateTourResponse.class);
@@ -97,7 +92,8 @@ public class TourServiceImpl implements TourService {
             throw new CustomException(Error.DATABASE_ACCESS_ERROR);
         }
     }
-   public GetTourResponse findById(Integer id){
+   
+    public GetTourResponse findById(Integer id){
         return modelMapper.map(tourRepository.findById(id).orElseThrow(()
         -> new CustomException(Error.TOUR_NOT_FOUND)), GetTourResponse.class);
     }

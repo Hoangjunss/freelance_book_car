@@ -13,11 +13,10 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
 public class CreateTourScheduleRequest {
     private LocalDateTime timeStartTour;
-    private  LocalDateTime timeEndTour;
+    private LocalDateTime timeEndTour;
     private Integer idTour;
     private Integer quantity;
-    private  Double priceTour;
+    private Double priceTour;
 }

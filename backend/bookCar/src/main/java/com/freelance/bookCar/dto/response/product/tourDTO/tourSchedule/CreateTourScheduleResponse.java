@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
 public class CreateTourScheduleResponse {
     private Integer id;
     private LocalDateTime timeStartTour;

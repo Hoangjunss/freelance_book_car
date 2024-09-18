@@ -5,7 +5,9 @@ import com.freelance.bookCar.dto.request.product.ticketDTO.tourism.UpdateTourism
 import com.freelance.bookCar.dto.response.product.ticketDTO.tourism.CreateTourismResponse;
 import com.freelance.bookCar.dto.response.product.ticketDTO.tourism.GetTourismResponse;
 import com.freelance.bookCar.dto.response.product.ticketDTO.tourism.UpdateTourismResponse;
+import org.springframework.stereotype.Service;
 
+@Service
 public interface TourismService {
     CreateTourismResponse createTourism(CreateTourismRequest createTourismRequest);
     UpdateTourismResponse updateTourism(UpdateTourismRequest updateTourismRequest);

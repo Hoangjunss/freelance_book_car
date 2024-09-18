@@ -78,6 +78,15 @@ public class TourScheduleServiceImpl implements TourScheduleService  {
         if (updateTourScheduleRequest.getTimeEndTour() == null) {
             throw new CustomException(Error.TOUR_SCHEDULE_INVALID_END_TIME);
         }
+        if (updateTourScheduleRequest.getIdTour() == null) {
+            throw new CustomException(Error.TOUR_SCHEDULE_MISSING_TOUR_ID);
+        }
+        if (updateTourScheduleRequest.getQuantity() == null) {
+            throw new CustomException(Error.TOUR_SCHEDULE_INVALID_QUANTITY);
+        }
+        if (updateTourScheduleRequest.getPriceTour() == null) {
+            throw new CustomException(Error.TOUR_SCHEDULE_INVALID_PRICE);
+        }
 
         // Tìm tour schedule bằng id và ném lỗi nếu không tìm thấy
         TourSchedule tourSchedule = modelMapper.map(findById(updateTourScheduleRequest.getId()), TourSchedule.class);
