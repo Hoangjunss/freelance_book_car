@@ -1,3 +1,237 @@
+/* General Navigation Styling */
+header {
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1050;
+}
+
+nav {
+  background-color: #1c1c1c;
+}
+
+.navbar {
+  width: 100%;
+  padding: 0;
+  position: relative;
+}
+
+/* Chỉnh cho thanh navbar của web */
+.navbar-nav {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 0;
+  margin: 0;
+}
+
+.navbar-brand {
+  height: 40px;
+}
+
+.navbar-toggler {
+  position: fixed;
+  right: 25px;
+  top: 10px;
+  z-index: 1050;
+}
+
+.header-content .nav-link {
+  color: #fff;
+  font-size: 24px;
+}
+
+.d-lg-none {
+  display: flex;
+  flex-direction: column;
+}
+
+.navbar-brand.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Hide Desktop Navigation on Mobile */
+.d-none.d-lg-block {
+  display: none;
+}
+
+.navbar-brand {
+  display: flex;
+  justify-content: center;
+}
+
+.container-fluid {
+  padding: 0;
+}
+
+
+.navbar-nav .nav-link {
+  color: #fff;
+  font-size: 24px;
+  padding: 5px;
+  border: 1px solid transparent;
+}
+
+.navbar-nav .nav-link:hover {
+  color: #ddd;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+/* Button Styles in Navbar */
+.navbar .btn {
+  color: #fff;
+  font-size: 16px;
+  padding: 13px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 0;
+}
+
+.btn-secondary {
+  background-color: #666;
+}
+
+.btn-danger {
+  background-color: #c62828;
+}
+
+/* Ensure the button icons are aligned properly */
+.btn-danger i {
+  margin-right: 5px;
+}
+
+/* Header Content Styling */
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  background-color: #4a4a4a;
+  padding: 10px 20px;
+}
+
+.header-content .logo {
+  height: 30px;
+}
+
+.navbar-toggler {
+  display: block;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 24px;
+}
+
+/* Logo Styling */
+.logo {
+  height: 40px;
+}
+
+/* Search Container Styling */
+.search-container {
+  position: relative;
+  width: 30%;
+}
+
+/* Input Field Styling */
+.search-box {
+  background-color: #4a4a4a;
+  color: #fff;
+  border: 1px solid #444;
+  padding: 8px 12px;
+  padding-left: 40px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+  width: 100%;
+  font-size: 16px;
+}
+
+/* Placeholder Text Styling */
+.search-box::placeholder {
+  color: #fff;
+  opacity: 0.7;
+}
+
+/* Search Icon Styling */
+.search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+  font-size: 18px;
+}
+
+/* Extra Options Container */
+.extra-options {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+.dropdown-toggle::after {
+  color: rgb(52, 58, 64);
+  vertical-align: .2em;
+  margin-left: 8px;
+}
+
+/* Custom Select Styling */
+.currency-selector {
+  background-color: #4a4a4a;
+  color: #fff;
+  border: 1px solid #444;
+  padding: 8px 12px;
+  padding-right: 40px;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: relative;
+}
+
+/* Custom Arrow */
+.currency-selector::after {
+  content: '';
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: solid #fff;
+  border-width: 0 3px 3px 3px;
+  height: 0.5em;
+  width: 0.5em;
+  transform: rotate(45deg);
+}
+
+/* Remove default arrow in IE */
+.currency-selector::-ms-expand {
+  display: none;
+}
+
+
+
+.vietnam-flag {
+  height: 20px;
+}
+
+
+/* Help and Cart Styling */
+.help,
+.cart {
+  font-size: 16px;
+  color: #fff;
+  cursor: pointer;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.help:hover,
+.cart:hover {
+  color: #ddd;
+}
 /* Tiêu đề */
 h2 {
   font-size: 24px; /* Kích thước chữ */
@@ -23,4 +257,13 @@ h2 {
 .card-body {
   padding: 15px;
   text-align: center;
+}
+
+.location-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.location-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
