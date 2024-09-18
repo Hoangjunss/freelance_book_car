@@ -1,0 +1,16 @@
+<div class="container">
+  <!-- Tiêu đề danh sách địa điểm -->
+  <h2 class="my-4">Danh sách địa điểm tại {{ location }}</h2>
+
+  <!-- Danh sách địa điểm -->
+  <div class="row">
+    <div class="col-md-3 mb-4" *ngFor="let location of locations">
+      <div class="card">
+        <img [src]="location.imageUrl || 'https://via.placeholder.com/200x150'" alt="{{ location.name }}" class="card-img-top">
+        <div class="card-body">
+          <h5 class="card-title">{{ location.name }}</h5>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
