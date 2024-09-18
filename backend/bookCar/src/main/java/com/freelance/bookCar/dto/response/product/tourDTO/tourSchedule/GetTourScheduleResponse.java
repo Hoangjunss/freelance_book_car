@@ -1,6 +1,5 @@
 package com.freelance.bookCar.dto.response.product.tourDTO.tourSchedule;
 
-import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +11,6 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
 public class GetTourScheduleResponse {
     private Integer id;
     private LocalDateTime timeStartTour;

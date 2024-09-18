@@ -65,8 +65,7 @@ public class TourismServiceImpl implements TourismService {
             throw new CustomException(Error.TOURISM_NOT_FOUND);
         }
 
-        Tourism existingTourism = tourismRepository.findById(updateTourismRequest.getId())
-                .orElseThrow(() -> new CustomException(Error.TOURISM_NOT_FOUND));
+        Tourism existingTourism = modelMapper.map(findById(updateTourismRequest.getId()), Tourism.class);
 
         if (updateTourismRequest.getName() != null) {
             existingTourism.setName(updateTourismRequest.getName());
