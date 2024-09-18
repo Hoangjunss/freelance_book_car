@@ -326,7 +326,6 @@
 .service-details {
     padding-left: 20px;
 }
-
 .button {
     display: inline-block;
     margin: 5px 0;
@@ -502,8 +501,7 @@
 }
 
 .product-info ul {
-    list-style-type: none;
-    padding-left: 0;
+    padding-left: 1rem;
 }
 
 .product-info li {
@@ -552,4 +550,71 @@
     border: none;
     padding: 5px;
     width: auto;
+}
+.input-group button{
+    background-color: #f9f9f9;
+    color: #000;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-left: 10px;
+}
+.circle-number {
+    border: 2px solid red;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: red;
+    font-weight: bold;
+}
+
+.button-group button {
+    margin-bottom: 5px;
+    border: 1px solid rgba(128, 128, 128, 0.5);
+    color: rgba(128, 128, 128, 0.5);
+}
+
+.product-info-content h6 {
+    margin-bottom: 5px;
+}
+
+.product-info-content ul {
+    margin-bottom: 0;
+}
+
+.general-terms {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.review-section {
+    margin: 20px;
+}
+.rating {
+    color: #ffa41b;
+}
+.review-card {
+    margin-bottom: 20px;
+}
+.price-box {
+    background-color: #f7f7f7;
+    padding: 15px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+.price-box .price {
+    font-size: 24px;
+    color: #ff5722;
+}
+.price-box .original-price {
+    text-decoration: line-through;
+    color: #999;
+    margin-left: 10px;
+}
+.price-box .btn {
+    background-color: #ff5722;
+    color: white;
 }
