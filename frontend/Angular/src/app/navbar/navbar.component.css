@@ -515,7 +515,15 @@ body {
 
 @media (max-width: 768px) {
     .dropdown-menu {
-        position: static;
+        position: absolute;
+        margin-left: 18px;
+        width: 90% !important;
+        overflow-y: hidden;
+
+    }
+
+    .dropdown-menu::-webkit-scrollbar {
+        display: none; 
     }
 }
 
@@ -534,6 +542,7 @@ body {
     display: flex;
     justify-content: center;
     width: 100%;
+    
 }
 
 .tabs {
@@ -547,6 +556,8 @@ body {
     flex: 1;
     margin: 0;
     transition: transform 0.2s, box-shadow 0.3s, background-color 0.3s;
+    position: relative;
+    cursor: pointer;
 }
 
 .tab-link {
@@ -563,7 +574,6 @@ body {
     margin: 0;
     text-transform: uppercase;
     position: relative;
-    text-align: center;
 }
 
 .tab-link i {
@@ -572,11 +582,7 @@ body {
     margin-bottom: 5px;
     position: absolute;
     right: 20px;
-
 }
-
-
-
 
 .tab-link:hover {
     background-color: #de9314;
@@ -586,6 +592,64 @@ body {
 .tab-link.active {
     background-color: rgba(222, 147, 20, .75);
     color: #fff;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(10px);
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+/* menu thả xuống dành cho "Thuê Xe" */
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    bottom: 100%;
+    left: 0;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: slideUp 0.3s ease-out forwards;
+}
+
+.tab-item.active .dropdown-menu {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+    animation: slideUp 0.3s ease-out forwards;
+    animation-delay: 0.1s;
+}
+
+.location-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.location-list li {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.location-list li:hover {
+    background-color: #f0f0f0;
+}
+
+.location-link {
+    text-decoration: none;
+    color: #000;
+}
+
+.location-link:hover {
+    text-decoration: underline;
 }
 
 /* Responsive Design */
@@ -622,25 +686,62 @@ body {
         background-color: #de9314;
         color: #fff;
     }
+    .image-container{
+        display: flex;
+        flex-direction: column;
+    }
 }
 
-
 .image-container {
-    margin: 20px 0;
+    margin: 40px 0;
+    display: flex;
+    padding: 0 10px;
+    box-sizing: border-box;
+    gap: 15px;
+    /* Ensure there is enough space on both sides */
+}
+
+.image-item-wrapper {
+    opacity: 0;
+    animation: fadeInWrapper 1s ease-out forwards;
+}
+
+@keyframes fadeInWrapper {
+    from {
+        opacity: 0;
+
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 .image-item {
     position: relative;
-    text-align: center;
-    overflow: hidden;
+    width: 100%;
 }
 
 .image-item img {
-    max-width: 100%;
+    width: 100%;
     height: auto;
-    border-radius: 8px;
-    width: 300px;
     display: block;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.image-item.visible {
+    animation: fadeInUp 1s ease-out;
 }
 
 .image-item p {
@@ -652,21 +753,22 @@ body {
     background-color: rgba(0, 0, 0, 0.5);
     padding: 5px 10px;
     border-radius: 4px;
+    opacity: 0;
+    transform: translateX(-100%);
+    transition: opacity 1s ease-out, transform 1s ease-out;
 }
 
-@media (max-width: 768px) {
-    .image-container {
-        display: flex !important;
-        flex-direction: column;
-    }
-
-    .image-item img {
-        width: 100%;
-        object-fit: cover;
-        object-position: center;
-        height: auto;
-    }
+.image-item p.visible {
+    opacity: 1;
+    transform: translateX(0);
 }
+
+.slide-in {
+    transform: translateX(-100%);
+    animation: slideIn 1s forwards;
+}
+
+
 
 
 @media (max-width: 768px) {
@@ -683,40 +785,7 @@ body {
     position: relative;
 }
 
-@-webkit-keyframes fadeInRight {
-    0% {
-        opacity: 0;
-        -webkit-transform: translateX(20px);
-        transform: translateX(20px)
-    }
 
-    100% {
-        opacity: 1;
-        -webkit-transform: translateX(0);
-        transform: translateX(0)
-    }
-}
-
-@keyframes fadeInRight {
-    0% {
-        opacity: 0;
-        -webkit-transform: translateX(20px);
-        -ms-transform: translateX(20px);
-        transform: translateX(20px)
-    }
-
-    100% {
-        opacity: 1;
-        -webkit-transform: translateX(0);
-        -ms-transform: translateX(0);
-        transform: translateX(0)
-    }
-}
-
-.fadeInRight {
-    -webkit-animation-name: fadeInRight;
-    animation-name: fadeInRight
-}
 
 @media (max-width: 1600px) {
     .head-memory {
@@ -798,10 +867,11 @@ body {
         padding-right: 0;
     }
 
-    .row{
+    .row {
         height: 210px;
-        margin-top: 60px;   
+        margin-top: 60px;
     }
+
     .ct-memory .title {
         font-size: 14px;
         margin-bottom: 10px;
@@ -815,6 +885,7 @@ body {
     .ct-memory .btn-pri {
         font-size: 12px;
         padding: 6px 12px;
+        margin-top: 15px;
     }
 
     .prev,
@@ -823,9 +894,10 @@ body {
         width: 25px;
         height: 25px;
         font-size: 14px;
-        top:18%;
+        top: 18%;
         z-index: 2;
     }
+
     .head-memory img {
         display: block;
         margin-left: auto;
@@ -833,19 +905,21 @@ body {
         max-width: 100%;
         height: auto;
     }
-    
+
     /* Điều chỉnh slider-container để đảm bảo tính căn giữa của slider */
     .slider-container {
         position: relative;
         width: 100%;
-        margin: auto; /* Cân bằng tự động */
+        margin: auto;
+        height: 250px !important;
+        /* Cân bằng tự động */
     }
-    
+
     /* Căn chỉnh nội dung .cas-memory */
     .cas-memory {
         position: relative;
     }
-    
+
     /* Kiểu dáng cho slider */
     .owl-carousel .owl-item img {
         display: block;
@@ -853,10 +927,17 @@ body {
         height: auto;
     }
 
-    .col-lg-8{
+    .col-lg-8 {
         margin-left: 22px;
     }
-    
+    .owl-carousel .owl-stage-outer{
+        height: 200px;
+    }
+    .owl-stage-outer
+    {
+        height: 200px;
+    }
+
 }
 
 @media (max-width: 576px) {
@@ -969,11 +1050,12 @@ body {
 }
 
 @media screen and (max-width: 768px) {
+
     .prev,
     .next {
-        top: 18%;
+        top: 40%;
     }
-    
+
 }
 
 .prev {
@@ -1129,4 +1211,209 @@ body {
     display: inline-block;
     transition: .3s;
     text-decoration: none;
+}
+
+@keyframes rotateIn {
+    from {
+        transform: rotate(-360deg);
+        opacity: 0;
+    }
+
+    to {
+        transform: rotate(0deg);
+        opacity: 1;
+    }
+}
+
+/* Apply Rotation Animation to All Elements in Header Content */
+.header-content * {
+    animation: rotateIn 1s ease-out forwards;
+    opacity: 0;
+    /* Ensure elements start invisible for animation */
+}
+
+.header-content img,
+.header-content .search-container,
+.header-content .extra-options {
+    animation-delay: 0.1s;
+}
+
+.header-content .search-container {
+    animation-delay: 0.2s;
+}
+
+.header-content .extra-options {
+    animation-delay: 0.3s;
+}
+
+.header-content .extra-options div {
+    animation-delay: 0.4s;
+}
+
+
+@keyframes slideInFromLeft {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Apply Slide Animation */
+#navbarNav .nav-item {
+    animation: slideInFromLeft 1s ease-out forwards;
+    opacity: 0;
+    /* Ensure elements start invisible for animation */
+}
+
+#navbarNav .nav-item:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+#navbarNav .nav-item:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+#navbarNav .nav-item:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+#navbarNav .nav-item:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+#navbarNav .nav-item:nth-child(5) {
+    animation-delay: 0.5s;
+}
+
+#navbarNav .nav-item:nth-child(6) {
+    animation-delay: 0.6s;
+}
+
+#navbarNav .nav-item:nth-child(7) {
+    animation-delay: 0.7s;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.2);
+        opacity: 0.7;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.navbar-nav .nav-link i {
+    animation: pulse 2s infinite;
+}
+.social-icons .nav-link i {
+    animation: pulse 2s infinite;
+}
+@keyframes slideIn {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Apply Slide-In Animation to All Elements in .container-tab */
+.container-tab * {
+    animation: slideIn 1s ease-out forwards;
+    opacity: 0;
+    /* Ensure elements start invisible for animation */
+}
+
+/* Adjust animation delay for child elements to create a staggered effect */
+.container-tab .header-content {
+    animation-delay: 0.1s;
+}
+
+.container-tab .search-container {
+    animation-delay: 0.2s;
+}
+
+.container-tab .extra-options {
+    animation-delay: 0.3s;
+}
+
+.container-tab .extra-options div {
+    animation-delay: 0.4s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+video {
+    animation: fadeIn 2s ease-in;
+}
+
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInRight {
+    0% {
+        opacity: 0;
+        -webkit-transform: translateX(20px);
+        -ms-transform: translateX(20px);
+        transform: translateX(20px)
+    }
+
+    100% {
+        opacity: 1;
+        -webkit-transform: translateX(0);
+        -ms-transform: translateX(0);
+        transform: translateX(0)
+    }
+}
+
+.fadeInRight,
+.fadeInLeft,
+.fadeInUp {
+    opacity: 0;
+    /* Ẩn các phần tử khi mới tải */
+}
+
+.fadeInRight.visible {
+    animation: fadeInRight 1s ease-out forwards;
+}
+
+.fadeInLeft.visible {
+    animation: fadeInLeft 1s ease-out forwards;
+}
+
+.fadeInUp.visible {
+    animation: fadeInUp 1s ease-out forwards;
 }
