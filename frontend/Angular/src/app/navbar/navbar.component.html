@@ -141,7 +141,7 @@
                 <ng-container *ngIf="selectedTab">
                     <ng-container *ngIf="selectedTab.label === 'Đặt Vé'">
                         <app-location-detail *ngIf="selectedLocation"
-                            [location]="selectedLocation"></app-location-detail>
+                            location="selectedLocation"></app-location-detail>
                     </ng-container>
                     <!-- Add other conditions if needed -->
                 </ng-container>

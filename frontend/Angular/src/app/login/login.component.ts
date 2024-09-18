@@ -9,10 +9,5 @@ import { Component } from '@angular/core';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  isExpanded = false; 
-
-  toggleContent(event: Event) {
-    event.preventDefault(); 
-    this.isExpanded = !this.isExpanded;
-  }
+  
 }

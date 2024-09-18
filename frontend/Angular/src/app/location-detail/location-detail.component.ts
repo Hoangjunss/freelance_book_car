@@ -10,4 +10,10 @@ import { Component,Input } from '@angular/core';
 })
 export class LocationDetailComponent {
   @Input() location: string | null = null;
+  isExpanded = false; 
+
+  toggleContent(event: Event) {
+    event.preventDefault(); 
+    this.isExpanded = !this.isExpanded;
+  }
 }

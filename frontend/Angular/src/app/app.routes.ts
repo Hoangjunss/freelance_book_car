@@ -19,11 +19,8 @@ export const routes: Routes = [
         path: '',
         component: LoginComponent 
     },
-    { 
-        path: '**', redirectTo: '' 
-    },
     {
-        path:'location',
+        path:'location-detail',
         component: LocationDetailComponent
     }
       

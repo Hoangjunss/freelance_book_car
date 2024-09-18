@@ -1,3 +1,313 @@
+<header class="header bg-white border-bottom">
+  <div class="container d-flex align-items-center justify-content-between py-2">
+      <div class="logo">
+          <img src="logo.png" alt="Logo" class="img-fluid" style="max-height: 40px;">
+      </div>
+      <div class="search-bar flex-grow-1 mx-3">
+          <input type="text" class="form-control w-50" placeholder="Tìm theo điểm đến, hoạt động">
+      </div>
+      <div class="nav-options d-flex align-items-center gap-4">
+          <div class="dropdown">
+              <button class="btn dropdown-toggle d-flex align-items-center" type="button" id="languageDropdown"
+                  data-bs-toggle="dropdown" aria-expanded="false">
+                  <img src="https://hoianmemoriesland.com/public/images/flag-vi.png" alt="Vietnam Flag"
+                      class="vietnam-flag img-fluid" style="max-height: 25px;min-width: 0;">
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+                  <li><a class="dropdown-item" href="https://hoianmemoriesland.com/vi?lang=en">
+                          <img src="https://hoianmemoriesland.com/public/images/flag-en.png" alt="EN"
+                              class="img-fluid" style="max-height: 18px;"> English
+                      </a></li>
+                  <li><a class="dropdown-item" href="https://hoianmemoriesland.com/vi?lang=cn">
+                          <img src="https://hoianmemoriesland.com/public/images/flag-cn.png.pagespeed.ce.S_Je3nHuQy.png"
+                              alt="CN" class="img-fluid" style="max-height: 18px;"> 中文
+                      </a></li>
+                  <li><a class="dropdown-item" href="https://hoianmemoriesland.com/vi?lang=kr">
+                          <img src="https://hoianmemoriesland.com/public/images/flag-kr.png.pagespeed.ce.Yu1xtOL70k.png"
+                              alt="KR" class="img-fluid" style="max-height: 18px;"> 한국어
+                      </a></li>
+              </ul>
+          </div>
+          <div class="dropdown currency-dropdown">
+              <button class="btn dropdown-toggle d-flex align-items-center" type="button" id="currencyDropdown"
+                  data-bs-toggle="dropdown" aria-expanded="false">
+                  <span>VND</span>
+              </button>
+              <ul class="dropdown-menu" aria-labelledby="currencyDropdown">
+                  <li>USD</li>
+                  <li>EUR</li>
+                  <li>JPY</li>
+                  <li>GBP</li>
+              </ul>
+          </div>
+          <a href="#" class="nav-link">Mở ứng dụng</a>
+          <a href="#" class="nav-link">Trợ giúp</a>
+          <a href="#" class="nav-link">Xem gần đây</a>
+          <a href="#" class="nav-link">Đăng ký</a>
+          <button class="btn login-button">Đăng nhập</button>
+      </div>
+  </div>
+</header>
 
 
-  <h1>hi</h1>
+<div class="container my-4">
+  <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">RanPolaris Travel</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Đà Nẵng</li>
+      </ol>
+  </nav>
+
+  <h2 class="fw-bold">Thuê Xe Đi Hội An hoặc Vinwonders Nam Hội An từ Đà Nẵng</h2>
+  <p style="margin-top: 5%;">Tận hưởng di lại thoải mái giữa Đà Nẵng và Hội An / Huế / Bà Nà Hills</p>
+
+  <div class="d-flex align-items-center my-2">
+      <span class="badge me-2">
+          <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
+          4.7
+      </span>
+      <span class="text-decoration-underline me-2" style="font-weight: 450;">(4K+ Đánh giá)</span>
+      <span class="me-3">
+          30K+ Đã đặt
+      </span>
+      <span class="text-decoration-underline me-2">
+          <i class="bi bi-geo-alt"></i>
+          Thuê xe riêng ở Đà Nẵng
+      </span>
+      <span class="ms-auto">
+          <i class="fa-regular fa-heart"></i>
+          Yêu thích
+      </span>
+  </div>
+
+</div>
+
+<!-- Image Section -->
+<div class="container">
+  <div class="position-relative">
+      <img src="https://png.pngtree.com/background/20230618/original/pngtree-lakescape-landscape-nature-scenery-hd-picture-image_3712644.jpg"
+          class="img-fluid" alt="Car Rental" />
+  </div>
+</div>
+
+<!-- Description Section -->
+<div class="container my-4">
+  <div class="row">
+      <!-- Left Column (Info with See More) -->
+      <div class="col-md-8">
+          <div class="alert-light" role="alert">
+              <div class="d-flex align-items-center justify-content-between">
+                  <i class="fas fa-volume-up"></i>
+                  <span>Các biện pháp tăng cường vệ sinh & bảo vệ sức khoẻ đang được áp dụng cho hoạt động này. Vui
+                      lòng...</span>
+                  <i class="bi bi-chevron-down"></i>
+              </div>
+              <div class="mt-2 position-relative">
+                  <ul class="alert-content" [ngClass]="{'show': isExpanded}">
+                      <li class="text-dark rounded-2 px-2 py-1 mb-1">
+                          Tìm hiểu thêm về các biện pháp tăng cường vệ sinh & bảo vệ sức khoẻ của hoạt động này
+                      </li>
+                      <li class="text-dark rounded-2 px-2 py-1 mb-1">
+                          Tận hưởng đi lại thoải mái giữa Đà Nẵng và Hội An / Huế / Bà Nà Hills trên xe hiện đại và
+                          được trang bị điều hoà
+                      </li>
+                      <li class="text-dark rounded-2 px-2 py-1 mb-1 hidden-item">
+                          Lựa chọn từ ba loại xe khác nhau: xe bốn chỗ, xe MPV/SUV, hoặc xe van, tuỳ theo nhu cầu của
+                          bạn
+                      </li>
+                      <li class="text-dark rounded-2 px-2 py-1 mb-1 hidden-item">
+                          Di chuyển giữa các thành phố thật nhanh chóng và tiện lợi với tài xế chuyên nghiệp
+                      </li>
+                  </ul>
+                  <div class="overlay" [ngClass]="{'show': !isExpanded}">
+                      <div class="overlay-content">
+                          <a href="#" class="text-dark" (click)="toggleContent($event)">
+                              Xem thêm <i class="bi bi-chevron-right" [ngClass]="{'rotate': isExpanded}"></i>
+                          </a>
+                      </div>
+                  </div>
+              </div>
+
+
+
+
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center mt-3 custom-background">
+              <p class="text">Ưu đãi cho bạn</p>
+              <div style="margin-right: 20px;">
+                  <button class="btn btn-outline-danger btn-sm" style="margin-right: 15px;">Chính sách đảm bảo giá
+                      tốt</button>
+                  <i class="bi bi-chevron-right"></i>
+              </div>
+          </div>
+      </div>
+
+      <!-- Right Column (Price Section) -->
+      <div class="col-md-4">
+          <div class="border p-3 rounded">
+              <h5 class="text-end text-dark price">₫ 298,000
+                  <small class="text-decoration-line-through">₫ 357,000</small>
+              </h5>
+              <button class="btn button-price w-100">Chọn các gói dịch vụ</button>
+          </div>
+      </div>
+  </div>
+</div>
+<h5 class="container">Các gói dịch vụ</h5>
+<div class="container my-3 d-flex">
+  <!-- Left Section: Service Package Selection -->
+  <div class="row-left">
+      <div class="col-md-11">
+          <div class="p-4 rounded shadow-sm">
+              <div>
+                  <div class="d-flex">
+                      <p class="text-dark" style="font-weight: 600;">Vui lòng chọn ngày & gói dịch vụ</p>
+                      <div class="ms-auto">
+                          <button style="text-decoration: underline;background:none;border: none;">Xóa tất cả</button>
+                      </div>
+                  </div>
+                  <p class="text-muted">Vui lòng chọn ngày du lịch</p>
+                  <button class="btn button-price btn-warning mb-4" style="border-radius: 14px;"><i
+                          class="bi bi-calendar4" style="padding: 0px 5px;"></i>
+                      Xem trạng thái dịch vụ</button>
+              </div>
+
+
+              <!-- Service Type Selection -->
+              <div>
+                  <p class="text-muted">Loại gói dịch vụ</p>
+                  <div class="row-left d-flex flex-wrap">
+                      <!-- Hàng 1: 3 nút -->
+                      <div class="mb-2 me-2">
+                          <button class="btn btn-outline-secondary w-100 ticket-container">
+                              Một chiều: Đà Nẵng - Hội An
+                              <div class="discount-badge">Giảm 5%</div>
+                          </button>
+                          
+                      </div>
+                      <div class="mb-3 me-2">
+                          <button class="btn btn-outline-secondary w-100 ticket-container">Khứ hồi: Đà Nẵng - Hội An
+                              <div class="discount-badge">Giảm 5%</div>
+                          </button>
+                      </div>
+                      <div class="mb-3 me-2">
+                          <button class="btn btn-outline-secondary w-100 ticket-container">Một chiều: Đà Nẵng - Bà Nà Hill
+                              <div class="discount-badge">Giảm 5%</div>
+                          </button>
+                      </div>
+
+                      <!-- Hàng 2: 2 nút -->
+                      <div class="mb-3 me-2">
+                          <button class="btn btn-outline-secondary w-100 ticket-container">Khứ hồi: Đà Nẵng - Bà Nà Hills
+                              <div class="discount-badge">Giảm 5%</div>
+                          </button>
+                      </div>
+                      <div class="mb-3 me-2">
+                          <button class="btn btn-outline-secondary w-100 ticket-container">Khứ hồi: Đà Nẵng - Núi Thần Tài
+                              <div class="discount-badge">Giảm 5%</div>
+                          </button>
+                      </div>
+
+                      <!-- Hàng 3: 1 nút -->
+                      <div class="mb-3 me-2 ">
+                          <button class="btn btn-outline-secondary w-100 ticket-container">Một chiều: Đà Nẵng - Mikazuki Japanese
+                              Resort & Spa<div class="discount-badge">Giảm 5%</div></button>
+                      </div>
+
+                      <!-- Hàng 4: 2 nút -->
+                      <div class="mb-3 me-2">
+                          <button class="btn btn-outline-secondary w-100 ticket-container">Khứ hồi: Đà Nẵng - Mikazuki Japanese Resort
+                              & Spa<div class="discount-badge">Giảm 5%</div></button>
+                      </div>
+                      <div class="mb-3 me-2">
+                          <button class="btn btn-outline-secondary w-100 ticket-container">Một chiều: Đà Nẵng - Huế<div class="discount-badge">Giảm 5%</div></button>
+                      </div>
+
+                      <!-- Hàng 5: 2 nút -->
+                      <div class="mb-3 me-2">
+                          <button class="btn btn-outline-secondary w-100 ticket-container">Khứ hồi: Đà Nẵng - Huế<div class="discount-badge">Giảm 5%</div></button>
+                      </div>
+                      <div class="mb-3 me-2">
+                          <button class="btn btn-outline-secondary w-100 ticket-container">Một chiều:Đà Nẵng - Vinpearl Nam Hội
+                              An<div class="discount-badge">Giảm 5%</div></button>
+                      </div>
+                      <div class="mb-3 me-2">
+                          <button class="btn btn-outline-secondary w-100 ticket-container">Khu hồi: Đà Nẵng - Vinpearl Nam Hội
+                              An<div class="discount-badge">Giảm 5%</div></button>
+                      </div>
+                  </div>
+              </div>
+              <!-- Quantity Selection -->
+              <div class="mt-4">
+                  <p class="text-muted">Số lượng</p>
+                  <div class="row g-2 d-flex flex-column">
+                      <div class="col-md-12" style="background-color: #fff;padding: 12px;border-radius: 10px;">
+                          <div class="d-flex justify-content-between align-items-center">
+                              <span style="width: 100%;font-weight: bolder;">Per Sedan (Group of 3)</span>
+                              <div class="input-group">
+                                  <button class="btn btn-outline-secondary">-</button>
+                                  <input type="text" class="form-control text-center" value="0">
+                                  <button class="btn btn-outline-secondary">+</button>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-md-6">
+                          <div class="d-flex justify-content-between align-items-center">
+                              <span>Per MPV/SUV (Group of 5)</span>
+                              <div class="input-group">
+                                  <button class="btn btn-outline-secondary">-</button>
+                                  <input type="text" class="form-control text-center" value="0" style="flex:none;width: 24%;">
+                                  <button class="btn btn-outline-secondary">+</button>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
+              <!-- Pricing Section -->
+              <div class="mt-4 d-flex justify-content-between align-items-center">
+                  <div>
+                      <span class="fs-3 text-warning">₫ 631,516</span>
+                      <span class="text-decoration-line-through text-muted">₫ 798,441</span>
+                  </div>
+                  <div>
+                      <button class="btn btn-light border">Thêm vào giỏ hàng</button>
+                      <button class="btn btn-warning">Đặt ngay</button>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+  <!-- Right Section: Service Details -->
+  <div class="col-md-4">
+      <div class="p-4 bg-white rounded shadow-sm">
+          <h2 class="mb-3">Chi tiết gói dịch vụ</h2>
+
+          <!-- Detail Buttons -->
+          <div class="d-grid gap-2 mb-3">
+              <button class="btn btn-warning">Hoàn huỷ miễn phí trong 24h</button>
+              <button class="btn btn-warning">Xác nhận ngay tức thì</button>
+              <button class="btn btn-warning">Hiệu lực vào ngày đã chọn</button>
+          </div>
+
+          <!-- Product Info -->
+          <div>
+              <h3 class="fs-5">Thông tin sản phẩm</h3>
+              <ul class="list-unstyled">
+                  <li><i class="bi bi-check-circle-fill text-success"></i> Tài xế nói tiếng Tiếng Anh</li>
+                  <li><i class="bi bi-check-circle-fill text-success"></i> Phí nhiên liệu</li>
+                  <li><i class="bi bi-check-circle-fill text-success"></i> Phí cầu đường</li>
+                  <li><i class="bi bi-check-circle-fill text-success"></i> Phí đậu xe</li>
+                  <li><i class="bi bi-check-circle-fill text-success"></i> Bảo hiểm & chi phí điều hành cung cấp</li>
+                  <li><i class="bi bi-check-circle-fill text-success"></i> Đưa đón khi hồi</li>
+              </ul>
+              <h4 class="fs-6 mt-3">Không bao gồm</h4>
+              <ul class="list-unstyled">
+                  <li><i class="bi bi-x-circle-fill text-danger"></i> Chi phí ăn uống</li>
+                  <li><i class="bi bi-x-circle-fill text-danger"></i> Chi phí tham quan</li>
+              </ul>
+          </div>
+      </div>
+  </div>
+</div>
