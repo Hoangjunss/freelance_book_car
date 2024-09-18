@@ -16,6 +16,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -44,6 +45,7 @@ public class InvoiceServiceImpl implements InvoiceService{
         // Create new Invoice object
         Invoice invoice = Invoice.builder()
                 .id(getGenerationId())
+                .invoiceDate(LocalDateTime.now())
                 .totalAmount(createInvoiceRequest.getTotalAmount())
                 .paymentStatus(createInvoiceRequest.getPaymentStatus())
                 .booking(createInvoiceRequest.getIdBooking())
@@ -77,10 +79,10 @@ public class InvoiceServiceImpl implements InvoiceService{
         if (updateInvoiceRequest.getBooking() != null){
             existingInvoice.setBooking(updateInvoiceRequest.getBooking());
         }
-        if (updateInvoiceRequest.getTotalAmount() != existingInvoice.getTotalAmount()){
+        if (updateInvoiceRequest.getTotalAmount() > 0D){
             existingInvoice.setTotalAmount(updateInvoiceRequest.getTotalAmount());
         }
-        if (updateInvoiceRequest.getPaymentStatus() != existingInvoice.getPaymentStatus()){
+        if (!updateInvoiceRequest.getPaymentStatus().isEmpty()){
             existingInvoice.setPaymentStatus(updateInvoiceRequest.getPaymentStatus());
         }
 

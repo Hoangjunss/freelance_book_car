@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateBookingResponse {
+    private Integer id;
     private LocalDateTime dateBook;
     private double totalPrice;
     private Integer user;

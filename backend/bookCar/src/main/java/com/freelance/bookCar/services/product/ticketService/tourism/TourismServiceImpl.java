@@ -97,8 +97,8 @@ public class TourismServiceImpl implements TourismService {
         return modelMapper.map(tourism, GetTourismResponse.class);
     }
 
-    private Long getGenerationId() {
+    private Integer getGenerationId() {
         UUID uuid = UUID.randomUUID();
-        return uuid.getMostSignificantBits() & 0xFFFFFFFFFFFFL;
+        return (int) (uuid.getMostSignificantBits() & 0xFFFFFFFFL);
     }
 }

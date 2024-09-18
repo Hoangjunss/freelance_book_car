@@ -38,6 +38,12 @@ public class HotelBookingServiceImpl implements HotelBookingService {
         if (createHotelBookingRequest.getStartDate() == null) {
             throw new CustomException(Error.HOTEL_BOOKING_INVALID_START_DATE);
         }
+        if (createHotelBookingRequest.getHotel() == null) {
+            throw new CustomException(Error.HOTEL_BOOKING_INVALID_ID_HOTEL);
+        }
+        if (createHotelBookingRequest.getTotalPrice() < 0D) {
+            throw new CustomException(Error.HOTEL_BOOKING_INVALID_TOTAL_PRICE);
+        }
 
         HotelBooking hotelBooking = HotelBooking.builder()
                 .id(getGenerationId())
@@ -62,22 +68,22 @@ public class HotelBookingServiceImpl implements HotelBookingService {
         if (updateHotelBookingRequest.getId() == null) {
             throw new CustomException(Error.HOTEL_BOOKING_NOT_FOUND);
         }
-        if (updateHotelBookingRequest.getEndDate() == null) {
-            throw new CustomException(Error.HOTEL_BOOKING_INVALID_END_DATE);
-        }
-        if (updateHotelBookingRequest.getStartDate() == null) {
-            throw new CustomException(Error.HOTEL_BOOKING_INVALID_START_DATE);
-        }
 
-        HotelBooking existingHotelBooking = hotelBookingRepository.findById(updateHotelBookingRequest.getId())
-                .orElseThrow(() -> new CustomException(Error.HOTEL_BOOKING_NOT_FOUND));
+        HotelBooking existingHotelBooking = modelMapper.map(findById(updateHotelBookingRequest.getId()), HotelBooking.class);
 
         hotelService.findById(updateHotelBookingRequest.getHotel()); // Validate hotel existence
-
-        existingHotelBooking.setHotel(updateHotelBookingRequest.getHotel());
-        existingHotelBooking.setEndDate(updateHotelBookingRequest.getEndDate());
-        existingHotelBooking.setStartDate(updateHotelBookingRequest.getStartDate());
-        existingHotelBooking.setTotalPrice(updateHotelBookingRequest.getTotalPrice());
+        if (updateHotelBookingRequest.getEndDate() != null) {
+            existingHotelBooking.setEndDate(updateHotelBookingRequest.getEndDate());
+        }
+        if (updateHotelBookingRequest.getStartDate() != null) {
+            existingHotelBooking.setStartDate(updateHotelBookingRequest.getStartDate());
+        }
+        if (updateHotelBookingRequest.getHotel()!= null) {
+            existingHotelBooking.setHotel(updateHotelBookingRequest.getHotel());
+        }
+        if (updateHotelBookingRequest.getTotalPrice()> 0D) {
+            existingHotelBooking.setTotalPrice(updateHotelBookingRequest.getTotalPrice());
+        }
 
         try {
             return modelMapper.map(hotelBookingRepository.save(existingHotelBooking), UpdateHotelBookingResponse.class);

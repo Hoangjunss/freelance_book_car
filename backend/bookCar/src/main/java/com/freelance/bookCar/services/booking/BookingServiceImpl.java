@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -34,6 +35,7 @@ public class BookingServiceImpl implements BookingService{
         }
 
         Booking booking = Booking.builder()
+                .id(getGenerationId())
                 .dateBook(LocalDateTime.now())
                 .totalPrice(createBookingRequest.getTotalPrice())
                 .user(createBookingRequest.getUser())
@@ -92,5 +94,9 @@ public class BookingServiceImpl implements BookingService{
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new CustomException(Error.BOOKING_NOT_FOUND));
         return modelMapper.map(booking, GetBookingResponse.class);
+    }
+    private Integer getGenerationId() {
+        UUID uuid = UUID.randomUUID();
+        return (int) (uuid.getMostSignificantBits() & 0xFFFFFFFFL);
     }
 }
