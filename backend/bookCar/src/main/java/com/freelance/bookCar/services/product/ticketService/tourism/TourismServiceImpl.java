@@ -37,7 +37,7 @@ public class TourismServiceImpl implements TourismService {
         if (createTourismRequest.getDescription() == null) {
             throw new CustomException(Error.TOURISM_INVALID_DESCRIPTION);
         }
-        if (createTourismRequest.getRating() <= 0) {
+        if (createTourismRequest.getRating() < 0) {
             throw new CustomException(Error.TOURISM_INVALID_RATING);
         }
 
@@ -76,7 +76,7 @@ public class TourismServiceImpl implements TourismService {
         if (updateTourismRequest.getDescription() != null) {
             existingTourism.setDescription(updateTourismRequest.getDescription());
         }
-        if (updateTourismRequest.getRating() > 0) {
+        if (updateTourismRequest.getRating() >= 0) {
             existingTourism.setRating(updateTourismRequest.getRating());
         }
 

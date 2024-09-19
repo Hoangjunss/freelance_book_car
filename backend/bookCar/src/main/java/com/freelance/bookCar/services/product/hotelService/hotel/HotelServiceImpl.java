@@ -85,13 +85,13 @@ public class HotelServiceImpl implements HotelService {
         if (updateHotelRequest.getName() != null) {
             existingHotel.setName(updateHotelRequest.getName());
         }
-        if (updateHotelRequest.getPricePerNight() != 0D) {
+        if (updateHotelRequest.getPricePerNight() >= 0D) {
             existingHotel.setPricePerNight(updateHotelRequest.getPricePerNight());
         }
         if (updateHotelRequest.getStatus() != null) {
             existingHotel.setStatus(updateHotelRequest.getStatus());
         }
-        if(updateHotelRequest.getRating() > 0D) {
+        if(updateHotelRequest.getRating() >= 0D) {
             existingHotel.setRating(updateHotelRequest.getRating());
         }
 

@@ -30,8 +30,17 @@ public class BookingServiceImpl implements BookingService{
         log.info("Creating booking for user: {}", createBookingRequest.getUser());
 
         // Validation
-        if (createBookingRequest.getUser() == null || createBookingRequest.getPaymentMethod() == null || createBookingRequest.getInvoice() == null) {
-            throw new CustomException(Error.BOOKING_UNABLE_TO_SAVE);
+        if (createBookingRequest.getUser() == null) {
+            throw new CustomException(Error.BOOKING_INVALID_ID_USER);
+        }
+        if(createBookingRequest.getPaymentMethod() == null) {
+            throw new CustomException(Error.BOOKING_INVALID_PAYMENT_METHOD);
+        }
+        if(createBookingRequest.getInvoice() == null){
+            throw new CustomException(Error.BOOKING_INVALID_INVOICE);
+        }
+        if (createBookingRequest.getTotalPrice() < 0D){
+            throw new CustomException(Error.BOOKING_INVALID_TOTAL_PRICE);
         }
 
         Booking booking = Booking.builder()
@@ -60,13 +69,12 @@ public class BookingServiceImpl implements BookingService{
             throw new CustomException(Error.BOOKING_NOT_FOUND);
         }
 
-        Booking existingBooking = bookingRepository.findById(updateBookingRequest.getId())
-                .orElseThrow(() -> new CustomException(Error.BOOKING_NOT_FOUND));
+        Booking existingBooking = modelMapper.map(findById(updateBookingRequest.getId()), Booking.class);
 
         if (updateBookingRequest.getDateBook() != null) {
             existingBooking.setDateBook(updateBookingRequest.getDateBook());
         }
-        if (updateBookingRequest.getTotalPrice() > 0) {
+        if (updateBookingRequest.getTotalPrice() >= 0) {
             existingBooking.setTotalPrice(updateBookingRequest.getTotalPrice());
         }
         if (updateBookingRequest.getUser() != null) {

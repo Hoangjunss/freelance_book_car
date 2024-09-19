@@ -31,7 +31,7 @@ public class InvoiceServiceImpl implements InvoiceService{
         log.info("Creating invoice");
 
         // Validate input data
-        if (createInvoiceRequest.getTotalAmount() <= 0) {
+        if (createInvoiceRequest.getTotalAmount() < 0) {
             throw new CustomException(Error.INVOICE_INVALID_TOTAL_AMOUNT);
         }
 
