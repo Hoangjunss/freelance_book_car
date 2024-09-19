@@ -40,6 +40,7 @@ public enum Error {
     TICKET_UNABLE_TO_DELETE(1205, "Unable to delete ticket", HttpStatus.INTERNAL_SERVER_ERROR),
     TICKET_INVALID_START_DATE(1206, "Invalid start", HttpStatus.BAD_REQUEST),
     TICKET_INVALID_TOUR_PRICE(1207, "Invalid price", HttpStatus.BAD_REQUEST),
+    TICKET_INVALID_ID_TOURISM(1208, "Invalid id Tourism", HttpStatus.BAD_REQUEST),
     // Tour error
     TOUR_NOT_FOUND(1301, "Tour not found", HttpStatus.NOT_FOUND),
     TOUR_ALREADY_EXISTS(1302, "Tour already exists", HttpStatus.CONFLICT),
@@ -50,6 +51,14 @@ public enum Error {
     TOUR_INVALID_DESCRIPTION(1307, "Tour description is missing or invalid", HttpStatus.BAD_REQUEST),
     TOUR_INVALID_START_LOCATION(1308, "Tour start location is missing or invalid", HttpStatus.BAD_REQUEST),
     TOUR_INVALID_END_LOCATION(1309, "Tour end location is missing or invalid", HttpStatus.BAD_REQUEST),
+    TOUR_INVALID_ID_TOUR_STATUS(1411, "Tour status is invalid or invalid", HttpStatus.BAD_REQUEST),
+    //Tour status
+    TOUR_STATUS_NOT_FOUND(1412, "Tour status not found", HttpStatus.NOT_FOUND),
+    TOUR_STATUS_ALREADY_EXISTS(1413, "Tour status already exists", HttpStatus.CONFLICT),
+    TOUR_STATUS_UNABLE_TO_SAVE(1414, "Unable to save tour status", HttpStatus.INTERNAL_SERVER_ERROR),
+    TOUR_STATUS_UNABLE_TO_UPDATE(1415, "Unable to update tour status", HttpStatus.INTERNAL_SERVER_ERROR),
+    TOUR_STATUS_UNABLE_TO_DELETE(1416, "Unable to delete tour status", HttpStatus.INTERNAL_SERVER_ERROR),
+    TOUR_STATUS_INVALID_NAME(1417, "Invalid name", HttpStatus.BAD_REQUEST),
     // TourSchedule Error
     TOUR_SCHEDULE_NOT_FOUND(1401, "Tour schedule not found", HttpStatus.NOT_FOUND),
     TOUR_SCHEDULE_ALREADY_EXISTS(1402, "Tour schedule already exists", HttpStatus.CONFLICT),
@@ -61,6 +70,14 @@ public enum Error {
     TOUR_SCHEDULE_MISSING_TOUR_ID(1408, "Tour ID is missing", HttpStatus.BAD_REQUEST),
     TOUR_SCHEDULE_INVALID_QUANTITY(1409, "Tour quantity is missing or invalid", HttpStatus.BAD_REQUEST),
     TOUR_SCHEDULE_INVALID_PRICE(1410, "Tour price is missing or invalid", HttpStatus.BAD_REQUEST),
+    TOUR_SCHEDULE_INVALID_STATUS(1411, "Tour status is invalid or invalid", HttpStatus.BAD_REQUEST),
+    //Tour schedule status
+    TOUR_SCHEDULE_STATUS_NOT_FOUND(1412, "Tour schedule status not found", HttpStatus.NOT_FOUND),
+    TOUR_SCHEDULE_STATUS_ALREADY_EXISTS(1413, "Tour schedule status already exists", HttpStatus.CONFLICT),
+    TOUR_SCHEDULE_STATUS_UNABLE_TO_SAVE(1414, "Unable to save tour schedule status", HttpStatus.INTERNAL_SERVER_ERROR),
+    TOUR_SCHEDULE_STATUS_UNABLE_TO_UPDATE(1415, "Unable to update tour schedule status", HttpStatus.INTERNAL_SERVER_ERROR),
+    TOUR_SCHEDULE_STATUS_UNABLE_TO_DELETE(1416, "Unable to delete tour schedule status", HttpStatus.INTERNAL_SERVER_ERROR),
+    TOUR_SCHEDULE_STATUS_INVALID_NAME(1417, "Invalid name", HttpStatus.BAD_REQUEST),
     // Tourism error
     TOURISM_NOT_FOUND(1501, "Tourism not found", HttpStatus.NOT_FOUND),
     TOURISM_ALREADY_EXISTS(1502, "Tourism already exists", HttpStatus.CONFLICT),
@@ -114,6 +131,24 @@ public enum Error {
     BOOKING_INVALID_PAYMENT_METHOD(1907, "Invalid payment method", HttpStatus.BAD_REQUEST),
     BOOKING_INVALID_INVOICE(1908, "Invalid in voice", HttpStatus.BAD_REQUEST),
     BOOKING_INVALID_TOTAL_PRICE(1909, "Invalid total price", HttpStatus.BAD_REQUEST),
+    //Voucher error
+    VOUCHER_NOT_FOUND(2001, "Voucher not found", HttpStatus.NOT_FOUND),
+    VOUCHER_ALREADY_EXISTS(2002, "Voucher already exists", HttpStatus.CONFLICT),
+    VOUCHER_UNABLE_TO_SAVE(2003, "Unable to save voucher", HttpStatus.INTERNAL_SERVER_ERROR),
+    VOUCHER_UNABLE_TO_UPDATE(2004, "Unable to update voucher", HttpStatus.INTERNAL_SERVER_ERROR),
+    VOUCHER_UNABLE_TO_DELETE(2005, "Unable to delete voucher", HttpStatus.INTERNAL_SERVER_ERROR),
+    VOUCHER_INVALID_PROMOTION_ID(2006, "Invalid voucher Promotion id", HttpStatus.BAD_REQUEST),
+    VOUCHER_INVALID_CREATE_DATE(2007, "Invalid voucher create date", HttpStatus.BAD_REQUEST),
+    //Promotion error
+    PROMOTION_NOT_FOUND(2101, "Promotion not found", HttpStatus.NOT_FOUND),
+    PROMOTION_ALREADY_EXISTS(2102, "Promotion already exists", HttpStatus.CONFLICT),
+    PROMOTION_UNABLE_TO_SAVE(2103, "Unable to save promotion", HttpStatus.INTERNAL_SERVER_ERROR),
+    PROMOTION_UNABLE_TO_UPDATE(2104, "Unable to update promotion", HttpStatus.INTERNAL_SERVER_ERROR),
+    PROMOTION_UNABLE_TO_DELETE(2105, "Unable to delete promotion", HttpStatus.INTERNAL_SERVER_ERROR),
+    PROMOTION_INVALID_NAME(2106, "Invalid name", HttpStatus.BAD_REQUEST),
+    PROMOTION_INVALID_DISCOUNT_RATE(2107, "Invalid Discount Rate", HttpStatus.BAD_REQUEST),
+    PROMOTION_INVALID_DATE_RANGE(2108, "Invalid Date Range", HttpStatus.BAD_REQUEST),
+
     ;
 
     private final int code;

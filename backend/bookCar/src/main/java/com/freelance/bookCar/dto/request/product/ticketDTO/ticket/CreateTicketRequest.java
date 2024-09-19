@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
     public class CreateTicketRequest {
         private LocalDateTime startDate;
         private double tourPrice;
-
+        private Integer idTourism;
         // Getters and Setters
     }
 

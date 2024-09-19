@@ -40,6 +40,9 @@ public class TourServiceImpl implements TourService {
         if (createTourRequest.getStartLocation() == null || createTourRequest.getStartLocation().isEmpty()) {
             throw new CustomException(Error.TOUR_INVALID_START_LOCATION);
         }
+        if(createTourRequest.getIdTourStatus() == null){
+            throw new CustomException(Error.TOUR_INVALID_ID_TOUR_STATUS);
+        }
 
         Tour tourSave = Tour.builder()
                 .id(getGenerationId())
@@ -47,6 +50,7 @@ public class TourServiceImpl implements TourService {
                 .endLocation(createTourRequest.getEndLocation())
                 .startLocation(createTourRequest.getStartLocation())
                 .name(createTourRequest.getName())
+                .idTourStatus(createTourRequest.getIdTourStatus())
                 .build();
 
         try {
@@ -80,6 +84,9 @@ public class TourServiceImpl implements TourService {
         }
         if(updateTourRequest.getStartLocation()!=null){
             tour.setStartLocation(updateTourRequest.getStartLocation());
+        }
+        if(updateTourRequest.getIdTourStatus()!=null){
+            tour.setIdTourStatus(updateTourRequest.getIdTourStatus());
         }
 
         try {

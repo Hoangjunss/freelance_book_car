@@ -16,7 +16,7 @@ public class UpdateTicketRequest {
     private Integer id;
     private LocalDateTime startDate;
     private double tourPrice;
-
+    private Integer idTourism;
     // Getters and Setters
 }
 

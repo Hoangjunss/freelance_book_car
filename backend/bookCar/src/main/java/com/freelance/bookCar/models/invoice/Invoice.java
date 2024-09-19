@@ -19,5 +19,5 @@ public class Invoice {
     private LocalDateTime invoiceDate;
     private double totalAmount;
     private String paymentStatus;
-    private Integer booking;
+    private Integer idBooking;
 }

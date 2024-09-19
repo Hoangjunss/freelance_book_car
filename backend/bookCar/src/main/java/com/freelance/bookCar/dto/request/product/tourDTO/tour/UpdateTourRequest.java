@@ -15,4 +15,5 @@ public class UpdateTourRequest {
     private String description;
     private String startLocation;
     private String endLocation;
+    private Integer idTourStatus;
 }

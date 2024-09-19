@@ -15,7 +15,7 @@ public class UpdateBookingRequest {
     private Integer id;
     private LocalDateTime dateBook;
     private double totalPrice;
-    private Integer user;
+    private Integer idUser;
     private Integer paymentMethod;
     private Integer invoice;
 }

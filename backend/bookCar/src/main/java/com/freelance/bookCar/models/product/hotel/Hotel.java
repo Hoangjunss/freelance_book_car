@@ -15,15 +15,11 @@ import lombok.NoArgsConstructor;
 public class Hotel {
     @Id
     private Integer id;
-
     private String name;
     private String contactInfo;
     private double pricePerNight;
     private String location;
     private String status;
     private double rating;
-
-
-
     // Getters and Setters
 }

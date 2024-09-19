@@ -13,4 +13,5 @@ public class FilterTourRequest {
     private LocalDateTime startTour;
     private LocalDateTime endTour;
     private String search;
+    private Integer idTourStatus;
 }

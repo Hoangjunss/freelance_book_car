@@ -45,6 +45,9 @@ public class TourScheduleServiceImpl implements TourScheduleService  {
         if (createTourScheduleRequest.getPriceTour() == null || createTourScheduleRequest.getPriceTour() <= 0) {
             throw new CustomException(Error.TOUR_SCHEDULE_INVALID_PRICE);
         }
+        if(createTourScheduleRequest.getIdTourScheduleStatus()==null){
+            throw new CustomException(Error.TOUR_SCHEDULE_INVALID_STATUS);
+        }
         TourSchedule tourSchedule = TourSchedule.builder()
                 .id(getGenerationId())
                 .timeStartTour(createTourScheduleRequest.getTimeStartTour())
@@ -52,6 +55,7 @@ public class TourScheduleServiceImpl implements TourScheduleService  {
                 .idTour(createTourScheduleRequest.getIdTour())
                 .priceTour(createTourScheduleRequest.getPriceTour())
                 .quantity(createTourScheduleRequest.getQuantity())
+                .idTourScheduleStatus(createTourScheduleRequest.getIdTourScheduleStatus())
                 .build();
 
         try {
@@ -89,6 +93,9 @@ public class TourScheduleServiceImpl implements TourScheduleService  {
         }
         if (updateTourScheduleRequest.getPriceTour() != null) {
             tourSchedule.setPriceTour(updateTourScheduleRequest.getPriceTour());
+        }
+        if (updateTourScheduleRequest.getIdTourScheduleStatus()!= null) {
+            tourSchedule.setIdTourScheduleStatus(updateTourScheduleRequest.getIdTourScheduleStatus());
         }
 
         try {

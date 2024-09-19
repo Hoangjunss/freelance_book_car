@@ -16,8 +16,7 @@ import java.time.LocalDateTime;
 public class Ticket {
     @Id
     private Integer id;
-
     private LocalDateTime startDate;
     private double tourPrice;
-    // Getters and Setters
+    private Integer idTourism;
 }

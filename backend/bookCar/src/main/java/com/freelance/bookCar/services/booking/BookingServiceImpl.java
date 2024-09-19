@@ -2,9 +2,9 @@ package com.freelance.bookCar.services.booking;
 
 import com.freelance.bookCar.dto.request.booking.CreateBookingRequest;
 import com.freelance.bookCar.dto.request.booking.UpdateBookingRequest;
-import com.freelance.bookCar.dto.response.product.booking.CreateBookingResponse;
-import com.freelance.bookCar.dto.response.product.booking.GetBookingResponse;
-import com.freelance.bookCar.dto.response.product.booking.UpdateBookingResponse;
+import com.freelance.bookCar.dto.response.booking.CreateBookingResponse;
+import com.freelance.bookCar.dto.response.booking.GetBookingResponse;
+import com.freelance.bookCar.dto.response.booking.UpdateBookingResponse;
 import com.freelance.bookCar.exception.CustomException;
 import com.freelance.bookCar.exception.Error;
 import com.freelance.bookCar.models.booking.Booking;
@@ -27,10 +27,10 @@ public class BookingServiceImpl implements BookingService{
 
     @Override
     public CreateBookingResponse create(CreateBookingRequest createBookingRequest) {
-        log.info("Creating booking for user: {}", createBookingRequest.getUser());
+        log.info("Creating booking for user: {}", createBookingRequest.getIdUser());
 
         // Validation
-        if (createBookingRequest.getUser() == null) {
+        if (createBookingRequest.getIdUser() == null) {
             throw new CustomException(Error.BOOKING_INVALID_ID_USER);
         }
         if(createBookingRequest.getPaymentMethod() == null) {
@@ -47,8 +47,8 @@ public class BookingServiceImpl implements BookingService{
                 .id(getGenerationId())
                 .dateBook(LocalDateTime.now())
                 .totalPrice(createBookingRequest.getTotalPrice())
-                .user(createBookingRequest.getUser())
-                .paymentMethod(createBookingRequest.getPaymentMethod())
+                .idUser(createBookingRequest.getIdUser())
+                .idPaymentMethod(createBookingRequest.getPaymentMethod())
                 .invoice(createBookingRequest.getInvoice())
                 .build();
 
@@ -77,11 +77,11 @@ public class BookingServiceImpl implements BookingService{
         if (updateBookingRequest.getTotalPrice() >= 0) {
             existingBooking.setTotalPrice(updateBookingRequest.getTotalPrice());
         }
-        if (updateBookingRequest.getUser() != null) {
-            existingBooking.setUser(updateBookingRequest.getUser());
+        if (updateBookingRequest.getIdUser() != null) {
+            existingBooking.setIdUser(updateBookingRequest.getIdUser());
         }
         if (updateBookingRequest.getPaymentMethod() != null) {
-            existingBooking.setPaymentMethod(updateBookingRequest.getPaymentMethod());
+            existingBooking.setIdPaymentMethod(updateBookingRequest.getPaymentMethod());
         }
         if (updateBookingRequest.getInvoice() != null) {
             existingBooking.setInvoice(updateBookingRequest.getInvoice());

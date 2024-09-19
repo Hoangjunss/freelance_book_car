@@ -36,12 +36,16 @@ public class TicketServiceImpl implements TicketService {
         if (createTicketRequest.getTourPrice() < 0D) {
             throw new CustomException(Error.TICKET_INVALID_TOUR_PRICE);
         }
+        if (createTicketRequest.getIdTourism() == null) {
+            throw new CustomException(Error.TICKET_INVALID_ID_TOURISM);
+        }
 
         // Create new Ticket object
         Ticket ticketSave = Ticket.builder()
                 .id(getGenerationId())
                 .startDate(createTicketRequest.getStartDate())
                 .tourPrice(createTicketRequest.getTourPrice())
+                .idTourism(createTicketRequest.getIdTourism())
                 .build();
 
         try {
@@ -70,6 +74,9 @@ public class TicketServiceImpl implements TicketService {
         }
         if (updateTicketRequest.getTourPrice() >= 0D) {
             existingTicket.setTourPrice(updateTicketRequest.getTourPrice());
+        }
+        if(updateTicketRequest.getIdTourism() != null) {
+            existingTicket.setIdTourism(updateTicketRequest.getIdTourism());
         }
 
         try {
