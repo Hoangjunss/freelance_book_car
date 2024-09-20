@@ -524,25 +524,27 @@ body {
         background: none !important;
         border: none !important;
         box-shadow: none !important;
-        
+
     }
-    
+
     .dropdown-menu::-webkit-scrollbar {
-        display: none; 
+        display: none;
     }
-    .dropdown-item{
+
+    .dropdown-item {
         color: #fff !important;
         transform: none !important;
         padding: 0px 10px;
         background: none !important;
     }
-    .dropdown-item img{
+
+    .dropdown-item img {
         width: 20px !important;
         height: 20px !important;
-        
+
 
     }
-    
+
 
 }
 
@@ -561,7 +563,7 @@ body {
     display: flex;
     justify-content: center;
     width: 100%;
-    
+
 }
 
 .tabs {
@@ -617,11 +619,13 @@ body {
     from {
         transform: translateY(10px);
     }
+
     to {
         transform: translateY(0);
         opacity: 1;
     }
 }
+
 /* menu thả xuống dành cho "Thuê Xe" */
 .dropdown-menu {
     display: none;
@@ -705,24 +709,28 @@ body {
         background-color: #de9314;
         color: #fff;
     }
-    .image-container{
-        display: flex;
-        flex-direction: column;
+    .card-info{
+        height: auto !important;
     }
-}
+    .card-img-top{
+        object-fit: cover;
+        height: 200px;
+        object-position: center;
+    }
+    .card-body{
+        display: none;
+    }
+    .tall-card{
+        min-height: auto !important ;
+        margin-top: 0px !important;
+    }
+    .card{
+        margin-bottom: .5rem;
+    }
+    .card-container{
+        padding-top: 0px !important;
+    }
 
-.image-container {
-    margin: 40px 0;
-    display: flex;
-    padding: 0 10px;
-    box-sizing: border-box;
-    gap: 15px;
-    /* Ensure there is enough space on both sides */
-}
-
-.image-item-wrapper {
-    opacity: 0;
-    animation: fadeInWrapper 1s ease-out forwards;
 }
 
 @keyframes fadeInWrapper {
@@ -734,17 +742,6 @@ body {
     to {
         opacity: 1;
     }
-}
-
-.image-item {
-    position: relative;
-    width: 100%;
-}
-
-.image-item img {
-    width: 100%;
-    height: auto;
-    display: block;
 }
 
 @keyframes fadeInUp {
@@ -759,28 +756,6 @@ body {
     }
 }
 
-.image-item.visible {
-    animation: fadeInUp 1s ease-out;
-}
-
-.image-item p {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    margin: 0;
-    color: #fff;
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 5px 10px;
-    border-radius: 4px;
-    opacity: 0;
-    transform: translateX(-100%);
-    transition: opacity 1s ease-out, transform 1s ease-out;
-}
-
-.image-item p.visible {
-    opacity: 1;
-    transform: translateX(0);
-}
 
 .slide-in {
     transform: translateX(-100%);
@@ -949,11 +924,12 @@ body {
     .col-lg-8 {
         margin-left: 22px;
     }
-    .owl-carousel .owl-stage-outer{
+
+    .owl-carousel .owl-stage-outer {
         height: 200px;
     }
-    .owl-stage-outer
-    {
+
+    .owl-stage-outer {
         height: 200px;
     }
 
@@ -1231,6 +1207,7 @@ body {
     transition: .3s;
     text-decoration: none;
 }
+
 @keyframes fadeInScale {
     from {
         transform: scale(0.8);
@@ -1246,7 +1223,8 @@ body {
 /* Apply Fade-In Scale Animation to All Elements in Header Content */
 .header-content * {
     animation: fadeInScale 1s ease-out forwards;
-    opacity: 0; /* Ensure elements start invisible for animation */
+    opacity: 0;
+    /* Ensure elements start invisible for animation */
 }
 
 .header-content img,
@@ -1335,9 +1313,11 @@ body {
 .navbar-nav .nav-link i {
     animation: pulse 2s infinite;
 }
+
 .social-icons .nav-link i {
     animation: pulse 2s infinite;
 }
+
 @keyframes slideIn {
     from {
         transform: translateX(-100%);
@@ -1350,14 +1330,13 @@ body {
     }
 }
 
-/* Apply Slide-In Animation to All Elements in .container-tab */
+
 .container-tab * {
     animation: slideIn 1s ease-out forwards;
     opacity: 0;
-    /* Ensure elements start invisible for animation */
+
 }
 
-/* Adjust animation delay for child elements to create a staggered effect */
 .container-tab .header-content {
     animation-delay: 0.1s;
 }
@@ -1418,7 +1397,7 @@ video {
 
 .fadeInRight,
 .fadeInLeft,
-.fadeInUp {
+.fadeInUp,.fadeInWrapper {
     opacity: 0;
     /* Ẩn các phần tử khi mới tải */
 }
@@ -1435,6 +1414,9 @@ video {
     animation: fadeInUp 1s ease-out forwards;
 }
 
+.fadeInWrapper.visible {
+    animation: fadeInWrapper 1s ease-out forwards;
+}
 
 
 
@@ -1443,15 +1425,14 @@ video {
 .card {
     border: none;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
     overflow: hidden;
 }
 
 .card img {
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
-    height: 200px;
     object-fit: cover;
+    height: 450px;
 }
 
 .card-body {
@@ -1465,16 +1446,25 @@ video {
 .tags .badge {
     margin-right: 5px;
     font-size: 12px;
+    background-color: #E8E8E8 !important;
 }
 
 .btn-info {
-    background-color: #00bfff;
-    border: none;
+    border: 2px solid;
     border-radius: 50px;
     padding: 10px 20px;
-    color: #fff;
+    color: #000;
+    background: none;
+    font-weight: 700;
+    width: 50%;
 }
 
+
 .btn-info:hover {
-    background-color: #009ac8;
+    background-color: #99FFFF;
+}
+
+.tall-card {
+    min-height: 610px;
+    margin-top: -20px;
 }

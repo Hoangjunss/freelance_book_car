@@ -18,11 +18,11 @@ export class NavbarComponent implements OnInit, AfterViewInit {
   locations: string[] = ['Đà Nẵng', 'Hội An', 'Bà Nà', 'Sân Bay', 'Nam Hội An'];
   selectedLocation: string | null = null;
 
-  // image
+  // Ảnh quảng cáo
   images = [
-    { src: '../assets/img/TRANG BÌA/CAR RENTAL.jpg', alt: 'Image 1', info: 'Thông tin về bức ảnh 1' },
-    { src: 'https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/474111PXL/anh-dep-nhat-the-gioi-ve-thien-nhien_041753462.jpg', alt: 'Image 2', info: 'Thông tin về bức ảnh 2' },
-    { src: 'https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/474111PXL/anh-dep-nhat-the-gioi-ve-thien-nhien_041753462.jpg', alt: 'Image 3', info: 'Thông tin về bức ảnh 3' }
+    { src: 'assets/img/TRANGBIA/CAR_RENTAL.jpg', alt: 'Car', info: 'Thông tin về bức ảnh 1' },
+    { src: 'assets/img/TRANGBIA/hotel.jpg', alt: 'Hotels', info: 'Thông tin về bức ảnh 2' },
+    { src: 'assets/img/TRANGBIA/rungdua.png', alt: 'Attractions', info: 'Thông tin về bức ảnh 3' }
   ];
 
 
@@ -46,7 +46,10 @@ export class NavbarComponent implements OnInit, AfterViewInit {
 
   selectLocation(location: string): void {
     this.selectedLocation = location;
-    this.router.navigate(['/location-list', encodeURIComponent(this.selectedLocation)]);
+    this.router.navigate(['location-list', encodeURIComponent(this.selectedLocation)]);
+    console.log(this.selectedLocation);
+    console.log(`Navigating to: /location-list/${encodeURIComponent(this.selectedLocation)}`);
+
   }
 
   initIntersectionObserver(): void {
@@ -67,7 +70,7 @@ export class NavbarComponent implements OnInit, AfterViewInit {
         });
       }, options);
 
-      document.querySelectorAll('.fadeInRight, .fadeInLeft, .fadeInUp,.image-item,.image-item p').forEach(item => {
+      document.querySelectorAll('.fadeInRight, .fadeInLeft, .fadeInUp,.slideInFromRight,.fadeInWrapper').forEach(item => {
         observer.observe(item);
       });
     }

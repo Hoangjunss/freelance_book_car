@@ -41,7 +41,7 @@
                 <div class="collapse" id="mobileMenu">
                     <!-- Mobile Logo -->
                     <a class="navbar-brand mx-auto" href="#">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7-sEExVgbbAaJsYwNBiJ5Cr17XgYconrrEQ&s"
+                        <img src="assets/img/LOGO RANPOLARIS/LOGO 1.png"
                             alt="Logo" class="logo">
                     </a>
 
@@ -68,7 +68,7 @@
 
 
     <div class="header-content d-flex align-items-center justify-content-between text-whitep-3">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT0w_9NRD_sOG3A8F17Kw-5kG45m0k0QGAHHuhdyLsblP4xcpqZJK7R6_2b1yo9Ifvbjd0&usqp=CAU"
+        <img src="assets/img/LOGO RANPOLARIS/LOGO 1 trang.png"
             alt="Logo" class="logo">
         <div class="search-container position-relative">
             <input type="search" class="form-control search-box" placeholder="Tìm theo điểm đến, hoạt động">
@@ -152,71 +152,75 @@
 
 
 </section>
+<div class="container py-5 card-container">
+    <div class="row card-info">
 
-<!-- <div class="image-container d-flex justify-content-between">
-    <div class="image-item-wrapper" *ngFor="let image of images">
-        <div class="image-item ">
-            <img [src]="image.src" [alt]="image.alt" class="img-fluid">
-            <p>{{ image.info }}</p>
-        </div>
-    </div>
-</div> -->
-<div class="container py-5">
-    <div class="row">
-
-    <!-- Card 1 -->
-    <div class="col-lg-4 col-md-6 mb-4">
-        <div class="card">
-            <img src="../../assets/img/CAR_RENTAL.jpg" class="card-img-top" alt="Car">
-            <div class="card-body">
-                <h5 class="card-title">SEDAN-SUV-MPV-VAN</h5>
-                <p class="card-text">Private car service</p>
-                <button class="btn btn-info">THÔNG TIN</button>
-                <div class="tags mt-3">
-                    <span class="badge bg-light text-dark">#photography</span>
-                    <span class="badge bg-light text-dark">#travel</span>
-                    <span class="badge bg-light text-dark">#winter</span>
+        <!-- Card 1 -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card fadeInWrapper">
+                <div class="img-item position-relative">
+                    <img [src]="images[0].src" class="card-img-top" [alt]="images[0].alt" />
+                    <div class="img-caption fadeInRight  position-absolute bottom-0 start-0 text-white p-4">
+                        <h5 class="card-title">SEDAN-SUV-MPV-VAN</h5>
+                        <p class="card-text">Private car service</p>
+                    </div>
+                </div>
+                <div class="card-body fadeInRight">
+                    <button class="btn btn-info">THÔNG TIN</button>
+                    <div class="tags mt-3">
+                        <span class="badge bg-light text-dark">#photography</span>
+                        <span class="badge bg-light text-dark">#travel</span>
+                        <span class="badge bg-light text-dark">#winter</span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Card 2 -->
-    <div class="col-lg-4 col-md-6 mb-4">
-        <div class="card">
-            <img src="hotel-image.jpg" class="card-img-top" alt="Hotels">
-            <div class="card-body">
-                <h5 class="card-title">HOTELS</h5>
-                <p class="card-text">Save on amazing places to stay and explore unique experiences</p>
-                <button class="btn btn-info">THÔNG TIN</button>
-                <div class="tags mt-3">
-                    <span class="badge bg-light text-dark">#photography</span>
-                    <span class="badge bg-light text-dark">#travel</span>
-                    <span class="badge bg-light text-dark">#winter</span>
+        <!-- Card 2 (Taller card) -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card fadeInWrapper tall-card">
+                <div class="img-item  position-relative ">
+                    <img [src]="images[1].src" class="card-img-top" [alt]="images[1].alt">
+                    <div class="img-caption fadeInRight position-absolute bottom-0 start-0 text-white p-4">
+                        <h5 class="card-title">HOTELS</h5>
+                        <p class="card-text">Save on amazing places to stay and explore unique experiences</p>
+                    </div>
+                </div>
+                <div class="card-body fadeInRight" style="background-color: #CCFFFF;">
+                    <button class="btn btn-info">THÔNG TIN</button>
+                    <div class="tags mt-3">
+                        <span class="badge bg-light text-dark">#photography</span>
+                        <span class="badge bg-light text-dark">#travel</span>
+                        <span class="badge bg-light text-dark">#winter</span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Card 3 -->
-    <div class="col-lg-4 col-md-6 mb-4">
-        <div class="card">
-            <img src="attraction-image.jpg" class="card-img-top" alt="Attractions">
-            <div class="card-body">
-                <h5 class="card-title">ATTRACTION TICKETS & SOUVENIRS</h5>
-                <p class="card-text">Discover the best theme parks, museums and more must-see places</p>
-                <button class="btn btn-info">THÔNG TIN</button>
-                <div class="tags mt-3">
-                    <span class="badge bg-light text-dark">#photography</span>
-                    <span class="badge bg-light text-dark">#travel</span>
-                    <span class="badge bg-light text-dark">#winter</span>
+        <!-- Card 3 -->
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card fadeInWrapper">
+                <div class="img-item position-relative ">
+                    <img [src]="images[2].src" class="card-img-top" [alt]="images[2].alt">
+                    <div class="img-caption fadeInRight position-absolute bottom-0 start-0 text-white p-4">
+                        <h5 class="card-title">ATTRACTION TICKETS & SOUVENIRS</h5>
+                        <p class="card-text">Discover the best theme parks, museums and more must-see places</p>
+                    </div>
+                </div>
+                <div class="card-body fadeInRight">
+                    <button class="btn btn-info">THÔNG TIN</button>
+                    <div class="tags mt-3">
+                        <span class="badge bg-light text-dark">#photography</span>
+                        <span class="badge bg-light text-dark">#travel</span>
+                        <span class="badge bg-light text-dark">#winter</span>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
+    </div>
 </div>
-</div>
+
 
 
 
