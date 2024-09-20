@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class CreateBookingRequest {
     private double totalPrice;
-    private Integer user;
+    private Integer idUser;
     private Integer paymentMethod;
     private Integer invoice;
 }

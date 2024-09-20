@@ -6,9 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
-
-import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -22,4 +19,5 @@ public class Tour {
     private String description;
     private String startLocation;
     private String endLocation;
+    private Integer idTourStatus;
 }

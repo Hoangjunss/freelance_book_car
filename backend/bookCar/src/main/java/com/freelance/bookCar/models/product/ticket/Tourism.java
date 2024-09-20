@@ -14,14 +14,9 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Tourism {
     @Id
-    private Long id;
-
+    private Integer id;
     private String name;
     private String location;
     private String description;
     private double rating;
-
-
-
-    // Getters and Setters
 }

@@ -33,8 +33,11 @@ public class TicketServiceImpl implements TicketService {
             throw new CustomException(Error.TICKET_INVALID_START_DATE);
         }
 
-        if (createTicketRequest.getTourPrice() == 0D) {
+        if (createTicketRequest.getTourPrice() < 0D) {
             throw new CustomException(Error.TICKET_INVALID_TOUR_PRICE);
+        }
+        if (createTicketRequest.getIdTourism() == null) {
+            throw new CustomException(Error.TICKET_INVALID_ID_TOURISM);
         }
 
         // Create new Ticket object
@@ -42,6 +45,7 @@ public class TicketServiceImpl implements TicketService {
                 .id(getGenerationId())
                 .startDate(createTicketRequest.getStartDate())
                 .tourPrice(createTicketRequest.getTourPrice())
+                .idTourism(createTicketRequest.getIdTourism())
                 .build();
 
         try {
@@ -63,15 +67,17 @@ public class TicketServiceImpl implements TicketService {
             throw new CustomException(Error.TICKET_NOT_FOUND);
         }
 
-        if (updateTicketRequest.getStartDate() == null) {
-            throw new CustomException(Error.TICKET_INVALID_START_DATE);
+        Ticket existingTicket = modelMapper.map(findById(updateTicketRequest.getId()), Ticket.class);
+
+        if (updateTicketRequest.getStartDate() != null) {
+            existingTicket.setStartDate(updateTicketRequest.getStartDate());
         }
-
-        Ticket existingTicket = ticketRepository.findById(updateTicketRequest.getId())
-                .orElseThrow(() -> new CustomException(Error.TICKET_NOT_FOUND));
-
-        existingTicket.setStartDate(updateTicketRequest.getStartDate());
-        existingTicket.setTourPrice(updateTicketRequest.getTourPrice());
+        if (updateTicketRequest.getTourPrice() >= 0D) {
+            existingTicket.setTourPrice(updateTicketRequest.getTourPrice());
+        }
+        if(updateTicketRequest.getIdTourism() != null) {
+            existingTicket.setIdTourism(updateTicketRequest.getIdTourism());
+        }
 
         try {
             return modelMapper.map(ticketRepository.save(existingTicket), UpdateTicketResponse.class);

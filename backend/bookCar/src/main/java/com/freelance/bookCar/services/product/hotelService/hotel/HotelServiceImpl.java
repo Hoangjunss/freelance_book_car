@@ -31,11 +31,20 @@ public class HotelServiceImpl implements HotelService {
         if (createHotelRequest.getName() == null) {
             throw new CustomException(Error.HOTEL_INVALID_NAME);
         }
+        if(createHotelRequest.getContactInfo() == null){
+            throw new CustomException(Error.HOTEL_INVALID_CONTACT_INFO);
+        }
+        if(createHotelRequest.getPricePerNight() < 0D){
+            throw new CustomException(Error.HOTEL_INVALID_PRICE_PER_NIGHT);
+        }
         if (createHotelRequest.getLocation() == null) {
             throw new CustomException(Error.HOTEL_INVALID_LOCATION);
         }
-        if (createHotelRequest.getContactInfo() == null) {
-            throw new CustomException(Error.HOTEL_INVALID_CONTACT_INFO);
+        if(createHotelRequest.getStatus() == null) {
+            throw new CustomException(Error.HOTEL_INVALID_STATUS);
+        }
+        if(createHotelRequest.getRating() < 0D) {
+            throw new CustomException(Error.HOTEL_INVALID_RATING);
         }
 
         Hotel hotel = Hotel.builder()
@@ -76,11 +85,14 @@ public class HotelServiceImpl implements HotelService {
         if (updateHotelRequest.getName() != null) {
             existingHotel.setName(updateHotelRequest.getName());
         }
-        if (updateHotelRequest.getPricePerNight() != 0D) {
+        if (updateHotelRequest.getPricePerNight() >= 0D) {
             existingHotel.setPricePerNight(updateHotelRequest.getPricePerNight());
         }
         if (updateHotelRequest.getStatus() != null) {
             existingHotel.setStatus(updateHotelRequest.getStatus());
+        }
+        if(updateHotelRequest.getRating() >= 0D) {
+            existingHotel.setRating(updateHotelRequest.getRating());
         }
 
         try {

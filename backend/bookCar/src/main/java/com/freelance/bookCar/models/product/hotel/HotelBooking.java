@@ -20,12 +20,6 @@ public class HotelBooking {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private double totalPrice;
-
-
     private Integer hotel;
-
-
-
-
     // Getters and Setters
 }

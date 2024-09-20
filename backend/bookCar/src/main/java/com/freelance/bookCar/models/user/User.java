@@ -15,13 +15,10 @@ import lombok.NoArgsConstructor;
 public class User {
     @Id
     private Long id;
-
     private String name;
     private String phone;
     private String address;
     private String type;
-
-
-
+    private Integer idAccount;
     // Getters and Setters
 }

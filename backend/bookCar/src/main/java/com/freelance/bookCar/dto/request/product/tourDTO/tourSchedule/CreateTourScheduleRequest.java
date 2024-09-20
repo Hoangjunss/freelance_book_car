@@ -19,4 +19,5 @@ public class CreateTourScheduleRequest {
     private Integer idTour;
     private Integer quantity;
     private Double priceTour;
+    private Integer idTourScheduleStatus;
 }
