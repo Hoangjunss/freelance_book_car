@@ -161,7 +161,7 @@ nav {
 .search-icon {
     position: absolute;
     left: 10px;
-    top: 50%;
+    top: 32%;
     transform: translateY(-50%);
     color: #888;
     font-size: 18px;
@@ -511,6 +511,7 @@ body {
 
 .dropdown-menu.show {
     display: block;
+    inset: 40px auto auto 0px !important;
 }
 
 @media (max-width: 768px) {
@@ -519,12 +520,30 @@ body {
         margin-left: 18px;
         width: 90% !important;
         overflow-y: hidden;
-
+        inset: 30px auto auto 0px !important;
+        background: none !important;
+        border: none !important;
+        box-shadow: none !important;
+        
     }
-
+    
     .dropdown-menu::-webkit-scrollbar {
         display: none; 
     }
+    .dropdown-item{
+        color: #fff !important;
+        transform: none !important;
+        padding: 0px 10px;
+        background: none !important;
+    }
+    .dropdown-item img{
+        width: 20px !important;
+        height: 20px !important;
+        
+
+    }
+    
+
 }
 
 /* Tabs Section Styling */
@@ -1212,24 +1231,22 @@ body {
     transition: .3s;
     text-decoration: none;
 }
-
-@keyframes rotateIn {
+@keyframes fadeInScale {
     from {
-        transform: rotate(-360deg);
+        transform: scale(0.8);
         opacity: 0;
     }
 
     to {
-        transform: rotate(0deg);
+        transform: scale(1);
         opacity: 1;
     }
 }
 
-/* Apply Rotation Animation to All Elements in Header Content */
+/* Apply Fade-In Scale Animation to All Elements in Header Content */
 .header-content * {
-    animation: rotateIn 1s ease-out forwards;
-    opacity: 0;
-    /* Ensure elements start invisible for animation */
+    animation: fadeInScale 1s ease-out forwards;
+    opacity: 0; /* Ensure elements start invisible for animation */
 }
 
 .header-content img,
