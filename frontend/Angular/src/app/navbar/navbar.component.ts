@@ -20,7 +20,7 @@ export class NavbarComponent implements OnInit, AfterViewInit {
 
   // image
   images = [
-    { src: 'https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/474111PXL/anh-dep-nhat-the-gioi-ve-thien-nhien_041753462.jpg', alt: 'Image 1', info: 'Thông tin về bức ảnh 1' },
+    { src: '../assets/img/TRANG BÌA/CAR RENTAL.jpg', alt: 'Image 1', info: 'Thông tin về bức ảnh 1' },
     { src: 'https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/474111PXL/anh-dep-nhat-the-gioi-ve-thien-nhien_041753462.jpg', alt: 'Image 2', info: 'Thông tin về bức ảnh 2' },
     { src: 'https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://gcs.tripi.vn/public-tripi/tripi-feed/img/474111PXL/anh-dep-nhat-the-gioi-ve-thien-nhien_041753462.jpg', alt: 'Image 3', info: 'Thông tin về bức ảnh 3' }
   ];

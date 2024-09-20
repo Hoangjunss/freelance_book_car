@@ -81,7 +81,7 @@
                     <img src="https://hoianmemoriesland.com/public/images/flag-vi.png" alt="Vietnam Flag"
                         class="vietnam-flag">
                 </button>
-                <ul class="dropdown-menu" aria-labelledby="languageDropdown" >
+                <ul class="dropdown-menu" aria-labelledby="languageDropdown">
                     <li><a class="dropdown-item" href="https://hoianmemoriesland.com/vi?lang=en"><img
                                 src="https://hoianmemoriesland.com/public/images/flag-en.png" alt="EN"> English</a></li>
                     <li><a class="dropdown-item" href="https://hoianmemoriesland.com/vi?lang=cn"><img
@@ -140,8 +140,7 @@
             <div class="tab-content">
                 <ng-container *ngIf="selectedTab">
                     <ng-container *ngIf="selectedTab.label === 'Đặt Vé'">
-                        <app-location-detail *ngIf="selectedLocation"
-                            location="selectedLocation"></app-location-detail>
+                        <app-location-detail *ngIf="selectedLocation" location="selectedLocation"></app-location-detail>
                     </ng-container>
                     <!-- Add other conditions if needed -->
                 </ng-container>
@@ -154,20 +153,76 @@
 
 </section>
 
-<div class="image-container d-flex justify-content-between">
+<!-- <div class="image-container d-flex justify-content-between">
     <div class="image-item-wrapper" *ngFor="let image of images">
         <div class="image-item ">
             <img [src]="image.src" [alt]="image.alt" class="img-fluid">
             <p>{{ image.info }}</p>
         </div>
     </div>
+</div> -->
+<div class="container py-5">
+    <div class="row">
+
+    <!-- Card 1 -->
+    <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card">
+            <img src="../../assets/img/CAR_RENTAL.jpg" class="card-img-top" alt="Car">
+            <div class="card-body">
+                <h5 class="card-title">SEDAN-SUV-MPV-VAN</h5>
+                <p class="card-text">Private car service</p>
+                <button class="btn btn-info">THÔNG TIN</button>
+                <div class="tags mt-3">
+                    <span class="badge bg-light text-dark">#photography</span>
+                    <span class="badge bg-light text-dark">#travel</span>
+                    <span class="badge bg-light text-dark">#winter</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card">
+            <img src="hotel-image.jpg" class="card-img-top" alt="Hotels">
+            <div class="card-body">
+                <h5 class="card-title">HOTELS</h5>
+                <p class="card-text">Save on amazing places to stay and explore unique experiences</p>
+                <button class="btn btn-info">THÔNG TIN</button>
+                <div class="tags mt-3">
+                    <span class="badge bg-light text-dark">#photography</span>
+                    <span class="badge bg-light text-dark">#travel</span>
+                    <span class="badge bg-light text-dark">#winter</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="col-lg-4 col-md-6 mb-4">
+        <div class="card">
+            <img src="attraction-image.jpg" class="card-img-top" alt="Attractions">
+            <div class="card-body">
+                <h5 class="card-title">ATTRACTION TICKETS & SOUVENIRS</h5>
+                <p class="card-text">Discover the best theme parks, museums and more must-see places</p>
+                <button class="btn btn-info">THÔNG TIN</button>
+                <div class="tags mt-3">
+                    <span class="badge bg-light text-dark">#photography</span>
+                    <span class="badge bg-light text-dark">#travel</span>
+                    <span class="badge bg-light text-dark">#winter</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
 </div>
 
 
 
 <section>
     <div class="memory-home">
-        <div class="head-memory" >
+        <div class="head-memory">
             <div class="container fadeInRight">
                 <img class="lazy" data-src="https://hoianmemoriesland.com/public/media/thumb/memory-img-294x150.png"
                     alt="memory-img.png" src="https://hoianmemoriesland.com/public/media/thumb/memory-img-294x150.png">
@@ -175,7 +230,7 @@
         </div>
         <div class="container-memory">
             <div class="row">
-                <div class="col-lg-8 fadeInLeft" >
+                <div class="col-lg-8 fadeInLeft">
                     <div class="cas-memory cas-v1 owl-carousel owl-loaded owl-drag">
                         <div class="slider-container">
                             <div class="owl-carousel owl-theme">
@@ -233,10 +288,13 @@
                             cùng lòng say mê của những người Việt giàu tâm huyết làm nên vở diễn đẳng cấp thế giới.
                         </div>
                         <div class="control">
-                            <a href="https://hoianmemoriesland.com/en/the-real-world-performance-s1" title="Khám phá show" class="btn-pri fadeInLeft" >Khám phá show</a>
-                            <a target="_blank" rel="noreferrer" href="https://booking.hoianmemoriesland.com/en/front-page.html" title="Đặt vé ngay" class="btn-pri v1 fadeInRight">Đặt vé ngay</a>
+                            <a href="https://hoianmemoriesland.com/en/the-real-world-performance-s1"
+                                title="Khám phá show" class="btn-pri fadeInLeft">Khám phá show</a>
+                            <a target="_blank" rel="noreferrer"
+                                href="https://booking.hoianmemoriesland.com/en/front-page.html" title="Đặt vé ngay"
+                                class="btn-pri v1 fadeInRight">Đặt vé ngay</a>
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
