@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 public class Voucher {
     @Id
     private Integer id;
-    private LocalDateTime create_date;
+    private LocalDateTime createDate;
     private boolean isUse;
     private Integer idPromotion;
 }

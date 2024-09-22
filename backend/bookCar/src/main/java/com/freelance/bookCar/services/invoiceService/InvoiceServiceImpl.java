@@ -34,10 +34,6 @@ public class InvoiceServiceImpl implements InvoiceService{
         if (createInvoiceRequest.getTotalAmount() < 0) {
             throw new CustomException(Error.INVOICE_INVALID_TOTAL_AMOUNT);
         }
-
-        if (createInvoiceRequest.getPaymentStatus() == null || createInvoiceRequest.getPaymentStatus().isEmpty()) {
-            throw new CustomException(Error.INVOICE_INVALID_PAYMENT_STATUS);
-        }
         if (createInvoiceRequest.getIdBooking() == null){
             throw new CustomException(Error.INVOICE_INVALID_ID_BOOKING);
         }
@@ -47,7 +43,7 @@ public class InvoiceServiceImpl implements InvoiceService{
                 .id(getGenerationId())
                 .invoiceDate(LocalDateTime.now())
                 .totalAmount(createInvoiceRequest.getTotalAmount())
-                .paymentStatus(createInvoiceRequest.getPaymentStatus())
+                .isPaymentStatus(createInvoiceRequest.isPaymentStatus())
                 .idBooking(createInvoiceRequest.getIdBooking())
                 .build();
 
@@ -82,9 +78,7 @@ public class InvoiceServiceImpl implements InvoiceService{
         if (updateInvoiceRequest.getTotalAmount() > 0D){
             existingInvoice.setTotalAmount(updateInvoiceRequest.getTotalAmount());
         }
-        if (!updateInvoiceRequest.getPaymentStatus().isEmpty()){
-            existingInvoice.setPaymentStatus(updateInvoiceRequest.getPaymentStatus());
-        }
+            existingInvoice.setPaymentStatus(updateInvoiceRequest.isPaymentStatus());
 
         try {
             return modelMapper.map(invoiceRepository.save(existingInvoice), UpdateInvoiceResponse.class);

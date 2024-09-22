@@ -22,6 +22,10 @@ export const routes: Routes = [
     {
         path:'location-detail',
         component: LocationDetailComponent
+    },
+    {
+        path: 'admin',
+        loadChildren: () => import('./components/admin/router/admin.modules').then(m => m.AdminModule)
     }
       
 ];

@@ -34,14 +34,14 @@ public class VoucherServiceImpl implements VoucherService{
         if (createVoucherRequest.getIdPromotion() == null) {
             throw new CustomException(Error.VOUCHER_INVALID_PROMOTION_ID);
         }
-        if (createVoucherRequest.getCreate_date() == null) {
+        if (createVoucherRequest.getCreateDate() == null) {
             throw new CustomException(Error.VOUCHER_INVALID_CREATE_DATE);
         }
 
         // Tạo đối tượng Voucher
         Voucher voucher = Voucher.builder()
                 .id(generateId())
-                .create_date(createVoucherRequest.getCreate_date())
+                .createDate(createVoucherRequest.getCreateDate())
                 .isUse(createVoucherRequest.isUse())
                 .idPromotion(createVoucherRequest.getIdPromotion())
                 .build();
@@ -70,8 +70,8 @@ public class VoucherServiceImpl implements VoucherService{
         Voucher voucher = modelMapper.map(findById(updateVoucherRequest.getId()), Voucher.class);
 
         // Cập nhật các trường nếu không null
-        if (updateVoucherRequest.getCreate_date() != null) {
-            voucher.setCreate_date(updateVoucherRequest.getCreate_date());
+        if (updateVoucherRequest.getCreateDate() != null) {
+            voucher.setCreateDate(updateVoucherRequest.getCreateDate());
         }
         voucher.setUse(updateVoucherRequest.isUse());
 

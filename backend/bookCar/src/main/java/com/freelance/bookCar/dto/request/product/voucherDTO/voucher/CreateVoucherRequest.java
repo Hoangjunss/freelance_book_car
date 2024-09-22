@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateVoucherRequest {
-    private LocalDateTime create_date;
+    private LocalDateTime createDate;
     private boolean isUse;
     private Integer idPromotion;
 }

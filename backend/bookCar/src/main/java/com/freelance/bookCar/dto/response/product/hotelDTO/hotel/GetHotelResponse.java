@@ -17,7 +17,7 @@ public class GetHotelResponse {
     private String contactInfo;
     private double pricePerNight;
     private String location;
-    private String status;
+    private boolean isActive;
     private double rating;
 
 

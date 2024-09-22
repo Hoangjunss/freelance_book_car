@@ -40,9 +40,6 @@ public class HotelServiceImpl implements HotelService {
         if (createHotelRequest.getLocation() == null) {
             throw new CustomException(Error.HOTEL_INVALID_LOCATION);
         }
-        if(createHotelRequest.getStatus() == null) {
-            throw new CustomException(Error.HOTEL_INVALID_STATUS);
-        }
         if(createHotelRequest.getRating() < 0D) {
             throw new CustomException(Error.HOTEL_INVALID_RATING);
         }
@@ -53,7 +50,7 @@ public class HotelServiceImpl implements HotelService {
                 .location(createHotelRequest.getLocation())
                 .contactInfo(createHotelRequest.getContactInfo())
                 .pricePerNight(createHotelRequest.getPricePerNight())
-                .status(createHotelRequest.getStatus())
+                .isActive(createHotelRequest.isActive())
                 .rating(createHotelRequest.getRating())
                 .build();
 
@@ -88,9 +85,8 @@ public class HotelServiceImpl implements HotelService {
         if (updateHotelRequest.getPricePerNight() >= 0D) {
             existingHotel.setPricePerNight(updateHotelRequest.getPricePerNight());
         }
-        if (updateHotelRequest.getStatus() != null) {
-            existingHotel.setStatus(updateHotelRequest.getStatus());
-        }
+            existingHotel.setActive(updateHotelRequest.isActive());
+
         if(updateHotelRequest.getRating() >= 0D) {
             existingHotel.setRating(updateHotelRequest.getRating());
         }

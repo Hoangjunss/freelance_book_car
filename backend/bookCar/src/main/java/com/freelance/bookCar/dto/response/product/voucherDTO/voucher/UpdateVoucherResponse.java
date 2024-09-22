@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class UpdateVoucherResponse {
     private Integer id;
-    private LocalDateTime create_date;
+    private LocalDateTime createDate;
     private boolean isUse;
     private Integer idPromotion;
 }

@@ -15,6 +15,6 @@ public class UpdateInvoiceRequest {
     private Integer id;
     private LocalDateTime invoiceDate;
     private double totalAmount;
-    private String paymentStatus;
+    private boolean isPaymentStatus;
     private Integer idBooking;
 }

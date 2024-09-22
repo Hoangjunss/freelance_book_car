@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CreateInvoiceRequest {
     private double totalAmount;
-    private String paymentStatus;
+    private boolean isPaymentStatus;
     private Integer idBooking;
 }
