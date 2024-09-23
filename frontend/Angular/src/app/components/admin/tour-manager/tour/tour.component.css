@@ -1,0 +1,14 @@
+.navbackground{
+    background-color: white !important;
+}
+
+/* html:56 */
+.modal-content {
+    transform: translateY(-100%);
+    transition: transform 0.3s ease-in-out;
+}
+  
+.modal.show .modal-content {
+    transform: translateY(0);
+}
+  
