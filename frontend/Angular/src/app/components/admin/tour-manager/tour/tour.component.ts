@@ -11,6 +11,7 @@ import { GetTourResponse } from '../../../../models/response/product/tour/tour/g
   styleUrl: './tour.component.css'
 })
 export class TourComponent implements OnInit{
+  selectedImage: string = 'assets/img/DEFAULT/tour-default.png';
   isDisplayDetails: boolean = false;
   tour?: GetTourResponse;
   data: any[] = [];
@@ -21,6 +22,7 @@ export class TourComponent implements OnInit{
   ngOnInit(): void {
     this.data = this.getData();
     this.updatePagedData();
+    console.log(this.selectedImage);
   }
 
   updatePagedData() {
@@ -74,6 +76,17 @@ export class TourComponent implements OnInit{
     });
     }
     
+  }
+
+  onImageSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.selectedImage = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
   }
 
   // Hàm để xử lý sự kiện Cancel

@@ -1,7 +1,9 @@
 package com.freelance.bookCar.exception;
 
+import lombok.Getter;
 import org.springframework.http.HttpStatusCode;
 
+@Getter
 public class CustomException extends RuntimeException{
     private  final Error error;
 
@@ -10,9 +12,6 @@ public class CustomException extends RuntimeException{
         this.error = error;
     }
 
-    public Error getError() {
-        return error;
-    }
     public int getCode(){
         return error.getCode();
     }

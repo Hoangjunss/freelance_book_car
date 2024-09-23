@@ -3,12 +3,33 @@
 }
 
 /* html:56 */
-.modal-content {
-    transform: translateY(-100%);
-    transition: transform 0.3s ease-in-out;
+.modal-lg .modal-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-dialog.modal-lg {
+  margin-top: 50px; /* Đẩy modal xuống một chút trên màn hình laptop */
 }
   
-.modal.show .modal-content {
-    transform: translateY(0);
-}
+  @media (min-width: 768px) {
+    .modal-lg .modal-content {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+    .modal-dialog.modal-lg {
+        margin-top: 20px; /* Giảm khoảng cách khi trên mobile */
+      }
+  }
+  
+  img {
+    max-width: 100%;
+    height: auto;
+  }
+  
+  .modal-body {
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+  
   

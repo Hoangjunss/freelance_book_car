@@ -4,6 +4,7 @@ package com.freelance.bookCar.services;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 import com.freelance.bookCar.exception.CloudinaryException;
+import com.freelance.bookCar.exception.CustomException;
 import com.freelance.bookCar.exception.Error;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -44,7 +45,7 @@ public class CloudinaryService {
             return result;
         } catch (IOException e) {
             log.error("Unable to upload file: {}", e.getMessage());
-            throw new CloudinaryException(Error.UPLOAD_FAILED);
+            throw new CustomException(Error.UPLOAD_FAILED);
         }
     }
 
@@ -55,7 +56,7 @@ public class CloudinaryService {
             return cloudinary.uploader().destroy(id, ObjectUtils.emptyMap());
         } catch (IOException e) {
             log.error("Unable to delete file: {}", e.getMessage());
-            throw new CloudinaryException(Error.DELETE_FAILED);
+            throw new CustomException(Error.DELETE_FAILED);
         }
     }
 
@@ -69,7 +70,7 @@ public class CloudinaryService {
             return file;
         } catch (IOException e) {
             log.error("Unable to convert file: {}", e.getMessage());
-            throw new CloudinaryException(Error.CONVERSION_FAILED);
+            throw new CustomException(Error.CONVERSION_FAILED);
         }
     }
 
