@@ -13,7 +13,7 @@ import { HotelStatisticsComponent } from "../hotel-manager/hotel-statistics/hote
 import { PromotionComponent } from "../promotion-manager/promotion/promotion.component";
 import { VoucherComponent } from "../promotion-manager/voucher/voucher.component";
 import { StatisticsComponent } from "../statistics/statistics.component";
-import { PageComponent } from "../page/page.component";
+import { PageHomeComponent } from "../page/page-home/page-home.component";
 
 export const adminRoutes: Routes = [
     {
@@ -94,7 +94,12 @@ export const adminRoutes: Routes = [
             },
             {
                 path: 'page-manager',
-                component: PageComponent
+                children: [
+                    {
+                        path: 'home',
+                        component: PageHomeComponent
+                    }
+                ]
             }
         ]
     }
