@@ -3,9 +3,11 @@ package com.freelance.bookCar.controller.booking;
 import com.freelance.bookCar.dto.ApiResponse;
 import com.freelance.bookCar.dto.request.booking.CreateBookingRequest;
 import com.freelance.bookCar.dto.request.booking.UpdateBookingRequest;
+import com.freelance.bookCar.dto.request.booking.bookingTour.AddBookingTourRequest;
 import com.freelance.bookCar.dto.response.booking.CreateBookingResponse;
 import com.freelance.bookCar.dto.response.booking.GetBookingResponse;
 import com.freelance.bookCar.dto.response.booking.UpdateBookingResponse;
+import com.freelance.bookCar.dto.response.booking.bookingTour.AddBookingTourResponse;
 import com.freelance.bookCar.services.booking.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -34,5 +36,9 @@ public class BookingController {
         GetBookingResponse GetBookingResponse = bookingService.findById(id);
         return ResponseEntity.ok(new ApiResponse<>(true, "Booking retrieved successfully", GetBookingResponse));
     }
-
+    @PostMapping("/tour")
+    public ResponseEntity<ApiResponse<AddBookingTourResponse>> createBookingTour(@RequestBody AddBookingTourRequest addBookingTourRequest){
+        AddBookingTourResponse addBookingTourResponse=bookingService.addBookingTour(addBookingTourRequest);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", addBookingTourResponse));
+    }
 }
