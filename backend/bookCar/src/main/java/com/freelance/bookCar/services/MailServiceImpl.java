@@ -3,6 +3,8 @@ package com.freelance.bookCar.services;
 
 import com.freelance.bookCar.dto.MailDTO;
 import com.freelance.bookCar.dto.MessageDTO;
+import com.freelance.bookCar.exception.CustomException;
+import com.freelance.bookCar.exception.Error;
 import com.freelance.bookCar.models.Mail;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.InternetAddress;
@@ -19,26 +21,38 @@ public class MailServiceImpl implements MailService {
     @Autowired
     private JavaMailSender javaMailSender;
 
-
-
     @Override
     public void sendMail(Mail mail) {
-        MimeMessage mimeMessage = javaMailSender.createMimeMessage();// tao thu vien ho tro
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         try {
             log.info("Sending mail to email: {}", mail.getMailFrom());
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true);
-            mimeMessageHelper.setSubject(mail.getMailSubject()); // tiêu đề
-            mimeMessageHelper.setFrom(new InternetAddress(mail.getMailFrom())); // ai gửi
-            mimeMessageHelper.setTo(mail.getMailTo()); // gửi ai
-            mimeMessageHelper.setText(mail.getMailContent()); // nội dung
-            javaMailSender.send(mimeMessageHelper.getMimeMessage()); // thư viện hỗ trợ gửi mail
+            mimeMessageHelper.setSubject(mail.getMailSubject());
+            mimeMessageHelper.setFrom(new InternetAddress(mail.getMailFrom()));
+            mimeMessageHelper.setTo(mail.getMailTo());
+            mimeMessageHelper.setText(mail.getMailContent());
+            javaMailSender.send(mimeMessageHelper.getMimeMessage());
         } catch (MessagingException e) {
-            e.printStackTrace();
+            log.error("Failed to send mail", e);
+            throw new CustomException(Error.MAIL_SENDING_FAILED);
+        } catch (Exception e) {
+            log.error("Invalid mail details", e);
+            throw new CustomException(Error.INVALID_MAIL_DETAILS);
         }
     }
 
+
     @Override
     public Mail getMail(String mailTo, String content, String subject) {
+        if (mailTo == null || mailTo.isEmpty()) {
+            throw new CustomException(Error.INVALID_MAIL_MAILTO);
+        }
+        if (subject == null || subject.isEmpty()) {
+            throw new CustomException(Error.INVALID_MAIL_CONTENT);
+        }
+        if (content == null || content.isEmpty()) {
+            throw new CustomException(Error.INVALID_MAIL_SUBJECT);
+        }
         return Mail.builder()
                 .mailTo(mailTo)
                 .mailSubject(subject)
@@ -48,6 +62,7 @@ public class MailServiceImpl implements MailService {
                 .build();
     }
 
+
     @Override
     public void send(MessageDTO messageDTO) {
         log.info("send mail");
@@ -56,8 +71,13 @@ public class MailServiceImpl implements MailService {
                 .mailContent(messageDTO.getMessage())
                 .mailSubject(messageDTO.getMessage())
                 .mailTo(messageDTO.getMessage())
-
                 .build();
-        sendMail(getMail(mailDTO.getMailTo(), mailDTO.getMailContent(), mailDTO.getMailSubject()));
+
+        try {
+            sendMail(getMail(mailDTO.getMailTo(), mailDTO.getMailContent(), mailDTO.getMailSubject()));
+        } catch (CustomException e) {
+            log.error("Error occurred while sending mail: {}", e.getMessage());
+        }
     }
+
 }

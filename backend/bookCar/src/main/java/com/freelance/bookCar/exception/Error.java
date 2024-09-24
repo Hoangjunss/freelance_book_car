@@ -149,6 +149,7 @@ public enum Error {
     PROMOTION_INVALID_DISCOUNT_RATE(2107, "Invalid Discount Rate", HttpStatus.BAD_REQUEST),
     PROMOTION_INVALID_DATE_RANGE(2108, "Invalid Date Range", HttpStatus.BAD_REQUEST),
     IMAGE_NOT_FOUND(7001, "Image not found", HttpStatus.NOT_FOUND),
+
     IMAGE_ALREADY_EXISTS(7002, "Image already exists", HttpStatus.CONFLICT),
     IMAGE_UNABLE_TO_SAVE(7003, "Unable to save image", HttpStatus.INTERNAL_SERVER_ERROR),
     IMAGE_UNABLE_TO_UPDATE(7004, "Unable to update image", HttpStatus.INTERNAL_SERVER_ERROR),
@@ -158,7 +159,12 @@ public enum Error {
     DELETE_FAILED(10002, "Failed to delete file", HttpStatus.INTERNAL_SERVER_ERROR),
     CONVERSION_FAILED(10003, "Failed to convert file", HttpStatus.INTERNAL_SERVER_ERROR),
     FILE_DELETION_FAILED(10004, "Failed to delete temporary file", HttpStatus.INTERNAL_SERVER_ERROR),
-
+    //Mail error
+    MAIL_SENDING_FAILED(10005, "Failed to send mail", HttpStatus.INTERNAL_SERVER_ERROR),
+    INVALID_MAIL_DETAILS(10006, "Invalid mail details", HttpStatus.BAD_REQUEST),
+    INVALID_MAIL_MAILTO(10007, "Invalid mail to", HttpStatus.BAD_REQUEST),
+    INVALID_MAIL_CONTENT(10008, "Invalid mail content", HttpStatus.BAD_REQUEST),
+    INVALID_MAIL_SUBJECT(10009, "Invalid mail subject", HttpStatus.BAD_REQUEST),
     ;
 
     private final int code;
