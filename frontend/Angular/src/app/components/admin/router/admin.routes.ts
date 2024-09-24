@@ -12,6 +12,8 @@ import { HotelBookingComponent } from "../hotel-manager/hotel-booking/hotel-book
 import { HotelStatisticsComponent } from "../hotel-manager/hotel-statistics/hotel-statistics.component";
 import { PromotionComponent } from "../promotion-manager/promotion/promotion.component";
 import { VoucherComponent } from "../promotion-manager/voucher/voucher.component";
+import { StatisticsComponent } from "../statistics/statistics.component";
+import { PageComponent } from "../page/page.component";
 
 export const adminRoutes: Routes = [
     {
@@ -85,6 +87,14 @@ export const adminRoutes: Routes = [
                         component: VoucherComponent
                     }
                 ]
+            },
+            {
+                path: 'statistics',
+                component: StatisticsComponent
+            },
+            {
+                path: 'page-manager',
+                component: PageComponent
             }
         ]
     }

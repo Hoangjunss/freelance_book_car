@@ -1,1 +1,170 @@
-<p>hotel-statistics works!</p>
+<h2 class="text-center m-2">Hotel Manager Statistics</h2>
+
+<h3 class="m-2">Today</h3>
+<!-- Sale & Revenue Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-line fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Today Sale</p>
+                    <h6 class="mb-0">$1234</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-bar fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Total Sale</p>
+                    <h6 class="mb-0">$1234</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-area fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Today Revenue</p>
+                    <h6 class="mb-0">$1234</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-pie fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Total Revenue</p>
+                    <h6 class="mb-0">$1234</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Sale & Revenue End -->
+
+<h3 class="m-2">Yesterday</h3>
+<!-- Sale & Revenue Start -->
+<div class="container-fluid pt-4 px-4">
+    <div class="row g-4">
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-line fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Today Sale</p>
+                    <h6 class="mb-0">$1234</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-bar fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Total Sale</p>
+                    <h6 class="mb-0">$1234</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-area fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Today Revenue</p>
+                    <h6 class="mb-0">$1234</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light rounded d-flex align-items-center justify-content-between p-4">
+                <i class="fa fa-chart-pie fa-3x text-primary"></i>
+                <div class="ms-3">
+                    <p class="mb-2">Total Revenue</p>
+                    <h6 class="mb-0">$1234</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Sale & Revenue End -->
+
+<!-- Recent Sales Start -->
+<h3 class="m-2">Invoice</h3>
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-light text-center rounded p-4">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+            <h6 class="mb-0">Recent Sales</h6>
+            <button class="btn btn-primary">Show all</button>
+        </div>
+
+        <!-- Form Lọc -->
+        <form (ngSubmit)="onFilter()" class="mb-4">
+            <div class="d-flex justify-content-between">
+                <div class="input-group">
+                    <input type="date" [(ngModel)]="startDate" name="startDate" class="form-control" placeholder="From Date" required>
+                    <input type="date" [(ngModel)]="endDate" name="endDate" class="form-control" placeholder="To Date" required>
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                </div>
+            </div>
+        </form>
+
+        <div class="table-responsive">
+            <table class="table text-start align-middle table-bordered table-hover mb-0">
+                <thead>
+                    <tr class="text-dark">
+                        <th scope="col">Date</th>
+                        <th scope="col">Invoice</th>
+                        <th scope="col">Customer</th>
+                        <th scope="col">Amount</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let invoice of paginatedInvoices">
+                        <td>{{ invoice.date }}</td>
+                        <td>{{ invoice.invoiceNumber }}</td>
+                        <td>{{ invoice.customer }}</td>
+                        <td>{{ invoice.amount }}</td>
+                        <td>{{ invoice.status }}</td>
+                        <td><a class="btn btn-sm btn-primary" (click)="openModal()">Detail</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Phân Trang -->
+        <div class="pagination mt-3">
+            <button class="m-2 btn btn-secondary" (click)="prevPage()" [disabled]="currentPage === 1">Previous</button>
+            <span>Page {{ currentPage }} of {{ totalPages }}</span>
+            <button class="m-2 btn btn-secondary" (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+        </div>
+    </div>
+</div>
+<!-- Recent Sales End -->
+
+<!-- Window details incoive -->
+<div *ngIf="isOpenDetailInvoice" class="modal fade show" tabindex="-1" role="dialog"
+    style="display: block; background: rgba(0, 0, 0, 0.5);">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content slide-in">
+            <div class="modal-header">
+                <h5 class="modal-title">Booking Details</h5>
+                <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p><strong>ID:</strong> {{ bookingResponse.id }}</p>
+                <p><strong>Date:</strong> {{ bookingResponse.dateBook | date }}</p>
+                <p><strong>Total Price:</strong> {{ bookingResponse.totalPrice | currency }}</p>
+                <p><strong>User ID:</strong> {{ bookingResponse.idUser }}</p>
+                <p><strong>Payment Method:</strong> {{ bookingResponse.paymentMethod }}</p>
+                <p><strong>Invoice:</strong> {{ bookingResponse.invoice }}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
