@@ -9,3 +9,9 @@
     display: flex;
   }
   
+.slide-in-update{
+    width: 60%;
+    right: 50%;
+    left: 23%;
+    margin-top: 16%;
+}

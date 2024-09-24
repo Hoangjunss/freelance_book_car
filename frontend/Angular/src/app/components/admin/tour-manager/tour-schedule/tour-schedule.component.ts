@@ -15,6 +15,7 @@ export class TourScheduleComponent implements OnInit {
   isDisplayDetails: boolean = false;
   isUpdateSchedule: boolean = false; 
   selectedTourId: number | null | undefined = null; // Chấp nhận undefined
+  isEditMode: boolean = false;
 
   selectedSchedule: GetTourScheduleResponse = {};
 
@@ -41,6 +42,13 @@ export class TourScheduleComponent implements OnInit {
     { id: 6, timeStartTour: new Date(), timeEndTour: new Date(), idTour: 106, quantity: 5, priceTour: 800, idTourScheduleStatus: 2 },
   ];
 
+  // Pagination variables
+  currentPageSchedule: number = 1;
+  pageSize: number = 3;
+  pagedTours: GetTourScheduleResponse[] = [];
+  totalPages: number = Math.ceil(this.tours.length / this.pageSize);
+  pages: number[] = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+
   currentPage = 1;
   itemsPerPage = 4;
 
@@ -55,11 +63,25 @@ export class TourScheduleComponent implements OnInit {
     }
   }
 
-  updateSchedule(schedule: GetTourScheduleResponse) {
-    this.selectedSchedule = { ...schedule }; // Gán lịch trình được chọn
-    this.selectedTourId = schedule.idTour; // Gán ID tour tương ứng
-    this.isUpdateSchedule = true; // Mở modal cập nhật
+  addNewSchedule(): void {
+    this.selectedSchedule = {};  // Reset the form
+    this.selectedTourId = undefined;  // Clear selected tour
+    this.isUpdateSchedule = true;
+    this.isEditMode = false;  // Mark as add mode
   }
+
+  updateSchedule(schedule?: GetTourScheduleResponse) {
+    if (schedule != undefined) {
+      this.selectedSchedule = { ...schedule }; // Gán lịch trình được chọn
+      this.selectedTourId = schedule.idTour; // Gán ID tour tương ứng
+    } else {
+      this.selectedTourId = undefined;
+    }
+    this.isUpdateSchedule = true; // Đóng modal cập nhật
+    this.isEditMode = true;  // Mark as add mode
+
+  }
+  
 
   cancelUpdate() {
     this.isUpdateSchedule = false; // Đóng modal cập nhật
@@ -94,7 +116,18 @@ export class TourScheduleComponent implements OnInit {
   }
 
   viewSchedule(id: number) {
-    // Logic xem chi tiết lịch trình
     console.log(`Viewing schedule with ID: ${id}`);
+  }
+
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPageSchedule = page;
+      this.updatePagedTours();
+    }
+  }
+  updatePagedTours(): void {
+    const start = (this.currentPageSchedule - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    this.pagedTours = this.tours.slice(start, end);
   }
 }

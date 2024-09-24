@@ -1,0 +1,220 @@
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <!-- Desktop View: Navbar Content -->
+            <div class="collapse navbar-collapse d-none d-lg-flex" id="navbarNav">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex flex-wrap align-items-center">
+                    <li class="nav-item mx-2">
+                        <a class="nav-link text-white" href="#"><i class="fa-brands fa-facebook"></i></a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link text-white" href="#"><i class="fa-brands fa-x"></i></a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link text-white" href="#"><i class="fa-brands fa-youtube"></i></a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link text-white" href="#"><i class="fa-brands fa-tiktok"></i></a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link text-white" href="#" style="margin-right: 10px;"><i
+                                class="fa-brands fa-instagram"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-secondary">Sign Up</button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-danger"><i class="fa-solid fa-user-circle me-2"></i> My Account</button>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Mobile View: Navbar Toggle and Content -->
+            <div class="d-lg-none d-flex flex-column w-100">
+                <!-- Menu Toggle Button -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mobileMenu"
+                    aria-controls="mobileMenu" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+
+                <!-- Mobile Menu -->
+                <div class="collapse" id="mobileMenu">
+                    <!-- Mobile Logo -->
+                    <a class="navbar-brand mx-auto" href="#">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7-sEExVgbbAaJsYwNBiJ5Cr17XgYconrrEQ&s"
+                            alt="Logo" class="logo">
+                    </a>
+
+                    <!-- Home, Sign Up, and My Account Buttons on Mobile -->
+                    <div class="d-flex flex-column align-items-start p-3">
+                        <button class="btn w-100">Home</button>
+                        <button class="btn btn-secondary mb-2 w-100">Sign Up</button>
+                        <button class="btn btn-danger w-100"><i class="fa-solid fa-user-circle me-2"></i> My
+                            Account</button>
+                    </div>
+
+                    <!-- Social Icons on Mobile -->
+                    <div class="social-icons d-flex justify-content-start p-3">
+                        <a class="nav-link text-white mx-1" href="#"><i class="fa-brands fa-facebook"></i></a>
+                        <a class="nav-link text-white mx-1" href="#"><i class="fa-brands fa-x"></i></a>
+                        <a class="nav-link text-white mx-1" href="#"><i class="fa-brands fa-youtube"></i></a>
+                        <a class="nav-link text-white mx-1" href="#"><i class="fa-brands fa-tiktok"></i></a>
+                        <a class="nav-link text-white mx-1" href="#"><i class="fa-brands fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="header-content d-flex align-items-center justify-content-between text-whitep-3">
+        <img src="assets/img/LOGO RANPOLARIS/LOGO 1 trang.png" alt="Logo" class="logo">
+        <div class="search-container position-relative">
+            <input type="search" class="form-control search-box" placeholder="Tìm theo điểm đến, hoạt động">
+            <i class="fa-solid fa-search search-icon position-absolute"></i>
+        </div>
+        <div class="extra-options d-flex align-items-center gap-5">
+            <div class="dropdown">
+                <button class="btn dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <img src="https://hoianmemoriesland.com/public/images/flag-vi.png" alt="Vietnam Flag"
+                        class="vietnam-flag">
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+                    <li><a class="dropdown-item" href="https://hoianmemoriesland.com/vi?lang=en"><img
+                                src="https://hoianmemoriesland.com/public/images/flag-en.png" alt="EN"> English</a></li>
+                    <li><a class="dropdown-item" href="https://hoianmemoriesland.com/vi?lang=cn"><img
+                                src="https://hoianmemoriesland.com/public/images/flag-cn.png.pagespeed.ce.S_Je3nHuQy.png"
+                                alt="CN"> 中文</a></li>
+                    <li><a class="dropdown-item" href="https://hoianmemoriesland.com/vi?lang=kr"><img
+                                src="https://hoianmemoriesland.com/public/images/flag-kr.png.pagespeed.ce.Yu1xtOL70k.png"
+                                alt="KR"> 한국어</a></li>
+                </ul>
+            </div>
+            <div class="user-icon">
+                <i class="fa-solid fa-user"></i>
+            </div>
+            <select class="form-select currency-selector ms-3">
+                <option value="vnd">VND</option>
+                <option value="usd">USD</option>
+            </select>
+            <div>
+                <p class="help me-3">Trợ giúp</p>
+            </div>
+            <div>
+                <p class="cart">Giỏ hàng</p>
+            </div>
+
+
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="progress-container">
+        <div class="progress-step completed">
+            <div class="circle">
+                <i class="bi bi-check text-white"></i>
+            </div>
+            <div class="label">Chọn đơn hàng</div>
+        </div>
+        <div class="progress-step current">
+            <div class="circle">
+                <i class="bi bi-three-dots text-white"></i>
+            </div>
+            <div class="label">Điền thông tin</div>
+        </div>
+        <div class="progress-step">
+            <div class="circle">
+            </div>
+            <div class="label text-muted">Thanh toán</div>
+        </div>
+    </div>
+</div>
+<div class="body">
+    <div class="container mt-4">
+        <div class="row">
+            <!-- Order Details Form -->
+            <div class="col-lg-8 order-left">
+                <h5 class="form-info">Điền thông tin</h5>
+                <div class="card p-4 mb-4" style="border-radius: 0px 0px 20px 20px;border: none;">
+                    <h5>Thông tin đơn hàng</h5>
+                    <div class="d-flex border border-gray-500 p-3">
+                        <img [src]="'../../../../assets/img/HÀNH TRÌNH/HÀNH TRÌNH/1. Đà Nẵng - Vinwonder Nam Hội An (One way - Round trip)/Đà Nẵng - Vinpearl Nam Hội An (Round trip).jpg'" alt="Product Image" class="me-3" style="width: 120px; height: auto;">
+                        <div>
+                            <p style="margin-bottom: 0px;"><strong>Thuê Xe Ôtô Hội An học Vinwonders Nam Hội An từ Đà Nẵng</strong></p>
+                            <span>Khứ hồi: Đà Nẵng -Hội An</span>
+                        </div>
+                    </div>
+
+                    <!-- Customer Info -->
+                    <h5 class="mt-4">Thông tin người tham gia</h5>
+                    <form>
+                        <div class="mb-3">
+                            <label for="idNumber" class="form-label">Số thẻ</label>
+                            <input type="text" class="form-control" id="idNumber">
+                        </div>
+                        <div class="mb-3">
+                            <label for="fullName" class="form-label">Họ và tên</label>
+                            <input type="text" class="form-control" id="fullName">
+                        </div>
+
+                        <h5>Thông tin khác</h5>
+                        <div class="mb-3">
+                            <label for="note" class="form-label">Yêu cầu đặc biệt</label>
+                            <textarea class="form-control" id="note" rows="3"></textarea>
+                        </div>
+                    </form>
+
+                    <!-- Payment Info -->
+                    <h5 class="mt-4">Thông tin liên lạc</h5>
+                    <form>
+                        <div class="mb-3">
+                            <label for="contactMethod" class="form-label">Contact Method</label>
+                            <input type="text" class="form-control" id="contactMethod">
+                        </div>
+                        <div class="mb-3">
+                            <label for="phoneNumber" class="form-label">Phone Number</label>
+                            <input type="text" class="form-control" id="phoneNumber">
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="col-lg-4">
+                <div class="order-summary">
+                    <h5 class="mb-3">Thuê Xe Ôtô Hội An học Vinwonders</h5>
+                    <div class="summary-card mb-3">
+                        <p>Per Session (Group 2-3):</p>
+                        <p><strong>₫631,516</strong></p>
+                    </div>
+
+                    <!-- Upgrade Options -->
+                    <div class="highlight">
+                        <h6>Các gói Nâng cấp</h6>
+                        <p>Hoàn Tiền Vàng Mặt - Lên đến 60%</p>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="upgrade" id="upgradeYes" value="yes"
+                                checked>
+                            <label class="form-check-label" for="upgradeYes">Yes, add the upgrade</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="upgrade" id="upgradeNo" value="no">
+                            <label class="form-check-label" for="upgradeNo">No, do not add the upgrade</label>
+                        </div>
+                    </div>
+
+                    <!-- Summary -->
+                    <div class="d-flex justify-content-between mt-3">
+                        <p>Total:</p>
+                        <p><strong>₫631,516</strong></p>
+                    </div>
+
+                    <button class="btn btn-primary w-100 mt-3">Thanh toán</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
