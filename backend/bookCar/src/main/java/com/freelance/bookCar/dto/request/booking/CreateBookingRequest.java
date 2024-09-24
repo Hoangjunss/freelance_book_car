@@ -15,5 +15,5 @@ public class CreateBookingRequest {
     private double totalPrice;
     private Integer idUser;
     private Integer paymentMethod;
-    private Integer invoice;
+
 }

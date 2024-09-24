@@ -36,9 +36,7 @@ public class BookingServiceImpl implements BookingService{
         if(createBookingRequest.getPaymentMethod() == null) {
             throw new CustomException(Error.BOOKING_INVALID_PAYMENT_METHOD);
         }
-        if(createBookingRequest.getInvoice() == null){
-            throw new CustomException(Error.BOOKING_INVALID_INVOICE);
-        }
+
         if (createBookingRequest.getTotalPrice() < 0D){
             throw new CustomException(Error.BOOKING_INVALID_TOTAL_PRICE);
         }
@@ -48,8 +46,7 @@ public class BookingServiceImpl implements BookingService{
                 .dateBook(LocalDateTime.now())
                 .totalPrice(createBookingRequest.getTotalPrice())
                 .idUser(createBookingRequest.getIdUser())
-                .idPaymentMethod(createBookingRequest.getPaymentMethod())
-                .invoice(createBookingRequest.getInvoice())
+                .idPayment(createBookingRequest.getPaymentMethod())
                 .build();
 
         try {
@@ -81,11 +78,9 @@ public class BookingServiceImpl implements BookingService{
             existingBooking.setIdUser(updateBookingRequest.getIdUser());
         }
         if (updateBookingRequest.getPaymentMethod() != null) {
-            existingBooking.setIdPaymentMethod(updateBookingRequest.getPaymentMethod());
+            existingBooking.setIdPayment(updateBookingRequest.getPaymentMethod());
         }
-        if (updateBookingRequest.getInvoice() != null) {
-            existingBooking.setInvoice(updateBookingRequest.getInvoice());
-        }
+
 
         try {
             Booking updatedBooking = bookingRepository.save(existingBooking);

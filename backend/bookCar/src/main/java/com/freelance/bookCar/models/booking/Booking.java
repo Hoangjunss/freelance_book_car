@@ -20,7 +20,7 @@ public class Booking {
     private LocalDateTime dateBook;
     private double totalPrice;
     private Integer idUser;
-    private Integer idPaymentMethod;
-    private Integer invoice;
+    private Integer idTour;
+    private Integer idPayment;
     // Getters and Setters
 }
