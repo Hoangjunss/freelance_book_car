@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/tour-schedule")
+@CrossOrigin(origins = "*")
 @Slf4j
 public class TourScheduleController {
 

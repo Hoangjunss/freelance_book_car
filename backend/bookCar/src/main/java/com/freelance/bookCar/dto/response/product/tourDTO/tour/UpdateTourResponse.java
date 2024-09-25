@@ -15,5 +15,5 @@ public class UpdateTourResponse {
     private String description;
     private String startLocation;
     private String endLocation;
-    private Integer idTourStatus;
+    private Boolean isActive;
 }

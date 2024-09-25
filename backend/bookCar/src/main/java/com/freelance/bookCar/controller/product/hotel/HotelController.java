@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/hotel")
+@CrossOrigin(origins = "*")
 @Slf4j
 public class HotelController {
 
