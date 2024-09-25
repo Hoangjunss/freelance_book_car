@@ -52,4 +52,16 @@ export class TourService {
       })
     );
   }
+
+  getAllTour(): Observable<GetTourResponse[]> {
+    return this.httpClient.get<Apiresponse<GetTourResponse[]>>(`${this.baseUrl}`).pipe(
+      map((response: Apiresponse<GetTourResponse[]>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    );
+  }
 }

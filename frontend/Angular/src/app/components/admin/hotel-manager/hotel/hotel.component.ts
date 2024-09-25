@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { GetHotelResponse } from '../../../../models/response/product/hotel/hotel/get-hotel-response';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { CreateHotelRequest } from '../../../../models/request/product/hotel/hotel/create-hotel-request';
+import { CreateHotelResponse } from '../../../../models/response/product/hotel/hotel/create-hotel-response';
 
 @Component({
   selector: 'app-hotel',
@@ -11,6 +13,10 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './hotel.component.css'
 })
 export class HotelComponent {
+  createHotelRequest: CreateHotelRequest = new CreateHotelRequest();
+  createHotelResponse: CreateHotelResponse = new CreateHotelResponse();
+
+
   selectedImage: string = 'assets/img/DEFAULT/hotel-default.png';
   isDisplayDetails: boolean = false;
   hotel?: GetHotelResponse;
