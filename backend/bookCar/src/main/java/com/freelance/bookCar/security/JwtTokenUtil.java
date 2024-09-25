@@ -1,6 +1,8 @@
 package com.freelance.bookCar.security;
 
 
+import com.freelance.bookCar.exception.CustomException;
+import com.freelance.bookCar.exception.Error;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -80,12 +82,8 @@ public class JwtTokenUtil {
         return extractClaims( token, Claims::getSubject);
     }
 
-
     //Tách email ra từ JWT Token
-
-
     private <T> T extractClaims( String token, Function<Claims, T> claimsTFunction){
-
 
         return claimsTFunction.apply(
                 Jwts.parser().verifyWith(secretKeyForAccessToken).build().parseSignedClaims(token).getPayload()
@@ -109,10 +107,10 @@ public class JwtTokenUtil {
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsernameToken(token);
         if (!username.equals(userDetails.getUsername())) {
-            throw new CustomJwtException(Error.USER_NOT_FOUND);
+            throw new CustomException(Error.USER_NOT_FOUND);
         }
         if (isTokenExpired(token)) {
-            throw new CustomJwtException(Error.JWT_EXPIRED);
+            throw new CustomException(Error.JWT_EXPIRED);
         }
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
@@ -120,10 +118,10 @@ public class JwtTokenUtil {
     public boolean isRefreshValid(String token, UserDetails userDetails) {
         final String username = extractUsernameToken(token);
         if (!username.equals(userDetails.getUsername())) {
-            throw new CustomJwtException(Error.USER_NOT_FOUND);
+            throw new CustomException(Error.USER_NOT_FOUND);
         }
         if (!isTokenExpired(token)) {
-            throw new CustomJwtException(Error.JWT_EXPIRED);
+            throw new CustomException(Error.JWT_EXPIRED);
         }
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }

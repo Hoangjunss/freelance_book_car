@@ -8,19 +8,26 @@ import com.freelance.bookCar.dto.response.user.accountDTO.LoginResponse;
 import com.freelance.bookCar.dto.response.user.accountDTO.RegistrationResponse;
 import com.freelance.bookCar.dto.response.user.userDTO.CreateUserResponse;
 import com.freelance.bookCar.exception.CustomException;
+import com.freelance.bookCar.exception.Error;
 import com.freelance.bookCar.models.user.Account;
 import com.freelance.bookCar.models.user.User;
 import com.freelance.bookCar.respository.user.AccountRepository;
 import com.freelance.bookCar.security.JwtTokenUtil;
 import com.freelance.bookCar.security.OurUserDetailsService;
 import com.freelance.bookCar.services.user.userservice.UserService;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+@Service
+@Slf4j
 public class AccountServiceImpl implements AccountService{
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -34,11 +41,22 @@ public class AccountServiceImpl implements AccountService{
     private JwtTokenUtil jwtTokenUtil;
     @Autowired
     private OurUserDetailsService ourUserDetailsService;
+
+    @Override
     public RegistrationResponse registration(RegistrationRequest registrationRequest) {
         if(usernameExists(registrationRequest.getName())){
             throw new CustomException(Error.USER_ALREADY_EXISTS);
         }
 
+        if(registrationRequest.getEmail() == null){
+            throw new CustomException(Error.USER_INVALID_EMAIL);
+        }
+        if(registrationRequest.getName() == null){
+            throw new CustomException(Error.USER_INVALID_NAME);
+        }
+        if(registrationRequest.getPassword() == null){
+            throw new CustomException(Error.USER_INVALID_PASSWORD);
+        }
 
         CreateUserRequest createUserRequest=CreateUserRequest.builder()
                 .name(registrationRequest.getName())
@@ -49,7 +67,17 @@ public class AccountServiceImpl implements AccountService{
                 .id(getGenerationId())
                 .password(passwordEncoder.encode(registrationRequest.getPassword()))
                 .user(modelMapper.map(createUserResponse, User.class)).build();
-        Account accountSave=accountRepository.save(account);
+
+        try {
+            Account accountSave=accountRepository.save(account);
+        } catch (DataIntegrityViolationException e) {
+            log.error("Error occurred while saving accounting: {}", e.getMessage(), e);
+            throw new CustomException(Error.ACCOUNT_UNABLE_TO_SAVE);
+        } catch (DataAccessException e) {
+            log.error("Database access error occurred in saving accounting: {}", e.getMessage(), e);
+            throw new CustomException(Error.DATABASE_ACCESS_ERROR);
+        }
+
         RegistrationResponse registrationResponse=RegistrationResponse.builder()
                 .idUser(createUserResponse.getId())
                 .email(createUserResponse.getEmail())
@@ -58,19 +86,17 @@ public class AccountServiceImpl implements AccountService{
         return registrationResponse;
     }
     @Override
-    private LoginResponse login(LoginRequest loginRequest){
+    public LoginResponse login(LoginRequest loginRequest){
         String email = loginRequest.getEmail();
 
-        // Kiểm tra xem email đã tồn tại chưa
         if (!usernameExists(email)) {
-            throw new CustomJwtException(Error.USER_NOT_FOUND);
+            throw new CustomException(Error.USER_NOT_FOUND);
         }
 
-
-
-        Account user = accountRepository.findByUsername(email).orElseThrow();
+        Account user = accountRepository.findByUsername(email)
+                .orElseThrow(()-> new CustomException(Error.USER_NOT_FOUND));
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            throw new CustomJwtException(Error.NOT_FOUND);
+            throw new CustomException(Error.ACCOUNT_PASSWORD_NOT_MACHINES);
         }
         var jwt = jwtTokenUtil.generateToken(user);
         var refreshToken = jwtTokenUtil.generateRefreshToken( user);
@@ -78,22 +104,20 @@ public class AccountServiceImpl implements AccountService{
                 .accessToken(jwt)
                 .refreshToken(refreshToken)
                 .build();
-
     }
     @Override
-
     public LoginResponse generateRefreshToken(RefreshToken token) {
-
-
-        // 2. Lấy thông tin từ token cũ
         String username = jwtTokenUtil.extractUsernameToken(token.getToken());
-
-        // 3. Tạo refresh token mới
         UserDetails userDetails= ourUserDetailsService.loadUserByUsername(username);
+
         String jwttoken= jwtTokenUtil.generateToken(userDetails);
+
         String refreshToken=jwtTokenUtil.generateRefreshToken(userDetails);
-        // 4. Trả về đối tượng phản hồi chứa refresh token
-        return  LoginResponse.builder().accessToken(jwttoken).refreshToken(jwttoken).build();
+
+        return  LoginResponse.builder()
+                .accessToken(jwttoken)
+                .refreshToken(jwttoken)
+                .build();
     }
 
 
@@ -102,7 +126,6 @@ public class AccountServiceImpl implements AccountService{
     }
     public Integer getGenerationId() {
         UUID uuid = UUID.randomUUID();
-        // Use most significant bits and ensure it's within the integer range
         return (int) (uuid.getMostSignificantBits() & 0xFFFFFFFFL);
     }
 }

@@ -37,7 +37,7 @@ public class MailServiceImpl implements MailService {
             throw new CustomException(Error.MAIL_SENDING_FAILED);
         } catch (Exception e) {
             log.error("Invalid mail details", e);
-            throw new CustomException(Error.INVALID_MAIL_DETAILS);
+            throw new CustomException(Error.MAIL_INVALID_DETAILS);
         }
     }
 
@@ -45,13 +45,13 @@ public class MailServiceImpl implements MailService {
     @Override
     public Mail getMail(String mailTo, String content, String subject) {
         if (mailTo == null || mailTo.isEmpty()) {
-            throw new CustomException(Error.INVALID_MAIL_MAILTO);
+            throw new CustomException(Error.MAIL_INVALID_MAILTO);
         }
         if (subject == null || subject.isEmpty()) {
-            throw new CustomException(Error.INVALID_MAIL_CONTENT);
+            throw new CustomException(Error.MAIL_INVALID_CONTENT);
         }
         if (content == null || content.isEmpty()) {
-            throw new CustomException(Error.INVALID_MAIL_SUBJECT);
+            throw new CustomException(Error.MAIL_INVALID_SUBJECT);
         }
         return Mail.builder()
                 .mailTo(mailTo)
@@ -62,21 +62,23 @@ public class MailServiceImpl implements MailService {
                 .build();
     }
 
-
+    //Thieu username
     @Override
     public void send(MessageDTO messageDTO) {
-        log.info("send mail");
         log.info("send mail: {}", messageDTO.getId());
+        if(messageDTO.getMessage() == null){
+            throw  new CustomException(Error.MAIL_INVALID_MESSAGE);
+        }
         MailDTO mailDTO = MailDTO.builder()
                 .mailContent(messageDTO.getMessage())
                 .mailSubject(messageDTO.getMessage())
                 .mailTo(messageDTO.getMessage())
                 .build();
-
         try {
             sendMail(getMail(mailDTO.getMailTo(), mailDTO.getMailContent(), mailDTO.getMailSubject()));
         } catch (CustomException e) {
             log.error("Error occurred while sending mail: {}", e.getMessage());
+            throw new CustomException(Error.MAIL_SENDING_FAILED);
         }
     }
 

@@ -26,12 +26,20 @@ public enum Error {
     ACCOUNT_UNABLE_TO_SAVE(1003, "Unable to save account", HttpStatus.INTERNAL_SERVER_ERROR),
     ACCOUNT_UNABLE_TO_UPDATE(1004, "Unable to update account", HttpStatus.INTERNAL_SERVER_ERROR),
     ACCOUNT_UNABLE_TO_DELETE(1005, "Unable to delete account", HttpStatus.INTERNAL_SERVER_ERROR),
+    ACCOUNT_PASSWORD_NOT_MACHINES(1006, "Password not machines", HttpStatus.INTERNAL_SERVER_ERROR),
     // User error
     USER_NOT_FOUND(1101, "User not found", HttpStatus.NOT_FOUND),
     USER_ALREADY_EXISTS(1102, "User already exists", HttpStatus.CONFLICT),
     USER_UNABLE_TO_SAVE(1103, "Unable to save user", HttpStatus.INTERNAL_SERVER_ERROR),
     USER_UNABLE_TO_UPDATE(1104, "Unable to update user", HttpStatus.INTERNAL_SERVER_ERROR),
     USER_UNABLE_TO_DELETE(1105, "Unable to delete user", HttpStatus.INTERNAL_SERVER_ERROR),
+    USER_INVALID_EMAIL(1106, "Invalid email address", HttpStatus.BAD_REQUEST),
+    USER_INVALID_PHONE(1109, "Invalid phone number", HttpStatus.BAD_REQUEST),
+    USER_INVALID_ADDRESS(1110, "Invalid address", HttpStatus.BAD_REQUEST),
+    USER_INVALID_PASSWORD_FORMAT(1112, "Invalid password format", HttpStatus.BAD_REQUEST),
+    USER_INVALID_PASSWORD(1107, "Invalid password", HttpStatus.BAD_REQUEST),
+    USER_INVALID_NAME(1108, "Invalid Name", HttpStatus.BAD_REQUEST),
+    // Booking Error
     // Ticket Error
     TICKET_NOT_FOUND(1201, "Ticket not found", HttpStatus.NOT_FOUND),
     TICKET_ALREADY_EXISTS(1202, "Ticket already exists", HttpStatus.CONFLICT),
@@ -168,16 +176,19 @@ public enum Error {
     BOOKING_DETAIL_INVALID_TOTAL_PRICE(2308, "Booking detail invalid total price", HttpStatus.BAD_REQUEST),
     BOOKING_DETAIL_INVALID_ID_USER(2309, "Booking detail invalid Id User", HttpStatus.BAD_REQUEST),
     // Cloudinary-related errors
-    UPLOAD_FAILED(10001, "Failed to upload file", HttpStatus.INTERNAL_SERVER_ERROR),
-    DELETE_FAILED(10002, "Failed to delete file", HttpStatus.INTERNAL_SERVER_ERROR),
-    CONVERSION_FAILED(10003, "Failed to convert file", HttpStatus.INTERNAL_SERVER_ERROR),
-    FILE_DELETION_FAILED(10004, "Failed to delete temporary file", HttpStatus.INTERNAL_SERVER_ERROR),
+    UPLOAD_FAILED(2401, "Failed to upload file", HttpStatus.INTERNAL_SERVER_ERROR),
+    DELETE_FAILED(2402, "Failed to delete file", HttpStatus.INTERNAL_SERVER_ERROR),
+    CONVERSION_FAILED(2403, "Failed to convert file", HttpStatus.INTERNAL_SERVER_ERROR),
+    FILE_DELETION_FAILED(2404, "Failed to delete temporary file", HttpStatus.INTERNAL_SERVER_ERROR),
     //Mail error
-    MAIL_SENDING_FAILED(10005, "Failed to send mail", HttpStatus.INTERNAL_SERVER_ERROR),
-    INVALID_MAIL_DETAILS(10006, "Invalid mail details", HttpStatus.BAD_REQUEST),
-    INVALID_MAIL_MAILTO(10007, "Invalid mail to", HttpStatus.BAD_REQUEST),
-    INVALID_MAIL_CONTENT(10008, "Invalid mail content", HttpStatus.BAD_REQUEST),
-    INVALID_MAIL_SUBJECT(10009, "Invalid mail subject", HttpStatus.BAD_REQUEST),
+    MAIL_SENDING_FAILED(2505, "Failed to send mail", HttpStatus.INTERNAL_SERVER_ERROR),
+    MAIL_INVALID_DETAILS(2506, "Invalid mail details", HttpStatus.BAD_REQUEST),
+    MAIL_INVALID_MAILTO(2507, "Invalid mail to", HttpStatus.BAD_REQUEST),
+    MAIL_INVALID_CONTENT(2508, "Invalid mail content", HttpStatus.BAD_REQUEST),
+    MAIL_INVALID_SUBJECT(2509, "Invalid mail subject", HttpStatus.BAD_REQUEST),
+    MAIL_INVALID_MESSAGE(2510, "Invalid mail message", HttpStatus.BAD_REQUEST),
+    JWT_INVALID(9001, "Invalid JWT token", HttpStatus.NOT_FOUND),
+    JWT_EXPIRED(9002, "JWT token has expired", HttpStatus.BAD_REQUEST),
     ;
 
     private final int code;
