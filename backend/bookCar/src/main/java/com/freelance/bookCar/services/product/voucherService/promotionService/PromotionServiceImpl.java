@@ -32,7 +32,6 @@ public class PromotionServiceImpl implements PromotionService {
     public CreatePromotionResponse create(CreatePromotionRequest createPromotionRequest) {
         log.info("Create promotion");
 
-        // Kiểm tra tính hợp lệ của yêu cầu
         if (createPromotionRequest.getName() == null || createPromotionRequest.getName().isEmpty()) {
             throw new CustomException(Error.PROMOTION_INVALID_NAME);
         }
@@ -44,7 +43,6 @@ public class PromotionServiceImpl implements PromotionService {
             throw new CustomException(Error.PROMOTION_INVALID_DATE_RANGE);
         }
 
-        // Tạo đối tượng Promotion
         Promotion promotion = Promotion.builder()
                 .id(generateId())
                 .name(createPromotionRequest.getName())
@@ -55,7 +53,6 @@ public class PromotionServiceImpl implements PromotionService {
                 .build();
 
         try {
-            // Lưu Promotion vào cơ sở dữ liệu và trả về response
             return modelMapper.map(promotionRepository.save(promotion), CreatePromotionResponse.class);
         } catch (DataIntegrityViolationException e) {
             log.error("Data integrity violation occurred while saving Promotion: {}", e.getMessage(), e);
@@ -74,10 +71,8 @@ public class PromotionServiceImpl implements PromotionService {
             throw new CustomException(Error.PROMOTION_NOT_FOUND);
         }
 
-        // Tìm Promotion hiện tại theo ID
         Promotion promotion = modelMapper.map(findById(updatePromotionRequest.getId()), Promotion.class);
 
-        // Cập nhật các trường nếu không null
         if (updatePromotionRequest.getName() != null) {
             promotion.setName(updatePromotionRequest.getName());
         }
@@ -94,7 +89,6 @@ public class PromotionServiceImpl implements PromotionService {
         }
 
         try {
-            // Lưu Promotion cập nhật vào cơ sở dữ liệu và trả về response
             return modelMapper.map(promotionRepository.save(promotion), UpdatePromotionResponse.class);
         } catch (DataIntegrityViolationException e) {
             log.error("Data integrity violation occurred while updating Promotion: {}", e.getMessage(), e);
@@ -107,7 +101,6 @@ public class PromotionServiceImpl implements PromotionService {
 
     @Override
     public GetPromotionResponse findById(Integer id) {
-        // Tìm Promotion theo ID, nếu không tìm thấy thì ném ngoại lệ
         return modelMapper.map(promotionRepository.findById(id).orElseThrow(() ->
                 new CustomException(Error.PROMOTION_NOT_FOUND)), GetPromotionResponse.class);
     }

@@ -35,11 +35,11 @@ public class CloudinaryService {
     // tai hinh anh len cloud
     public Map upload(MultipartFile multipartFile) {
         try {
-            log.info("Uploading photo to clound: {}", multipartFile.getOriginalFilename());
+            log.info("Uploading photo to cloud: {}", multipartFile.getOriginalFilename());
             File file = convert(multipartFile);
             Map result = cloudinary.uploader().upload(file, ObjectUtils.emptyMap());
             if (!Files.deleteIfExists(file.toPath())) {
-                log.error("Unable to upload file: {}", file.getAbsolutePath());
+                log.error("Unable to upload file by Delete If Exists: {}", file.getAbsolutePath());
                 throw new IOException("Unable to upload temporary file: " + file.getAbsolutePath());
             }
             return result;

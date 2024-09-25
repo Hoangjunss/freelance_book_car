@@ -30,7 +30,6 @@ public class VoucherServiceImpl implements VoucherService{
     public CreateVoucherResponse create(CreateVoucherRequest createVoucherRequest) {
         log.info("Create voucher");
 
-        // Kiểm tra tính hợp lệ của yêu cầu
         if (createVoucherRequest.getIdPromotion() == null) {
             throw new CustomException(Error.VOUCHER_INVALID_PROMOTION_ID);
         }
@@ -38,7 +37,6 @@ public class VoucherServiceImpl implements VoucherService{
             throw new CustomException(Error.VOUCHER_INVALID_CREATE_DATE);
         }
 
-        // Tạo đối tượng Voucher
         Voucher voucher = Voucher.builder()
                 .id(generateId())
                 .createDate(createVoucherRequest.getCreateDate())
@@ -47,7 +45,6 @@ public class VoucherServiceImpl implements VoucherService{
                 .build();
 
         try {
-            // Lưu Voucher vào cơ sở dữ liệu và trả về response
             return modelMapper.map(voucherRepository.save(voucher), CreateVoucherResponse.class);
         } catch (DataIntegrityViolationException e) {
             log.error("Data integrity violation occurred while saving Voucher: {}", e.getMessage(), e);
@@ -66,21 +63,17 @@ public class VoucherServiceImpl implements VoucherService{
             throw new CustomException(Error.VOUCHER_NOT_FOUND);
         }
 
-        // Tìm Voucher hiện tại theo ID
         Voucher voucher = modelMapper.map(findById(updateVoucherRequest.getId()), Voucher.class);
 
-        // Cập nhật các trường nếu không null
         if (updateVoucherRequest.getCreateDate() != null) {
             voucher.setCreateDate(updateVoucherRequest.getCreateDate());
         }
         voucher.setUse(updateVoucherRequest.isUse());
-
         if (updateVoucherRequest.getIdPromotion() != null) {
             voucher.setIdPromotion(updateVoucherRequest.getIdPromotion());
         }
 
         try {
-            // Lưu Voucher cập nhật vào cơ sở dữ liệu và trả về response
             return modelMapper.map(voucherRepository.save(voucher), UpdateVoucherResponse.class);
         } catch (DataIntegrityViolationException e) {
             log.error("Data integrity violation occurred while updating Voucher: {}", e.getMessage(), e);
@@ -93,7 +86,6 @@ public class VoucherServiceImpl implements VoucherService{
 
     @Override
     public GetVoucherResponse findById(Integer id) {
-        // Tìm Voucher theo ID, nếu không tìm thấy thì ném ngoại lệ
         return modelMapper.map(voucherRepository.findById(id).orElseThrow(() ->
                 new CustomException(Error.VOUCHER_NOT_FOUND)), GetVoucherResponse.class);
     }

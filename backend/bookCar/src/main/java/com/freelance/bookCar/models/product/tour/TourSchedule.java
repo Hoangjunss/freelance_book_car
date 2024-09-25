@@ -18,9 +18,7 @@ public class TourSchedule {
     @Id
     private Integer id;
     private LocalDateTime timeStartTour;
-    private LocalDateTime timeEndTour;
     private Integer idTour;
-    private Integer quantity;
     private Double priceTour;
     private Integer idTourScheduleStatus;
 }

@@ -73,6 +73,7 @@ public class TourScheduleStatusServiceImpl implements TourScheduleStatusService{
 
         return modelMapper.map(tourScheduleStatus, GetTourScheduleStatusResponse.class);
     }
+
     private Integer getGenerationId() {
         UUID uuid = UUID.randomUUID();
         return (int) (uuid.getMostSignificantBits() & 0xFFFFFFFFL);

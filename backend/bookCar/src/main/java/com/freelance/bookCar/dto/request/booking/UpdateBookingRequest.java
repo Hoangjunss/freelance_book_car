@@ -17,5 +17,5 @@ public class UpdateBookingRequest {
     private double totalPrice;
     private Integer idUser;
     private Integer paymentMethod;
-    private Integer invoice;
+
 }

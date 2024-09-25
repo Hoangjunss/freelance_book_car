@@ -35,10 +35,10 @@ public class TourStatusServiceImpl implements TourStatusService{
         }
 
         TourStatus existingTourStatus = tourStatusRepository.findByName(createTourStatusRequest.getName());
+
         if (existingTourStatus != null) {
             throw new CustomException(Error.TOUR_STATUS_ALREADY_EXISTS);
         }
-
         TourStatus tourStatusSave = TourStatus.builder()
                 .id(getGenerationId())
                 .name(createTourStatusRequest.getName())

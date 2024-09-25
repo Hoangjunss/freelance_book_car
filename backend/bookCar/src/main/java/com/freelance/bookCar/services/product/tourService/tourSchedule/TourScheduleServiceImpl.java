@@ -51,10 +51,9 @@ public class TourScheduleServiceImpl implements TourScheduleService  {
         TourSchedule tourSchedule = TourSchedule.builder()
                 .id(getGenerationId())
                 .timeStartTour(createTourScheduleRequest.getTimeStartTour())
-                .timeEndTour(createTourScheduleRequest.getTimeEndTour())
+                .timeStartTour(createTourScheduleRequest.getTimeEndTour())
                 .idTour(createTourScheduleRequest.getIdTour())
                 .priceTour(createTourScheduleRequest.getPriceTour())
-                .quantity(createTourScheduleRequest.getQuantity())
                 .idTourScheduleStatus(createTourScheduleRequest.getIdTourScheduleStatus())
                 .build();
 
@@ -76,20 +75,13 @@ public class TourScheduleServiceImpl implements TourScheduleService  {
             throw new CustomException(Error.TOUR_SCHEDULE_NOT_FOUND);
         }
 
-        // Tìm tour schedule bằng id và ném lỗi nếu không tìm thấy
         TourSchedule tourSchedule = modelMapper.map(findById(updateTourScheduleRequest.getId()), TourSchedule.class);
 
         if (updateTourScheduleRequest.getTimeStartTour() != null) {
             tourSchedule.setTimeStartTour(updateTourScheduleRequest.getTimeStartTour());
         }
-        if (updateTourScheduleRequest.getTimeEndTour() != null) {
-            tourSchedule.setTimeEndTour(updateTourScheduleRequest.getTimeEndTour());
-        }
         if (updateTourScheduleRequest.getIdTour() != null) {
             tourSchedule.setIdTour(updateTourScheduleRequest.getIdTour());
-        }
-        if (updateTourScheduleRequest.getQuantity() != null) {
-            tourSchedule.setQuantity(updateTourScheduleRequest.getQuantity());
         }
         if (updateTourScheduleRequest.getPriceTour() != null) {
             tourSchedule.setPriceTour(updateTourScheduleRequest.getPriceTour());
