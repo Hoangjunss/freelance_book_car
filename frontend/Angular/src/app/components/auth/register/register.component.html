@@ -19,19 +19,42 @@
                         </a>
                         <h3>Sign Up</h3>
                     </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingText" placeholder="jhondoe">
-                        <label for="floatingText">Username</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-                        <label for="floatingInput">Email address</label>
-                    </div>
-                    <div class="form-floating mb-4">
-                        <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-                        <label for="floatingPassword">Password</label>
-                    </div>
-                    <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Sign Up</button>
+                    <form [formGroup]="userForm" (ngSubmit)="registerUser()">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" name="name" formControlName="name" id="username" placeholder="Enter your username">
+                            <label for="floatingText">Username</label>
+                            <div class="alert" *ngIf="(userForm.controls['name']?.invalid && (userForm.controls['name']?.touched || userForm.controls['name']?.dirty))">
+                                <div class="text-danger" *ngIf="userForm.controls['name'].errors?.['required']">
+                                    Username is required
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control" name="email" formControlName="email" id="email" placeholder="Enter your email">
+                            <label for="floatingInput">Email address</label>
+                            <div class="alert" *ngIf="(userForm.controls['email']?.invalid && (userForm.controls['email']?.touched || userForm.controls['email']?.dirty))">
+                                <div class="text-danger" *ngIf="userForm.controls['email'].errors?.['required']">
+                                    Email is required
+                                </div>
+                                <div class="text-danger" *ngIf="userForm.controls['email'].errors?.['email']" >
+                                    Email is invalid
+                                </div>
+                                <div class="text-danger" *ngIf="userForm.controls['email'].errors?.['emailExists']">
+                                    Email already exists
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-floating mb-4">
+                            <input type="password" class="form-control" name="password" formControlName="password" id="pass" placeholder="Enter your password">
+                            <label for="floatingPassword">Password</label>
+                            <div class="alert" *ngIf="userForm.controls['password']?.invalid && (userForm.controls['password']?.touched || userForm.controls['password']?.dirty)">
+                                <div class="text-danger">
+                                      {{ getPasswordErrorMessage() }}
+                                </div>
+                              </div>
+                        </div>
+                        <button type="submit" [disabled]="userForm.invalid" class="btn btn-primary py-3 w-100 mb-4">Sign Up</button>
+                    </form>
                     <p class="text-center mb-0">Already have an Account? <a routerLink="/auth/login" routerLinkActive="router-link-active">Sign In</a></p>
                 </div>
             </div>

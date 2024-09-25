@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/bookCar.iml" filepath="$PROJECT_DIR$/.idea/bookCar.iml" />
+      <module fileurl="file://$PROJECT_DIR$/backend/bookCar/bookCar.iml" filepath="$PROJECT_DIR$/backend/bookCar/bookCar.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/freelance_book_car.iml" filepath="$PROJECT_DIR$/.idea/freelance_book_car.iml" />
     </modules>
   </component>
 </project>
