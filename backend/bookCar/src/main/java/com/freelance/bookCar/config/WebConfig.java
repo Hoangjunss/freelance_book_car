@@ -11,7 +11,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")  // Áp dụng cho tất cả các đường dẫn
                 .allowedOrigins("*")  // Chấp nhận tất cả các cổng trên localhost
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")  // Các phương thức HTTP được chấp nhận
+                .allowedMethods("GET", "PATCH", "POST", "PUT", "DELETE", "OPTIONS")  // Các phương thức HTTP được chấp nhận
                 .allowedHeaders("*")  // Chấp nhận tất cả các loại header
                 .allowCredentials(true)  // Cho phép credentials như cookie
                 .maxAge(3600);  // Cache CORS response trong 1 giờ

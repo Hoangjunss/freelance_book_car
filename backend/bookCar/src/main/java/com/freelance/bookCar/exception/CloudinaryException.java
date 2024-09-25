@@ -1,5 +1,8 @@
 package com.freelance.bookCar.exception;
 
+import lombok.Getter;
+
+@Getter
 public class CloudinaryException extends RuntimeException{
     private final java.lang.Error error;
 
@@ -8,7 +11,4 @@ public class CloudinaryException extends RuntimeException{
         this.error = error;
     }
 
-    public java.lang.Error getError() {
-        return error;
-    }
 }
