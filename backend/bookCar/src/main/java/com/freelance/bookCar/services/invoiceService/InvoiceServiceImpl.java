@@ -94,6 +94,23 @@ public class InvoiceServiceImpl implements InvoiceService{
     }
 
     public   Invoice convertBookingToInvoice(Booking booking, List<BookingDetail> bookingDetails) {
+
+        if(booking.getTotalPrice() < 0){
+            throw new CustomException(Error.BOOKING_INVALID_TOTAL_PRICE);
+        }
+        if(booking.getDateBook() == null){
+            throw new CustomException(Error.BOOKING_INVALID_DATE_BOOK);
+        }
+        if(booking.getIdTour() == null){
+            throw new CustomException(Error.BOOKING_INVALID_ID_TOUR);
+        }
+        if(booking.getIdUser() == null){
+            throw new CustomException(Error.BOOKING_INVALID_ID_USER);
+        }
+        if(booking.getIdPayment() == null){
+            throw new CustomException(Error.BOOKING_INVALID_ID_PAYMENT);
+        }
+
         Invoice invoice = Invoice.builder()
                 .id(booking.getId()) // Có thể tạo ID mới nếu cần
                 .invoiceDate(LocalDateTime.now()) // Thời gian lập hóa đơn
@@ -101,6 +118,7 @@ public class InvoiceServiceImpl implements InvoiceService{
                 .isPaymentStatus(false) // Trạng thái thanh toán, có thể là false
                 .idBooking(booking.getId()) // ID Booking liên kết
                 .build();
+
 
         // Chuyển đổi BookingDetail thành InvoiceDetail
         List<InvoiceDetail> invoiceDetails = bookingDetails.stream()
@@ -114,17 +132,45 @@ public class InvoiceServiceImpl implements InvoiceService{
         return invoice; // Trả về invoice (hoặc invoice và danh sách invoiceDetails nếu cần)
     }
 
-    private  InvoiceDetail convertBookingDetailToInvoiceDetail(BookingDetail bookingDetail, Integer invoiceId) {
-        return InvoiceDetail.builder()
-                .id(bookingDetail.getId()) // Có thể tạo ID mới nếu cần
-                .idTour(bookingDetail.getIdTour())
-                .idTourism(bookingDetail.getIdTourism())
-                .idHotel(bookingDetail.getIdHotel())
+    private InvoiceDetail convertBookingDetailToInvoiceDetail(BookingDetail bookingDetail, Integer invoiceId) {
+
+        if (bookingDetail.getId() == null) {
+            throw new CustomException(Error.BOOKING_DETAIL_INVALID_ID);
+        }
+        if (bookingDetail.getIdTour() == null && bookingDetail.getIdTourism() == null && bookingDetail.getIdHotel() == null) {
+            throw new CustomException(Error.BOOKING_DETAIL_INVALID_ID_SERVICE);
+        }
+        if (invoiceId == null) {
+            throw new CustomException(Error.INVOICE_INVALID_ID);
+        }
+        if (bookingDetail.getTotalPrice() < 0D) {
+            throw new CustomException(Error.BOOKING_DETAIL_INVALID_TOTAL_PRICE);
+        }
+        if (bookingDetail.getQuantity() < 0) {
+            throw new CustomException(Error.BOOKING_DETAIL_INVALID_QUANTITY);
+        }
+
+        InvoiceDetail.InvoiceDetailBuilder invoiceDetailBuilder = InvoiceDetail.builder()
+                .id(bookingDetail.getId())
                 .idInvoice(invoiceId) // Liên kết với ID Invoice
                 .quantity(bookingDetail.getQuantity())
-                .totalPrice(bookingDetail.getTotalPrice()) // Sử dụng đúng kiểu dữ liệu
-                .build();
+                .totalPrice(bookingDetail.getTotalPrice());
+
+        // Chỉ truyền giá trị tương ứng khi ID của dịch vụ không phải null
+        if (bookingDetail.getIdTour() != null) {
+            invoiceDetailBuilder.idTour(bookingDetail.getIdTour());
+        }
+        if (bookingDetail.getIdTourism() != null) {
+            invoiceDetailBuilder.idTourism(bookingDetail.getIdTourism());
+        }
+        if (bookingDetail.getIdHotel() != null) {
+            invoiceDetailBuilder.idHotel(bookingDetail.getIdHotel());
+        }
+
+        // Trả về đối tượng đã xây dựng
+        return invoiceDetailBuilder.build();
     }
+
 
     @Override
     public GetInvoiceResponse findById(Integer id) {

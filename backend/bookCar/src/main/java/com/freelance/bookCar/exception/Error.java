@@ -126,6 +126,7 @@ public enum Error {
     INVOICE_UNABLE_TO_SAVE(1803, "Unable to save invoice", HttpStatus.INTERNAL_SERVER_ERROR),
     INVOICE_UNABLE_TO_UPDATE(1804, "Unable to update invoice", HttpStatus.INTERNAL_SERVER_ERROR),
     INVOICE_UNABLE_TO_DELETE(1805, "Unable to delete invoice", HttpStatus.INTERNAL_SERVER_ERROR),
+    INVOICE_INVALID_ID(1808, "Invalid invoice id", HttpStatus.BAD_REQUEST),
     INVOICE_INVALID_TOTAL_AMOUNT(1806, "Invalid total amount", HttpStatus.BAD_REQUEST),
     INVOICE_INVALID_PAYMENT_STATUS(1807, "Invalid payment status", HttpStatus.BAD_REQUEST),
     INVOICE_INVALID_ID_BOOKING(1808, "Invalid id booking", HttpStatus.BAD_REQUEST),
@@ -139,6 +140,10 @@ public enum Error {
     BOOKING_INVALID_PAYMENT_METHOD(1907, "Invalid payment method", HttpStatus.BAD_REQUEST),
     BOOKING_INVALID_INVOICE(1908, "Invalid in voice", HttpStatus.BAD_REQUEST),
     BOOKING_INVALID_TOTAL_PRICE(1909, "Invalid total price", HttpStatus.BAD_REQUEST),
+    BOOKING_INVALID_DATE_BOOK(1910, "Invalid date book", HttpStatus.BAD_REQUEST),
+    BOOKING_INVALID_ID_TOUR(1911, "Invalid id Tour", HttpStatus.BAD_REQUEST),
+    BOOKING_INVALID_ID_PAYMENT(1912, "Invalid id payment", HttpStatus.BAD_REQUEST),
+    BOOKING_DETAIL_INVALID_ID_SERVICE(1913, "Invalid id service", HttpStatus.BAD_REQUEST),
     //Voucher error
     VOUCHER_NOT_FOUND(2001, "Voucher not found", HttpStatus.NOT_FOUND),
     VOUCHER_ALREADY_EXISTS(2002, "Voucher already exists", HttpStatus.CONFLICT),
@@ -169,6 +174,7 @@ public enum Error {
     BOOKING_DETAIL_UNABLE_TO_UPDATE(2304, "Unable to update booking detail", HttpStatus.INTERNAL_SERVER_ERROR),
     BOOKING_DETAIL_UNABLE_TO_DELETE(2305, "Unable to delete booking detail", HttpStatus.INTERNAL_SERVER_ERROR),
     // Booking Tor
+    BOOKING_DETAIL_INVALID_ID(2306, "Booking detail invalid id", HttpStatus.BAD_REQUEST),
     BOOKING_DETAIL_INVALID_ID_TOUR(2306, "Booking detail invalid id Tour", HttpStatus.BAD_REQUEST),
     BOOKING_DETAIL_INVALID_ID_TOURISM(2306, "Booking detail invalid id Tourism", HttpStatus.BAD_REQUEST),
     BOOKING_DETAIL_INVALID_ID_HOTEL(2306, "Booking detail invalid id Hotel", HttpStatus.BAD_REQUEST),
