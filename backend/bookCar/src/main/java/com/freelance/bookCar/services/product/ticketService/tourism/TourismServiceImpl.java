@@ -9,6 +9,7 @@ import com.freelance.bookCar.exception.CustomException;
 import com.freelance.bookCar.exception.Error;
 import com.freelance.bookCar.models.product.ticket.Tourism;
 import com.freelance.bookCar.respository.product.ticket.TourismRepository;
+import com.freelance.bookCar.services.image.ImageService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ public class TourismServiceImpl implements TourismService {
     private TourismRepository tourismRepository;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private ImageService imageService;
     @Override
     public CreateTourismResponse createTourism(CreateTourismRequest createTourismRequest) {
         log.info("Creating tourism with name: {}", createTourismRequest.getName());
@@ -49,6 +52,7 @@ public class TourismServiceImpl implements TourismService {
                 .location(createTourismRequest.getLocation())
                 .description(createTourismRequest.getDescription())
                 .rating(createTourismRequest.getRating())
+                .image(imageService.saveImage(createTourismRequest.getImage()))
                 .build();
 
         try {
@@ -80,6 +84,9 @@ public class TourismServiceImpl implements TourismService {
         }
         if (updateTourismRequest.getRating() >= 0) {
             existingTourism.setRating(updateTourismRequest.getRating());
+        }
+        if (updateTourismRequest.getImage() !=null) {
+            existingTourism.setImage(imageService.saveImage(updateTourismRequest.getImage()));
         }
 
         try {

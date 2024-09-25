@@ -19,4 +19,5 @@ public class Ticket {
     private LocalDateTime startDate;
     private double tourPrice;
     private Integer idTourism;
+
 }

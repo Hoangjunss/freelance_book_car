@@ -9,6 +9,7 @@ import com.freelance.bookCar.exception.CustomException;
 import com.freelance.bookCar.exception.Error;
 import com.freelance.bookCar.models.product.tour.Tour;
 import com.freelance.bookCar.respository.product.tour.TourRepository;
+import com.freelance.bookCar.services.image.ImageService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,8 @@ public class TourServiceImpl implements TourService {
     private TourRepository tourRepository;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private ImageService imageService;
     @Override
     public CreateTourResponse createTour(CreateTourRequest createTourRequest) {
         log.info("Create tour");
@@ -53,6 +56,7 @@ public class TourServiceImpl implements TourService {
                 .startLocation(createTourRequest.getStartLocation())
                 .name(createTourRequest.getName())
                 .isActive(createTourRequest.getIsActive())
+                .image(imageService.saveImage(createTourRequest.getImage()))
                 .build();
 
         try {
@@ -89,6 +93,9 @@ public class TourServiceImpl implements TourService {
         }
         if(updateTourRequest.getIsActive()!=null){
             tour.setIsActive(updateTourRequest.getIsActive());
+        }
+        if(updateTourRequest.getImage()!=null){
+            tour.setImage(imageService.saveImage(updateTourRequest.getImage()));
         }
 
         try {

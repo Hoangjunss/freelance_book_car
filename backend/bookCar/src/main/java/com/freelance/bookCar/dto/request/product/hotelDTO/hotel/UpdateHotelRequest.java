@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @Builder
@@ -19,6 +20,7 @@ public class UpdateHotelRequest {
     private String location;
     private boolean isActive;
     private double rating;
+    private MultipartFile image;
 
 
 
