@@ -7,7 +7,10 @@ import com.freelance.bookCar.dto.response.invoiceDTO.GetInvoiceResponse;
 import com.freelance.bookCar.dto.response.invoiceDTO.UpdateInvoiceResponse;
 import com.freelance.bookCar.exception.CustomException;
 import com.freelance.bookCar.exception.Error;
+import com.freelance.bookCar.models.booking.Booking;
+import com.freelance.bookCar.models.booking.BookingDetail;
 import com.freelance.bookCar.models.invoice.Invoice;
+import com.freelance.bookCar.models.invoice.InvoiceDetail;
 import com.freelance.bookCar.respository.invoice.InvoiceResponsitory;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -17,7 +20,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -86,6 +91,39 @@ public class InvoiceServiceImpl implements InvoiceService{
             log.error("Database access error occurred: {}", e.getMessage(), e);
             throw new CustomException(Error.DATABASE_ACCESS_ERROR);
         }
+    }
+
+    public   Invoice convertBookingToInvoice(Booking booking, List<BookingDetail> bookingDetails) {
+        Invoice invoice = Invoice.builder()
+                .id(booking.getId()) // Có thể tạo ID mới nếu cần
+                .invoiceDate(LocalDateTime.now()) // Thời gian lập hóa đơn
+                .totalAmount(booking.getTotalPrice()) // Tổng tiền từ booking
+                .isPaymentStatus(false) // Trạng thái thanh toán, có thể là false
+                .idBooking(booking.getId()) // ID Booking liên kết
+                .build();
+
+        // Chuyển đổi BookingDetail thành InvoiceDetail
+        List<InvoiceDetail> invoiceDetails = bookingDetails.stream()
+                .map(detail -> convertBookingDetailToInvoiceDetail(detail, invoice.getId()))
+                .collect(Collectors.toList());
+
+        // Thêm logic lưu invoice và invoiceDetails vào DB nếu cần
+        // invoiceRepository.save(invoice);
+        // invoiceDetailRepository.saveAll(invoiceDetails);
+
+        return invoice; // Trả về invoice (hoặc invoice và danh sách invoiceDetails nếu cần)
+    }
+
+    private  InvoiceDetail convertBookingDetailToInvoiceDetail(BookingDetail bookingDetail, Integer invoiceId) {
+        return InvoiceDetail.builder()
+                .id(bookingDetail.getId()) // Có thể tạo ID mới nếu cần
+                .idTour(bookingDetail.getIdTour())
+                .idTourism(bookingDetail.getIdTourism())
+                .idHotel(bookingDetail.getIdHotel())
+                .idInvoice(invoiceId) // Liên kết với ID Invoice
+                .quantity(bookingDetail.getQuantity())
+                .totalPrice(bookingDetail.getTotalPrice()) // Sử dụng đúng kiểu dữ liệu
+                .build();
     }
 
     @Override
