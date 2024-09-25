@@ -1,6 +1,6 @@
 package com.freelance.bookCar.security;
 
-import com.r2s.project_v1.exception.CustomJwtException;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

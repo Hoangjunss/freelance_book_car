@@ -1,8 +1,6 @@
 package com.freelance.bookCar.models.user;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,7 +18,8 @@ public class User {
     private String phone;
     private String email;
     private String address;
-    private String type;
+    @Enumerated(EnumType.STRING)
+    private TypeUser type;
     @OneToOne(mappedBy = "user")
     private Account account;
     // Getters and Setters
