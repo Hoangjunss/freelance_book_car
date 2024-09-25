@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/tour")
+@CrossOrigin(origins = "*")
 public class TourController {
     @Autowired
     private TourService tourService;

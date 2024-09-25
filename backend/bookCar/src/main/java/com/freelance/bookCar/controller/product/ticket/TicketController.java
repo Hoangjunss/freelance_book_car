@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/ticket")
+@CrossOrigin(origins = "*")
 public class TicketController {
     @Autowired
     private TicketService ticketService;
