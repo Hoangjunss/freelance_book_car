@@ -25,7 +25,6 @@ public class UserServiceImpl implements UserService {
                 .phone(userRequest.getPhone())
                 .address(userRequest.getAddress())
                 .name(userRequest.getName())
-                .idAccount(userRequest.getIdAccount())
                 .build();
         return modelMapper.map(userRepository.save(user),CreateUserResponse.class);
     }
