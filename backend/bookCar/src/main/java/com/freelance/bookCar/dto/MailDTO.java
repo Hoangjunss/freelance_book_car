@@ -1,4 +1,4 @@
-package com.freelance.bookCar.dto;
+    package com.freelance.bookCar.dto;
 
 import lombok.Builder;
 import lombok.Data;
