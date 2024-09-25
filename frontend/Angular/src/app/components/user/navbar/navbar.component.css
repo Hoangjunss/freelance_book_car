@@ -521,10 +521,15 @@ body {
         width: 90% !important;
         overflow-y: hidden;
         inset: 30px auto auto 0px !important;
-        background: none !important;
         border: none !important;
         box-shadow: none !important;
+        animation: slideIn1 0.5s forwards !important;
+        opacity: 0; 
+    }
 
+    .dropdown-menu.show {
+        opacity: 1; /* Fade in */
+        transform: translateY(-100px); /* Move to original position */
     }
 
     .dropdown-menu::-webkit-scrollbar {
@@ -541,11 +546,18 @@ body {
     .dropdown-item img {
         width: 20px !important;
         height: 20px !important;
-
-
     }
 
-
+    @keyframes slideIn1 {
+        from {
+            transform: translateY(-100px); /* Start slightly above */
+            opacity: 0; /* Start invisible */
+        }
+        to {
+            transform: translateY(-230px); /* End at normal position */
+            opacity: 1; /* Fade in */
+        }
+    }
 }
 
 /* Tabs Section Styling */
@@ -617,11 +629,11 @@ body {
 
 @keyframes slideUp {
     from {
-        transform: translateY(10px);
+        transform: translateY(0);
     }
 
     to {
-        transform: translateY(0);
+        transform: translateY(-255px);
         opacity: 1;
     }
 }
@@ -630,7 +642,7 @@ body {
 .dropdown-menu {
     display: none;
     position: absolute;
-    bottom: 100%;
+    top: 100%;
     left: 0;
     background-color: #fff;
     border: 1px solid #ddd;
@@ -639,8 +651,8 @@ body {
     max-height: 200px;
     overflow-y: auto;
     opacity: 0;
-    transform: translateY(10px);
-    animation: slideUp 0.3s ease-out forwards;
+    transform: translateY(0);
+    transition: transform 0.3s ease-out, opacity 0.3s ease-out;
 }
 
 .tab-item.active .dropdown-menu {

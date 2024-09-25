@@ -4,6 +4,8 @@ import { NavbarComponent } from './components/user/navbar/navbar.component';
 import { LoginComponent } from './components/auth/login/login.component';
 import { LocationDetailComponent } from './components/user/location-detail/location-detail.component';
 import { BookingComponent } from './components/user/booking/booking.component';
+import { RegisterComponent } from './components/auth/register/register.component';
+import { PaymentComponent } from './components/user/payment/payment.component';
 
 
 export const routes: Routes = [ 
@@ -16,10 +18,19 @@ export const routes: Routes = [
         path: 'home',
         component: NavbarComponent
     },
-    { 
-        path: '',
-        component: LoginComponent 
-    },
+    {
+        path: 'auth',
+        children: [
+          {
+            path: 'login',
+            component: LoginComponent
+          },
+          {
+            path: 'register',
+            component: RegisterComponent
+          }
+        ]
+      },
     {
         path:'location-detail',
         component: LocationDetailComponent
@@ -31,6 +42,11 @@ export const routes: Routes = [
     {
         path: 'booking',
         component: BookingComponent
+    },
+    {
+      path: 'payment',
+      component: PaymentComponent
+
     }
       
 ];
