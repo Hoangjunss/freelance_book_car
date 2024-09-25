@@ -7,9 +7,12 @@ import com.freelance.bookCar.dto.response.product.tourDTO.tour.GetTourResponse;
 import com.freelance.bookCar.dto.response.product.tourDTO.tour.UpdateTourResponse;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public interface TourService {
     CreateTourResponse createTour(CreateTourRequest createTourRequest);
     UpdateTourResponse updateTour(UpdateTourRequest updateTourRequest);
     GetTourResponse findById(Integer id);
+    List<GetTourResponse> getAll();
 }

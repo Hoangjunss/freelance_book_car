@@ -16,7 +16,9 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -106,6 +108,11 @@ public class TourScheduleServiceImpl implements TourScheduleService  {
     public GetTourScheduleResponse findById(Integer id) {
         return modelMapper.map(tourScheduleRepository.findById(id).orElseThrow(
                 () -> new CustomException(Error.TOUR_SCHEDULE_NOT_FOUND)), GetTourScheduleResponse.class);
+    }
+
+    @Override
+    public List<GetTourScheduleResponse> getAll() {
+        return tourScheduleRepository.findAll().stream().map(tourSchedule -> modelMapper.map(tourSchedule, GetTourScheduleResponse.class)).collect(Collectors.toList());
     }
 
     private Integer getGenerationId() {

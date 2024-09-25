@@ -7,9 +7,12 @@ import com.freelance.bookCar.dto.response.product.tourDTO.tourSchedule.GetTourSc
 import com.freelance.bookCar.dto.response.product.tourDTO.tourSchedule.UpdateTourScheduleResponse;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public interface TourScheduleService {
     CreateTourScheduleResponse createTourSchedule(CreateTourScheduleRequest createTourScheduleRequest);
     UpdateTourScheduleResponse updateTourSchedule(UpdateTourScheduleRequest updateTourScheduleRequest);
     GetTourScheduleResponse findById(Integer id);
+    List<GetTourScheduleResponse> getAll();
 }

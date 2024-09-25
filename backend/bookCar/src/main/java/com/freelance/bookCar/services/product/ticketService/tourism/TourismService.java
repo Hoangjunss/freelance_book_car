@@ -7,10 +7,13 @@ import com.freelance.bookCar.dto.response.product.ticketDTO.tourism.GetTourismRe
 import com.freelance.bookCar.dto.response.product.ticketDTO.tourism.UpdateTourismResponse;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public interface TourismService {
     CreateTourismResponse createTourism(CreateTourismRequest createTourismRequest);
     UpdateTourismResponse updateTourism(UpdateTourismRequest updateTourismRequest);
     GetTourismResponse findById(Integer id);
+    List<GetTourismResponse> getAll();
 
 }

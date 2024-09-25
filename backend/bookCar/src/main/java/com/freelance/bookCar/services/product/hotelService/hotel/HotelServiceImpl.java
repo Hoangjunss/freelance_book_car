@@ -14,7 +14,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -107,6 +109,11 @@ public class HotelServiceImpl implements HotelService {
                 .orElseThrow(() -> new CustomException(Error.HOTEL_NOT_FOUND));
 
         return modelMapper.map(hotel, GetHotelResponse.class);
+    }
+
+    @Override
+    public List<GetHotelResponse> getAll() {
+        return hotelRepository.findAll().stream().map(hotel -> modelMapper.map(hotel, GetHotelResponse.class)).collect(Collectors.toList());
     }
 
     private Integer getGenerationId() {

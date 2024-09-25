@@ -14,7 +14,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -95,6 +97,11 @@ public class TourismServiceImpl implements TourismService {
                 .orElseThrow(() -> new CustomException(Error.TOURISM_NOT_FOUND));
 
         return modelMapper.map(tourism, GetTourismResponse.class);
+    }
+
+    @Override
+    public List<GetTourismResponse> getAll() {
+        return tourismRepository.findAll().stream().map(tourism -> modelMapper.map(tourism, GetTourismResponse.class)).collect(Collectors.toList());
     }
 
     private Integer getGenerationId() {

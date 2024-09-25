@@ -6,8 +6,11 @@ import com.freelance.bookCar.dto.response.product.hotelDTO.hotel.CreateHotelResp
 import com.freelance.bookCar.dto.response.product.hotelDTO.hotel.GetHotelResponse;
 import com.freelance.bookCar.dto.response.product.hotelDTO.hotel.UpdateHotelResponse;
 
+import java.util.List;
+
 public interface HotelService {
     CreateHotelResponse createHotel(CreateHotelRequest createHotelRequest);
     UpdateHotelResponse updateHotel(UpdateHotelRequest updateHotelRequest);
     GetHotelResponse findById(Integer id);
+    List<GetHotelResponse> getAll();
 }
