@@ -75,7 +75,6 @@ public class TourScheduleServiceImpl implements TourScheduleService  {
             throw new CustomException(Error.TOUR_SCHEDULE_NOT_FOUND);
         }
 
-        // Tìm tour schedule bằng id và ném lỗi nếu không tìm thấy
         TourSchedule tourSchedule = modelMapper.map(findById(updateTourScheduleRequest.getId()), TourSchedule.class);
 
         if (updateTourScheduleRequest.getTimeStartTour() != null) {

@@ -30,7 +30,6 @@ public class InvoiceServiceImpl implements InvoiceService{
     public CreateInvoiceResponse create(CreateInvoiceRequest createInvoiceRequest) {
         log.info("Creating invoice");
 
-        // Validate input data
         if (createInvoiceRequest.getTotalAmount() < 0) {
             throw new CustomException(Error.INVOICE_INVALID_TOTAL_AMOUNT);
         }
@@ -38,7 +37,6 @@ public class InvoiceServiceImpl implements InvoiceService{
             throw new CustomException(Error.INVOICE_INVALID_ID_BOOKING);
         }
 
-        // Create new Invoice object
         Invoice invoice = Invoice.builder()
                 .id(getGenerationId())
                 .invoiceDate(LocalDateTime.now())
@@ -68,7 +66,6 @@ public class InvoiceServiceImpl implements InvoiceService{
         Invoice existingInvoice = invoiceRepository.findById(updateInvoiceRequest.getId())
                 .orElseThrow(() -> new CustomException(Error.INVOICE_NOT_FOUND));
 
-        // Update fieldsi
         if (updateInvoiceRequest.getInvoiceDate() != null){
             existingInvoice.setInvoiceDate(updateInvoiceRequest.getInvoiceDate());
         }

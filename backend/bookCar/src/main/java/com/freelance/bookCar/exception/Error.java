@@ -148,12 +148,25 @@ public enum Error {
     PROMOTION_INVALID_NAME(2106, "Invalid name", HttpStatus.BAD_REQUEST),
     PROMOTION_INVALID_DISCOUNT_RATE(2107, "Invalid Discount Rate", HttpStatus.BAD_REQUEST),
     PROMOTION_INVALID_DATE_RANGE(2108, "Invalid Date Range", HttpStatus.BAD_REQUEST),
-    IMAGE_NOT_FOUND(7001, "Image not found", HttpStatus.NOT_FOUND),
-
-    IMAGE_ALREADY_EXISTS(7002, "Image already exists", HttpStatus.CONFLICT),
-    IMAGE_UNABLE_TO_SAVE(7003, "Unable to save image", HttpStatus.INTERNAL_SERVER_ERROR),
-    IMAGE_UNABLE_TO_UPDATE(7004, "Unable to update image", HttpStatus.INTERNAL_SERVER_ERROR),
-    IMAGE_UNABLE_TO_DELETE(7005, "Unable to delete image", HttpStatus.INTERNAL_SERVER_ERROR),
+    //Image error
+    IMAGE_NOT_FOUND(2201, "Image not found", HttpStatus.NOT_FOUND),
+    IMAGE_ALREADY_EXISTS(2202, "Image already exists", HttpStatus.CONFLICT),
+    IMAGE_UNABLE_TO_SAVE(2203, "Unable to save image", HttpStatus.INTERNAL_SERVER_ERROR),
+    IMAGE_UNABLE_TO_UPDATE(2204, "Unable to update image", HttpStatus.INTERNAL_SERVER_ERROR),
+    IMAGE_UNABLE_TO_DELETE(2205, "Unable to delete image", HttpStatus.INTERNAL_SERVER_ERROR),
+    //Booking Details error
+    BOOKING_DETAIL_NOT_FOUND(2301, "Booking detail not found", HttpStatus.BAD_REQUEST),
+    BOOKING_DETAIL_ALREADY_EXISTS(2302, "Booking detail already exists", HttpStatus.BAD_REQUEST),
+    BOOKING_DETAIL_UNABLE_TO_SAVE(2303, "Unable to save booking detail", HttpStatus.INTERNAL_SERVER_ERROR),
+    BOOKING_DETAIL_UNABLE_TO_UPDATE(2304, "Unable to update booking detail", HttpStatus.INTERNAL_SERVER_ERROR),
+    BOOKING_DETAIL_UNABLE_TO_DELETE(2305, "Unable to delete booking detail", HttpStatus.INTERNAL_SERVER_ERROR),
+    // Booking Tor
+    BOOKING_DETAIL_INVALID_ID_TOUR(2306, "Booking detail invalid id Tour", HttpStatus.BAD_REQUEST),
+    BOOKING_DETAIL_INVALID_ID_TOURISM(2306, "Booking detail invalid id Tourism", HttpStatus.BAD_REQUEST),
+    BOOKING_DETAIL_INVALID_ID_HOTEL(2306, "Booking detail invalid id Hotel", HttpStatus.BAD_REQUEST),
+    BOOKING_DETAIL_INVALID_QUANTITY(2307, "Booking detail invalid quantity", HttpStatus.BAD_REQUEST),
+    BOOKING_DETAIL_INVALID_TOTAL_PRICE(2308, "Booking detail invalid total price", HttpStatus.BAD_REQUEST),
+    BOOKING_DETAIL_INVALID_ID_USER(2309, "Booking detail invalid Id User", HttpStatus.BAD_REQUEST),
     // Cloudinary-related errors
     UPLOAD_FAILED(10001, "Failed to upload file", HttpStatus.INTERNAL_SERVER_ERROR),
     DELETE_FAILED(10002, "Failed to delete file", HttpStatus.INTERNAL_SERVER_ERROR),

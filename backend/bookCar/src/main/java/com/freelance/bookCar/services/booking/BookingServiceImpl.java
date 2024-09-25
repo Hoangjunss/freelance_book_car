@@ -36,6 +36,8 @@ import com.freelance.bookCar.services.product.tourService.tourSchedule.TourSched
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -84,9 +86,12 @@ public class BookingServiceImpl implements BookingService{
         try {
             Booking savedBooking = bookingRepository.save(booking);
             return modelMapper.map(savedBooking, CreateBookingResponse.class);
-        } catch (Exception e) {
-            log.error("Error occurred while saving booking: {}", e.getMessage(), e);
+        } catch (DataIntegrityViolationException e) {
+            log.error("Data integrity violation occurred while saving Booking: {}", e.getMessage(), e);
             throw new CustomException(Error.BOOKING_UNABLE_TO_SAVE);
+        } catch (DataAccessException e) {
+            log.error("Database access error occurred in Create Booking: {}", e.getMessage(), e);
+            throw new CustomException(Error.DATABASE_ACCESS_ERROR);
         }
     }
 
@@ -117,9 +122,12 @@ public class BookingServiceImpl implements BookingService{
         try {
             Booking updatedBooking = bookingRepository.save(existingBooking);
             return modelMapper.map(updatedBooking, UpdateBookingResponse.class);
-        } catch (Exception e) {
+        } catch (DataIntegrityViolationException e) {
             log.error("Error occurred while updating booking: {}", e.getMessage(), e);
             throw new CustomException(Error.BOOKING_UNABLE_TO_UPDATE);
+        } catch (DataAccessException e) {
+            log.error("Database access error occurred in Create Booking: {}", e.getMessage(), e);
+            throw new CustomException(Error.DATABASE_ACCESS_ERROR);
         }
     }
 
@@ -130,20 +138,35 @@ public class BookingServiceImpl implements BookingService{
                 .orElseThrow(() -> new CustomException(Error.BOOKING_NOT_FOUND));
         return modelMapper.map(booking, GetBookingResponse.class);
     }
+
     private boolean ExistBooking(Integer id){
         return bookingRepository.findById(id).isPresent();
     }
-
 
     @Override
     public AddBookingTourResponse addBookingTour(AddBookingTourRequest addBookingTourRequest) {
         log.info("Adding tour to booking: {}", addBookingTourRequest.getIdBooking());
 
+        if(addBookingTourRequest.getIdTour() == null){
+            throw new CustomException(Error.BOOKING_DETAIL_INVALID_ID_TOUR);
+        }
+        if(addBookingTourRequest.getQuantity() == null){
+            throw new CustomException(Error.BOOKING_DETAIL_INVALID_QUANTITY);
+        }
+        if(addBookingTourRequest.getTotalPrice() == null){
+            throw new CustomException(Error.BOOKING_DETAIL_INVALID_TOTAL_PRICE);
+        }
+        if(addBookingTourRequest.getIdUser() == null){
+            throw new CustomException(Error.BOOKING_DETAIL_INVALID_ID_USER);
+        }
+
         // Check if the booking exists, create if not
-        Booking booking;
+        Booking booking = new Booking();
         if (!ExistBooking(addBookingTourRequest.getIdBooking())) {
             // Create a new booking using Builder and ModelMapper
-            CreateBookingRequest createBookingRequest = modelMapper.map(addBookingTourRequest, CreateBookingRequest.class);
+            CreateBookingRequest createBookingRequest = modelMapper
+                    .map(addBookingTourRequest,
+                            CreateBookingRequest.class);
             createBookingRequest.setTotalPrice(addBookingTourRequest.getTotalPrice());
 
             // Default payment method logic can be added here if needed
@@ -165,8 +188,18 @@ public class BookingServiceImpl implements BookingService{
                     .build();
 
             // Save the updated booking
-            bookingRepository.save(booking);
+            try {
+                bookingRepository.save(booking);
+            } catch (DataIntegrityViolationException e) {
+                log.error("Error occurred while saving tour booking details: {}", e.getMessage(), e);
+                throw new CustomException(Error.BOOKING_DETAIL_UNABLE_TO_SAVE);
+            } catch (DataAccessException e) {
+                log.error("Database access error occurred in saving tour booking details: {}", e.getMessage(), e);
+                throw new CustomException(Error.DATABASE_ACCESS_ERROR);
+            }
+
         }
+
         TourSchedule tour=modelMapper.map(tourScheduleService.findById(addBookingTourRequest.getIdTour()),TourSchedule.class);
 
         // Create a BookingDetail object using Builder pattern
@@ -180,9 +213,12 @@ public class BookingServiceImpl implements BookingService{
         try {
             // Save the booking detail
             bookingDetailRepository.save(bookingDetail);
-        } catch (Exception e) {
-            log.error("Error occurred while adding tour to booking: {}", e.getMessage(), e);
-
+        } catch (DataIntegrityViolationException e) {
+            log.error("Error occurred while updating booking details: {}", e.getMessage(), e);
+            throw new CustomException(Error.BOOKING_DETAIL_UNABLE_TO_SAVE);
+        } catch (DataAccessException e) {
+            log.error("Database access error occurred in add booking details: {}", e.getMessage(), e);
+            throw new CustomException(Error.DATABASE_ACCESS_ERROR);
         }
 
         // Map the updated booking to AddBookingTourResponse using ModelMapper
@@ -193,9 +229,23 @@ public class BookingServiceImpl implements BookingService{
 
         return response;
     }
+
     @Override
     public AddBookingTourismResponse addBookingTourism(AddBookingTourismRequest addBookingTourismRequest) {
         log.info("Adding tourism to booking: {}", addBookingTourismRequest.getIdBooking());
+
+        if(addBookingTourismRequest.getIdTourism() == null){
+            throw new CustomException(Error.BOOKING_DETAIL_INVALID_ID_TOURISM);
+        }
+        if(addBookingTourismRequest.getQuantity() == null){
+            throw new CustomException(Error.BOOKING_DETAIL_INVALID_QUANTITY);
+        }
+        if(addBookingTourismRequest.getTotalPrice() == null){
+            throw new CustomException(Error.BOOKING_DETAIL_INVALID_TOTAL_PRICE);
+        }
+        if(addBookingTourismRequest.getIdUser() == null){
+            throw new CustomException(Error.BOOKING_DETAIL_INVALID_ID_USER);
+        }
 
         // Check if the booking exists, create if not
         Booking booking;
@@ -240,8 +290,12 @@ public class BookingServiceImpl implements BookingService{
         try {
             // Save the booking detail for tourism
             bookingDetailRepository.save(bookingDetail);
-        } catch (Exception e) {
-            log.error("Error occurred while adding tourism to booking: {}", e.getMessage(), e);
+        } catch (DataIntegrityViolationException e) {
+            log.error("Error occurred while saving tourism booking detail: {}", e.getMessage(), e);
+            throw new CustomException(Error.BOOKING_DETAIL_UNABLE_TO_SAVE);
+        } catch (DataAccessException e) {
+            log.error("Database access error occurred in saving tourism Booking detail: {}", e.getMessage(), e);
+            throw new CustomException(Error.DATABASE_ACCESS_ERROR);
         }
 
         // Map the updated booking to AddBookingTourismResponse using ModelMapper
@@ -255,6 +309,19 @@ public class BookingServiceImpl implements BookingService{
     @Override
     public AddBookingHotelResponse addBookingHotel(AddBookingHotelRequest addBookingHotelRequest) {
         log.info("Adding hotel to booking: {}", addBookingHotelRequest.getIdBooking());
+
+        if(addBookingHotelRequest.getIdHotel() == null){
+            throw new CustomException(Error.BOOKING_DETAIL_INVALID_ID_HOTEL);
+        }
+        if(addBookingHotelRequest.getQuantity() == null){
+            throw new CustomException(Error.BOOKING_DETAIL_INVALID_QUANTITY);
+        }
+        if(addBookingHotelRequest.getTotalPrice() == null){
+            throw new CustomException(Error.BOOKING_DETAIL_INVALID_TOTAL_PRICE);
+        }
+        if(addBookingHotelRequest.getIdUser() == null){
+            throw new CustomException(Error.BOOKING_DETAIL_INVALID_ID_USER);
+        }
 
         // Check if the booking exists, create if not
         Booking booking;
@@ -299,8 +366,12 @@ public class BookingServiceImpl implements BookingService{
         try {
             // Save the booking detail for hotel
             bookingDetailRepository.save(bookingDetail);
-        } catch (Exception e) {
-            log.error("Error occurred while adding hotel to booking: {}", e.getMessage(), e);
+        } catch (DataIntegrityViolationException e) {
+            log.error("Error occurred while saving hotel booking detail : {}", e.getMessage(), e);
+            throw new CustomException(Error.BOOKING_DETAIL_UNABLE_TO_SAVE);
+        } catch (DataAccessException e) {
+            log.error("Database access error occurred in saving hotel Booking detail: {}", e.getMessage(), e);
+            throw new CustomException(Error.DATABASE_ACCESS_ERROR);
         }
 
         // Map the updated booking to AddBookingHotelResponse using ModelMapper
@@ -320,12 +391,13 @@ public class BookingServiceImpl implements BookingService{
                 .orElseThrow(() -> new CustomException(Error.BOOKING_DETAIL_NOT_FOUND));
 
         // Update the quantity and recalculate the total price for the tourism
-        bookingDetail.setQuantity(updateBookingTourismRequest.getQuantity());
+        if(updateBookingTourismRequest.getQuantity() != null){
+            bookingDetail.setQuantity(updateBookingTourismRequest.getQuantity());
+        }
 
         // Fetch the tourism ticket to recalculate the price
         Ticket tourism = modelMapper.map(ticketService.findById(bookingDetail.getIdTourism()), Ticket.class);
         bookingDetail.setTotalPrice(tourism.getTourPrice() * updateBookingTourismRequest.getQuantity());
-
 
             // Save the updated booking detail
             bookingDetailRepository.save(bookingDetail);
@@ -339,8 +411,15 @@ public class BookingServiceImpl implements BookingService{
             booking.setTotalPrice(newTotalPrice);
 
             // Save the updated booking with the new total price
+        try {
             bookingRepository.save(booking);
-
+        }  catch (DataIntegrityViolationException e) {
+            log.error("Error occurred while updating tourism booking detail : {}", e.getMessage(), e);
+            throw new CustomException(Error.BOOKING_DETAIL_UNABLE_TO_UPDATE);
+        } catch (DataAccessException e) {
+            log.error("Database access error occurred in updating tourism Booking detail: {}", e.getMessage(), e);
+            throw new CustomException(Error.DATABASE_ACCESS_ERROR);
+        }
 
         // Map and return the response
         UpdateBookingTourismResponse response = modelMapper.map(bookingDetail, UpdateBookingTourismResponse.class);
@@ -359,12 +438,13 @@ public class BookingServiceImpl implements BookingService{
                 .orElseThrow(() -> new CustomException(Error.BOOKING_DETAIL_NOT_FOUND));
 
         // Update the quantity and recalculate the total price for the hotel
-        bookingDetail.setQuantity(updateBookingHotelRequest.getQuantity());
+        if(updateBookingHotelRequest.getQuantity() != null){
+            bookingDetail.setQuantity(updateBookingHotelRequest.getQuantity());
+        }
 
         // Fetch the hotel booking to recalculate the price
         HotelBooking hotel = modelMapper.map(hotelBookingService.findById(bookingDetail.getIdHotel()), HotelBooking.class);
         bookingDetail.setTotalPrice(hotel.getTotalPrice() * updateBookingHotelRequest.getQuantity());
-
 
             // Save the updated booking detail
             bookingDetailRepository.save(bookingDetail);
@@ -378,8 +458,15 @@ public class BookingServiceImpl implements BookingService{
             booking.setTotalPrice(newTotalPrice);
 
             // Save the updated booking with the new total price
+        try {
             bookingRepository.save(booking);
-
+        }  catch (DataIntegrityViolationException e) {
+            log.error("Error occurred while updating hotel booking detail : {}", e.getMessage(), e);
+            throw new CustomException(Error.BOOKING_DETAIL_UNABLE_TO_UPDATE);
+        } catch (DataAccessException e) {
+            log.error("Database access error occurred in updating hotel Booking detail: {}", e.getMessage(), e);
+            throw new CustomException(Error.DATABASE_ACCESS_ERROR);
+        }
 
         // Map and return the response
         UpdateBookingHotelResponse response = modelMapper.map(bookingDetail, UpdateBookingHotelResponse.class);
@@ -400,12 +487,13 @@ public class BookingServiceImpl implements BookingService{
                 .orElseThrow(() -> new CustomException(Error.BOOKING_DETAIL_NOT_FOUND));
 
         // Update the quantity and recalculate the total price for the tour
-        bookingDetail.setQuantity(updateBookingTourRequest.getQuantity());
+        if(updateBookingTourRequest.getQuantity() != null){
+            bookingDetail.setQuantity(updateBookingTourRequest.getQuantity());
+        }
 
         // Fetch the tour to recalculate the price
         TourSchedule tour = modelMapper.map(tourScheduleService.findById(bookingDetail.getIdTour()), TourSchedule.class);
         bookingDetail.setTotalPrice(tour.getPriceTour() * updateBookingTourRequest.getQuantity());
-
 
             // Save the updated booking detail
             bookingDetailRepository.save(bookingDetail);
@@ -419,8 +507,15 @@ public class BookingServiceImpl implements BookingService{
             booking.setTotalPrice(newTotalPrice);
 
             // Save the updated booking with the new total price
+        try {
             bookingRepository.save(booking);
-
+        } catch (DataIntegrityViolationException e) {
+            log.error("Error occurred while updating tour booking detail : {}", e.getMessage(), e);
+            throw new CustomException(Error.BOOKING_DETAIL_UNABLE_TO_UPDATE);
+        } catch (DataAccessException e) {
+            log.error("Database access error occurred in updating tour Booking detail: {}", e.getMessage(), e);
+            throw new CustomException(Error.DATABASE_ACCESS_ERROR);
+        }
 
         // Map and return the response
         UpdateBookingTourResponse response = modelMapper.map(bookingDetail, UpdateBookingTourResponse.class);
@@ -430,7 +525,6 @@ public class BookingServiceImpl implements BookingService{
 
         return response;
     }
-
 
 
     private Integer getGenerationId() {
