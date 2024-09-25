@@ -8,7 +8,7 @@ import com.freelance.bookCar.dto.request.user.accountDTO.RegistrationRequest;
 import com.freelance.bookCar.dto.response.booking.CreateBookingResponse;
 import com.freelance.bookCar.dto.response.user.accountDTO.LoginResponse;
 import com.freelance.bookCar.dto.response.user.accountDTO.RegistrationResponse;
-import com.freelance.bookCar.services.user.accountservice.AccountService;
+import com.freelance.bookCar.services.user.userservice.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/auth")
 public class AuthController {
     @Autowired
-    private AccountService accountService;
+    private UserService accountService;
     @PostMapping("/registration")
     public ResponseEntity<ApiResponse<RegistrationResponse>> registration(@RequestBody RegistrationRequest registrationRequest){
         RegistrationResponse registrationResponse=accountService.registration(registrationRequest);

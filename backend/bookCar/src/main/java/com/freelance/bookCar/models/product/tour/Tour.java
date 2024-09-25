@@ -19,5 +19,5 @@ public class Tour {
     private String description;
     private String startLocation;
     private String endLocation;
-    private Integer idTourStatus; //bolean
+    private Boolean isActive;
 }

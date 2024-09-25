@@ -16,4 +16,5 @@ public class CreateUserRequest {
     private String email;
     private String type;
     private Integer idAccount;
+    private String password;
 }
