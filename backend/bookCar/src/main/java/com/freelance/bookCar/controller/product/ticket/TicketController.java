@@ -7,6 +7,7 @@ import com.freelance.bookCar.dto.response.product.ticketDTO.ticket.CreateTicketR
 import com.freelance.bookCar.dto.response.product.ticketDTO.ticket.GetTicketResponse;
 import com.freelance.bookCar.dto.response.product.ticketDTO.ticket.UpdateTicketResponse;
 import com.freelance.bookCar.services.product.ticketService.ticket.TicketService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,13 +20,13 @@ public class TicketController {
     private TicketService ticketService;
 
     @PostMapping()
-    public ResponseEntity<ApiResponse<CreateTicketResponse>> create(@RequestBody CreateTicketRequest createTicketRequest){
+    public ResponseEntity<ApiResponse<CreateTicketResponse>> create(@ModelAttribute @Valid CreateTicketRequest createTicketRequest){
         CreateTicketResponse createTicketResponse = ticketService.createTicket(createTicketRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Ticket created successfully", createTicketResponse));
     }
 
     @PatchMapping()
-    public ResponseEntity<ApiResponse<UpdateTicketResponse>> update(@RequestBody UpdateTicketRequest updateTicketRequest){
+    public ResponseEntity<ApiResponse<UpdateTicketResponse>> update(@ModelAttribute @Valid UpdateTicketRequest updateTicketRequest){
         UpdateTicketResponse updateTicketResponse = ticketService.updateTicket(updateTicketRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Ticket updated successfully", updateTicketResponse));
     }

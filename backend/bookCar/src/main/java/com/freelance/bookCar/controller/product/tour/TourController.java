@@ -11,6 +11,7 @@ import com.freelance.bookCar.services.product.tourService.tour.TourService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -21,12 +22,12 @@ public class TourController {
     @Autowired
     private TourService tourService;
     @PostMapping()
-    public ResponseEntity<ApiResponse<CreateTourResponse>> create(@RequestBody CreateTourRequest createTourRequest){
+    public ResponseEntity<ApiResponse<CreateTourResponse>> create(@ModelAttribute @Valid CreateTourRequest createTourRequest){
         CreateTourResponse createTourResponse=tourService.createTour(createTourRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Tour created successfully", createTourResponse));
     }
     @PatchMapping()
-    public ResponseEntity<ApiResponse<UpdateTourResponse>> update(@RequestBody UpdateTourRequest updateTourRequest){
+    public ResponseEntity<ApiResponse<UpdateTourResponse>> update(@ModelAttribute @Valid UpdateTourRequest updateTourRequest){
         UpdateTourResponse updateTourResponse=tourService.updateTour(updateTourRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Tour update successfully", updateTourResponse));
     }
