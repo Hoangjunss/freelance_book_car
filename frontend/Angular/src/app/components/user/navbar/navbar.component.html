@@ -118,7 +118,7 @@
     <!-- navbar.component.html -->
     <section class="tab-section position-absolute bottom-0 w-100">
         <div class="container-tab">
-            <div class="tabs d-flex">
+            <div class="tabs d-flex text-dark">
                 <div class="tab-item" *ngFor="let tab of tabs" [class.active]="tab === selectedTab"
                     (click)="selectTab(tab)">
                     <a class="tab-link" [class.active]="tab === selectedTab">
@@ -152,6 +152,7 @@
 
 
 </section>
+
 <div class="container py-5 card-container">
     <div class="row card-info">
 
@@ -220,9 +221,6 @@
 
     </div>
 </div>
-
-
-
 
 <section>
     <div class="memory-home">
