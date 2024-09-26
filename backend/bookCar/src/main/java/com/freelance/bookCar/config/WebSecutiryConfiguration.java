@@ -5,6 +5,7 @@ import com.freelance.bookCar.security.OurUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -24,6 +25,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 @EnableWebSecurity
 public class WebSecutiryConfiguration {
 @Autowired
+@Lazy
 private OurUserDetailsService ourUserDetailsService;
 @Autowired
 private JwtAuthenticationFilter jwtAuthenticationFilter;
