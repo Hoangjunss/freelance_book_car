@@ -6,6 +6,7 @@ import { CreateTourismRequest } from '../../../../models/request/product/ticket/
 import { CreateTourismResponse } from '../../../../models/response/product/ticket/tourism/create-tourism-response';
 import { TourismService } from '../../../../services/product/ticket/tourism/tourism.service';
 import { NoDataFoundComponent } from "../../no-data-found/no-data-found.component";
+import { UpdateTourismRequest } from '../../../../models/request/product/ticket/tourism/update-tourism-request';
 
 @Component({
   selector: 'app-tourism',
@@ -17,14 +18,22 @@ import { NoDataFoundComponent } from "../../no-data-found/no-data-found.componen
 export class TourismComponent {
   createTourismRequest: CreateTourismRequest = new CreateTourismRequest();
   createTourismResponse: CreateTourismResponse = new CreateTourismResponse();
+  updateTourismRequest: UpdateTourismRequest = new UpdateTourismRequest();
+  updateTourismResponse: CreateTourismResponse = new CreateTourismResponse();
   getTourismResponse: GetTourismResponse[] = [];
 
+  isDisplayCreate = false;
+  isDisplayUpdate = false;
+
+  imageUrl: string = 'assets/img/DEFAULT/tour-default.png';
   selectedImage: string = 'assets/img/DEFAULT/tour-default.png';
-  isDisplayDetails: boolean = false;
+
+  imageFile?: File;
+
   tour?: GetTourismResponse;
   currentPage: number = 1;
   pageSize: number = 5;
-  pagedData: GetTourismResponse[] = [];
+  pagedData: any[] = [];
 
   constructor(private tourismService: TourismService){}
 
@@ -33,15 +42,15 @@ export class TourismComponent {
     this.updatePagedData();
   }
 
+  goToPage(page: number) {
+    this.currentPage = page;
+    this.updatePagedData();
+  }
+
   updatePagedData() {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
     this.pagedData = this.getTourismResponse.slice(startIndex, endIndex);
-  }
-
-  goToPage(page: number) {
-    this.currentPage = page;
-    this.updatePagedData();
   }
 
   get totalPages(): number {
@@ -52,50 +61,70 @@ export class TourismComponent {
     return Array(this.totalPages).fill(0).map((x, i) => i + 1);
   }
 
-  displayDetailsTour() {
-    this.isDisplayDetails = true;
+  displayFormCreate(){
+    this.isDisplayCreate = true;
   }
 
-  save() {
-    if (this.tour) {
-      console.log('Saved:', {
-        id: this.tour.id,
-        name: this.tour.name,
-        location: this.tour.location,
-        description: this.tour.description,
-        rating: this.tour.rating,
-      });
-    }
+  closeFormCreate(){
+    this.isDisplayCreate = true;
   }
 
-  onImageSelected(event: any): void {
-    const file = event.target.files[0];
+  displayFormUpdate(tourism: GetTourismResponse){
+    this.updateTourismRequest = {
+      id: tourism.id,
+      
+    };
+    this.isDisplayUpdate = true;
+  }
+
+  closeFormUpdate(){
+    this.isDisplayUpdate = false;
+  }
+
+  onImageSelected(event: any) {
+    const file: File = event.target.files[0];
     if (file) {
+      this.createTourismRequest.image = file; // Gán tệp ảnh đã chọn vào thuộc tính image của createTourRequest
       const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.selectedImage = e.target.result;
+      reader.onload = () => {
+        this.imageUrl = reader.result as string; // Hiển thị ảnh vừa chọn trong form
       };
       reader.readAsDataURL(file);
     }
   }
 
-  cancel() {
-    this.isDisplayDetails = false;
-    console.log('Cancelled');
-  }
-
   onSubmit() {
     console.log('Tour data:', this.createTourismRequest);
   
+    // Kiểm tra các trường bắt buộc
     if (!this.createTourismRequest?.name || !this.createTourismRequest?.location || !this.createTourismRequest?.description) {
       alert('Please fill in all required fields: Name, Location, Description');
       return;
     }
+
+    // Tạo đối tượng FormData
+    const formData = new FormData();
+    formData.append('name', this.createTourismRequest.name || '');
+    formData.append('description', this.createTourismRequest.description || '');
+    formData.append('location', this.createTourismRequest.location || '');
+    formData.append('rating', this.createTourismRequest.rating?.toString() || '');
   
-    this.tourismService.createTour(this.createTourismRequest).subscribe({
+    // Kiểm tra và thêm hình ảnh vào FormData nếu có
+    if (this.createTourismRequest.image) {
+      formData.append('image', this.createTourismRequest.image);
+    }else{
+
+    }
+
+    formData.forEach((value, key) => {
+      console.log(`${key}: ${value}`);
+    });
+
+    // Gọi service để tạo tour
+    this.tourismService.createTour(formData).subscribe({
       next: (data) => {
         this.createTourismResponse = data;
-        if(this.createTourismResponse){
+        if (this.createTourismResponse) {
           console.log('Tour created successfully:', data);
           alert('Tour created successfully');
         }
@@ -111,6 +140,7 @@ export class TourismComponent {
     this.tourismService.getAllTourism().subscribe({
       next: (data) =>{
         this.getTourismResponse = data;
+        this.updatePagedData();
       },
       error: (err) => {
         console.error('Error get all tourism:', err.message);

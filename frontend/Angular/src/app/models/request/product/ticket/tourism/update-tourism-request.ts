@@ -4,4 +4,5 @@ export class UpdateTourismRequest{
     location?: string;
     description?: string;
     rating?: number;
+    image?: File;
 }

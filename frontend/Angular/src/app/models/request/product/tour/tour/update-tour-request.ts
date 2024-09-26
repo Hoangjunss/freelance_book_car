@@ -4,5 +4,6 @@ export class UpdateTourRequest{
     description?: string;
     startLocation?: string;
     endLocation?: string;
-    idTourStatus?: number;
+    isActive?: boolean;
+    image?: string;
 }
