@@ -3,6 +3,8 @@ import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { Router, RouterLink } from '@angular/router';
+import { UserService } from '../../../services/user/user.service';
+import { response } from 'express';
 
 @Component({
   selector: 'app-register',
@@ -14,11 +16,12 @@ import { Router, RouterLink } from '@angular/router';
 export class RegisterComponent {
 
   userForm: FormGroup;
-  constructor(private fb: FormBuilder, private router: Router,private titleService: Title) { 
+  constructor(private fb: FormBuilder, private router: Router,private titleService: Title,private userService: UserService) { 
     this.userForm = this.fb.group({
       name: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, this.passwordValidator()]]
+      password: ['', [Validators.required, this.passwordValidator()]],
+      role: [{ value: 'user', disabled: true }]
     });
     this.titleService.setTitle("Register");
   }
@@ -81,11 +84,30 @@ export class RegisterComponent {
 
   registerUser() {
     if (this.userForm.valid) {
-      console.log(this.userForm.value + " submitForm"); 
-      console.log(this.userForm.value.name + " " + this.userForm.value.email + " " + this.userForm.value.password);
-    }
-    else {
-      console.log("Form is invalid");
+      const formData = new FormData();
+      formData.append('name', this.userForm.get('name')?.value);
+      formData.append('email', this.userForm.get('email')?.value);
+      formData.append('password', this.userForm.get('password')?.value);
+      formData.append('role', this.userForm.get('role')?.value);
+
+
+      this.userService.registerUser(formData).subscribe(    
+          
+        (response) => {
+          console.log(response);
+          this.router.navigate(['/login']);
+        },
+        (error) => {
+          console.log(error);
+          if (error.status === 409 ) { 
+            this.userForm.get('email')?.setErrors({ emailExists: true });
+          } else {
+
+          }
+        }
+        
+      );
+      
     }
   }
 

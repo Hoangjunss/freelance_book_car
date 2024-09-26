@@ -19,7 +19,7 @@
                         </a>
                         <h3>Sign In</h3>
                     </div>
-                    <form [formGroup]="userForm" (ngSubmit)="submitForm()">
+                    <form [formGroup]="userForm" (ngSubmit)="loginUser()">
                         <div class="form-floating mb-3">
                             <input type="email" class="form-control" iname="email" formControlName="email" id="email" placeholder="Enter your email">
                             <label for="floatingInput">Email address</label>
@@ -29,9 +29,6 @@
                                 </div>
                                 <div class="text-danger" *ngIf="userForm.controls['email'].errors?.['email']" >
                                     Email is invalid
-                                </div>
-                                <div class="text-danger" *ngIf="userForm.controls['email'].errors?.['invalidCredentials']">
-                                    Invalid email or password
                                 </div>
                                 <div class="text-danger" *ngIf="userForm.controls['email'].errors?.['emailNotFound']">
                                     Account not found
@@ -44,6 +41,9 @@
                             <div class="alert" *ngIf="userForm.controls['password']?.invalid && (userForm.controls['password']?.touched || userForm.controls['password']?.dirty)">
                                 <div class="text-danger" *ngIf="userForm.controls['password'].errors?.['required']">
                                     Password is required
+                                </div>
+                                <div class="text-danger" *ngIf="userForm.controls['password'].errors?.['invalidCredentials']">
+                                    Password not machines
                                 </div>
                             </div>
                         </div>
