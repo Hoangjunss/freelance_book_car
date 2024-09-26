@@ -7,6 +7,10 @@ import { BookingComponent } from './components/user/booking/booking.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { PaymentComponent } from './components/user/payment/payment.component';
 import { HomeComponent } from './components/user/home/home.component';
+import { HotelListComponent } from './components/user/hotel-list/hotel-list.component';
+import { TicketListComponent } from './components/user/ticket-list/ticket-list.component';
+import { TicketDetailComponent } from './components/user/ticket-detail/ticket-detail.component';
+import { HotelDetailComponent } from './components/user/hotel-detail/hotel-detail.component';
 
 
 export const routes: Routes = [
@@ -18,6 +22,14 @@ export const routes: Routes = [
   {
     path: 'location-list/:location',
     component: LocationListComponent
+  },
+  {
+    path: 'ticket-list/:location',
+    component: TicketListComponent
+  },
+  {
+    path: 'hotel-list/:location',
+    component: HotelListComponent
   },
   {
     path: 'home',
@@ -39,6 +51,15 @@ export const routes: Routes = [
   {
     path: 'location-detail',
     component: LocationDetailComponent
+  },
+  { path: 'location-details/:id',
+    component: LocationDetailComponent 
+  },
+  { path: 'ticket-details/:id',
+    component: TicketDetailComponent
+  },
+  { path: 'hotel-details/:id',
+    component: HotelDetailComponent
   },
   {
     path: 'admin',

@@ -15,5 +15,5 @@ public class UpdateUserResponse{
     private String phone;
     private String address;
     private String type;
-    private Integer idAccount;
+
 }

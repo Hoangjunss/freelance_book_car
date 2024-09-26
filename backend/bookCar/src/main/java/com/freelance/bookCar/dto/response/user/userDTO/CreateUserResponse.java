@@ -16,5 +16,5 @@ public class CreateUserResponse {
     private String phone;
     private String address;
     private String type;
-    private Integer idAccount;
+
 }
