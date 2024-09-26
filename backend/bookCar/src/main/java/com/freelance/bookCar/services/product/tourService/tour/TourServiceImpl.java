@@ -3,13 +3,16 @@ package com.freelance.bookCar.services.product.tourService.tour;
 import com.freelance.bookCar.dto.request.product.tourDTO.tour.CreateTourRequest;
 import com.freelance.bookCar.dto.request.product.tourDTO.tour.UpdateTourRequest;
 import com.freelance.bookCar.dto.response.product.tourDTO.tour.CreateTourResponse;
+import com.freelance.bookCar.dto.response.product.tourDTO.tour.GetTourDetailResponse;
 import com.freelance.bookCar.dto.response.product.tourDTO.tour.GetTourResponse;
 import com.freelance.bookCar.dto.response.product.tourDTO.tour.UpdateTourResponse;
 import com.freelance.bookCar.exception.CustomException;
 import com.freelance.bookCar.exception.Error;
 import com.freelance.bookCar.models.product.tour.Tour;
+import com.freelance.bookCar.models.product.tour.TourSchedule;
 import com.freelance.bookCar.respository.product.tour.TourRepository;
 import com.freelance.bookCar.services.image.ImageService;
+import com.freelance.bookCar.services.product.tourService.tourSchedule.TourScheduleService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -30,6 +34,8 @@ public class TourServiceImpl implements TourService {
     private ModelMapper modelMapper;
     @Autowired
     private ImageService imageService;
+    @Autowired
+    private TourScheduleService tourScheduleService;
     @Override
     public CreateTourResponse createTour(CreateTourRequest createTourRequest) {
         log.info("Create tour");
@@ -122,6 +128,14 @@ public class TourServiceImpl implements TourService {
     @Override
     public List<GetTourResponse> getLocation(String location) {
         return tourRepository.findAllByStartLocation(location).stream().map(tour -> modelMapper.map(tour, GetTourResponse.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public GetTourDetailResponse getDetail(Integer id, LocalDateTime dateTime) {
+        GetTourDetailResponse getTourDetailResponse=modelMapper.map(findById(id), GetTourDetailResponse.class);
+        TourSchedule tourSchedule=tourScheduleService.findByIdAndByStartDate(id,dateTime);
+        getTourDetailResponse.setPrice(tourSchedule.getPriceTour());
+        return getTourDetailResponse;
     }
 
     private Integer getGenerationId() {

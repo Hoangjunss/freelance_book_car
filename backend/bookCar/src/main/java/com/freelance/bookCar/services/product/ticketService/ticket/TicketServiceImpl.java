@@ -16,6 +16,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Service
@@ -25,6 +26,7 @@ public class TicketServiceImpl implements TicketService {
     private TicketRepository ticketRepository;
     @Autowired
     private ModelMapper modelMapper;
+
     @Override
     public CreateTicketResponse createTicket(CreateTicketRequest createTicketRequest) {
         log.info("Create ticket");
@@ -97,6 +99,11 @@ public class TicketServiceImpl implements TicketService {
                 .orElseThrow(() -> new CustomException(Error.TICKET_NOT_FOUND));
 
         return modelMapper.map(ticket, GetTicketResponse.class);
+    }
+
+    @Override
+    public Ticket findByIdAndByStartDate(Integer id, LocalDateTime date) {
+        return ticketRepository.findByIdAndByStartDate(id,date);
     }
 
     private Integer getGenerationId() {

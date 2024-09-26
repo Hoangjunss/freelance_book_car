@@ -5,6 +5,7 @@ import com.freelance.bookCar.dto.request.product.ticketDTO.tourism.CreateTourism
 import com.freelance.bookCar.dto.request.product.ticketDTO.tourism.UpdateTourismRequest;
 import com.freelance.bookCar.dto.response.product.hotelDTO.hotel.GetHotelResponse;
 import com.freelance.bookCar.dto.response.product.ticketDTO.tourism.CreateTourismResponse;
+import com.freelance.bookCar.dto.response.product.ticketDTO.tourism.GetTourismDetailResponse;
 import com.freelance.bookCar.dto.response.product.ticketDTO.tourism.GetTourismResponse;
 import com.freelance.bookCar.dto.response.product.ticketDTO.tourism.UpdateTourismResponse;
 import com.freelance.bookCar.services.product.ticketService.tourism.TourismService;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -50,6 +52,14 @@ public class TourismController {
     @GetMapping("/{location}")
     public ResponseEntity<ApiResponse<List<GetTourismResponse>>> getLocation(@PathVariable String location) {
         List<GetTourismResponse> response = tourismService.findLocation(location);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Hotel retrieved successfully", response));
+    }
+    @GetMapping("/detail")
+    public ResponseEntity<ApiResponse<GetTourismDetailResponse>> getDetail(@RequestParam Integer id, @RequestParam(required = false)  LocalDateTime dateTime) {
+        if(dateTime==null){
+            dateTime=LocalDateTime.now();
+        }
+        GetTourismDetailResponse response=tourismService.getDetail(id,dateTime);
         return ResponseEntity.ok(new ApiResponse<>(true, "Hotel retrieved successfully", response));
     }
 }

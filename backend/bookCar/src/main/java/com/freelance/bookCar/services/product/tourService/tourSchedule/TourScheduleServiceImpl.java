@@ -16,6 +16,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -113,6 +114,11 @@ public class TourScheduleServiceImpl implements TourScheduleService  {
     @Override
     public List<GetTourScheduleResponse> getAll() {
         return tourScheduleRepository.findAll().stream().map(tourSchedule -> modelMapper.map(tourSchedule, GetTourScheduleResponse.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public TourSchedule findByIdAndByStartDate(Integer id, LocalDateTime date) {
+        return tourScheduleRepository.findByIdAndByStartDate(id,date);
     }
 
     private Integer getGenerationId() {
