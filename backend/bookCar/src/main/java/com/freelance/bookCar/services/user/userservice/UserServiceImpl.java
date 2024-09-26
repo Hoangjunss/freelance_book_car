@@ -11,6 +11,7 @@ import com.freelance.bookCar.dto.response.user.userDTO.CreateUserResponse;
 import com.freelance.bookCar.dto.response.user.userDTO.UpdateUserResponse;
 import com.freelance.bookCar.exception.CustomException;
 import com.freelance.bookCar.exception.Error;
+import com.freelance.bookCar.models.user.TypeUser;
 import com.freelance.bookCar.models.user.User;
 import com.freelance.bookCar.respository.user.UserRepository;
 import com.freelance.bookCar.security.JwtTokenUtil;
@@ -55,9 +56,12 @@ public class UserServiceImpl implements UserService {
                 .email(userRequest.getEmail())
                 .password(userRequest.getPassword())
                 .name(userRequest.getName())
+                .type(TypeUser.USER)
                 .build();
         try {
-            return modelMapper.map(userRepository.save(user),CreateUserResponse.class);
+            CreateUserResponse createUserResponse=modelMapper.map(userRepository.save(user),CreateUserResponse.class);
+            createUserResponse.setType(user.getType().name());
+            return createUserResponse;
         } catch (DataIntegrityViolationException e) {
             log.error("Error occurred while saving user: {}", e.getMessage(), e);
             throw new CustomException(Error.USER_UNABLE_TO_SAVE);
