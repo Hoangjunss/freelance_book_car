@@ -9,6 +9,7 @@ import com.freelance.bookCar.dto.response.booking.CreateBookingResponse;
 import com.freelance.bookCar.dto.response.user.accountDTO.LoginResponse;
 import com.freelance.bookCar.dto.response.user.accountDTO.RegistrationResponse;
 import com.freelance.bookCar.services.user.userservice.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,17 +21,17 @@ public class AuthController {
     @Autowired
     private UserService accountService;
     @PostMapping("/registration")
-    public ResponseEntity<ApiResponse<RegistrationResponse>> registration(@RequestBody RegistrationRequest registrationRequest){
+    public ResponseEntity<ApiResponse<RegistrationResponse>> registration(@ModelAttribute @Valid RegistrationRequest registrationRequest){
         RegistrationResponse registrationResponse=accountService.registration(registrationRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Registration  successfully", registrationResponse));
     }
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<LoginResponse>> login(@RequestBody LoginRequest loginRequest){
+    public ResponseEntity<ApiResponse<LoginResponse>> login(@ModelAttribute @Valid LoginRequest loginRequest){
         LoginResponse loginResponse=accountService.login(loginRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Login  successfully", loginResponse));
     }
     @PostMapping("/refreshToken")
-    public ResponseEntity<ApiResponse<LoginResponse>> refreshToken(@RequestBody RefreshToken refreshToken){
+    public ResponseEntity<ApiResponse<LoginResponse>> refreshToken(@ModelAttribute @Valid RefreshToken refreshToken){
         LoginResponse loginResponse=accountService.generateRefreshToken(refreshToken);
         return ResponseEntity.ok(new ApiResponse<>(true, "RefreshToken  successfully", loginResponse));
     }
