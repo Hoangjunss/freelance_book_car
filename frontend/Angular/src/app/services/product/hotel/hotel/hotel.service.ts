@@ -17,8 +17,8 @@ export class HotelService {
 
   constructor(private httpClient: HttpClient) { }
 
-  createHotel(createHotelRequest: CreateHotelRequest): Observable<CreateHotelResponse> {
-    return this.httpClient.post<Apiresponse<CreateHotelResponse>>(`${this.baseUrl}`, createHotelRequest).pipe(
+  createHotel(formData: FormData): Observable<CreateHotelResponse> {
+    return this.httpClient.post<Apiresponse<CreateHotelResponse>>(`${this.baseUrl}`, formData).pipe(
       map((response: Apiresponse<CreateHotelResponse>) => {
         if (response.success) {
           return response.data;
@@ -51,5 +51,17 @@ export class HotelService {
         }
       })
     );
+  }
+
+  getAllHotel(): Observable<GetHotelResponse[]> {
+    return this.httpClient.get<Apiresponse<GetHotelResponse[]>>(`${this.baseUrl}`).pipe(
+      map((response: Apiresponse<GetHotelResponse[]>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    )
   }
 }

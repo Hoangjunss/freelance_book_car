@@ -4,6 +4,6 @@ export class UpdateHotelRequest{
     contacInfo?: string;
     pricePerNight?: number;
     location?: string;
-    active?: boolean;
+    isActive?: boolean;
     rating?: number;
 }

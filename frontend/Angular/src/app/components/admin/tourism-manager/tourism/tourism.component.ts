@@ -22,7 +22,6 @@ export class TourismComponent {
   selectedImage: string = 'assets/img/DEFAULT/tour-default.png';
   isDisplayDetails: boolean = false;
   tour?: GetTourismResponse;
-  data: GetTourismResponse[] = [];
   currentPage: number = 1;
   pageSize: number = 5;
   pagedData: GetTourismResponse[] = [];
@@ -31,7 +30,6 @@ export class TourismComponent {
 
   ngOnInit(): void {
     this.getAllTourisms();
-    this.data = this.getData();
     this.updatePagedData();
   }
 
@@ -52,14 +50,6 @@ export class TourismComponent {
 
   get pages(): number[] {
     return Array(this.totalPages).fill(0).map((x, i) => i + 1);
-  }
-
-  getData(): GetTourismResponse[] {
-    return [
-      { id: 1, name: 'Tour A', location: 'Location A', description: 'Description A', rating: 4.5 },
-      { id: 2, name: 'Tour B', location: 'Location B', description: 'Description B', rating: 4.0 },
-      // Add more mock data
-    ];
   }
 
   displayDetailsTour() {

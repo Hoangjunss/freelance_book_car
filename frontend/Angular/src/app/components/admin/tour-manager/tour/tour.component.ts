@@ -108,7 +108,7 @@ export class TourComponent implements OnInit{
       if(this.createTourRequest.isActive == undefined){
         this.createTourRequest.isActive = false;
       }
-      this.tourService.createTour(this.createTourRequest).subscribe({
+      this.tourService.createTour(formData).subscribe({
         next: (data) => {
           this.createTourResponse = data;
           if(this.createTourResponse){

@@ -1,5 +1,7 @@
 package com.freelance.bookCar.services.image;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -7,6 +9,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+@Service
+@Slf4j
 public class ImageServiceImpls implements ImageService {
     private static String UPLOAD_DIR = "src/main/resources/static/uploads/";
 

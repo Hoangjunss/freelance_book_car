@@ -17,8 +17,8 @@ export class TourService {
 
   constructor(private httpClient: HttpClient) { }
 
-  createTour(createTourRequest: CreateTourRequest): Observable<CreateTourResponse> {
-    return this.httpClient.post<Apiresponse<CreateTourResponse>>(`${this.baseUrl}`, createTourRequest).pipe(
+  createTour(fromData: FormData): Observable<CreateTourResponse> {
+    return this.httpClient.post<Apiresponse<CreateTourResponse>>(`${this.baseUrl}`, fromData).pipe(
       map((response: Apiresponse<CreateTourResponse>) => {
         if (response.success) {
           return response.data;

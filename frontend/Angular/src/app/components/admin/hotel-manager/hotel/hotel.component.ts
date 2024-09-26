@@ -1,21 +1,23 @@
+import { HotelService } from './../../../../services/product/hotel/hotel/hotel.service';
 import { Component } from '@angular/core';
 import { GetHotelResponse } from '../../../../models/response/product/hotel/hotel/get-hotel-response';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CreateHotelRequest } from '../../../../models/request/product/hotel/hotel/create-hotel-request';
 import { CreateHotelResponse } from '../../../../models/response/product/hotel/hotel/create-hotel-response';
+import { NoDataFoundComponent } from "../../no-data-found/no-data-found.component";
 
 @Component({
   selector: 'app-hotel',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NoDataFoundComponent],
   templateUrl: './hotel.component.html',
   styleUrl: './hotel.component.css'
 })
 export class HotelComponent {
   createHotelRequest: CreateHotelRequest = new CreateHotelRequest();
   createHotelResponse: CreateHotelResponse = new CreateHotelResponse();
-
+  getAllHotelReponse: GetHotelResponse[] = [];
 
   selectedImage: string = 'assets/img/DEFAULT/hotel-default.png';
   isDisplayDetails: boolean = false;
@@ -24,6 +26,8 @@ export class HotelComponent {
   currentPage: number = 1;
   pageSize: number = 5;
   pagedData: GetHotelResponse[] = [];
+
+  constructor(private hotelService: HotelService){}
 
   ngOnInit(): void {
     this.data = this.getData();
@@ -34,7 +38,7 @@ export class HotelComponent {
   updatePagedData() {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
-    this.pagedData = this.data.slice(startIndex, endIndex);
+    this.pagedData = this.getAllHotelReponse.slice(startIndex, endIndex);
   }
 
   goToPage(page: number) {
@@ -43,7 +47,7 @@ export class HotelComponent {
   }
 
   get totalPages(): number {
-    return Math.ceil(this.data.length / this.pageSize);
+    return Math.ceil(this.getAllHotelReponse.length / this.pageSize);
   }
 
   get pages(): number[] {
@@ -93,5 +97,50 @@ export class HotelComponent {
   cancel() {
     this.isDisplayDetails = false;
     console.log('Cancelled');
+  }
+
+  getAllHotel(){
+    this.hotelService.getAllHotel().subscribe({
+        next: (data) =>{
+          this.getAllHotelReponse = data;
+          console.log('All tours:', this.getAllHotelReponse);
+      },
+      error: (err) => {
+        console.error('Error getting tours:', err.message);
+      }
+    }
+    )
+  }
+
+  onSubmit() {
+    if(!this.createHotelRequest?.name || !this.createHotelRequest?.contacInfo || !this.createHotelRequest?.pricePerNight || !this.createHotelRequest?.location){
+      alert('Please fill in all required fields: Name, ContacInfo, PricePerNight, Location');
+      return;
+    }
+    if(this.createHotelRequest.isActive == undefined){
+      this.createHotelRequest.isActive = false;
+    }
+
+    const formData = new FormData();
+    formData.append('name', this.createHotelRequest.name || '');
+    formData.append('contacInfo', this.createHotelRequest.contacInfo || '');
+    formData.append('pricePerNight', this.createHotelRequest.pricePerNight?.toString() || '');
+    formData.append('location', this.createHotelRequest.location || '');
+    formData.append('isActive', this.createHotelRequest.isActive ? 'true' : 'false');
+    formData.append('rating', this.createHotelRequest.rating?.toString() || '');
+
+    this.hotelService.createHotel(formData).subscribe({
+      next: (data) => {
+        this.createHotelResponse = data;
+        if(this.createHotelResponse){
+          console.log('Tour created successfully:', this.createHotelResponse);
+          alert('Tour created successfully');
+        }
+      },
+      error: (err) => {
+        console.error('Error creating tour:', err.message);
+        alert(`Error creating tour: ${err.message}`);
+      }
+    });
   }
 }

@@ -8,7 +8,7 @@
   <button type="button" class="m-3 btn btn-success ml-auto" (click)="displayDetailsHotel()">Add Hotel</button>
 </nav>
 
-<div class="container">
+<div class="container" *ngIf="getAllHotelReponse.length >0; else noData">
   <h6 class="mb-4">Responsive Table with Pagination</h6>
   <div class="table-responsive">
     <table class="table">
@@ -25,13 +25,13 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of pagedData">
+        <tr *ngFor="let item of getAllHotelReponse">
           <th scope="row">{{ item.id }}</th>
           <td>{{ item.name }}</td>
           <td>{{ item.contacInfo }}</td>
           <td>{{ item.pricePerNight }}</td>
           <td>{{ item.location }}</td>
-          <td>{{ item.active ? 'Yes' : 'No' }}</td>
+          <td>{{ item.active ? 'Active' : 'Stop' }}</td>
           <td>{{ item.rating }}</td>
           <td>
             <button class="btn btn-warning m-2" (click)="displayDetailsHotel()">Edit</button>
@@ -57,7 +57,8 @@
   </nav>
 </div>
 
-<div *ngIf="isDisplayDetails" class="modal fade show" tabindex="-1" role="dialog" style="display: block; background: rgba(0, 0, 0, 0.5);">
+<div *ngIf="isDisplayDetails" class="modal fade show" tabindex="-1" role="dialog"
+  style="display: block; background: rgba(0, 0, 0, 0.5);">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content slide-in">
       <div class="modal-body">
@@ -67,33 +68,62 @@
             <button type="button" class="close" aria-label="Close" (click)="cancel()">
               <span aria-hidden="true">&times;</span>
             </button>
-            <form>
+            <form (ngSubmit)="onSubmit()">
               <div class="form-group">
                 <label for="name">Name</label>
-                <input type="text" class="form-control" id="name" [(ngModel)]="hotel!.name" name="name" placeholder="Enter hotel name" required>
+                <input type="text" class="form-control" id="name" [(ngModel)]="createHotelRequest.name" name="name"
+                  placeholder="Enter hotel name" required #nameInput="ngModel" />
+                <div *ngIf="nameInput.invalid && nameInput.touched" class="text-danger">
+                  Hotel name is required.
+                </div>
               </div>
+
               <div class="form-group">
                 <label for="contacInfo">Contact Info</label>
-                <input type="text" class="form-control" id="contacInfo" [(ngModel)]="hotel!.contacInfo" name="contacInfo" placeholder="Enter contact info">
+                <input type="text" class="form-control" id="contacInfo" [(ngModel)]="createHotelRequest.contacInfo"
+                  name="contacInfo" placeholder="Enter contact info" />
               </div>
+
               <div class="form-group">
                 <label for="pricePerNight">Price Per Night</label>
-                <input type="number" class="form-control" id="pricePerNight" [(ngModel)]="hotel!.pricePerNight" name="pricePerNight" placeholder="Enter price per night">
+                <input type="number" class="form-control" id="pricePerNight"
+                  [(ngModel)]="createHotelRequest.pricePerNight" name="pricePerNight"
+                  placeholder="Enter price per night" required min="0" #priceInput="ngModel" />
+                <div *ngIf="priceInput.invalid && priceInput.touched" class="text-danger">
+                  Price per night is required and must be a positive number.
+                </div>
               </div>
+
               <div class="form-group">
                 <label for="location">Location</label>
-                <input type="text" class="form-control" id="location" [(ngModel)]="hotel!.location" name="location" placeholder="Enter location">
+                <input type="text" class="form-control" id="location" [(ngModel)]="createHotelRequest.location"
+                  name="location" placeholder="Enter location" required #locationInput="ngModel" />
+                <div *ngIf="locationInput.invalid && locationInput.touched" class="text-danger">
+                  Location is required.
+                </div>
               </div>
+
               <div class="form-group">
                 <label for="active">Active</label>
-                <input type="checkbox" class="form-check-input" id="active" [(ngModel)]="hotel!.active" name="active">
+                <input type="checkbox" class="form-check-input" id="active" [(ngModel)]="createHotelRequest.isActive"
+                  name="active" />
               </div>
+
               <div class="form-group">
                 <label for="rating">Rating</label>
-                <input type="number" class="form-control" id="rating" [(ngModel)]="hotel!.rating" name="rating" step="0.1" placeholder="Enter rating">
+                <input type="number" class="form-control" id="rating" [(ngModel)]="createHotelRequest.rating"
+                  name="rating" step="0.1" placeholder="Enter rating" min="0" max="5" #ratingInput="ngModel" />
+                <div *ngIf="ratingInput.invalid && ratingInput.touched" class="text-danger">
+                  Rating must be between 0 and 5.
+                </div>
               </div>
+
+              <button type="submit" class="btn btn-primary">
+                Submit
+              </button>
             </form>
-          </div>    
+
+          </div>
           <div class="col-md-6 col-sm-12">
             <div class="form-group">
               <label for="hotelImage">Upload Hotel Image</label>
@@ -112,3 +142,7 @@
     </div>
   </div>
 </div>
+
+<ng-template #noData>
+  <app-no-data-found></app-no-data-found>
+</ng-template>
