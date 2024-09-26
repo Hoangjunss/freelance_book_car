@@ -46,12 +46,12 @@ export class PromotionComponent {
 
   getData(): GetHotelResponse[] {
     return [
-      { id: 1, name: 'Hotel California', contacInfo: '123-456-789', pricePerNight: 150, location: 'USA', active: true, rating: 4.5 },
-      { id: 2, name: 'Grand Hotel', contacInfo: '987-654-321', pricePerNight: 200, location: 'France', active: true, rating: 4.2 },
-      { id: 3, name: 'Royal Suite', contacInfo: '555-123-456', pricePerNight: 300, location: 'UK', active: false, rating: 4.8 },
-      { id: 4, name: 'Beach Resort', contacInfo: '444-321-654', pricePerNight: 250, location: 'Australia', active: true, rating: 4.7 },
-      { id: 5, name: 'Mountain Lodge', contacInfo: '222-789-123', pricePerNight: 180, location: 'Canada', active: false, rating: 4.1 },
-      { id: 6, name: 'City Center Hotel', contacInfo: '111-222-333', pricePerNight: 220, location: 'Germany', active: true, rating: 4.3 },
+      { id: 1, name: 'Hotel California', contactInfo: '123-456-789', pricePerNight: 150, location: 'USA', active: true, rating: 4.5 },
+      { id: 2, name: 'Grand Hotel', contactInfo: '987-654-321', pricePerNight: 200, location: 'France', active: true, rating: 4.2 },
+      { id: 3, name: 'Royal Suite', contactInfo: '555-123-456', pricePerNight: 300, location: 'UK', active: false, rating: 4.8 },
+      { id: 4, name: 'Beach Resort', contactInfo: '444-321-654', pricePerNight: 250, location: 'Australia', active: true, rating: 4.7 },
+      { id: 5, name: 'Mountain Lodge', contactInfo: '222-789-123', pricePerNight: 180, location: 'Canada', active: false, rating: 4.1 },
+      { id: 6, name: 'City Center Hotel', contactInfo: '111-222-333', pricePerNight: 220, location: 'Germany', active: true, rating: 4.3 },
     ];
   }
 
@@ -64,7 +64,7 @@ export class PromotionComponent {
       console.log('Saved:', {
         id: this.hotel.id,
         name: this.hotel.name,
-        contacInfo: this.hotel.contacInfo,
+        contacInfo: this.hotel.contactInfo,
         pricePerNight: this.hotel.pricePerNight,
         location: this.hotel.location,
         active: this.hotel.active,

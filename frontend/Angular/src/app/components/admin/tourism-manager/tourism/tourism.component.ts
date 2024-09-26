@@ -66,7 +66,7 @@ export class TourismComponent {
   }
 
   closeFormCreate(){
-    this.isDisplayCreate = true;
+    this.isDisplayCreate = false;
   }
 
   displayFormUpdate(tourism: GetTourismResponse){

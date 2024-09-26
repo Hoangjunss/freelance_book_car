@@ -84,7 +84,7 @@ export class TourComponent implements OnInit{
   }
 
   closeFormUpdate(){
-    this.isDisplayUpdate = true;
+    this.isDisplayUpdate = false;
   }
 
   onImageSelected(event: any) {
