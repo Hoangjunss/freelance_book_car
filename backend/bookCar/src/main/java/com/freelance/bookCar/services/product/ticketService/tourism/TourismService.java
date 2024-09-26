@@ -15,5 +15,6 @@ public interface TourismService {
     UpdateTourismResponse updateTourism(UpdateTourismRequest updateTourismRequest);
     GetTourismResponse findById(Integer id);
     List<GetTourismResponse> getAll();
+    List<GetTourismResponse> findLocation(String location);
 
 }

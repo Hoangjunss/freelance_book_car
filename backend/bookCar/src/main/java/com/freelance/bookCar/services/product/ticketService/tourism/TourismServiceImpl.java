@@ -111,6 +111,11 @@ public class TourismServiceImpl implements TourismService {
         return tourismRepository.findAll().stream().map(tourism -> modelMapper.map(tourism, GetTourismResponse.class)).collect(Collectors.toList());
     }
 
+    @Override
+    public List<GetTourismResponse> findLocation(String location) {
+        return tourismRepository.findAllByLocation(location).stream().map(tourism -> modelMapper.map(tourism, GetTourismResponse.class)).collect(Collectors.toList());
+    }
+
     private Integer getGenerationId() {
         UUID uuid = UUID.randomUUID();
         return (int) (uuid.getMostSignificantBits() & 0xFFFFFFFFL);
