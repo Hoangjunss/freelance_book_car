@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { trigger, transition, style, animate, query, stagger } from '@angular/animations';
 import { TourService } from '../../../services/product/tour/tour/tour.service';
+import { GetTourResponse } from '../../../models/response/product/tour/tour/get-tour-response';
 
 @Component({
   selector: 'app-location-list',
@@ -14,7 +15,7 @@ import { TourService } from '../../../services/product/tour/tour/tour.service';
 })
 export class LocationListComponent implements OnInit {
   location: string | null = null;
-  locations: { name: string, imageUrl: string }[] = [];
+  locations: GetTourResponse [] = [];
 
   constructor(private route: ActivatedRoute, private router:Router,private tourService : TourService) { }
 
@@ -31,8 +32,8 @@ export class LocationListComponent implements OnInit {
     this.tourService.getAllTour().subscribe(response => {
       console.log(response);
       console.log("Địa điểm " + location);
-      if (response) {
-        
+      if (response && Array.isArray(response)) {
+        this.locations = response;
         console.log("Thành công");
       } else {
         console.log("Thất bại");
@@ -42,7 +43,12 @@ export class LocationListComponent implements OnInit {
     });
   }
 
-  goToLocationDetail(locationId: String) {
-    this.router.navigate(['/location-details']);
+  goToLocationDetail(locationId?: number) {
+    debugger;
+    const path = `/location-details/${locationId}`;
+    console.log('Navigating to:', path);
+    this.router.navigate([path]);
+    console.log('Navigating to:', path);
   }
+  
 }

@@ -30,7 +30,7 @@ export class TourService {
   }
 
   updateTour(fomrData: FormData): Observable<UpdateTourResponse> {
-    return this.httpClient.put<Apiresponse<UpdateTourResponse>>(`${this.baseUrl}`, fomrData).pipe(
+    return this.httpClient.patch<Apiresponse<UpdateTourResponse>>(`${this.baseUrl}`, fomrData).pipe(
       map((response: Apiresponse<UpdateTourResponse>) => {
         if (response.success) {
           return response.data;
@@ -68,6 +68,18 @@ export class TourService {
   getTourByCategory(category: string): Observable<GetTourResponse[]> {
     return this.httpClient.get<Apiresponse<GetTourResponse[]>>(`${this.baseUrl}?location=${category}`).pipe(
       map((response: Apiresponse<GetTourResponse[]>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    );
+  }
+
+  getTourById(id: number): Observable<GetTourResponse> {
+    return this.httpClient.get<Apiresponse<GetTourResponse>>(`${this.baseUrl}/id/${id}`).pipe(
+      map((response: Apiresponse<GetTourResponse>) => {
         if (response.success) {
           return response.data;
         } else {

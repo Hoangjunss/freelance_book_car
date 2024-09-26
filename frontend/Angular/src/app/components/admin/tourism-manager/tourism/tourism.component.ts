@@ -29,6 +29,7 @@ export class TourismComponent {
   selectedImage: string = 'assets/img/DEFAULT/tour-default.png';
 
   imageFile?: File;
+  imageUri?: string;
 
   tour?: GetTourismResponse;
   currentPage: number = 1;
@@ -66,14 +67,18 @@ export class TourismComponent {
   }
 
   closeFormCreate(){
-    this.isDisplayCreate = true;
+    this.isDisplayCreate = false;
   }
 
   displayFormUpdate(tourism: GetTourismResponse){
     this.updateTourismRequest = {
       id: tourism.id,
-      
+      name: tourism.name,
+      location: tourism.location,
+      description: tourism.description,
+      rating: tourism.rating,
     };
+    this.imageUri = tourism.image;
     this.isDisplayUpdate = true;
   }
 
@@ -84,16 +89,16 @@ export class TourismComponent {
   onImageSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
-      this.createTourismRequest.image = file; // Gán tệp ảnh đã chọn vào thuộc tính image của createTourRequest
+      this.imageFile = file; // Gán tệp ảnh đã chọn vào thuộc tính image của createTourRequest
       const reader = new FileReader();
       reader.onload = () => {
-        this.imageUrl = reader.result as string; // Hiển thị ảnh vừa chọn trong form
+        this.imageUri = reader.result as string; // Hiển thị ảnh vừa chọn trong form
       };
       reader.readAsDataURL(file);
     }
   }
 
-  onSubmit() {
+  onCreate() {
     console.log('Tour data:', this.createTourismRequest);
   
     // Kiểm tra các trường bắt buộc
@@ -110,8 +115,8 @@ export class TourismComponent {
     formData.append('rating', this.createTourismRequest.rating?.toString() || '');
   
     // Kiểm tra và thêm hình ảnh vào FormData nếu có
-    if (this.createTourismRequest.image) {
-      formData.append('image', this.createTourismRequest.image);
+    if (this.imageFile != undefined) {
+      formData.append('image', this.imageFile);
     }else{
 
     }
@@ -127,6 +132,55 @@ export class TourismComponent {
         if (this.createTourismResponse) {
           console.log('Tour created successfully:', data);
           alert('Tour created successfully');
+          window.location.reload();
+        }
+      },
+      error: (err) => {
+        console.error('Error creating tour:', err.message);
+        alert(`Error creating tour: ${err.message}`);
+      }
+    });
+  }
+
+  onUpdate(){
+    console.log('Tour data:', this.updateTourismRequest);
+    if(!this.updateTourismRequest?.id){
+      alert('Tourism Update Not Found');
+      return;
+    }
+    // Kiểm tra các trường bắt buộc
+    if (!this.updateTourismRequest?.name || !this.updateTourismRequest?.location || !this.updateTourismRequest?.description) {
+      alert('Please fill in all required fields: Name, Location, Description');
+      return;
+    }
+
+    // Tạo đối tượng FormData
+    const formData = new FormData();
+    formData.append('id', this.updateTourismRequest.id.toString() || '')
+    formData.append('name', this.updateTourismRequest.name || '');
+    formData.append('description', this.updateTourismRequest.description || '');
+    formData.append('location', this.updateTourismRequest.location || '');
+    formData.append('rating', this.updateTourismRequest.rating?.toString() || '');
+  
+    // Kiểm tra và thêm hình ảnh vào FormData nếu có
+    if (this.imageFile != undefined) {
+      formData.append('image', this.imageFile);
+    }else{
+
+    }
+
+    formData.forEach((value, key) => {
+      console.log(`${key}: ${value}`);
+    });
+
+    // Gọi service để tạo tour
+    this.tourismService.updateTour(formData).subscribe({
+      next: (data) => {
+        this.createTourismResponse = data;
+        if (this.createTourismResponse) {
+          console.log('Tour update successfully:', data);
+          alert('Tour created successfully');
+          window.location.reload();
         }
       },
       error: (err) => {
