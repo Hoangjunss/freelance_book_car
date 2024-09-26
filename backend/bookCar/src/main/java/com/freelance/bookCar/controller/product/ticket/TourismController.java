@@ -8,6 +8,7 @@ import com.freelance.bookCar.dto.response.product.ticketDTO.tourism.CreateTouris
 import com.freelance.bookCar.dto.response.product.ticketDTO.tourism.GetTourismResponse;
 import com.freelance.bookCar.dto.response.product.ticketDTO.tourism.UpdateTourismResponse;
 import com.freelance.bookCar.services.product.ticketService.tourism.TourismService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,13 +26,13 @@ public class TourismController {
     private TourismService tourismService;
 
     @PostMapping()
-    public ResponseEntity<ApiResponse<CreateTourismResponse>> create(@RequestBody CreateTourismRequest createTourismRequest) {
+    public ResponseEntity<ApiResponse<CreateTourismResponse>> create(@ModelAttribute @Valid CreateTourismRequest createTourismRequest) {
             CreateTourismResponse response = tourismService.createTourism(createTourismRequest);
             return ResponseEntity.ok(new ApiResponse<>(true, "Tourism entity created successfully", response));
     }
 
     @PatchMapping()
-    public ResponseEntity<ApiResponse<UpdateTourismResponse>> update(@RequestBody UpdateTourismRequest updateTourismRequest) {
+    public ResponseEntity<ApiResponse<UpdateTourismResponse>> update(@ModelAttribute @Valid UpdateTourismRequest updateTourismRequest) {
             UpdateTourismResponse response = tourismService.updateTourism(updateTourismRequest);
             return ResponseEntity.ok(new ApiResponse<>(true, "Tourism entity updated successfully", response));
     }

@@ -4,4 +4,5 @@ export class CreateTourRequest{
     startLocation?: string;
     endLocation?: string;
     isActive?: boolean;
+    image?: File;
 }
