@@ -7,6 +7,7 @@ import com.freelance.bookCar.dto.response.product.hotelDTO.hotel.CreateHotelResp
 import com.freelance.bookCar.dto.response.product.hotelDTO.hotel.GetHotelResponse;
 import com.freelance.bookCar.dto.response.product.hotelDTO.hotel.UpdateHotelResponse;
 import com.freelance.bookCar.services.product.hotelService.hotel.HotelService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,13 +25,13 @@ public class HotelController {
     private HotelService hotelService;
 
     @PostMapping()
-    public ResponseEntity<ApiResponse<CreateHotelResponse>> create(@RequestBody CreateHotelRequest createHotelRequest) {
+    public ResponseEntity<ApiResponse<CreateHotelResponse>> create(@ModelAttribute @Valid CreateHotelRequest createHotelRequest) {
             CreateHotelResponse response = hotelService.createHotel(createHotelRequest);
             return ResponseEntity.ok(new ApiResponse<>(true, "Hotel created successfully", response));
     }
 
     @PatchMapping()
-    public ResponseEntity<ApiResponse<UpdateHotelResponse>> update(@RequestBody UpdateHotelRequest updateHotelRequest) {
+    public ResponseEntity<ApiResponse<UpdateHotelResponse>> update(@ModelAttribute @Valid UpdateHotelRequest updateHotelRequest) {
             UpdateHotelResponse response = hotelService.updateHotel(updateHotelRequest);
             return ResponseEntity.ok(new ApiResponse<>(true, "Hotel updated successfully", response));
     }
