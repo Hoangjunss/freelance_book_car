@@ -3,4 +3,5 @@ export class CreateTourismRequest{
     location?: string;
     description?: string;
     rating?: number;
+    image?: File; 
 }

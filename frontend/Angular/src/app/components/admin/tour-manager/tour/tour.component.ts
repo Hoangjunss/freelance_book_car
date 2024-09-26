@@ -6,6 +6,8 @@ import { FormsModule } from '@angular/forms';
 import { GetTourResponse } from '../../../../models/response/product/tour/tour/get-tour-response';
 import { CreateTourResponse } from '../../../../models/response/product/tour/tour/create-tour-response';
 import { NoDataFoundComponent } from "../../no-data-found/no-data-found.component";
+import { UpdateTourRequest } from '../../../../models/request/product/tour/tour/update-tour-request';
+import { UpdateTourResponse } from '../../../../models/response/product/tour/tour/update-tour-response';
 
 @Component({
   selector: 'app-tour',
@@ -17,16 +19,22 @@ import { NoDataFoundComponent } from "../../no-data-found/no-data-found.componen
 export class TourComponent implements OnInit{
   createTourRequest: CreateTourRequest = new CreateTourRequest();
   createTourResponse: CreateTourResponse = new CreateTourResponse();
+  updateTourRequest: UpdateTourRequest = new UpdateTourRequest();
+  updateTourResponse: UpdateTourResponse = new UpdateTourResponse();
+
+
   imageUrl: string = 'assets/img/DEFAULT/tour-default.png';
   getALlTour: GetTourResponse[] = [];
 
   selectedImage: string = 'assets/img/DEFAULT/tour-default.png';
-  isDisplayDetails: boolean = false;
+  isDisplayUpdate: boolean = false;
+  isDisplayCreate: boolean = false;
   tour?: GetTourResponse;
-  data: any[] = [];
   currentPage: number = 1;
   pageSize: number = 5;
   pagedData: any[] = [];
+  imageId?: string;
+  imageFile!: File;
 
   constructor(private tourService:TourService){}
 
@@ -55,81 +63,163 @@ export class TourComponent implements OnInit{
     return Array(this.totalPages).fill(0).map((x, i) => i + 1);
   }
 
-  displayDetailsTour(){
-    this.isDisplayDetails = true;
+  displayFormCreate(){
+    this.isDisplayCreate = true;
   }
 
-  save() {
-    
-    if(this.tour != undefined){
-      console.log('Saved:', {
-      id: this.tour.id,
-      name: this.tour.name,
-      description: this.tour.description,
-      startLocation: this.tour.startLocation,
-      endLocation: this.tour.endLocation,
-      isActive: this.tour.isActive,
-    });
-    }
-    
+  closeFormCreate(){
+    this.isDisplayCreate = false;
   }
 
-  onImageSelected(event: any): void {
-    const file = event.target.files[0];
+  displayFromUpdate(tour: GetTourResponse){
+    this.updateTourRequest = {
+      id: tour.id,
+      name: tour.name,
+      description: tour.description,
+      startLocation: tour.startLocation,
+      endLocation: tour.endLocation,
+      isActive: tour.isActive,
+    };
+    this.isDisplayUpdate = true;
+  }
+
+  closeFormUpdate(){
+    this.isDisplayUpdate = true;
+  }
+
+  onImageSelected(event: any) {
+    const file: File = event.target.files[0];
     if (file) {
+      this.imageFile = file; // Gán tệp ảnh đã chọn vào thuộc tính image của createTourRequest
       const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.selectedImage = e.target.result;
+      reader.onload = () => {
+        this.imageUrl = reader.result as string; // Hiển thị ảnh vừa chọn trong form
       };
       reader.readAsDataURL(file);
     }
   }
 
-  cancel() {
-    this.isDisplayDetails = false;
-    console.log('Cancelled');
-  }
+  createFileFromUrl(url: string, fileName: string): Promise<File> {
+    return fetch(url)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.blob(); // Chuyển đổi phản hồi thành blob
+        })
+        .then(blob => {
+            return new File([blob], fileName, { type: blob.type }); // Tạo đối tượng File từ blob
+        });
+}
 
   //On Submit
-  onSubmit() {
+  onCreate() {
     console.log(this.createTourRequest);
     if (!this.createTourRequest?.name || !this.createTourRequest?.startLocation || !this.createTourRequest?.endLocation || !this.createTourRequest?.description) {
       alert('Please fill in all required fields: Name, Location, Description');
       return;
     }
 
+    if(this.createTourRequest.isActive == undefined ){
+      this.createTourRequest.isActive = false;
+    }
+  
     const formData = new FormData();
     formData.append('name', this.createTourRequest.name || '');
     formData.append('description', this.createTourRequest.description || '');
     formData.append('startLocation', this.createTourRequest.startLocation || '');
     formData.append('endLocation', this.createTourRequest.endLocation || '');
     formData.append('isActive', this.createTourRequest.isActive ? 'true' : 'false');
-
-      if(this.createTourRequest.isActive == undefined){
-        this.createTourRequest.isActive = false;
-      }
-      this.tourService.createTour(formData).subscribe({
-        next: (data) => {
-          this.createTourResponse = data;
-          if(this.createTourResponse){
-            console.log('Tour created successfully:', this.createTourResponse);
-            alert('Tour created successfully');
-          }
-        },
-        error: (err) => {
-          console.error('Error creating tour:', err.message);
-        }
+  
+    if (this.imageFile != undefined) {
+      formData.append('image', this.imageFile);
+    }else{
+      this.createFileFromUrl(this.selectedImage, 'tour-default.png').then(file => {
+        this.imageFile = file; 
+        formData.append('image', this.imageFile);
+      }).catch(error => {
+        console.error('Error creating file from URL:', error);
       });
+    }
+
+    console.log(this.createTourRequest);
+    formData.forEach((value, key) => {
+      console.log(`${key}: ${value}`);
+    });
+  
+    this.tourService.createTour(formData).subscribe({
+      next: (data) => {
+        this.createTourResponse = data;
+        if (this.createTourResponse) {
+          console.log('Tour created successfully:', this.createTourResponse);
+          alert('Tour created successfully');
+        }
+      },
+      error: (err) => {
+        console.error('Error creating tour:', err.message);
+      }
+    });
   }
 
+  onUpdate(){
+    console.log(this.updateTourRequest);
+    if(!this.updateTourRequest?.id){
+      alert('Not Found Tour Update');
+      return;
+    }
+    if (!this.updateTourRequest?.name || !this.updateTourRequest?.startLocation || !this.updateTourRequest?.endLocation || !this.updateTourRequest?.description) {
+      alert('Please fill in all required fields: Name, Location, Description');
+      return;
+    }
 
+    if(this.updateTourRequest.isActive == undefined ){
+      this.updateTourRequest.isActive = false;
+    }
+  
+    const formData = new FormData();
+    formData.append('id', this.updateTourRequest.id.toString() || '');
+    formData.append('name', this.updateTourRequest.name || '');
+    formData.append('description', this.updateTourRequest.description || '');
+    formData.append('startLocation', this.updateTourRequest.startLocation || '');
+    formData.append('endLocation', this.updateTourRequest.endLocation || '');
+    formData.append('isActive', this.updateTourRequest.isActive ? 'true' : 'false');
+  
+    if (this.imageFile != undefined) {
+      formData.append('image', this.imageFile);
+    }else{
+      this.createFileFromUrl(this.selectedImage, 'tour-default.png').then(file => {
+        this.imageFile = file; 
+        formData.append('image', this.imageFile);
+      }).catch(error => {
+        console.error('Error creating file from URL:', error);
+      });
+    }
+
+    console.log(this.updateTourRequest);
+    formData.forEach((value, key) => {
+      console.log(`${key}: ${value}`);
+    });
+
+    this.tourService.updateTour(formData).subscribe({
+      next: (data) => {
+        this.updateTourRequest = data;
+        if (this.updateTourRequest) {
+          console.log('Tour created successfully:', this.updateTourRequest);
+          alert('Tour created successfully');
+        }
+      },
+      error: (err) => {
+        console.error('Error creating tour:', err.message);
+      }
+    });    
+  }
 
   //Get all Tour
   getAllTour(){
     this.tourService.getAllTour().subscribe({
       next: (data) => {
         this.getALlTour = data;
-        console.log('All tours:', this.getALlTour);
+        this.updatePagedData();
       },
       error: (err) => {
         console.error('Error getting tours:', err.message);

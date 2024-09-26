@@ -5,7 +5,7 @@
     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
   </form>
-  <button type="button" class="m-3 btn btn-success ml-auto" (click)="displayDetailsHotel()">Add Hotel</button>
+  <button type="button" class="m-3 btn btn-success ml-auto" (click)="displayFormCreate()">Add Hotel</button>
 </nav>
 
 <div class="container" *ngIf="getAllHotelReponse.length >0; else noData">
@@ -25,16 +25,16 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of getAllHotelReponse">
+        <tr *ngFor="let item of pagedData">
           <th scope="row">{{ item.id }}</th>
           <td>{{ item.name }}</td>
-          <td>{{ item.contacInfo }}</td>
+          <td>{{ item.contactInfo }}</td>
           <td>{{ item.pricePerNight }}</td>
           <td>{{ item.location }}</td>
           <td>{{ item.active ? 'Active' : 'Stop' }}</td>
           <td>{{ item.rating }}</td>
           <td>
-            <button class="btn btn-warning m-2" (click)="displayDetailsHotel()">Edit</button>
+            <button class="btn btn-warning m-2" (click)="displayFormUpdate(item)">Edit</button>
           </td>
         </tr>
       </tbody>
@@ -57,18 +57,21 @@
   </nav>
 </div>
 
-<div *ngIf="isDisplayDetails" class="modal fade show" tabindex="-1" role="dialog"
+
+
+<div *ngIf="isDisplayCreate" class="modal fade show" tabindex="-1" role="dialog"
   style="display: block; background: rgba(0, 0, 0, 0.5);">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content slide-in">
       <div class="modal-body">
-        <div class="row">
-          <div class="col-md-6 col-sm-12">
-            <h5 class="modal-title">Hotel Information</h5>
-            <button type="button" class="close" aria-label="Close" (click)="cancel()">
-              <span aria-hidden="true">&times;</span>
-            </button>
-            <form (ngSubmit)="onSubmit()">
+        <form (ngSubmit)="onCreate()">
+          <div class="row">
+            <div class="col-md-6 col-sm-12">
+              <h5 class="modal-title">Hotel Information</h5>
+              <button type="button" class="close" aria-label="Close" (click)="closeFormCreate()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+
               <div class="form-group">
                 <label for="name">Name</label>
                 <input type="text" class="form-control" id="name" [(ngModel)]="createHotelRequest.name" name="name"
@@ -80,7 +83,7 @@
 
               <div class="form-group">
                 <label for="contacInfo">Contact Info</label>
-                <input type="text" class="form-control" id="contacInfo" [(ngModel)]="createHotelRequest.contacInfo"
+                <input type="text" class="form-control" id="contacInfo" [(ngModel)]="createHotelRequest.contactInfo"
                   name="contacInfo" placeholder="Enter contact info" />
               </div>
 
@@ -108,7 +111,6 @@
                 <input type="checkbox" class="form-check-input" id="active" [(ngModel)]="createHotelRequest.isActive"
                   name="active" />
               </div>
-
               <div class="form-group">
                 <label for="rating">Rating</label>
                 <input type="number" class="form-control" id="rating" [(ngModel)]="createHotelRequest.rating"
@@ -117,31 +119,116 @@
                   Rating must be between 0 and 5.
                 </div>
               </div>
-
-              <button type="submit" class="btn btn-primary">
-                Submit
-              </button>
-            </form>
-
-          </div>
-          <div class="col-md-6 col-sm-12">
-            <div class="form-group">
-              <label for="hotelImage">Upload Hotel Image</label>
-              <input type="file" class="form-control-file" id="hotelImage" (change)="onImageSelected($event)">
             </div>
-            <div class="mt-3">
-              <img [src]="selectedImage" class="img-fluid" alt="Hotel Image">
+            <div class="col-md-6 col-sm-12">
+              <div class="form-group">
+                <label for="tourImage">Upload Tour Image</label>
+                <input type="file" class="form-control-file" id="tourImage" (change)="onImageSelected($event)">
+              </div>
+              <div class="mt-3">
+                <img *ngIf="imageUrl" [src]="imageUrl" alt="Selected Tour Image" class="mt-3 img-fluid rounded"
+                  style="max-height: 300px;">
+                <img *ngIf="!imageUrl" src="assets/img/DEFAULT/tour-default.png" alt="Default Tour Image"
+                  class="mt-3 img-fluid rounded" style="max-height: 300px;">
+              </div>
+              <button type="button" class="m-1 btn btn-secondary" (click)="closeFormCreate()">Cancel</button>
+              <button type="submit" class="m-1 btn btn-primary">Save</button>
             </div>
           </div>
-        </div>
+        </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" (click)="save()">Save changes</button>
-        <button type="button" class="btn btn-secondary" (click)="cancel()">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div *ngIf="isDisplayUpdate" class="modal fade show" tabindex="-1" role="dialog"
+  style="display: block; background: rgba(0, 0, 0, 0.5);">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content slide-in">
+      <div class="modal-body">
+        <form (ngSubmit)="onUpdate()">
+          <div class="row">
+            <div class="col-md-6 col-sm-12">
+              <h5 class="modal-title">Hotel Information</h5>
+              <button type="button" class="close" aria-label="Close" (click)="closeFormUpdate()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <input type="hidden" class="form-control" id="name" [(ngModel)]="updateHotelRequest.id" name="name" />
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" [(ngModel)]="updateHotelRequest.name" name="name"
+                  placeholder="Enter hotel name" required #nameInput="ngModel" />
+                <div *ngIf="nameInput.invalid && nameInput.touched" class="text-danger">
+                  Hotel name is required.
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="contacInfo">Contact Info</label>
+                <input type="text" class="form-control" id="contacInfo" [(ngModel)]="updateHotelRequest.contactInfo"
+                  name="contacInfo" placeholder="Enter contact info" />
+              </div>
+
+              <div class="form-group">
+                <label for="pricePerNight">Price Per Night</label>
+                <input type="number" class="form-control" id="pricePerNight"
+                  [(ngModel)]="updateHotelRequest.pricePerNight" name="pricePerNight"
+                  placeholder="Enter price per night" required min="0" #priceInput="ngModel" />
+                <div *ngIf="priceInput.invalid && priceInput.touched" class="text-danger">
+                  Price per night is required and must be a positive number.
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="location">Location</label>
+                <input type="text" class="form-control" id="location" [(ngModel)]="updateHotelRequest.location"
+                  name="location" placeholder="Enter location" required #locationInput="ngModel" />
+                <div *ngIf="locationInput.invalid && locationInput.touched" class="text-danger">
+                  Location is required.
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="active">Active</label>
+                <input type="checkbox" class="form-check-input" id="active" [(ngModel)]="updateHotelRequest.isActive"
+                  name="active" />
+              </div>
+
+              <div class="form-group">
+                <label for="rating">Rating</label>
+                <input type="number" class="form-control" id="rating" [(ngModel)]="updateHotelRequest.rating"
+                  name="rating" step="0.1" placeholder="Enter rating" min="0" max="5" #ratingInput="ngModel" />
+                <div *ngIf="ratingInput.invalid && ratingInput.touched" class="text-danger">
+                  Rating must be between 0 and 5.
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-sm-12">
+              <div class="form-group">
+                <label for="tourImage">Upload Tour Image</label>
+                <input type="file" class="form-control-file" id="tourImage" (change)="onImageSelected($event)">
+              </div>
+              <div class="mt-3">
+                <img *ngIf="imageUrl" [src]="updateHotelRequest.image" alt="Selected Tour Image" class="mt-3 img-fluid rounded"
+                  style="max-height: 300px;">
+                <img *ngIf="!imageUrl" src="assets/img/DEFAULT/tour-default.png" alt="Default Tour Image"
+                  class="mt-3 img-fluid rounded" style="max-height: 300px;">
+              </div>
+              <button type="button" class="m-1 btn btn-secondary" (click)="closeFormUpdate()">Cancel</button>
+              <button type="submit" class="m-1 btn btn-primary">Save</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
       </div>
     </div>
   </div>
 </div>
+
 
 <ng-template #noData>
   <app-no-data-found></app-no-data-found>

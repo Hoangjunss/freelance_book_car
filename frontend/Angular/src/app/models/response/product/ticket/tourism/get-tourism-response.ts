@@ -4,4 +4,5 @@ export class GetTourismResponse{
     location?: string;
     description?: string;
     rating?: number;
+    image?: string;
 }
