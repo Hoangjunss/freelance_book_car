@@ -28,7 +28,7 @@
         <tr *ngFor="let item of pagedData">
           <th scope="row">{{ item.id }}</th>
           <td>{{ item.name }}</td>
-          <td>{{ item.contacInfo }}</td>
+          <td>{{ item.contactInfo }}</td>
           <td>{{ item.pricePerNight }}</td>
           <td>{{ item.location }}</td>
           <td>{{ item.active ? 'Yes' : 'No' }}</td>
@@ -74,7 +74,7 @@
               </div>
               <div class="form-group">
                 <label for="contacInfo">Contact Info</label>
-                <input type="text" class="form-control" id="contacInfo" [(ngModel)]="hotel!.contacInfo" name="contacInfo" placeholder="Enter contact info">
+                <input type="text" class="form-control" id="contacInfo" [(ngModel)]="hotel!.contactInfo" name="contacInfo" placeholder="Enter contact info">
               </div>
               <div class="form-group">
                 <label for="pricePerNight">Price Per Night</label>
