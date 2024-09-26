@@ -37,7 +37,7 @@ public class HotelController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<GetHotelResponse>> getById(@RequestParam Integer id) {
+    public ResponseEntity<ApiResponse<GetHotelResponse>> getById(@PathVariable Integer id) {
             GetHotelResponse response = hotelService.findById(id);
             return ResponseEntity.ok(new ApiResponse<>(true, "Hotel retrieved successfully", response));
     }

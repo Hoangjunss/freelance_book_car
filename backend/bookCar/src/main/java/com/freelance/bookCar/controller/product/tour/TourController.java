@@ -32,7 +32,7 @@ public class TourController {
         return ResponseEntity.ok(new ApiResponse<>(true, "Tour update successfully", updateTourResponse));
     }
     @GetMapping("/id/{id}")
-    public ResponseEntity<ApiResponse<GetTourResponse>> getTour(@RequestParam Integer id){
+    public ResponseEntity<ApiResponse<GetTourResponse>> getTour(@PathVariable Integer id){
         GetTourResponse getTourResponse=tourService.findById(id);
         return ResponseEntity.ok(new ApiResponse<>(true, "Get Id Tour  successfully", getTourResponse));
     }
