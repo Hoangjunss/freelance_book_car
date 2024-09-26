@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/hotel")
 @CrossOrigin(origins = "*")
@@ -33,9 +35,14 @@ public class HotelController {
             return ResponseEntity.ok(new ApiResponse<>(true, "Hotel updated successfully", response));
     }
 
-    @GetMapping()
+    @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<GetHotelResponse>> getById(@RequestParam Integer id) {
             GetHotelResponse response = hotelService.findById(id);
             return ResponseEntity.ok(new ApiResponse<>(true, "Hotel retrieved successfully", response));
+    }
+    @GetMapping()
+    public ResponseEntity<ApiResponse<List<GetHotelResponse>>> getAll() {
+        List<GetHotelResponse> response = hotelService.getAll();
+        return ResponseEntity.ok(new ApiResponse<>(true, "Hotel retrieved successfully", response));
     }
 }

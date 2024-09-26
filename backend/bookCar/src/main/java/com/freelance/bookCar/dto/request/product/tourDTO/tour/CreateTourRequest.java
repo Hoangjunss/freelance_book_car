@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 @Builder
@@ -16,4 +17,5 @@ public class CreateTourRequest {
     private String startLocation;
     private String endLocation;
     private Boolean isActive;
+    private MultipartFile image;
 }

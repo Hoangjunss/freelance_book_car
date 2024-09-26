@@ -17,8 +17,8 @@ export class TourService {
 
   constructor(private httpClient: HttpClient) { }
 
-  createTour(createTourRequest: CreateTourRequest): Observable<CreateTourResponse> {
-    return this.httpClient.post<Apiresponse<CreateTourResponse>>(`${this.baseUrl}`, createTourRequest).pipe(
+  createTour(fromData: FormData): Observable<CreateTourResponse> {
+    return this.httpClient.post<Apiresponse<CreateTourResponse>>(`${this.baseUrl}`, fromData).pipe(
       map((response: Apiresponse<CreateTourResponse>) => {
         if (response.success) {
           return response.data;
@@ -44,6 +44,18 @@ export class TourService {
   getTour(id: number): Observable<GetTourResponse> {
     return this.httpClient.get<Apiresponse<GetTourResponse>>(`${this.baseUrl}?id=${id}`).pipe(
       map((response: Apiresponse<GetTourResponse>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    );
+  }
+
+  getAllTour(): Observable<GetTourResponse[]> {
+    return this.httpClient.get<Apiresponse<GetTourResponse[]>>(`${this.baseUrl}`).pipe(
+      map((response: Apiresponse<GetTourResponse[]>) => {
         if (response.success) {
           return response.data;
         } else {

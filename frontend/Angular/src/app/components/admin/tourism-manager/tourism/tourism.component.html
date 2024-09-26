@@ -8,7 +8,7 @@
     <button type="button" class="m-3 btn btn-success ml-auto" (click)="displayDetailsTour()">Add Tourism</button>
 </nav>
 
-<div class="container">
+<div class="container" *ngIf="getTourismResponse.length > 0; else noData">
     <h6 class="mb-4">Responsive Table with Pagination</h6>
     <div class="table-responsive">
       <table class="table">
@@ -17,23 +17,26 @@
             <th>#</th>
             <th>Name</th>
             <th>Location</th>
+            <th>Description</th> <!-- Thêm cột Description -->
             <th>Rating</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of pagedData">
+          <tr *ngFor="let item of getTourismResponse">
             <th scope="row">{{ item.id }}</th>
             <td>{{ item.name }}</td>
             <td>{{ item.location }}</td>
+            <td>{{ item.description }}</td> <!-- Hiển thị description -->
             <td>{{ item.rating }}</td>
             <td>
-              <button class="btn btn-warning m-2" (click)="displayDetailsTour()" >Edit</button>
+              <button class="btn btn-warning m-2" (click)="displayDetailsTour()">Edit</button> <!-- Truyền id vào hàm -->
             </td>
           </tr>
         </tbody>
       </table>
     </div>
+    
   
     <!-- Pagination Controls -->
     <nav aria-label="Page navigation example">
@@ -61,24 +64,26 @@
               <button type="button" class="close" aria-label="Close" (click)="cancel()">
                 <span aria-hidden="true">&times;</span>
               </button>
-              <form>
+              <form (ngSubmit)="onSubmit()" #tourForm="ngForm">
                 <div class="form-group">
                   <label for="name">Name</label>
-                  <input type="text" class="form-control" id="name" [(ngModel)]="tour!.name" name="name" placeholder="Enter tour name" required>
+                  <input type="text" class="form-control" id="name" [(ngModel)]="createTourismRequest.name" name="name" placeholder="Enter tour name" required>
                 </div>
                 <div class="form-group">
                   <label for="description">Description</label>
-                  <textarea class="form-control" id="description" [(ngModel)]="tour!.description" name="description" placeholder="Enter description"></textarea>
+                  <textarea class="form-control" id="description" [(ngModel)]="createTourismRequest.description" name="description" placeholder="Enter description" required></textarea>
                 </div>
                 <div class="form-group">
                   <label for="location">Location</label>
-                  <input type="text" class="form-control" id="location" [(ngModel)]="tour!.location" name="location" placeholder="Enter location">
+                  <input type="text" class="form-control" id="location" [(ngModel)]="createTourismRequest.location" name="location" placeholder="Enter location" required>
                 </div>
                 <div class="form-group">
                   <label for="rating">Rating</label>
-                  <input type="number" step="0.1" class="form-control" id="rating" [(ngModel)]="tour!.rating" name="rating" placeholder="Enter rating (e.g., 4.5)">
+                  <input type="number" step="0.1" class="form-control" id="rating" [(ngModel)]="createTourismRequest.rating" name="rating" placeholder="Enter rating (e.g., 4.5)" min="0" max="5">
                 </div>
+                <button type="submit" class="btn btn-primary" [disabled]="tourForm.invalid">Save</button>
               </form>
+              
             </div>
             <div class="col-md-6 col-sm-12">
               <div class="form-group">
@@ -97,6 +102,7 @@
     </div>
   </div>
   
-  
-  
-  
+
+  <ng-template #noData>
+    <app-no-data-found></app-no-data-found>
+  </ng-template>

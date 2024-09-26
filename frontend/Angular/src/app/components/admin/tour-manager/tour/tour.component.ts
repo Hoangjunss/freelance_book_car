@@ -1,16 +1,25 @@
+import { TourService } from './../../../../services/product/tour/tour/tour.service';
+import { CreateTourRequest } from './../../../../models/request/product/tour/tour/create-tour-request';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { GetTourResponse } from '../../../../models/response/product/tour/tour/get-tour-response';
+import { CreateTourResponse } from '../../../../models/response/product/tour/tour/create-tour-response';
+import { NoDataFoundComponent } from "../../no-data-found/no-data-found.component";
 
 @Component({
   selector: 'app-tour',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NoDataFoundComponent],
   templateUrl: './tour.component.html',
   styleUrl: './tour.component.css'
 })
 export class TourComponent implements OnInit{
+  createTourRequest: CreateTourRequest = new CreateTourRequest();
+  createTourResponse: CreateTourResponse = new CreateTourResponse();
+  imageUrl: string = 'assets/img/DEFAULT/tour-default.png';
+  getALlTour: GetTourResponse[] = [];
+
   selectedImage: string = 'assets/img/DEFAULT/tour-default.png';
   isDisplayDetails: boolean = false;
   tour?: GetTourResponse;
@@ -19,16 +28,12 @@ export class TourComponent implements OnInit{
   pageSize: number = 5;
   pagedData: any[] = [];
 
+  constructor(private tourService:TourService){}
+
   ngOnInit(): void {
-    this.data = this.getData();
+    this.getAllTour();
     this.updatePagedData();
     console.log(this.selectedImage);
-  }
-
-  updatePagedData() {
-    const startIndex = (this.currentPage - 1) * this.pageSize;
-    const endIndex = startIndex + this.pageSize;
-    this.pagedData = this.data.slice(startIndex, endIndex);
   }
 
   goToPage(page: number) {
@@ -36,27 +41,18 @@ export class TourComponent implements OnInit{
     this.updatePagedData();
   }
 
+  updatePagedData() {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.pagedData = this.getALlTour.slice(startIndex, endIndex);
+  }
+
   get totalPages(): number {
-    return Math.ceil(this.data.length / this.pageSize);
+    return Math.ceil(this.getALlTour.length / this.pageSize);
   }
 
   get pages(): number[] {
     return Array(this.totalPages).fill(0).map((x, i) => i + 1);
-  }
-
-  getData() {
-    return [
-      { id: 1, firstName: 'John', lastName: 'Doe', email: 'john@email.com', country: 'USA', zip: '12345' },
-      { id: 2, firstName: 'Mark', lastName: 'Otto', email: 'mark@email.com', country: 'UK', zip: '45678' },
-      { id: 3, firstName: 'Jacob', lastName: 'Thornton', email: 'jacob@email.com', country: 'AU', zip: '78910' },
-      { id: 4, firstName: 'Chris', lastName: 'Evans', email: 'chris@email.com', country: 'USA', zip: '22345' },
-      { id: 5, firstName: 'Paul', lastName: 'Walker', email: 'paul@email.com', country: 'UK', zip: '55678' },
-      { id: 6, firstName: 'Sam', lastName: 'Smith', email: 'sam@email.com', country: 'AU', zip: '88910' },
-      { id: 7, firstName: 'Emma', lastName: 'Stone', email: 'emma@email.com', country: 'USA', zip: '32345' },
-      { id: 8, firstName: 'Tom', lastName: 'Cruise', email: 'tom@email.com', country: 'UK', zip: '65678' },
-      { id: 9, firstName: 'Leo', lastName: 'DiCaprio', email: 'leo@email.com', country: 'AU', zip: '98910' },
-      { id: 10, firstName: 'Ryan', lastName: 'Reynolds', email: 'ryan@email.com', country: 'USA', zip: '42345' },
-    ];
   }
 
   displayDetailsTour(){
@@ -72,7 +68,7 @@ export class TourComponent implements OnInit{
       description: this.tour.description,
       startLocation: this.tour.startLocation,
       endLocation: this.tour.endLocation,
-      idTourStatus: this.tour.idTourStatus,
+      isActive: this.tour.isActive,
     });
     }
     
@@ -89,11 +85,59 @@ export class TourComponent implements OnInit{
     }
   }
 
-  // Hàm để xử lý sự kiện Cancel
   cancel() {
     this.isDisplayDetails = false;
-    // Logic để hủy
     console.log('Cancelled');
   }
+
+  //On Submit
+  onSubmit() {
+    console.log(this.createTourRequest);
+    if (!this.createTourRequest?.name || !this.createTourRequest?.startLocation || !this.createTourRequest?.endLocation || !this.createTourRequest?.description) {
+      alert('Please fill in all required fields: Name, Location, Description');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('name', this.createTourRequest.name || '');
+    formData.append('description', this.createTourRequest.description || '');
+    formData.append('startLocation', this.createTourRequest.startLocation || '');
+    formData.append('endLocation', this.createTourRequest.endLocation || '');
+    formData.append('isActive', this.createTourRequest.isActive ? 'true' : 'false');
+
+      if(this.createTourRequest.isActive == undefined){
+        this.createTourRequest.isActive = false;
+      }
+      this.tourService.createTour(formData).subscribe({
+        next: (data) => {
+          this.createTourResponse = data;
+          if(this.createTourResponse){
+            console.log('Tour created successfully:', this.createTourResponse);
+            alert('Tour created successfully');
+          }
+        },
+        error: (err) => {
+          console.error('Error creating tour:', err.message);
+        }
+      });
+  }
+
+
+
+  //Get all Tour
+  getAllTour(){
+    this.tourService.getAllTour().subscribe({
+      next: (data) => {
+        this.getALlTour = data;
+        console.log('All tours:', this.getALlTour);
+      },
+      error: (err) => {
+        console.error('Error getting tours:', err.message);
+      }
+    })
+  }
+
+
+
 
 }

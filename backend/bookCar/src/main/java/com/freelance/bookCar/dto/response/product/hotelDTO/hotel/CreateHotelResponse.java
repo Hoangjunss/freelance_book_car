@@ -22,6 +22,7 @@ public class CreateHotelResponse {
     private String location;
     private boolean isActive;
     private double rating;
+    private String image;
 
 
 

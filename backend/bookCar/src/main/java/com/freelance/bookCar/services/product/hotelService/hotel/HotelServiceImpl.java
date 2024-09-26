@@ -9,12 +9,16 @@ import com.freelance.bookCar.exception.CustomException;
 import com.freelance.bookCar.exception.Error;
 import com.freelance.bookCar.models.product.hotel.Hotel;
 import com.freelance.bookCar.respository.product.hotel.HotelRepository;
+import com.freelance.bookCar.services.CloudinaryService;
+import com.freelance.bookCar.services.image.ImageService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -23,6 +27,8 @@ public class HotelServiceImpl implements HotelService {
     private HotelRepository hotelRepository;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private ImageService imageService;
     @Override
     public CreateHotelResponse createHotel(CreateHotelRequest createHotelRequest) {
         log.info("Creating hotel with name: {}", createHotelRequest.getName());
@@ -52,6 +58,7 @@ public class HotelServiceImpl implements HotelService {
                 .pricePerNight(createHotelRequest.getPricePerNight())
                 .isActive(createHotelRequest.isActive())
                 .rating(createHotelRequest.getRating())
+                .image(imageService.saveImage(createHotelRequest.getImage()))
                 .build();
 
         try {
@@ -90,6 +97,9 @@ public class HotelServiceImpl implements HotelService {
         if(updateHotelRequest.getRating() >= 0D) {
             existingHotel.setRating(updateHotelRequest.getRating());
         }
+        if (updateHotelRequest.getImage()!=null){
+            existingHotel.setImage(imageService.saveImage(updateHotelRequest.getImage()));
+        }
 
         try {
             return modelMapper.map(hotelRepository.save(existingHotel), UpdateHotelResponse.class);
@@ -107,6 +117,11 @@ public class HotelServiceImpl implements HotelService {
                 .orElseThrow(() -> new CustomException(Error.HOTEL_NOT_FOUND));
 
         return modelMapper.map(hotel, GetHotelResponse.class);
+    }
+
+    @Override
+    public List<GetHotelResponse> getAll() {
+        return hotelRepository.findAll().stream().map(hotel -> modelMapper.map(hotel, GetHotelResponse.class)).collect(Collectors.toList());
     }
 
     private Integer getGenerationId() {

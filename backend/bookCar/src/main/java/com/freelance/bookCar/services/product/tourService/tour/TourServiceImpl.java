@@ -9,6 +9,7 @@ import com.freelance.bookCar.exception.CustomException;
 import com.freelance.bookCar.exception.Error;
 import com.freelance.bookCar.models.product.tour.Tour;
 import com.freelance.bookCar.respository.product.tour.TourRepository;
+import com.freelance.bookCar.services.image.ImageService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,9 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -25,6 +28,8 @@ public class TourServiceImpl implements TourService {
     private TourRepository tourRepository;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private ImageService imageService;
     @Override
     public CreateTourResponse createTour(CreateTourRequest createTourRequest) {
         log.info("Create tour");
@@ -51,6 +56,7 @@ public class TourServiceImpl implements TourService {
                 .startLocation(createTourRequest.getStartLocation())
                 .name(createTourRequest.getName())
                 .isActive(createTourRequest.getIsActive())
+                .image(imageService.saveImage(createTourRequest.getImage()))
                 .build();
 
         try {
@@ -88,6 +94,9 @@ public class TourServiceImpl implements TourService {
         if(updateTourRequest.getIsActive()!=null){
             tour.setIsActive(updateTourRequest.getIsActive());
         }
+        if(updateTourRequest.getImage()!=null){
+            tour.setImage(imageService.saveImage(updateTourRequest.getImage()));
+        }
 
         try {
             return modelMapper.map(tourRepository.save(tour), UpdateTourResponse.class);
@@ -103,6 +112,11 @@ public class TourServiceImpl implements TourService {
     public GetTourResponse findById(Integer id){
         return modelMapper.map(tourRepository.findById(id).orElseThrow(()
         -> new CustomException(Error.TOUR_NOT_FOUND)), GetTourResponse.class);
+    }
+
+    @Override
+    public List<GetTourResponse> getAll() {
+        return tourRepository.findAll().stream().map(tour -> modelMapper.map(tour, GetTourResponse.class)).collect(Collectors.toList());
     }
 
     private Integer getGenerationId() {

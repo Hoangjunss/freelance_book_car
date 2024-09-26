@@ -15,4 +15,5 @@ public class GetTourismResponse {
     private String location;
     private String description;
     private double rating;
+    private String image;
 }

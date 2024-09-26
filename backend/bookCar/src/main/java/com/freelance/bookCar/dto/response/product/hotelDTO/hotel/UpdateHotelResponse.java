@@ -19,6 +19,7 @@ public class UpdateHotelResponse {
     private String location;
     private boolean isActive;
     private double rating;
+    private String image;
 
 
 

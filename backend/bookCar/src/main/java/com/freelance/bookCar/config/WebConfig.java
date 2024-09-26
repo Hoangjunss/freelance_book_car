@@ -13,7 +13,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedOrigins("*")  // Chấp nhận tất cả các cổng trên localhost
                 .allowedMethods("GET", "PATCH", "POST", "PUT", "DELETE", "OPTIONS")  // Các phương thức HTTP được chấp nhận
                 .allowedHeaders("*")  // Chấp nhận tất cả các loại header
-                .allowCredentials(true)  // Cho phép credentials như cookie
+                .allowCredentials(false)  // Cho phép credentials như cookie
                 .maxAge(3600);  // Cache CORS response trong 1 giờ
     }
 }

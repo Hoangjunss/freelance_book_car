@@ -3,5 +3,5 @@ export class CreateTourRequest{
     description?: string;
     startLocation?: string;
     endLocation?: string;
-    idTourStatus?: number;
+    isActive?: boolean;
 }
