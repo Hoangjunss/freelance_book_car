@@ -1,20 +1,16 @@
-
 <div class="container">
-  <!-- Tiêu đề danh sách địa điểm -->
   <h2 class="my-4">Danh sách địa điểm tại {{ location }}</h2>
 
-  <!-- Danh sách địa điểm -->
   <div class="row">
-    <div class="col-md-3 mb-4" *ngFor="let location of locations">
-      <div class="card location-card" (click)="goToLocationDetail('null')" style="cursor: pointer;">
-        <img [src]="location.imageUrl || 'https://via.placeholder.com/200x150'" 
-             alt="{{ location.name }}" 
+    <div class="col-md-3 mb-4" *ngFor="let loc of locations">
+      <div class="card location-card" (click)="goToLocationDetail(loc.id)" style="cursor: pointer;">
+        <img [src]="loc.image || 'https://via.placeholder.com/200x150'" 
+             alt="{{ loc.name }}" 
              class="card-img-top">
         <div class="card-body">
-          <h5 class="card-title">{{ location.name }}</h5>
+          <h5 class="card-title">{{ loc.name }}</h5>
         </div>
       </div>
     </div>
-    
-  </div>  
+  </div>
 </div>
