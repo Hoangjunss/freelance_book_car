@@ -67,7 +67,7 @@ export class TourismComponent {
   }
 
   closeFormCreate(){
-    this.isDisplayCreate = true;
+    this.isDisplayCreate = false;
   }
 
   displayFormUpdate(tourism: GetTourismResponse){
@@ -174,11 +174,11 @@ export class TourismComponent {
     });
 
     // Gọi service để tạo tour
-    this.tourismService.createTour(formData).subscribe({
+    this.tourismService.updateTour(formData).subscribe({
       next: (data) => {
         this.createTourismResponse = data;
         if (this.createTourismResponse) {
-          console.log('Tour created successfully:', data);
+          console.log('Tour update successfully:', data);
           alert('Tour created successfully');
           window.location.reload();
         }
