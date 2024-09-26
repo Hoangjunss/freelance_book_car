@@ -34,12 +34,10 @@ export class LoginComponent {
       }, (error) => {
         console.log(error);
         if (error.status === 404) {
-          // Thêm lỗi nếu email không tồn tại
           this.userForm.get('email')?.setErrors({ emailNotFound: true });
           console.error('Account not found');
         } 
         else if (error.status === 500) {
-          // Thêm lỗi nếu mật khẩu không đúng
           this.userForm.get('password')?.setErrors({ invalidCredentials: true });
           console.error('Password not machines');
         }

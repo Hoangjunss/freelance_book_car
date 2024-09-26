@@ -6,6 +6,7 @@ import { LocationDetailComponent } from './components/user/location-detail/locat
 import { BookingComponent } from './components/user/booking/booking.component';
 import { RegisterComponent } from './components/auth/register/register.component';
 import { PaymentComponent } from './components/user/payment/payment.component';
+import { HomeComponent } from './components/user/home/home.component';
 
 
 export const routes: Routes = [
@@ -20,7 +21,7 @@ export const routes: Routes = [
   },
   {
     path: 'home',
-    component: NavbarComponent
+    component: HomeComponent
   },
   {
     path: 'auth',
@@ -53,8 +54,13 @@ export const routes: Routes = [
 
   },
   {
+    path: 'navbar',
+    component: NavbarComponent
+  },
+  {
     path: '**',
     redirectTo: 'auth/login',
     pathMatch: 'full'
   }
+ 
 ];
