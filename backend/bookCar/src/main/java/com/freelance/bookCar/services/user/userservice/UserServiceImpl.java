@@ -104,8 +104,7 @@ public class UserServiceImpl implements UserService {
         if(registrationRequest.getEmail() == null){
             throw new CustomException(Error.USER_INVALID_EMAIL);
         }
-        if(registrationRequest.getName() == null){
-            throw new CustomException(Error.USER_INVALID_NAME);
+        if(registrationRequest.getName() == null){            throw new CustomException(Error.USER_INVALID_NAME);
         }
         if(registrationRequest.getPassword() == null){
             throw new CustomException(Error.USER_INVALID_PASSWORD);
