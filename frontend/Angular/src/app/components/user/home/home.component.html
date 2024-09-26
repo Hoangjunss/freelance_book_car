@@ -5,35 +5,27 @@
     <!-- navbar.component.html -->
     <section class="tab-section position-absolute bottom-0 w-100">
         <div class="container-tab">
-            <div class="tabs d-flex text-dark">
-                <div class="tab-item" *ngFor="let tab of tabs" [class.active]="tab === selectedTab"
-                    (click)="selectTab(tab)">
-                    <a class="tab-link" [class.active]="tab === selectedTab">
-                        <span class="tab-text">{{ tab.label }}</span>
-                        <i [class]="tab.icon"></i>
-                    </a>
-
-                    <!-- menu thuê xe -->
-                    <div class="dropdown-menu" *ngIf="tab.label === 'Thuê Xe' && tab === selectedTab">
-                        <ul class="location-list">
-                            <li *ngFor="let location of locations" (click)="selectLocation(location)">
-                                <a class="location-link">{{ location }}</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+          <div class="tabs d-flex text-dark">
+            <div class="tab-item" *ngFor="let tab of tabs" [class.active]="tab === selectedTab"
+                 (click)="selectTab(tab)">
+              <a class="tab-link" [class.active]="tab === selectedTab">
+                <span class="tab-text">{{ tab.label }}</span>
+                <i [class]="tab.icon"></i>
+              </a>
+      
+              <!-- menu địa điểm cho cả hai tab -->
+              <div class="dropdown-menu" *ngIf="isDropdownVisible[tab.label] && (tab.label === 'Thuê Xe' || tab.label === 'Đặt Vé' || tab.label === 'Thuê Khách Sạn')">
+                <ul class="location-list">
+                  <li *ngFor="let location of locations" (click)="selectLocation(location)">
+                    <a class="location-link">{{ location }}</a>
+                  </li>
+                </ul>
+              </div>
             </div>
-
-            <div class="tab-content">
-                <ng-container *ngIf="selectedTab">
-                    <ng-container *ngIf="selectedTab.label === 'Đặt Vé'">
-                        <app-location-detail *ngIf="selectedLocation" location="selectedLocation"></app-location-detail>
-                    </ng-container>
-                    <!-- Add other conditions if needed -->
-                </ng-container>
-            </div>
+          </div>
         </div>
-    </section>
+      </section>
+      
 
 
 

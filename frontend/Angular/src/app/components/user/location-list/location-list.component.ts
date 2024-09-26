@@ -29,10 +29,11 @@ export class LocationListComponent implements OnInit {
   }
 
   getLocationsForSelectedLocation(location: string) {
-    this.tourService.getAllTour().subscribe(response => {
+    console.log("Địa điểm " + location);
+    this.tourService.getTourByCategory(location).subscribe(response => {
       console.log(response);
-      console.log("Địa điểm " + location);
-      if (response && Array.isArray(response)) {
+      
+      if (response) {
         this.locations = response;
         console.log("Thành công");
       } else {

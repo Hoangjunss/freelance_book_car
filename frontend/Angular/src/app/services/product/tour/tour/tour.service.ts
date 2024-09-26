@@ -66,7 +66,7 @@ export class TourService {
   }
 
   getTourByCategory(category: string): Observable<GetTourResponse[]> {
-    return this.httpClient.get<Apiresponse<GetTourResponse[]>>(`${this.baseUrl}?location=${category}`).pipe(
+    return this.httpClient.get<Apiresponse<GetTourResponse[]>>(`${this.baseUrl}/${category}`).pipe(
       map((response: Apiresponse<GetTourResponse[]>) => {
         if (response.success) {
           return response.data;

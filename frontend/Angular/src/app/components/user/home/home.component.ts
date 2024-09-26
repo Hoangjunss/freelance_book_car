@@ -18,6 +18,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   selectedTab: { label: string, icon: string, component: Type<any> } | null = null;
   locations: string[] = ['Đà Nẵng', 'Hội An', 'Bà Nà', 'Sân Bay', 'Nam Hội An'];
   selectedLocation: string | null = null;
+  isDropdownVisible: { [key: string]: boolean } = {};
 
   // Ảnh quảng cáo
   images = [
@@ -43,13 +44,35 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   selectTab(tab: { label: string, icon: string, component: Type<any> }): void {
     this.selectedTab = tab;
+
+     // Nếu tab đã được chọn, đảo ngược trạng thái hiển thị menu
+     if (this.isDropdownVisible[tab.label]) {
+      this.isDropdownVisible[tab.label] = !this.isDropdownVisible[tab.label];
+    } else {
+      // Nếu không, đặt menu cho tab này thành visible và các tab khác thành false
+      this.isDropdownVisible = { [tab.label]: true };
+    }
   }
 
   selectLocation(location: string): void {
     this.selectedLocation = location;
-    this.router.navigate(['location-list', encodeURIComponent(this.selectedLocation)]);
-    console.log(this.selectedLocation);
-    console.log(`Navigating to: /location-list/${encodeURIComponent(this.selectedLocation)}`);
+    // Điều hướng đến đúng đường dẫn dựa trên tab hiện tại
+    if (this.selectedTab) {
+      const tabLabel = this.selectedTab.label;
+      let path = '';
+
+      if (tabLabel === 'Thuê Xe') {
+        path = 'location-list';
+      } else if (tabLabel === 'Thuê Khách Sạn') {
+        path = 'hotel-list';
+      } else if (tabLabel === 'Đặt Vé') {
+        path = 'ticket-list';
+      }
+
+      this.router.navigate([path, encodeURIComponent(this.selectedLocation)]);
+      console.log(this.selectedLocation);
+      console.log(`Navigating to: /${path}/${encodeURIComponent(this.selectedLocation)}`);
+    }
 
   }
 

@@ -68,4 +68,16 @@ export class HotelService {
       })
     )
   }
+
+  getHotelByLocation(location: string): Observable<GetHotelResponse[]> {
+    return this.httpClient.get<Apiresponse<GetHotelResponse[]>>(`${this.baseUrl}/${location}`).pipe(
+      map((response: Apiresponse<GetHotelResponse[]>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    )
+  }
 }
