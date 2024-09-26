@@ -41,6 +41,11 @@ public class TourController {
         List<GetTourResponse> response = tourService.getAll();
         return ResponseEntity.ok(new ApiResponse<>(true, "Hotel retrieved successfully", response));
     }
+    @GetMapping("/{location}")
+    public ResponseEntity<ApiResponse<List<GetTourResponse>>> getLocation(@PathVariable String location) {
+        List<GetTourResponse> response = tourService.getLocation(location);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Hotel retrieved successfully", response));
+    }
 
 
 }
