@@ -42,7 +42,7 @@ export class TourService {
   }
 
   getTour(id: number): Observable<GetTourResponse> {
-    return this.httpClient.get<Apiresponse<GetTourResponse>>(`${this.baseUrl}?id=${id}`).pipe(
+    return this.httpClient.get<Apiresponse<GetTourResponse>>(`${this.baseUrl}/id/${id}`).pipe(
       map((response: Apiresponse<GetTourResponse>) => {
         if (response.success) {
           return response.data;
