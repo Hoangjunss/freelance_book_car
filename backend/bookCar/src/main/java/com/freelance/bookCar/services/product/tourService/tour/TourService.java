@@ -15,4 +15,5 @@ public interface TourService {
     UpdateTourResponse updateTour(UpdateTourRequest updateTourRequest);
     GetTourResponse findById(Integer id);
     List<GetTourResponse> getAll();
+    List<GetTourResponse> getLocation(String location);
 }

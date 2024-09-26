@@ -42,23 +42,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public CreateUserResponse createUser(CreateUserRequest userRequest) {
 
-        if (userRequest.getAddress() == null) {
-            throw new CustomException(Error.USER_INVALID_ADDRESS);
-        }
-        if(userRequest.getPhone() == null) {
-            throw new CustomException(Error.USER_INVALID_PHONE);
-        }
-        if(userRequest.getName() == null){
-            throw new CustomException(Error.USER_INVALID_NAME);
-        }
+
         if(userRequest.getEmail() == null){
             throw new CustomException(Error.USER_INVALID_EMAIL);
+        }
+        if(userRequest.getPassword() == null){
+            throw new CustomException(Error.USER_INVALID_PASSWORD);
         }
 
         User user=User.builder()
                 .id(getGenerationId())
-                .phone(userRequest.getPhone())
-                .address(userRequest.getAddress())
+                .email(userRequest.getEmail())
                 .password(userRequest.getPassword())
                 .name(userRequest.getName())
                 .build();
@@ -103,15 +97,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public RegistrationResponse registration(RegistrationRequest registrationRequest) {
-        if(usernameExists(registrationRequest.getName())){
+        if(usernameExists(registrationRequest.getEmail())){
             throw new CustomException(Error.USER_ALREADY_EXISTS);
         }
 
         if(registrationRequest.getEmail() == null){
             throw new CustomException(Error.USER_INVALID_EMAIL);
         }
-        if(registrationRequest.getName() == null){
-            throw new CustomException(Error.USER_INVALID_NAME);
+        if(registrationRequest.getName() == null){            throw new CustomException(Error.USER_INVALID_NAME);
         }
         if(registrationRequest.getPassword() == null){
             throw new CustomException(Error.USER_INVALID_PASSWORD);

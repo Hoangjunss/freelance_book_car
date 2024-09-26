@@ -31,7 +31,7 @@ public class TourController {
         UpdateTourResponse updateTourResponse=tourService.updateTour(updateTourRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Tour update successfully", updateTourResponse));
     }
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<ApiResponse<GetTourResponse>> getTour(@RequestParam Integer id){
         GetTourResponse getTourResponse=tourService.findById(id);
         return ResponseEntity.ok(new ApiResponse<>(true, "Get Id Tour  successfully", getTourResponse));
@@ -39,6 +39,11 @@ public class TourController {
     @GetMapping()
     public ResponseEntity<ApiResponse<List<GetTourResponse>>> getAll() {
         List<GetTourResponse> response = tourService.getAll();
+        return ResponseEntity.ok(new ApiResponse<>(true, "Hotel retrieved successfully", response));
+    }
+    @GetMapping("/{location}")
+    public ResponseEntity<ApiResponse<List<GetTourResponse>>> getLocation(@PathVariable String location) {
+        List<GetTourResponse> response = tourService.getLocation(location);
         return ResponseEntity.ok(new ApiResponse<>(true, "Hotel retrieved successfully", response));
     }
 

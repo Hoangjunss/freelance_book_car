@@ -119,6 +119,11 @@ public class TourServiceImpl implements TourService {
         return tourRepository.findAll().stream().map(tour -> modelMapper.map(tour, GetTourResponse.class)).collect(Collectors.toList());
     }
 
+    @Override
+    public List<GetTourResponse> getLocation(String location) {
+        return tourRepository.findAllByStartLocation(location).stream().map(tour -> modelMapper.map(tour, GetTourResponse.class)).collect(Collectors.toList());
+    }
+
     private Integer getGenerationId() {
         UUID uuid = UUID.randomUUID();
         return (int) (uuid.getMostSignificantBits() & 0xFFFFFFFFL);
