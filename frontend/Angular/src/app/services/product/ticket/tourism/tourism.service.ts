@@ -65,4 +65,16 @@ export class TourismService {
     );
   }
 
+  getTourismByCategory(category: string): Observable<GetTourismResponse[]> {
+    return this.httpClient.get<Apiresponse<GetTourismResponse[]>>(`${this.baseUrl}/${category}`).pipe(
+      map((response: Apiresponse<GetTourismResponse[]>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    );
+  }
+
 }
