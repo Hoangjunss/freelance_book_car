@@ -13,4 +13,5 @@ public interface HotelService {
     UpdateHotelResponse updateHotel(UpdateHotelRequest updateHotelRequest);
     GetHotelResponse findById(Integer id);
     List<GetHotelResponse> getAll();
+    List<GetHotelResponse> findByLocation(String location);
 }

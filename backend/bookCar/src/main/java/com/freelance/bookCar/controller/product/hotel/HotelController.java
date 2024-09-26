@@ -36,7 +36,7 @@ public class HotelController {
             return ResponseEntity.ok(new ApiResponse<>(true, "Hotel updated successfully", response));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<ApiResponse<GetHotelResponse>> getById(@PathVariable Integer id) {
             GetHotelResponse response = hotelService.findById(id);
             return ResponseEntity.ok(new ApiResponse<>(true, "Hotel retrieved successfully", response));
@@ -44,6 +44,11 @@ public class HotelController {
     @GetMapping()
     public ResponseEntity<ApiResponse<List<GetHotelResponse>>> getAll() {
         List<GetHotelResponse> response = hotelService.getAll();
+        return ResponseEntity.ok(new ApiResponse<>(true, "Hotel retrieved successfully", response));
+    }
+    @GetMapping("/{location}")
+    public ResponseEntity<ApiResponse<List<GetHotelResponse>>> getLocation(@PathVariable String location) {
+        List<GetHotelResponse> response = hotelService.findByLocation(location);
         return ResponseEntity.ok(new ApiResponse<>(true, "Hotel retrieved successfully", response));
     }
 }
