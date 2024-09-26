@@ -344,7 +344,7 @@
     width: max-content;
     padding: 5px 10px;
 }
-.col-md-6{
+.info-col{
     width: 44% !important;
 }
 .col-md-3{
@@ -533,8 +533,5 @@ p.form-control {
 }
 
 .btn-close {
-    border: none;
-    background: none;
-    font-size: 1.5rem;
     cursor: pointer;
 }

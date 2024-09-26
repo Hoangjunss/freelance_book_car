@@ -30,11 +30,12 @@ export class LocationListComponent implements OnInit {
   getLocationsForSelectedLocation(location: string) {
     this.tourService.getAllTour().subscribe(response => {
       console.log(response);
+      console.log("Địa điểm " + location);
       if (response) {
         
-        console.log("Thành công"); // Thông báo thành công
+        console.log("Thành công");
       } else {
-        console.log("Thất bại"); // Thông báo thất bại
+        console.log("Thất bại");
       }
     }, error => {
       console.log("Error:", error);
