@@ -30,7 +30,7 @@ export class TourService {
   }
 
   updateTour(fomrData: FormData): Observable<UpdateTourResponse> {
-    return this.httpClient.put<Apiresponse<UpdateTourResponse>>(`${this.baseUrl}`, fomrData).pipe(
+    return this.httpClient.patch<Apiresponse<UpdateTourResponse>>(`${this.baseUrl}`, fomrData).pipe(
       map((response: Apiresponse<UpdateTourResponse>) => {
         if (response.success) {
           return response.data;

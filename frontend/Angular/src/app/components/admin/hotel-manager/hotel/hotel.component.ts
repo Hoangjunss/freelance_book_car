@@ -143,6 +143,7 @@ export class HotelComponent {
         if(this.createHotelResponse){
           console.log('Tour created successfully:', this.createHotelResponse);
           alert('Hotel created successfully');
+          window.location.reload();
         }
       },
       error: (err) => {
@@ -184,6 +185,7 @@ export class HotelComponent {
         if(this.updateHotelResponse){
           console.log('Tour created successfully:', this.updateHotelResponse);
           alert('Hotel created successfully');
+          window.location.reload();
         }
       },
       error: (err) => {

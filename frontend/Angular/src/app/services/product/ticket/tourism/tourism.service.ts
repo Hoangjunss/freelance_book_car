@@ -29,20 +29,8 @@ export class TourismService {
     );
   }
 
-  // createTour(formData: FormData): Observable<CreateTourismResponse> {
-  //   return this.httpClient.post<ApiResponse<CreateTourismResponse>>(`${this.baseUrl}`, formData).pipe(
-  //     map((response: ApiResponse<CreateTourismResponse>) => {
-  //       if (response.success) {
-  //         return response.data;
-  //       } else {
-  //         throw new Error(response.message);
-  //       }
-  //     })
-  //   );
-  // }
-
-  updateTour(updateTourRequest: UpdateTourismRequest): Observable<UpdateTourismResponse> {
-    return this.httpClient.put<Apiresponse<UpdateTourismResponse>>(`${this.baseUrl}`, updateTourRequest).pipe(
+  updateTour(formData: FormData): Observable<UpdateTourismResponse> {
+    return this.httpClient.patch<Apiresponse<UpdateTourismResponse>>(`${this.baseUrl}`, formData).pipe(
       map((response: Apiresponse<UpdateTourismResponse>) => {
         if (response.success) {
           return response.data;

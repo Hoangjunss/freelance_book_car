@@ -59,7 +59,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content slide-in">
       <div class="modal-body">
-        <form (ngSubmit)="onSubmit()">
+        <form (ngSubmit)="onCreate()">
           <div class="row">
             <div class="col-md-6 col-sm-12">
               <h5 class="modal-title">Tourism Information</h5>
@@ -111,7 +111,7 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content slide-in">
       <div class="modal-body">
-        <form (ngSubmit)="onSubmit()">
+        <form (ngSubmit)="onUpdate()">
           <div class="row">
             <div class="col-md-6 col-sm-12">
               <h5 class="modal-title">Tourism Information</h5>
@@ -142,9 +142,9 @@
                 <input type="file" class="form-control-file" id="tourImage" (change)="onImageSelected($event)">
               </div>
               <div class="mt-3">
-                <img *ngIf="imageUrl" [src]="updateTourismRequest.image" alt="Selected Tour Image" class="mt-3 img-fluid rounded"
+                <img *ngIf="imageUri" [src]="imageUri" alt="Selected Tour Image" class="mt-3 img-fluid rounded"
                   style="max-height: 300px;">
-                <img *ngIf="!imageUrl" src="assets/img/DEFAULT/tour-default.png" alt="Default Tour Image"
+                <img *ngIf="!imageUri" src="assets/img/DEFAULT/tour-default.png" alt="Default Tour Image"
                   class="mt-3 img-fluid rounded" style="max-height: 300px;">
               </div>
               <button type="button" class="m-1 btn btn-secondary" (click)="closeFormUpdate()">Cancel</button>

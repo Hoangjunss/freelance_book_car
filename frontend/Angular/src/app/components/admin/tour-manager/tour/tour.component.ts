@@ -35,6 +35,7 @@ export class TourComponent implements OnInit{
   pagedData: any[] = [];
   imageId?: string;
   imageFile!: File;
+  imageUri?: string = 'assets/img/DEFAULT/tour-default.png';
 
   constructor(private tourService:TourService){}
 
@@ -80,11 +81,12 @@ export class TourComponent implements OnInit{
       endLocation: tour.endLocation,
       isActive: tour.isActive,
     };
+    this.imageUri = tour.image;
     this.isDisplayUpdate = true;
   }
 
   closeFormUpdate(){
-    this.isDisplayUpdate = true;
+    this.isDisplayUpdate = false;
   }
 
   onImageSelected(event: any) {
@@ -93,7 +95,7 @@ export class TourComponent implements OnInit{
       this.imageFile = file; // Gán tệp ảnh đã chọn vào thuộc tính image của createTourRequest
       const reader = new FileReader();
       reader.onload = () => {
-        this.imageUrl = reader.result as string; // Hiển thị ảnh vừa chọn trong form
+        this.imageUri = reader.result as string; // Hiển thị ảnh vừa chọn trong form
       };
       reader.readAsDataURL(file);
     }
@@ -153,6 +155,7 @@ export class TourComponent implements OnInit{
         if (this.createTourResponse) {
           console.log('Tour created successfully:', this.createTourResponse);
           alert('Tour created successfully');
+          window.location.reload();
         }
       },
       error: (err) => {
@@ -187,12 +190,7 @@ export class TourComponent implements OnInit{
     if (this.imageFile != undefined) {
       formData.append('image', this.imageFile);
     }else{
-      this.createFileFromUrl(this.selectedImage, 'tour-default.png').then(file => {
-        this.imageFile = file; 
-        formData.append('image', this.imageFile);
-      }).catch(error => {
-        console.error('Error creating file from URL:', error);
-      });
+      
     }
 
     console.log(this.updateTourRequest);
@@ -206,6 +204,7 @@ export class TourComponent implements OnInit{
         if (this.updateTourRequest) {
           console.log('Tour created successfully:', this.updateTourRequest);
           alert('Tour created successfully');
+          window.location.reload();
         }
       },
       error: (err) => {
