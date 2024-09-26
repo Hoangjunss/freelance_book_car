@@ -71,7 +71,7 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     public UpdateHotelResponse updateHotel(UpdateHotelRequest updateHotelRequest) {
-        log.info("Updating hotel with id: {}", updateHotelRequest.getId());
+        log.info("Updating hotel with id: {}", updateHotelRequest.toString());
 
         if (updateHotelRequest.getId() == null) {
             throw new CustomException(Error.HOTEL_NOT_FOUND);

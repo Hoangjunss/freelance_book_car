@@ -30,6 +30,7 @@ export class HotelComponent {
   isDisplayUpdate = false;
 
   imageFile?: File;
+  imageUri?: string;
 
   hotel?: GetHotelResponse;
   currentPage: number = 1;
@@ -82,6 +83,7 @@ export class HotelComponent {
       isActive: hotel.active,
       rating: hotel.rating, 
     };
+    this.imageUri = hotel.image;
     this.isDisplayUpdate = true;
   }
 
@@ -95,7 +97,7 @@ export class HotelComponent {
       this.imageFile = file;
       const reader = new FileReader();
       reader.onload = () => {
-        this.imageUrl = reader.result as string;
+        this.imageUri = reader.result as string;
       };
       reader.readAsDataURL(file);
     }
@@ -179,7 +181,13 @@ export class HotelComponent {
       formData.append('image', this.imageFile);
     }
 
-    this.hotelService.createHotel(formData).subscribe({
+    console.log(this.updateHotelRequest);
+    formData.forEach((value, key) => {
+      console.log(`${key}: ${value}`);
+    });
+
+
+    this.hotelService.updateHotel(formData).subscribe({
       next: (data) => {
         this.updateHotelResponse = data;
         if(this.updateHotelResponse){

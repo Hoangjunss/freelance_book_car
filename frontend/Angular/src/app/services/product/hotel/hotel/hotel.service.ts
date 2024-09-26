@@ -29,10 +29,14 @@ export class HotelService {
     );
   }
 
-  updateHotel(updateHotelRequest: UpdateHotelRequest): Observable<UpdateHotelResponse> {
-    return this.httpClient.put<Apiresponse<UpdateHotelResponse>>(`${this.baseUrl}`, updateHotelRequest).pipe(
+  updateHotel(formData: FormData): Observable<UpdateHotelResponse> {
+    formData.forEach((value, key) => {
+      console.log(`Service: ${key}: ${value}`);
+    });
+    return this.httpClient.patch<Apiresponse<UpdateHotelResponse>>(`${this.baseUrl}`, formData).pipe(
       map((response: Apiresponse<UpdateHotelResponse>) => {
         if (response.success) {
+          console.log(`Service: ` + JSON.stringify(response.data));
           return response.data;
         } else {
           throw new Error(response.message);
