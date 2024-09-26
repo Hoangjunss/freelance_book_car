@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public RegistrationResponse registration(RegistrationRequest registrationRequest) {
-        if(usernameExists(registrationRequest.getName())){
+        if(usernameExists(registrationRequest.getEmail())){
             throw new CustomException(Error.USER_ALREADY_EXISTS);
         }
 
