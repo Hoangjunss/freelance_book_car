@@ -49,4 +49,9 @@ public class BookingController {
         List<GetBookingResponse> getBookingResponses=bookingService.getAll();
         return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", getBookingResponses));
     }
+    @GetMapping("/type")
+    public ResponseEntity<ApiResponse<List<GetBookingResponse>>> getType(@RequestParam String type){
+        List<GetBookingResponse> getBookingResponses=bookingService.findType(type);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", getBookingResponses));
+    }
 }

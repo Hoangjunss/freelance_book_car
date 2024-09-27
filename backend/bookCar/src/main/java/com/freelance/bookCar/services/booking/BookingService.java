@@ -33,4 +33,5 @@ public interface BookingService {
     UpdateBookingTourismResponse updateBookingTourism(UpdateBookingTourismRequest updateBookingTourismRequest);
     UpdateBookingHotelResponse updateBookingHotel(UpdateBookingHotelRequest updateBookingHotelRequest);
     List<GetBookingResponse> getAll();
+    List<GetBookingResponse> findType(String type);
 }

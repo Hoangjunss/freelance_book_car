@@ -496,6 +496,11 @@ public class BookingServiceImpl implements BookingService{
 
     }
 
+    @Override
+    public List<GetBookingResponse> findType(String type) {
+        return bookingRepository.findAllByTypeBooking(TypeBooking.valueOf(type)).stream().map(booking -> modelMapper.map(booking, GetBookingResponse.class)).collect(Collectors.toList());
+    }
+
 
     @Override
     public UpdateBookingTourResponse updateBookingTour(UpdateBookingTourRequest updateBookingTourRequest) {
