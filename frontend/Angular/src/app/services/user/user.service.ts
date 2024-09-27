@@ -28,7 +28,7 @@ export class UserService {
     );
   }
 
-  loginUser(formData: FormData): Observable<registerUserResponse> {
+  loginUser(formData: FormData): Observable<loginUserResponse> {
     return this.http.post<Apiresponse<loginUserResponse>>(`${this.baseURL}login`, formData).pipe(
       map((response: Apiresponse<loginUserResponse>) => {
         if (response.success) {

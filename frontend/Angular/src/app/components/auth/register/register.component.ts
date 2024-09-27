@@ -5,6 +5,7 @@ import { Title } from '@angular/platform-browser';
 import { Router, RouterLink } from '@angular/router';
 import { UserService } from '../../../services/user/user.service';
 import { response } from 'express';
+import { registerUserResponse } from '../../../models/response/user/register-response';
 
 @Component({
   selector: 'app-register',
@@ -91,9 +92,10 @@ export class RegisterComponent {
       formData.append('role', this.userForm.get('role')?.value);
 
 
-      this.userService.registerUser(formData).subscribe(    
-          
-        (response) => {
+      this.userService.registerUser(formData).subscribe(   
+        (response : registerUserResponse) => {
+          const idUser  = response; 
+          console.log(idUser); 
           console.log(response);
           this.router.navigate(['/login']);
         },

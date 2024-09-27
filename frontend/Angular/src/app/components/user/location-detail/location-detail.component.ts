@@ -36,7 +36,7 @@ export class LocationDetailComponent {
   }
 
   getTourDetail(id: number) {
-    this.tourService.getTour(id).subscribe(response => {
+    this.tourService.getTourDetailById(id).subscribe(response => {
       console.log(response);
       if (response) {
         this.locations = [response];
