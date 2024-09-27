@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.time.LocalDateTime;
 
 public interface TourScheduleRepository extends JpaRepository<TourSchedule,Integer> {
-    TourSchedule findByIdAndByStartDate(Integer id, LocalDateTime date);
+    TourSchedule findByIdAndTimeStartTour(Integer id, LocalDateTime date);
 }

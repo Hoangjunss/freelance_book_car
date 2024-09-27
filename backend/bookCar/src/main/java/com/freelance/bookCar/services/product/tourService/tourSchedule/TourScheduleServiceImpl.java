@@ -118,7 +118,7 @@ public class TourScheduleServiceImpl implements TourScheduleService  {
 
     @Override
     public TourSchedule findByIdAndByStartDate(Integer id, LocalDateTime date) {
-        return tourScheduleRepository.findByIdAndByStartDate(id,date);
+        return tourScheduleRepository.findByIdAndTimeStartTour(id,date);
     }
 
     private Integer getGenerationId() {

@@ -103,7 +103,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public Ticket findByIdAndByStartDate(Integer id, LocalDateTime date) {
-        return ticketRepository.findByIdAndByStartDate(id,date);
+        return ticketRepository.findByIdAndStartDate(id,date);
     }
 
     private Integer getGenerationId() {

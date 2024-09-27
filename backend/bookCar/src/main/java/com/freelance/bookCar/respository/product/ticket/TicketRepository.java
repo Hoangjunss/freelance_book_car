@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.time.LocalDateTime;
 
 public interface TicketRepository extends JpaRepository<Ticket,Integer> {
-    Ticket findByIdAndByStartDate(Integer id, LocalDateTime date);
+    Ticket findByIdAndStartDate(Integer id, LocalDateTime date);
 }
