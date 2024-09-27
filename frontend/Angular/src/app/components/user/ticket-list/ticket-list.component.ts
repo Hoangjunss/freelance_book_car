@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { GetTourismResponse } from '../../../models/response/product/ticket/tourism/get-tourism-response';
 import { TourismService } from '../../../services/product/ticket/tourism/tourism.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-ticket-list',
   standalone: true,
-  imports: [],
+  imports: [CommonModule,RouterLink],
   templateUrl: './ticket-list.component.html',
   styleUrl: './ticket-list.component.css'
 })
@@ -43,7 +44,7 @@ export class TicketListComponent {
 
   goToLocationDetail(locationId?: number) {
     debugger;
-    const path = `/location-details/${locationId}`;
+    const path = `/ticket-details/${locationId}`;
     console.log('Navigating to:', path);
     this.router.navigate([path]);
     console.log('Navigating to:', path);

@@ -77,4 +77,16 @@ export class TourismService {
     );
   }
 
+  getTourismDetailById(id: number): Observable<GetTourismResponse> {
+    return this.httpClient.get<Apiresponse<GetTourismResponse>>(`${this.baseUrl}/detail?id=${id}`).pipe(
+      map((response: Apiresponse<GetTourismResponse>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    );
+  }
+
 }

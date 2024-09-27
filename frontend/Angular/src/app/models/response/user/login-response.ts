@@ -1,5 +1,5 @@
 export class loginUserResponse{
     id?: number;
-    token?: string;
+    accessToken?: string;
     refeshToken?: string;
 }

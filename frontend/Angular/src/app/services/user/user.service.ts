@@ -7,6 +7,7 @@ import { Apiresponse } from '../../models/response/apiresponse';
 import { map } from 'rxjs/operators';
 import { registerUserResponse } from '../../models/response/user/register-response';
 import { loginUserResponse } from '../../models/response/user/login-response';
+import { RefreshToken } from '../../models/response/user/refresh-token';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +36,18 @@ export class UserService {
           return response.data;
         } else {
           throw new Error('Login failed');
+        }
+      })
+    );
+  }
+
+  refreshToken(tokenData: RefreshToken): Observable<loginUserResponse> {
+    return this.http.post<Apiresponse<loginUserResponse>>(`${this.baseURL}refreshToken`, tokenData).pipe(
+      map((response: Apiresponse<loginUserResponse>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error('Refresh token failed');
         }
       })
     );

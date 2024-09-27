@@ -80,4 +80,18 @@ export class HotelService {
       })
     )
   }
+
+  getHotelDetailById(id: number): Observable<GetHotelResponse> {
+    return this.httpClient.get<Apiresponse<GetHotelResponse>>(`${this.baseUrl}/id/${id}`).pipe(
+      map((response: Apiresponse<GetHotelResponse>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    );
+  }
+
+
 }
