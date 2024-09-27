@@ -9,13 +9,18 @@ import com.freelance.bookCar.models.invoice.Invoice;
 import com.freelance.bookCar.models.invoice.InvoiceDetail;
 import com.freelance.bookCar.respository.invoice.InvoiceDetailRepository;
 import com.freelance.bookCar.respository.invoice.InvoiceResponsitory;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+
+@Service
+@Slf4j
 public class StatisticYearServiceImpl implements StatisticYearService{
     @Autowired
     private InvoiceResponsitory invoiceResponsitory;
@@ -27,9 +32,9 @@ public class StatisticYearServiceImpl implements StatisticYearService{
     public StatisticYear getYear(int year) {
         List<StatisticMonth> statisticMonths= new ArrayList<>();
         for (int i=1;i<=12;i++){
-            List<InvoiceDetail> invoiceDetailsHotel=invoiceDetailRepository.findByMonthAndHotel(year);
-            List<InvoiceDetail> invoiceDetailsTour=invoiceDetailRepository.findByMonthAndTour(year);
-            List<InvoiceDetail> invoiceDetailsTourism=invoiceDetailRepository.findByMonthAndTourism(year);
+            List<InvoiceDetail> invoiceDetailsHotel=invoiceDetailRepository.findByMonthAndHotel(i, year);
+            List<InvoiceDetail> invoiceDetailsTour=invoiceDetailRepository.findByMonthAndTour(i, year);
+            List<InvoiceDetail> invoiceDetailsTourism=invoiceDetailRepository.findByMonthAndTourism(i, year);
             double priceHotel=0;
             double priceTour=0;
             double priceHTourism=0;

@@ -19,4 +19,9 @@ public interface InvoiceDetailRepository extends JpaRepository<InvoiceDetail,Int
     @Query(value = "SELECT id.* FROM invoice_detail id JOIN invoice i ON id.id_invoice = i.id WHERE id.id_tourism = :idTourism AND MONTH(i.invoice_date) = :month", nativeQuery = true)
     List<InvoiceDetail> findByMonthAndTourism(@Param("month") int month, @Param("idTourism") int idTourism);
 
+    @Query(value = "SELECT id.*, i.* FROM invoice_detail id " +
+            "JOIN invoice i ON id.id_invoice = i.id " +
+            "WHERE YEAR(i.invoice_date) = :year " +
+            "AND MONTH(i.invoice_date) = :month", nativeQuery = true)
+    List<InvoiceDetail> findByIdInvoiceAndMonthYear(@Param("year") int year, @Param("month") int month);
 }
