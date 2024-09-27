@@ -1,8 +1,6 @@
 package com.freelance.bookCar.models.booking;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,5 +20,7 @@ public class Booking {
     private Integer idUser;
     private Integer idTour;
     private Integer idPayment;
+    @Enumerated(EnumType.STRING)
+    private TypeBooking typeBooking;
     // Getters and Setters
 }

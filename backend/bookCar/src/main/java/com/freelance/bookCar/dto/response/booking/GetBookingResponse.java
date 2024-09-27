@@ -18,4 +18,5 @@ public class GetBookingResponse {
     private Integer idUser;
     private Integer paymentMethod;
     private Integer invoice;
+    private String type;
 }

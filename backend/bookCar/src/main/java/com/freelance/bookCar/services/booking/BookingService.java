@@ -19,6 +19,8 @@ import com.freelance.bookCar.dto.response.booking.bookingTourism.AddBookingTouri
 import com.freelance.bookCar.dto.response.booking.bookingTourism.UpdateBookingTourismResponse;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public interface BookingService {
     CreateBookingResponse create(CreateBookingRequest createBookingRequest);
@@ -30,4 +32,5 @@ public interface BookingService {
     UpdateBookingTourResponse updateBookingTour(UpdateBookingTourRequest updateBookingTourRequest);
     UpdateBookingTourismResponse updateBookingTourism(UpdateBookingTourismRequest updateBookingTourismRequest);
     UpdateBookingHotelResponse updateBookingHotel(UpdateBookingHotelRequest updateBookingHotelRequest);
+    List<GetBookingResponse> getAll();
 }

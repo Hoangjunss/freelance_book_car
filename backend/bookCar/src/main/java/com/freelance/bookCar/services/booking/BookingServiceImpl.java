@@ -21,6 +21,7 @@ import com.freelance.bookCar.exception.CustomException;
 import com.freelance.bookCar.exception.Error;
 import com.freelance.bookCar.models.booking.Booking;
 import com.freelance.bookCar.models.booking.BookingDetail;
+import com.freelance.bookCar.models.booking.TypeBooking;
 import com.freelance.bookCar.models.product.hotel.HotelBooking;
 import com.freelance.bookCar.models.product.ticket.Ticket;
 import com.freelance.bookCar.models.product.ticket.Tourism;
@@ -41,7 +42,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -81,11 +84,14 @@ public class BookingServiceImpl implements BookingService{
                 .totalPrice(createBookingRequest.getTotalPrice())
                 .idUser(createBookingRequest.getIdUser())
                 .idPayment(createBookingRequest.getPaymentMethod())
+                .typeBooking(TypeBooking.PENDING)
                 .build();
 
         try {
             Booking savedBooking = bookingRepository.save(booking);
-            return modelMapper.map(savedBooking, CreateBookingResponse.class);
+            CreateBookingResponse createBookingResponse= modelMapper.map(savedBooking, CreateBookingResponse.class);
+            createBookingResponse.setType(savedBooking.getTypeBooking().name());
+            return createBookingResponse;
         } catch (DataIntegrityViolationException e) {
             log.error("Data integrity violation occurred while saving Booking: {}", e.getMessage(), e);
             throw new CustomException(Error.BOOKING_UNABLE_TO_SAVE);
@@ -121,7 +127,9 @@ public class BookingServiceImpl implements BookingService{
 
         try {
             Booking updatedBooking = bookingRepository.save(existingBooking);
-            return modelMapper.map(updatedBooking, UpdateBookingResponse.class);
+            UpdateBookingResponse updateBookingResponse=modelMapper.map(updatedBooking, UpdateBookingResponse.class);
+            updateBookingResponse.setType(updatedBooking.getTypeBooking().name());
+            return updateBookingResponse;
         } catch (DataIntegrityViolationException e) {
             log.error("Error occurred while updating booking: {}", e.getMessage(), e);
             throw new CustomException(Error.BOOKING_UNABLE_TO_UPDATE);
@@ -475,6 +483,17 @@ public class BookingServiceImpl implements BookingService{
         response.setTotalPrice(booking.getTotalPrice()); // Updated total price
 
         return response;
+    }
+
+    @Override
+    public List<GetBookingResponse> getAll() {
+      List<Booking> bookingList=bookingRepository.findAll();
+      return bookingList.stream().map(booking -> {
+          GetBookingResponse getBookingResponse=modelMapper.map(booking, GetBookingResponse.class);
+          getBookingResponse.setType(booking.getTypeBooking().name());
+          return getBookingResponse;
+      }).collect(Collectors.toList());
+
     }
 
 

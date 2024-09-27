@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/booking")
 @CrossOrigin(origins = "*")
@@ -41,5 +43,10 @@ public class BookingController {
     public ResponseEntity<ApiResponse<AddBookingTourResponse>> createBookingTour(@RequestBody AddBookingTourRequest addBookingTourRequest){
         AddBookingTourResponse addBookingTourResponse=bookingService.addBookingTour(addBookingTourRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", addBookingTourResponse));
+    }
+    @GetMapping("/all")
+    public ResponseEntity<ApiResponse<List<GetBookingResponse>>> getAll(){
+        List<GetBookingResponse> getBookingResponses=bookingService.getAll();
+        return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", getBookingResponses));
     }
 }
