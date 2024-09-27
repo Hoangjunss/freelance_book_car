@@ -30,6 +30,10 @@ export class LoginComponent {
       formData.append('password', this.userForm.value.password);
       this.userService.loginUser(formData).subscribe((response) => {
         console.log(response);
+        const token = response.accessToken;
+        if(token){
+          localStorage.setItem('token', token);
+        }
         this.router.navigate(['/home']);
       }, (error) => {
         console.log(error);
