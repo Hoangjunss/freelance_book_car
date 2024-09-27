@@ -4,6 +4,8 @@ import com.freelance.bookCar.dto.response.statistic.statisticMonthYear.Statistic
 import com.freelance.bookCar.dto.response.statistic.statisticYear.StatisticYear;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+
 
 @Service
 public interface StatisticYearService {
@@ -12,4 +14,10 @@ public interface StatisticYearService {
     StatisticMonthYear getMonthHotel(int year,int month);
     StatisticMonthYear getMonthTourism(int year,int month);
     StatisticMonthYear getMonthTour(int year,int month);
+    StatisticMonthYear getTodayHotel();
+    StatisticMonthYear getTodayTourism();
+    StatisticMonthYear getTodayTour();
+    StatisticMonthYear getYesterdayHotel();
+    StatisticMonthYear getYesterdayTourism();
+    StatisticMonthYear getYesterdayTour();
 }

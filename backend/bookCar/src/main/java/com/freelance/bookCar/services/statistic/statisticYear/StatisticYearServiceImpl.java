@@ -14,6 +14,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -168,6 +169,216 @@ public class StatisticYearServiceImpl implements StatisticYearService{
                 .stream().map(invoiceDetail ->
                         modelMapper.map(invoiceDetail, GetInvoiceDetailResponse.class))
                 .collect(Collectors.toList());
+        double totalPrice=0;
+        double avgPrice=0;
+        double totalTicket=0;
+        double avgTicket=0;
+        for (GetInvoiceDetailResponse getInvoiceResponse: getInvoiceResponses){
+            totalPrice+=getInvoiceResponse.getTotalPrice();
+            totalTicket+=getInvoiceResponse.getQuantity();
+        }
+        if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
+            avgPrice=totalPrice/31;
+            avgTicket=totalTicket/31;
+        }
+        if(month==4||month==6||month==9||month==11){
+            avgPrice=totalPrice/30;
+            avgTicket=totalTicket/30;
+        }if(month==2){
+            avgPrice=totalPrice/28;
+            avgTicket=totalTicket/28;
+        }
+
+        return StatisticMonthYear.builder()
+                .avgPrice(avgPrice)
+                .avgTicket(avgTicket)
+                .totalTicket(totalTicket)
+                .totalPrice(totalPrice)
+                .build();
+    }
+
+    @Override
+    public StatisticMonthYear getTodayHotel() {
+        List<GetInvoiceDetailResponse> getInvoiceResponses=invoiceDetailRepository.findByTodayAndIsHotel(LocalDate.now())
+                .stream().map(invoiceDetail ->
+                        modelMapper.map(invoiceDetail, GetInvoiceDetailResponse.class))
+                .collect(Collectors.toList());
+        int month=LocalDate.now().getMonthValue();
+        double totalPrice=0;
+        double avgPrice=0;
+        double totalTicket=0;
+        double avgTicket=0;
+        for (GetInvoiceDetailResponse getInvoiceResponse: getInvoiceResponses){
+            totalPrice+=getInvoiceResponse.getTotalPrice();
+            totalTicket+=getInvoiceResponse.getQuantity();
+        }
+        if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
+            avgPrice=totalPrice/31;
+            avgTicket=totalTicket/31;
+        }
+        if(month==4||month==6||month==9||month==11){
+            avgPrice=totalPrice/30;
+            avgTicket=totalTicket/30;
+        }if(month==2){
+            avgPrice=totalPrice/28;
+            avgTicket=totalTicket/28;
+        }
+
+        return StatisticMonthYear.builder()
+                .avgPrice(avgPrice)
+                .avgTicket(avgTicket)
+                .totalTicket(totalTicket)
+                .totalPrice(totalPrice)
+                .build();
+    }
+
+    @Override
+    public StatisticMonthYear getTodayTourism() {
+        List<GetInvoiceDetailResponse> getInvoiceResponses=invoiceDetailRepository.findByTodayAndIsTourism(LocalDate.now())
+                .stream().map(invoiceDetail ->
+                        modelMapper.map(invoiceDetail, GetInvoiceDetailResponse.class))
+                .collect(Collectors.toList());
+        int month=LocalDate.now().getMonthValue();
+        double totalPrice=0;
+        double avgPrice=0;
+        double totalTicket=0;
+        double avgTicket=0;
+        for (GetInvoiceDetailResponse getInvoiceResponse: getInvoiceResponses){
+            totalPrice+=getInvoiceResponse.getTotalPrice();
+            totalTicket+=getInvoiceResponse.getQuantity();
+        }
+        if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
+            avgPrice=totalPrice/31;
+            avgTicket=totalTicket/31;
+        }
+        if(month==4||month==6||month==9||month==11){
+            avgPrice=totalPrice/30;
+            avgTicket=totalTicket/30;
+        }if(month==2){
+            avgPrice=totalPrice/28;
+            avgTicket=totalTicket/28;
+        }
+
+        return StatisticMonthYear.builder()
+                .avgPrice(avgPrice)
+                .avgTicket(avgTicket)
+                .totalTicket(totalTicket)
+                .totalPrice(totalPrice)
+                .build();
+    }
+
+    @Override
+    public StatisticMonthYear getTodayTour() {
+        List<GetInvoiceDetailResponse> getInvoiceResponses=invoiceDetailRepository.findByTodayAndIsTour(LocalDate.now())
+                .stream().map(invoiceDetail ->
+                        modelMapper.map(invoiceDetail, GetInvoiceDetailResponse.class))
+                .collect(Collectors.toList());
+        int month=LocalDate.now().getMonthValue();
+        double totalPrice=0;
+        double avgPrice=0;
+        double totalTicket=0;
+        double avgTicket=0;
+        for (GetInvoiceDetailResponse getInvoiceResponse: getInvoiceResponses){
+            totalPrice+=getInvoiceResponse.getTotalPrice();
+            totalTicket+=getInvoiceResponse.getQuantity();
+        }
+        if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
+            avgPrice=totalPrice/31;
+            avgTicket=totalTicket/31;
+        }
+        if(month==4||month==6||month==9||month==11){
+            avgPrice=totalPrice/30;
+            avgTicket=totalTicket/30;
+        }if(month==2){
+            avgPrice=totalPrice/28;
+            avgTicket=totalTicket/28;
+        }
+
+        return StatisticMonthYear.builder()
+                .avgPrice(avgPrice)
+                .avgTicket(avgTicket)
+                .totalTicket(totalTicket)
+                .totalPrice(totalPrice)
+                .build();
+    }
+
+    @Override
+    public StatisticMonthYear getYesterdayHotel() {
+        List<GetInvoiceDetailResponse> getInvoiceResponses=invoiceDetailRepository.findByTodayAndIsHotel(LocalDate.now().minusDays(1))
+                .stream().map(invoiceDetail ->
+                        modelMapper.map(invoiceDetail, GetInvoiceDetailResponse.class))
+                .collect(Collectors.toList());
+        int month=LocalDate.now().minusDays(1).getMonthValue();
+        double totalPrice=0;
+        double avgPrice=0;
+        double totalTicket=0;
+        double avgTicket=0;
+        for (GetInvoiceDetailResponse getInvoiceResponse: getInvoiceResponses){
+            totalPrice+=getInvoiceResponse.getTotalPrice();
+            totalTicket+=getInvoiceResponse.getQuantity();
+        }
+        if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
+            avgPrice=totalPrice/31;
+            avgTicket=totalTicket/31;
+        }
+        if(month==4||month==6||month==9||month==11){
+            avgPrice=totalPrice/30;
+            avgTicket=totalTicket/30;
+        }if(month==2){
+            avgPrice=totalPrice/28;
+            avgTicket=totalTicket/28;
+        }
+
+        return StatisticMonthYear.builder()
+                .avgPrice(avgPrice)
+                .avgTicket(avgTicket)
+                .totalTicket(totalTicket)
+                .totalPrice(totalPrice)
+                .build();
+    }
+
+    @Override
+    public StatisticMonthYear getYesterdayTourism() {
+        List<GetInvoiceDetailResponse> getInvoiceResponses=invoiceDetailRepository.findByTodayAndIsTourism(LocalDate.now().minusDays(1))
+                .stream().map(invoiceDetail ->
+                        modelMapper.map(invoiceDetail, GetInvoiceDetailResponse.class))
+                .collect(Collectors.toList());
+        int month=LocalDate.now().minusDays(1).getMonthValue();
+        double totalPrice=0;
+        double avgPrice=0;
+        double totalTicket=0;
+        double avgTicket=0;
+        for (GetInvoiceDetailResponse getInvoiceResponse: getInvoiceResponses){
+            totalPrice+=getInvoiceResponse.getTotalPrice();
+            totalTicket+=getInvoiceResponse.getQuantity();
+        }
+        if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
+            avgPrice=totalPrice/31;
+            avgTicket=totalTicket/31;
+        }
+        if(month==4||month==6||month==9||month==11){
+            avgPrice=totalPrice/30;
+            avgTicket=totalTicket/30;
+        }if(month==2){
+            avgPrice=totalPrice/28;
+            avgTicket=totalTicket/28;
+        }
+
+        return StatisticMonthYear.builder()
+                .avgPrice(avgPrice)
+                .avgTicket(avgTicket)
+                .totalTicket(totalTicket)
+                .totalPrice(totalPrice)
+                .build();
+    }
+
+    @Override
+    public StatisticMonthYear getYesterdayTour() {
+        List<GetInvoiceDetailResponse> getInvoiceResponses=invoiceDetailRepository.findByTodayAndIsTour(LocalDate.now().minusDays(1))
+                .stream().map(invoiceDetail ->
+                        modelMapper.map(invoiceDetail, GetInvoiceDetailResponse.class))
+                .collect(Collectors.toList());
+        int month=LocalDate.now().minusDays(1).getMonthValue();
         double totalPrice=0;
         double avgPrice=0;
         double totalTicket=0;
