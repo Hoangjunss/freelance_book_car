@@ -9,6 +9,6 @@ import { Component } from '@angular/core';
 })
 export class NoDataFoundComponent {
   reloadData(){
-    
+    window.location.reload();
   }
 }

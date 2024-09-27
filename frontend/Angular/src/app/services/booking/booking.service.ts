@@ -52,5 +52,17 @@ export class BookingService {
       })
     );
   }
+
+  getAll(): Observable<GetHotelBookingResponse[]> {
+    return this.httpClient.get<Apiresponse<GetHotelBookingResponse[]>>(`${this.baseUrl}/all`).pipe(
+      map((response: Apiresponse<GetHotelBookingResponse[]>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    );
+  }    
   
 }

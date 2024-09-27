@@ -5,6 +5,7 @@ export class GetBookingResponse{
     idUser?: number;
     paymentMethod?: number;
     invoice?: number;
+    type?: string;
 
     constructor(
         id?: number,
@@ -13,6 +14,7 @@ export class GetBookingResponse{
         idUser?: number,
         paymentMethod?: number,
         invoice?: number
+        
     ) {
         this.id = id;
         this.dateBook = dateBook;
