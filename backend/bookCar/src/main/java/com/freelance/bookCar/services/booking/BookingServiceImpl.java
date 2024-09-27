@@ -337,7 +337,7 @@ public class BookingServiceImpl implements BookingService{
             // Create a new booking using Builder and ModelMapper
             CreateBookingRequest createBookingRequest = modelMapper.map(addBookingHotelRequest, CreateBookingRequest.class);
             createBookingRequest.setTotalPrice(addBookingHotelRequest.getTotalPrice());
-            createBookingRequest.
+
 
             // Default payment method logic can be added here if needed
             CreateBookingResponse createBookingResponse = create(createBookingRequest);
