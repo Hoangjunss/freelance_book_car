@@ -11,15 +11,11 @@
                 </div>
             </div>
             <div class="d-flex align-items-center">
-                <!-- Nếu là đặt xe, cho phép nhập số lượng -->
-                <ng-container *ngIf="product.type === 'car'">
-                    <input type="number" [(ngModel)]="product.quantity" class="form-control text-center quantity-input" style="width: 50px;" min="1">
-                </ng-container>
-                <!-- Nếu là phòng khách sạn hoặc vé, không có số lượng -->
-                <ng-container *ngIf="product.type !== 'car'">
-                    <span>Đặt 1</span> <!-- Hoặc có thể để thông báo gì đó -->
-                </ng-container>
+                <button class="btn btn-sm btn-light" (click)="decreaseQuantity(product)">-</button>
+                <input type="" [(ngModel)]="product.quantity" class="form-control text-center quantity-input" style="width: 50px;" min="1" readonly>
+                <button class="btn btn-sm btn-light" (click)="increaseQuantity(product)">+</button>
             </div>
+            
         </li>
     </ul>
 

@@ -4,11 +4,18 @@ import { LocationDetailComponent } from '../location-detail/location-detail.comp
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { CommonModule } from '@angular/common';
 import { LocationListComponent } from '../location-list/location-list.component';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { AuthInterceptor } from '../../../services/auth.interceptor';
+import { UserService } from '../../../services/user/user.service';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CarouselModule, CommonModule, LocationListComponent, LocationDetailComponent],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    UserService
+  ],
+  imports: [CarouselModule, CommonModule, LocationListComponent, LocationDetailComponent,HttpClientModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })

@@ -12,6 +12,7 @@ import { TicketListComponent } from './components/user/ticket-list/ticket-list.c
 import { TicketDetailComponent } from './components/user/ticket-detail/ticket-detail.component';
 import { HotelDetailComponent } from './components/user/hotel-detail/hotel-detail.component';
 import { CartComponent } from './components/user/cart/cart.component';
+import { HistoryComponent } from './components/user/history/history.component';
 
 
 export const routes: Routes = [
@@ -82,6 +83,10 @@ export const routes: Routes = [
   {
     path: 'cart',
     component: CartComponent
+  },
+  {
+    path: 'order-history',
+    component: HistoryComponent
   },
   {
     path: '**',

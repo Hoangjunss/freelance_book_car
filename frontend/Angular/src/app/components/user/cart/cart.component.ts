@@ -1,11 +1,18 @@
 import { CommonModule } from '@angular/common';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { AuthInterceptor } from '../../../services/auth.interceptor';
+import { UserService } from '../../../services/user/user.service';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [FormsModule,CommonModule],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    UserService
+  ],
+  imports: [FormsModule,CommonModule,HttpClientModule],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css'
 })

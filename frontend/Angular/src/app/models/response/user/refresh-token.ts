@@ -1,4 +1,4 @@
 export class RefreshToken{
     refreshToken?: string;
-    username?: string;
+    accessToken?: string;
 }

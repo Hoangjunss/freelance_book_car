@@ -3,11 +3,18 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { GetTourismResponse } from '../../../models/response/product/ticket/tourism/get-tourism-response';
 import { TourismService } from '../../../services/product/ticket/tourism/tourism.service';
 import { CommonModule } from '@angular/common';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { AuthInterceptor } from '../../../services/auth.interceptor';
+import { UserService } from '../../../services/user/user.service';
 
 @Component({
   selector: 'app-ticket-list',
   standalone: true,
-  imports: [CommonModule,RouterLink],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    UserService
+  ],
+  imports: [CommonModule,RouterLink,HttpClientModule],
   templateUrl: './ticket-list.component.html',
   styleUrl: './ticket-list.component.css'
 })

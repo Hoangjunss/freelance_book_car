@@ -2,11 +2,18 @@ import { Component, Input } from '@angular/core';
 import { GetHotelDetailResponse } from '../../../models/response/product/hotel/hotel/get-hotel-detail-response';
 import { ActivatedRoute } from '@angular/router';
 import { HotelService } from '../../../services/product/hotel/hotel/hotel.service';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { AuthInterceptor } from '../../../services/auth.interceptor';
+import { UserService } from '../../../services/user/user.service';
 
 @Component({
   selector: 'app-hotel-detail',
   standalone: true,
-  imports: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    UserService
+  ],
+  imports: [HttpClientModule],
   templateUrl: './hotel-detail.component.html',
   styleUrl: './hotel-detail.component.css'
 })

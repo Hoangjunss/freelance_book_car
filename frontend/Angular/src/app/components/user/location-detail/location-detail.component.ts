@@ -3,11 +3,18 @@ import { Component,Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TourService } from '../../../services/product/tour/tour/tour.service';
 import { GetTourResponse } from '../../../models/response/product/tour/tour/get-tour-response';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { AuthInterceptor } from '../../../services/auth.interceptor';
+import { UserService } from '../../../services/user/user.service';
 
 @Component({
   selector: 'app-location-detail',
   standalone: true,
-  imports: [CommonModule],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    UserService
+  ],
+  imports: [CommonModule,HttpClientModule],
   templateUrl: './location-detail.component.html',
   styleUrl: './location-detail.component.css'
 })
