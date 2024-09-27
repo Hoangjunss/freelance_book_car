@@ -13,7 +13,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CreateVoucherRequest {
-    private LocalDateTime createDate;
+    private LocalDateTime endDate;
     private boolean isUse;
-    private Integer idPromotion;
+    private Float discountRate;
+
 }

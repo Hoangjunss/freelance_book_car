@@ -30,18 +30,18 @@ public class VoucherServiceImpl implements VoucherService{
     public CreateVoucherResponse create(CreateVoucherRequest createVoucherRequest) {
         log.info("Create voucher");
 
-        if (createVoucherRequest.getIdPromotion() == null) {
+        if (createVoucherRequest.getDiscountRate() == null) {
             throw new CustomException(Error.VOUCHER_INVALID_PROMOTION_ID);
         }
-        if (createVoucherRequest.getCreateDate() == null) {
+        if (createVoucherRequest.getEndDate() == null) {
             throw new CustomException(Error.VOUCHER_INVALID_CREATE_DATE);
         }
 
         Voucher voucher = Voucher.builder()
                 .id(generateId())
-                .createDate(createVoucherRequest.getCreateDate())
+                .endDate(createVoucherRequest.getEndDate())
                 .isUse(createVoucherRequest.isUse())
-                .idPromotion(createVoucherRequest.getIdPromotion())
+                .discountRate(createVoucherRequest.getDiscountRate())
                 .build();
 
         try {
@@ -65,12 +65,12 @@ public class VoucherServiceImpl implements VoucherService{
 
         Voucher voucher = modelMapper.map(findById(updateVoucherRequest.getId()), Voucher.class);
 
-        if (updateVoucherRequest.getCreateDate() != null) {
-            voucher.setCreateDate(updateVoucherRequest.getCreateDate());
+        if (updateVoucherRequest.getEndDate() != null) {
+            voucher.setEndDate(updateVoucherRequest.getEndDate());
         }
         voucher.setUse(updateVoucherRequest.isUse());
-        if (updateVoucherRequest.getIdPromotion() != null) {
-            voucher.setIdPromotion(updateVoucherRequest.getIdPromotion());
+        if (updateVoucherRequest.getDiscountRate() != null) {
+            voucher.setDiscountRate(updateVoucherRequest.getDiscountRate());
         }
 
         try {
