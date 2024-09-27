@@ -9,4 +9,7 @@ import org.springframework.stereotype.Service;
 public interface StatisticYearService {
     StatisticYear getYear(int year);
     StatisticMonthYear getMonth(int year,int month);
+    StatisticMonthYear getMonthHotel(int year,int month);
+    StatisticMonthYear getMonthTourism(int year,int month);
+    StatisticMonthYear getMonthTour(int year,int month);
 }

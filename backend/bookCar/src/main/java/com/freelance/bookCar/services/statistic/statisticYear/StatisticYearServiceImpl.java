@@ -93,4 +93,106 @@ public class StatisticYearServiceImpl implements StatisticYearService{
                  .totalPrice(totalPrice)
                  .build();
     }
+
+    @Override
+    public StatisticMonthYear getMonthHotel(int year, int month) {
+        List<GetInvoiceDetailResponse> getInvoiceResponses=invoiceDetailRepository.findByMonthAndIsHotel(year,month)
+                .stream().map(invoiceDetail ->
+                        modelMapper.map(invoiceDetail, GetInvoiceDetailResponse.class))
+                .collect(Collectors.toList());
+        double totalPrice=0;
+        double avgPrice=0;
+        double totalTicket=0;
+        double avgTicket=0;
+        for (GetInvoiceDetailResponse getInvoiceResponse: getInvoiceResponses){
+            totalPrice+=getInvoiceResponse.getTotalPrice();
+            totalTicket+=getInvoiceResponse.getQuantity();
+        }
+        if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
+            avgPrice=totalPrice/31;
+            avgTicket=totalTicket/31;
+        }
+        if(month==4||month==6||month==9||month==11){
+            avgPrice=totalPrice/30;
+            avgTicket=totalTicket/30;
+        }if(month==2){
+            avgPrice=totalPrice/28;
+            avgTicket=totalTicket/28;
+        }
+
+        return StatisticMonthYear.builder()
+                .avgPrice(avgPrice)
+                .avgTicket(avgTicket)
+                .totalTicket(totalTicket)
+                .totalPrice(totalPrice)
+                .build();
+    }
+
+    @Override
+    public StatisticMonthYear getMonthTourism(int year, int month) {
+        List<GetInvoiceDetailResponse> getInvoiceResponses=invoiceDetailRepository.findByMonthAndIsTourism(year,month)
+                .stream().map(invoiceDetail ->
+                        modelMapper.map(invoiceDetail, GetInvoiceDetailResponse.class))
+                .collect(Collectors.toList());
+        double totalPrice=0;
+        double avgPrice=0;
+        double totalTicket=0;
+        double avgTicket=0;
+        for (GetInvoiceDetailResponse getInvoiceResponse: getInvoiceResponses){
+            totalPrice+=getInvoiceResponse.getTotalPrice();
+            totalTicket+=getInvoiceResponse.getQuantity();
+        }
+        if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
+            avgPrice=totalPrice/31;
+            avgTicket=totalTicket/31;
+        }
+        if(month==4||month==6||month==9||month==11){
+            avgPrice=totalPrice/30;
+            avgTicket=totalTicket/30;
+        }if(month==2){
+            avgPrice=totalPrice/28;
+            avgTicket=totalTicket/28;
+        }
+
+        return StatisticMonthYear.builder()
+                .avgPrice(avgPrice)
+                .avgTicket(avgTicket)
+                .totalTicket(totalTicket)
+                .totalPrice(totalPrice)
+                .build();
+    }
+
+    @Override
+    public StatisticMonthYear getMonthTour(int year, int month) {
+        List<GetInvoiceDetailResponse> getInvoiceResponses=invoiceDetailRepository.findByMonthAndIsTour(year,month)
+                .stream().map(invoiceDetail ->
+                        modelMapper.map(invoiceDetail, GetInvoiceDetailResponse.class))
+                .collect(Collectors.toList());
+        double totalPrice=0;
+        double avgPrice=0;
+        double totalTicket=0;
+        double avgTicket=0;
+        for (GetInvoiceDetailResponse getInvoiceResponse: getInvoiceResponses){
+            totalPrice+=getInvoiceResponse.getTotalPrice();
+            totalTicket+=getInvoiceResponse.getQuantity();
+        }
+        if(month==1||month==3||month==5||month==7||month==8||month==10||month==12){
+            avgPrice=totalPrice/31;
+            avgTicket=totalTicket/31;
+        }
+        if(month==4||month==6||month==9||month==11){
+            avgPrice=totalPrice/30;
+            avgTicket=totalTicket/30;
+        }if(month==2){
+            avgPrice=totalPrice/28;
+            avgTicket=totalTicket/28;
+        }
+
+        return StatisticMonthYear.builder()
+                .avgPrice(avgPrice)
+                .avgTicket(avgTicket)
+                .totalTicket(totalTicket)
+                .totalPrice(totalPrice)
+                .build();
+    }
 }

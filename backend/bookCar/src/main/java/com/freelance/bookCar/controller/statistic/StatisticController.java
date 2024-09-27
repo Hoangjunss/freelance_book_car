@@ -24,5 +24,20 @@ public class StatisticController {
        StatisticMonthYear statisticYear=statisticYearService.getMonth(year,month);
         return ResponseEntity.ok(new ApiResponse<>(true, "Get Voucher successfully", statisticYear));
     }
+    @GetMapping("/hotel")
+    public ResponseEntity<ApiResponse<StatisticMonthYear>> getStatisticMonthYearHotel(@RequestParam Integer month, @RequestParam Integer year) {
+        StatisticMonthYear statisticYear=statisticYearService.getMonthHotel(year,month);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Get Voucher successfully", statisticYear));
+    }
+    @GetMapping("/tour")
+    public ResponseEntity<ApiResponse<StatisticMonthYear>> getStatisticMonthYearTour(@RequestParam Integer month, @RequestParam Integer year) {
+        StatisticMonthYear statisticYear=statisticYearService.getMonthTour(year,month);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Get Voucher successfully", statisticYear));
+    }
+    @GetMapping("/tourism")
+    public ResponseEntity<ApiResponse<StatisticMonthYear>> getStatisticMonthYearTourism(@RequestParam Integer month, @RequestParam Integer year) {
+        StatisticMonthYear statisticYear=statisticYearService.getMonthTourism(year,month);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Get Voucher successfully", statisticYear));
+    }
 
 }
