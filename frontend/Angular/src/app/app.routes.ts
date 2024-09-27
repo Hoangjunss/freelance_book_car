@@ -11,6 +11,7 @@ import { HotelListComponent } from './components/user/hotel-list/hotel-list.comp
 import { TicketListComponent } from './components/user/ticket-list/ticket-list.component';
 import { TicketDetailComponent } from './components/user/ticket-detail/ticket-detail.component';
 import { HotelDetailComponent } from './components/user/hotel-detail/hotel-detail.component';
+import { CartComponent } from './components/user/cart/cart.component';
 
 
 export const routes: Routes = [
@@ -77,6 +78,10 @@ export const routes: Routes = [
   {
     path: 'navbar',
     component: NavbarComponent
+  },
+  {
+    path: 'cart',
+    component: CartComponent
   },
   {
     path: '**',

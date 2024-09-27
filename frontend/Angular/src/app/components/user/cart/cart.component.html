@@ -1,0 +1,34 @@
+<div class="container mt-5">
+    <h2 class="mb-4">Giỏ hàng của bạn</h2>
+
+    <ul class="list-group mb-4">
+        <li *ngFor="let product of products" class="list-group-item d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <img [src]="product.image" alt="{{ product.name }}" class="img-thumbnail mr-3" style="width: 100px;">
+                <div>
+                    <h5>{{ product.name }}</h5>
+                    <p class="mb-0">Giá: {{ product.price | currency:'VND' }}</p>
+                </div>
+            </div>
+            <div class="d-flex align-items-center">
+                <!-- Nếu là đặt xe, cho phép nhập số lượng -->
+                <ng-container *ngIf="product.type === 'car'">
+                    <input type="number" [(ngModel)]="product.quantity" class="form-control text-center quantity-input" style="width: 50px;" min="1">
+                </ng-container>
+                <!-- Nếu là phòng khách sạn hoặc vé, không có số lượng -->
+                <ng-container *ngIf="product.type !== 'car'">
+                    <span>Đặt 1</span> <!-- Hoặc có thể để thông báo gì đó -->
+                </ng-container>
+            </div>
+        </li>
+    </ul>
+
+    <div class="d-flex justify-content-between align-items-center">
+        <h4>Tổng cộng:</h4>
+        <h4>{{ total | currency:'VND' }}</h4>
+    </div>
+
+    <div class="text-right mt-4">
+        <button class="btn btn-success">Thanh toán</button>
+    </div>
+</div>

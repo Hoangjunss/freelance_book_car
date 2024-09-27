@@ -1,0 +1,39 @@
+.list-group-item {
+    transition: background-color 0.3s;
+}
+
+.list-group-item:hover {
+    background-color: #f8f9fa;
+}
+
+.btn-light {
+    background-color: #e9ecef; 
+    border: none;
+    transition: background-color 0.3s;
+}
+
+.btn-light:hover {
+    background-color: #d3d9db;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+    transition: background-color 0.3s;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+}
+
+
+.quantity-input {
+    background-color: transparent; 
+    border: none; 
+    text-align: center; 
+}
+
+.btn-sm {
+    padding: 5px 10px; 
+    font-size: 14px; 
+}
