@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Chart, registerables } from 'chart.js';
+import { StatisticMonthYear } from '../../../models/response/statistics/StatisticMonthYear';
+import { StatisticsService } from '../../../services/statistics/statistics.service';
 
 Chart.register(...registerables);
 
@@ -13,6 +15,12 @@ Chart.register(...registerables);
   styleUrl: './statistics.component.css'
 })
 export class StatisticsComponent implements OnInit{
+
+  statisticMonthYear?: StatisticMonthYear;
+
+  currentDate = new Date();
+  currentMonth = this.currentDate.getMonth() + 1; // Vì getMonth() trả về giá trị từ 0-11, nên cộng thêm 1
+  currentYear = this.currentDate.getFullYear();
 
   months = [
     { name: 'January', value: 1 },
@@ -32,10 +40,29 @@ export class StatisticsComponent implements OnInit{
   selectedMonth: number = 0;
   selectedYear: number = 0;
 
+
+  constructor(private statisticService: StatisticsService){}
+
   ngOnInit(): void {
+    this.getStatisticMonthYear(this.currentMonth, this.currentYear);
     this.years = this.generateYears(2020, new Date().getFullYear());
     this.renderChart();
   }
+
+  getStatisticMonthYear(month: number, year: number){
+    this.statisticService.getStatisticMonthYear(month, year).subscribe({
+      next: (data) => {
+        this.statisticMonthYear = data;
+        if (this.statisticMonthYear) {
+          console.log('Tour created successfully:', this.statisticMonthYear);
+        }
+      },
+      error: (err) => {
+        console.error('Error statistic:', err.message);
+      }
+    });
+  }
+
 
   generateYears(start: number, end: number): number[] {
     const years = [];
@@ -46,8 +73,7 @@ export class StatisticsComponent implements OnInit{
   }
 
   filterTours() {
-    console.log('Selected Month:', this.selectedMonth);
-    console.log('Selected Year:', this.selectedYear);
+    this.getStatisticMonthYear(this.selectedMonth, this.selectedYear);
   }
 
   renderChart() {
