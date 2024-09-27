@@ -83,7 +83,7 @@ public class BookingServiceImpl implements BookingService{
                 .dateBook(LocalDateTime.now())
                 .totalPrice(createBookingRequest.getTotalPrice())
                 .idUser(createBookingRequest.getIdUser())
-                .idPayment(createBookingRequest.getPaymentMethod())
+
                 .typeBooking(TypeBooking.CART)
                 .build();
 
@@ -120,9 +120,7 @@ public class BookingServiceImpl implements BookingService{
         if (updateBookingRequest.getIdUser() != null) {
             existingBooking.setIdUser(updateBookingRequest.getIdUser());
         }
-        if (updateBookingRequest.getPaymentMethod() != null) {
-            existingBooking.setIdPayment(updateBookingRequest.getPaymentMethod());
-        }
+
 
 
         try {
@@ -192,7 +190,6 @@ public class BookingServiceImpl implements BookingService{
                     .dateBook(booking.getDateBook())
                     .totalPrice(booking.getTotalPrice() + addBookingTourRequest.getTotalPrice())
                     .idUser(booking.getIdUser())
-                    .idPayment(booking.getIdPayment())
                     .build();
 
             // Save the updated booking
@@ -277,7 +274,7 @@ public class BookingServiceImpl implements BookingService{
                     .dateBook(booking.getDateBook())
                     .totalPrice(booking.getTotalPrice() + addBookingTourismRequest.getTotalPrice())
                     .idUser(booking.getIdUser())
-                    .idPayment(booking.getIdPayment())
+
                     .build();
 
             // Save the updated booking
@@ -354,7 +351,7 @@ public class BookingServiceImpl implements BookingService{
                     .dateBook(booking.getDateBook())
                     .totalPrice(booking.getTotalPrice() + addBookingHotelRequest.getTotalPrice())
                     .idUser(booking.getIdUser())
-                    .idPayment(booking.getIdPayment())
+
                     .build();
 
             // Save the updated booking
