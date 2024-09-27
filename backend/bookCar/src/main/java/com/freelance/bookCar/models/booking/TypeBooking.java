@@ -5,5 +5,5 @@ import jakarta.persistence.Enumerated;
 
 public enum TypeBooking {
 
-    PENDING,ACCEPT,CANCEL,SUCCESS
+    PENDING,ACCEPT,CANCEL,SUCCESS,CART
 }

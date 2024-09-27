@@ -20,6 +20,8 @@ public class Booking {
     private Integer idUser;
     private Integer idTour;
     private Integer idPayment;
+    private Integer idVoucher;
+    private Integer idPromotion;
     @Enumerated(EnumType.STRING)
     private TypeBooking typeBooking;
     // Getters and Setters
