@@ -88,4 +88,16 @@ export class TourService {
       })
     );
   }
+
+  getTourDetailById(id: number): Observable<GetTourResponse> {
+    return this.httpClient.get<Apiresponse<GetTourResponse>>(`${this.baseUrl}/detail?id=${id}`).pipe(
+      map((response: Apiresponse<GetTourResponse>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    );
+  }
 }
