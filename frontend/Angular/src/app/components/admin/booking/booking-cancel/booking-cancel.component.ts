@@ -15,6 +15,7 @@ import { FormsModule } from '@angular/forms';
 export class BookingCancelComponent {
   getBookingResponse: GetBookingResponse[] = [];
 
+  type: string = 'CANCEL';
 
   currentPage: number = 1;
   pageSize: number = 5;
@@ -23,7 +24,7 @@ export class BookingCancelComponent {
   constructor(private bookingService: BookingService){}
 
   ngOnInit(): void {
-    this.getAll();
+    this.getByType(this.type);
     this.updatePagedData();
   }
 
@@ -48,6 +49,14 @@ export class BookingCancelComponent {
 
   getAll(){
     this.bookingService.getAll().subscribe({
+      next: (data) => {
+        this.getBookingResponse = data;
+        this.updatePagedData();
+      }
+    })
+  }
+  getByType(type: string){
+    this.bookingService.getByType(type).subscribe({
       next: (data) => {
         this.getBookingResponse = data;
         this.updatePagedData();
