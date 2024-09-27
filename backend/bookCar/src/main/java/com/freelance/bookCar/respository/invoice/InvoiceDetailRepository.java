@@ -9,4 +9,5 @@ public interface InvoiceDetailRepository extends JpaRepository<InvoiceDetail,Int
     List<InvoiceDetail> findByMonthAndHotel(int month);
     List<InvoiceDetail> findByMonthAndTour(int month);
     List<InvoiceDetail> findByMonthAndTourism(int month);
+    List<InvoiceDetail> findByIdInvoiceAndMonthYear(int month,int year);
 }

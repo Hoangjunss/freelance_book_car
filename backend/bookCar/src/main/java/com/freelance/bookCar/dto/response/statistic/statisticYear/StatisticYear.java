@@ -1,4 +1,4 @@
-package com.freelance.bookCar.dto.response.statistic;
+package com.freelance.bookCar.dto.response.statistic.statisticYear;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
