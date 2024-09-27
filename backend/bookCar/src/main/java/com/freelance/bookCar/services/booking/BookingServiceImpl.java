@@ -84,7 +84,7 @@ public class BookingServiceImpl implements BookingService{
                 .totalPrice(createBookingRequest.getTotalPrice())
                 .idUser(createBookingRequest.getIdUser())
                 .idPayment(createBookingRequest.getPaymentMethod())
-                .typeBooking(TypeBooking.PENDING)
+                .typeBooking(TypeBooking.CART)
                 .build();
 
         try {
@@ -337,6 +337,7 @@ public class BookingServiceImpl implements BookingService{
             // Create a new booking using Builder and ModelMapper
             CreateBookingRequest createBookingRequest = modelMapper.map(addBookingHotelRequest, CreateBookingRequest.class);
             createBookingRequest.setTotalPrice(addBookingHotelRequest.getTotalPrice());
+            createBookingRequest.
 
             // Default payment method logic can be added here if needed
             CreateBookingResponse createBookingResponse = create(createBookingRequest);
@@ -499,6 +500,14 @@ public class BookingServiceImpl implements BookingService{
     @Override
     public List<GetBookingResponse> findType(String type) {
         return bookingRepository.findAllByTypeBooking(TypeBooking.valueOf(type)).stream().map(booking -> modelMapper.map(booking, GetBookingResponse.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public GetBookingResponse updateType(Integer id,String type) {
+        GetBookingResponse getBookingResponse=findById(id);
+        Booking booking=modelMapper.map(getBookingResponse,Booking.class);
+        booking.setTypeBooking(TypeBooking.valueOf(type));
+        return modelMapper.map(bookingRepository.save(booking), GetBookingResponse.class);
     }
 
 

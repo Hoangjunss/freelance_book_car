@@ -54,4 +54,9 @@ public class BookingController {
         List<GetBookingResponse> getBookingResponses=bookingService.findType(type);
         return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", getBookingResponses));
     }
+    @PatchMapping("/type")
+    public ResponseEntity<ApiResponse<GetBookingResponse>> setType(@RequestParam String type,@RequestParam Integer id){
+        GetBookingResponse getBookingResponses=bookingService.updateType(id, type);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", getBookingResponses));
+    }
 }
