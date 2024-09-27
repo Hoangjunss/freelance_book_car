@@ -14,6 +14,9 @@ import { PromotionComponent } from "../promotion-manager/promotion/promotion.com
 import { VoucherComponent } from "../promotion-manager/voucher/voucher.component";
 import { StatisticsComponent } from "../statistics/statistics.component";
 import { PageHomeComponent } from "../page/page-home/page-home.component";
+import { BookingPendingComponent } from "../booking/booking-pending/booking-pending.component";
+import { BookingAcceptComponent } from "../booking/booking-accept/booking-accept.component";
+import { BookingCancelComponent } from "../booking/booking-cancel/booking-cancel.component";
 
 export const adminRoutes: Routes = [
     {
@@ -98,6 +101,23 @@ export const adminRoutes: Routes = [
                     {
                         path: 'home',
                         component: PageHomeComponent
+                    }
+                ]
+            },
+            {
+                path: 'booking',
+                children: [
+                    {
+                        path: 'pending',
+                        component: BookingPendingComponent
+                    },
+                    {
+                        path: 'accept',
+                        component: BookingAcceptComponent
+                    },
+                    {
+                        path: 'cancel',
+                        component: BookingCancelComponent
                     }
                 ]
             }
