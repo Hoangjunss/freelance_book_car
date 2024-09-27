@@ -51,4 +51,6 @@ public class HotelController {
         List<GetHotelResponse> response = hotelService.findByLocation(location);
         return ResponseEntity.ok(new ApiResponse<>(true, "Hotel retrieved successfully", response));
     }
+
+
 }
