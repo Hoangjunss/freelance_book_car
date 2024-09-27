@@ -13,6 +13,7 @@ import com.freelance.bookCar.dto.response.booking.bookingHotel.AddBookingHotelRe
 import com.freelance.bookCar.dto.response.booking.bookingTour.AddBookingTourResponse;
 import com.freelance.bookCar.dto.response.booking.bookingTourism.AddBookingTourismResponse;
 import com.freelance.bookCar.services.booking.BookingService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,17 +45,17 @@ public class BookingController {
         return ResponseEntity.ok(new ApiResponse<>(true, "Booking retrieved successfully", GetBookingResponse));
     }
     @PostMapping("/tour")
-    public ResponseEntity<ApiResponse<AddBookingTourResponse>> createBookingTour(@RequestBody AddBookingTourRequest addBookingTourRequest){
+    public ResponseEntity<ApiResponse<AddBookingTourResponse>> createBookingTour(@ModelAttribute @Valid AddBookingTourRequest addBookingTourRequest){
         AddBookingTourResponse addBookingTourResponse=bookingService.addBookingTour(addBookingTourRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", addBookingTourResponse));
     }
     @PostMapping("/tourism")
-    public ResponseEntity<ApiResponse<AddBookingTourismResponse>> createBookingTourism(@RequestBody AddBookingTourismRequest addBookingTourRequest){
+    public ResponseEntity<ApiResponse<AddBookingTourismResponse>> createBookingTourism(@ModelAttribute @Valid AddBookingTourismRequest addBookingTourRequest){
         AddBookingTourismResponse addBookingTourResponse=bookingService.addBookingTourism(addBookingTourRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", addBookingTourResponse));
     }
     @PostMapping("/hotel")
-    public ResponseEntity<ApiResponse<AddBookingHotelResponse>> createBookingHotel(@RequestBody AddBookingHotelRequest addBookingTourRequest){
+    public ResponseEntity<ApiResponse<AddBookingHotelResponse>> createBookingHotel(@ModelAttribute @Valid AddBookingHotelRequest addBookingTourRequest){
         AddBookingHotelResponse addBookingTourResponse=bookingService.addBookingHotel(addBookingTourRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", addBookingTourResponse));
     }

@@ -209,6 +209,7 @@ public class BookingServiceImpl implements BookingService{
 
         // Create a BookingDetail object using Builder pattern
         BookingDetail bookingDetail = BookingDetail.builder()
+                .id(getGenerationId())
                 .idBooking(booking.getId())
                 .idTour(tour.getId())
                 .quantity(addBookingTourRequest.getQuantity())
