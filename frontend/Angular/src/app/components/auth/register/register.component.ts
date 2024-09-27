@@ -94,9 +94,13 @@ export class RegisterComponent {
 
       this.userService.registerUser(formData).subscribe(   
         (response : registerUserResponse) => {
-          const idUser  = response; 
+          debugger;
+          const idUser  = response.idUser; 
           console.log(idUser); 
           console.log(response);
+          if(idUser){
+            localStorage.setItem('idUser', idUser.toString());
+          }
           this.router.navigate(['/login']);
         },
         (error) => {

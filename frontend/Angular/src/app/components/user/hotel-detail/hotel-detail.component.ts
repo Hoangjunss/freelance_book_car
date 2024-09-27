@@ -5,6 +5,8 @@ import { HotelService } from '../../../services/product/hotel/hotel/hotel.servic
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from '../../../services/auth.interceptor';
 import { UserService } from '../../../services/user/user.service';
+import { BookingService } from '../../../services/booking/booking.service';
+import { AddBookingHotelRequest } from '../../../models/request/booking/add-booking-hotel-request';
 
 @Component({
   selector: 'app-hotel-detail',
@@ -29,7 +31,7 @@ export class HotelDetailComponent {
   }
   
 
-  constructor(private route: ActivatedRoute,private hotelService : HotelService) { }
+  constructor(private route: ActivatedRoute,private hotelService : HotelService,private bookingService:BookingService) { }
 
   ngOnInit(): void {
     console.log("HotelDetailComponent initialized");
@@ -39,6 +41,7 @@ export class HotelDetailComponent {
       console.log("hotel"+this.locationId);
       if (this.locationId) {
         this.getHotelDetailById(parseInt(this.locationId));
+        this.addBookingHotel(parseInt(this.locationId));
       }
     });
   }
@@ -55,4 +58,42 @@ export class HotelDetailComponent {
       console.log("Error:", error);
     });
   }
+
+  addBookingHotel(id: number) {
+    console.log("Add booking hotel");
+
+    const addBookingTourRequest = new AddBookingHotelRequest();
+    const idUser = localStorage.getItem('idUser');
+    addBookingTourRequest.idHotel = id;
+    addBookingTourRequest.idUser = idUser ? parseInt(idUser) : 0;
+    addBookingTourRequest.quantity = 1;
+    addBookingTourRequest.totalPrice = 100;
+    addBookingTourRequest.idBooking = 1;
+
+    // Chuyển đổi thành FormData
+    const formData = new FormData();
+    formData.append('idHotel', addBookingTourRequest.idHotel.toString());
+    formData.append('idUser', addBookingTourRequest.idUser.toString());
+    formData.append('quantity', addBookingTourRequest.quantity.toString());
+    formData.append('totalPrice', addBookingTourRequest.totalPrice.toString());
+    formData.append('idBooking', addBookingTourRequest.idBooking.toString());
+
+    formData.forEach((value, key) => {
+      console.log(`${key}: ${value}`);
+    });
+    // Gọi service với FormData
+    this.bookingService.addBookingHotel(formData).subscribe(response => {
+        console.log(response);
+        if (response) {
+            console.log("Thành công");
+        } else {
+            console.log("Thất bại");
+        }
+    }, error => {
+        console.log("Error:", error);
+    });
+}
+
+
+
 }

@@ -29,7 +29,9 @@ export class LoginComponent {
       formData.append('email', this.userForm.value.email);
       formData.append('password', this.userForm.value.password);
       this.userService.loginUser(formData).subscribe((response) => {
+        
         console.log(response);
+        debugger;
         const token = response.accessToken;
         if(token){
           localStorage.setItem('token', token);

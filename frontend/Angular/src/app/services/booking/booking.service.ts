@@ -7,6 +7,7 @@ import { Apiresponse } from '../../models/response/apiresponse';
 import { UpdateBookingRequest } from '../../models/request/booking/update-booking-request';
 import { UpdateBookingResponse } from '../../models/response/booking/update-booking-response';
 import { GetHotelBookingResponse } from '../../models/response/product/hotel/hotel-booking/get-hotelbooking-response';
+import { AddBookingTourRequest } from '../../models/request/booking/add-booking-tour-request';
 
 @Injectable({
   providedIn: 'root'
@@ -79,6 +80,40 @@ export class BookingService {
 
   adminSetTypeBooking(id: number, type: string):  Observable<UpdateBookingResponse>{
     return this.httpClient.get<Apiresponse<UpdateBookingResponse>>(`${this.baseUrl}?id=${id}&type=${type}`).pipe(
+      map((response: Apiresponse<UpdateBookingResponse>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    );
+  }
+
+  addBookingTour(formData : FormData): Observable<UpdateBookingResponse>{
+    return this.httpClient.post<Apiresponse<UpdateBookingResponse>>(`${this.baseUrl}/tour`,formData).pipe(
+      map((response: Apiresponse<UpdateBookingResponse>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    );
+  }
+  addBookingHotel(formData : FormData): Observable<UpdateBookingResponse>{
+    return this.httpClient.post<Apiresponse<UpdateBookingResponse>>(`${this.baseUrl}/hotel`,formData).pipe(
+      map((response: Apiresponse<UpdateBookingResponse>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    );
+  }
+  addBookingTourism(formData : FormData): Observable<UpdateBookingResponse>{
+    return this.httpClient.post<Apiresponse<UpdateBookingResponse>>(`${this.baseUrl}/tourism`,formData).pipe(
       map((response: Apiresponse<UpdateBookingResponse>) => {
         if (response.success) {
           return response.data;
