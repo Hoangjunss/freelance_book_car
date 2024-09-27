@@ -63,6 +63,30 @@ export class BookingService {
         }
       })
     );
-  }    
+  } 
+  
+  getByType(type: string): Observable<GetHotelBookingResponse[]> {
+    return this.httpClient.get<Apiresponse<GetHotelBookingResponse[]>>(`${this.baseUrl}?type=${type}`).pipe(
+      map((response: Apiresponse<GetHotelBookingResponse[]>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    );
+  }
+
+  adminSetTypeBooking(id: number, type: string):  Observable<UpdateBookingResponse>{
+    return this.httpClient.get<Apiresponse<UpdateBookingResponse>>(`${this.baseUrl}?id=${id}&type=${type}`).pipe(
+      map((response: Apiresponse<UpdateBookingResponse>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    );
+  }
   
 }

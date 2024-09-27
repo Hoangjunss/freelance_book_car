@@ -14,6 +14,8 @@ import { NoDataFoundComponent } from "../../no-data-found/no-data-found.componen
 })
 export class BookingAcceptComponent implements OnInit {
 
+  type: string = 'ACCEPT';
+
   getBookingResponse: GetBookingResponse[] = [];
 
 
@@ -24,7 +26,7 @@ export class BookingAcceptComponent implements OnInit {
   constructor(private bookingService: BookingService){}
 
   ngOnInit(): void {
-    this.getAll();
+    this.getByType(this.type);
     this.updatePagedData();
   }
 
@@ -49,6 +51,14 @@ export class BookingAcceptComponent implements OnInit {
 
   getAll(){
     this.bookingService.getAll().subscribe({
+      next: (data) => {
+        this.getBookingResponse = data;
+        this.updatePagedData();
+      }
+    })
+  }
+  getByType(type: string){
+    this.bookingService.getByType(type).subscribe({
       next: (data) => {
         this.getBookingResponse = data;
         this.updatePagedData();

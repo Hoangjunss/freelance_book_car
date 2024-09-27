@@ -4,6 +4,7 @@ import { BookingService } from '../../../../services/booking/booking.service';
 import { NoDataFoundComponent } from "../../no-data-found/no-data-found.component";
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { UpdateBookingResponse } from '../../../../models/response/booking/update-booking-response';
 
 @Component({
   selector: 'app-booking-pending',
@@ -14,16 +15,18 @@ import { FormsModule } from '@angular/forms';
 })
 export class BookingPendingComponent {
   getBookingResponse: GetBookingResponse[] = [];
+  updateBookingResponse: UpdateBookingResponse = new UpdateBookingResponse();
 
+  type: string = 'PENDING';
 
   currentPage: number = 1;
   pageSize: number = 5;
-  pagedData: GetBookingResponse[] = [];
+  pagedData: any[] = [];
 
   constructor(private bookingService: BookingService){}
 
   ngOnInit(): void {
-    this.getAll();
+    this.getByType(this.type);
     this.updatePagedData();
   }
 
@@ -54,4 +57,24 @@ export class BookingPendingComponent {
       }
     })
   }
+
+  getByType(type: string){
+    this.bookingService.getByType(type).subscribe({
+      next: (data) => {
+        this.getBookingResponse = data;
+        this.updatePagedData();
+      }
+    })
+  }
+
+  setTypeBooking(id?: number, type?: string){
+    if(id && type){
+      this.bookingService.adminSetTypeBooking(id, type).subscribe({
+      next: (data) => {
+        this.updateBookingResponse = data;
+        }
+      })
+    }
+  }
+
 }
