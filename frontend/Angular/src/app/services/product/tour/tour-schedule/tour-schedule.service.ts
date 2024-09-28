@@ -52,4 +52,18 @@ export class TourScheduleService {
       })
     );
   }
+
+  getTourScheduleByidTour(id:number):Observable<GetTourScheduleResponse[]> {
+    return this.httpClient.get<Apiresponse<GetTourScheduleResponse[]>>(`${this.baseUrl}/tour?idTour=${id}`).pipe(
+      map((response: Apiresponse<GetTourScheduleResponse[]>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    );
+  }
+
+  
 }

@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/tour-schedule")
 @CrossOrigin(origins = "*")
@@ -37,5 +39,11 @@ public class TourScheduleController {
     public ResponseEntity<ApiResponse<GetTourScheduleResponse>> getById(@RequestParam Integer id) {
             GetTourScheduleResponse response = tourScheduleService.findById(id);
             return ResponseEntity.ok(new ApiResponse<>(true, "Tour schedule retrieved successfully", response));
+    }
+
+    @GetMapping("/tour")
+    public ResponseEntity<ApiResponse<List<GetTourScheduleResponse>>> getByIdTour(@RequestParam Integer idTour) {
+        List<GetTourScheduleResponse> response = tourScheduleService.findAllByIdTour(idTour);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Tour schedule retrieved successfully", response));
     }
 }

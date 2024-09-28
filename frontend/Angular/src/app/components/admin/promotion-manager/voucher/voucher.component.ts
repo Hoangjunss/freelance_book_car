@@ -34,12 +34,12 @@ export class VoucherComponent implements OnInit {
 
   ];
   tours: GetTourScheduleResponse[] = [
-    { id: 1, timeStartTour: new Date(), timeEndTour: new Date(), idTour: 101, quantity: 2, priceTour: 500, idTourScheduleStatus: 1 },
-    { id: 2, timeStartTour: new Date(), timeEndTour: new Date(), idTour: 102, quantity: 4, priceTour: 700, idTourScheduleStatus: 2 },
-    { id: 3, timeStartTour: new Date(), timeEndTour: new Date(), idTour: 103, quantity: 1, priceTour: 300, idTourScheduleStatus: 1 },
-    { id: 4, timeStartTour: new Date(), timeEndTour: new Date(), idTour: 104, quantity: 3, priceTour: 400, idTourScheduleStatus: 2 },
-    { id: 5, timeStartTour: new Date(), timeEndTour: new Date(), idTour: 105, quantity: 2, priceTour: 600, idTourScheduleStatus: 1 },
-    { id: 6, timeStartTour: new Date(), timeEndTour: new Date(), idTour: 106, quantity: 5, priceTour: 800, idTourScheduleStatus: 2 },
+    { id: 1, timeStartTour: new Date(), idTour: 101, quantity: 2, priceTour: 500, idTourScheduleStatus: 1 },
+    { id: 2, timeStartTour: new Date(), idTour: 102, quantity: 4, priceTour: 700, idTourScheduleStatus: 2 },
+    { id: 3, timeStartTour: new Date(), idTour: 103, quantity: 1, priceTour: 300, idTourScheduleStatus: 1 },
+    { id: 4, timeStartTour: new Date(), idTour: 104, quantity: 3, priceTour: 400, idTourScheduleStatus: 2 },
+    { id: 5, timeStartTour: new Date(), idTour: 105, quantity: 2, priceTour: 600, idTourScheduleStatus: 1 },
+    { id: 6, timeStartTour: new Date(), idTour: 106, quantity: 5, priceTour: 800, idTourScheduleStatus: 2 },
   ];
 
   // Pagination variables

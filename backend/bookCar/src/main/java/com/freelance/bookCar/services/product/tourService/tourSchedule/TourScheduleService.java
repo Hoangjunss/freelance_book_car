@@ -17,5 +17,6 @@ public interface TourScheduleService {
     UpdateTourScheduleResponse updateTourSchedule(UpdateTourScheduleRequest updateTourScheduleRequest);
     GetTourScheduleResponse findById(Integer id);
     List<GetTourScheduleResponse> getAll();
+    List<GetTourScheduleResponse> findAllByIdTour(Integer idTour);
     TourSchedule findByIdAndByStartDate(Integer id, LocalDateTime date);
 }

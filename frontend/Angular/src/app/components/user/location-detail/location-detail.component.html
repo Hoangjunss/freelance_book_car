@@ -115,10 +115,18 @@
                         <p class="text-dark" style="font-weight: 600;">Vui lòng chọn ngày & gói dịch vụ</p>
                     </div>
                     <p class="text-muted">Vui lòng chọn ngày du lịch</p>
-                    <button class="btn button-price btn-warning mb-2" style="border-radius: 14px;"><i
-                            class="bi bi-calendar4" style="padding: 0px 5px;"></i>
-                        Xem trạng thái dịch vụ</button>
+                    <select class="form-select mb-2" [(ngModel)]="selectedTourSchedule" (change)="onTourScheduleChange()">
+                        <option selected disabled>-- SELECT TOUR SCHEDULE --</option>
+                        <option *ngFor="let schedule of availableTourSchedules" [value]="schedule.id">
+                            {{ schedule.timeStartTour | date: 'dd/MM/yyyy' }} - Giá: {{ schedule.priceTour | currency }}
+                        </option>
+                    </select>
+                    <button class="btn button-price btn-warning mb-2" style="border-radius: 14px;" (click)="checkServiceStatus()">
+                        <i class="bi bi-calendar4" style="padding: 0px 5px;"></i>
+                        Xem trạng thái dịch vụ
+                    </button>
                 </div>
+                
 
 
                 <!-- Service Type Selection -->

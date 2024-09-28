@@ -94,7 +94,6 @@ export class RegisterComponent {
 
       this.userService.registerUser(formData).subscribe(   
         (response : registerUserResponse) => {
-          debugger;
           const idUser  = response.idUser; 
           console.log(idUser); 
           console.log(response);

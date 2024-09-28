@@ -130,7 +130,7 @@ public class TourServiceImpl implements TourService {
     public GetTourDetailResponse getDetail(Integer id, LocalDateTime dateTime) {
         GetTourDetailResponse getTourDetailResponse=modelMapper.map(findById(id), GetTourDetailResponse.class);
         TourSchedule tourSchedule=tourScheduleService.findByIdAndByStartDate(id,dateTime);
-        getTourDetailResponse.setPrice(tourSchedule.getPriceTour());
+
         return getTourDetailResponse;
     }
 
