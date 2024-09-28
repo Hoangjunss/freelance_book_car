@@ -21,5 +21,4 @@ public class BookingDetail {
     private Integer idBooking;
     private Integer quantity;
     private double totalPrice;
-
 }

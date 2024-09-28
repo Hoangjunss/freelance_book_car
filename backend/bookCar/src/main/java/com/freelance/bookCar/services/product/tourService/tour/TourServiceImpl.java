@@ -58,7 +58,6 @@ public class TourServiceImpl implements TourService {
         Tour tourSave = Tour.builder()
                 .id(getGenerationId())
                 .description(createTourRequest.getDescription())
-                .endLocation(createTourRequest.getEndLocation())
                 .startLocation(createTourRequest.getStartLocation())
                 .name(createTourRequest.getName())
                 .isActive(createTourRequest.getIsActive())
@@ -90,9 +89,6 @@ public class TourServiceImpl implements TourService {
         }
         if(updateTourRequest.getName()!=null){
             tour.setName(updateTourRequest.getName());
-        }
-        if(updateTourRequest.getEndLocation()!=null){
-            tour.setEndLocation(updateTourRequest.getEndLocation());
         }
         if(updateTourRequest.getStartLocation()!=null){
             tour.setStartLocation(updateTourRequest.getStartLocation());

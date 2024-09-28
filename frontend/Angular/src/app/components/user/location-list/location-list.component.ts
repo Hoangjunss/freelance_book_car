@@ -37,22 +37,22 @@ export class LocationListComponent implements OnInit {
 
   getLocationsForSelectedLocation(location: string) {
     console.log("Địa điểm " + location);
-    this.tourService.getTourByCategory(location).subscribe(response => {
-      console.log(response);
-      
-      if (response) {
-        this.locations = response;
-        console.log("Thành công");
-      } else {
-        console.log("Thất bại");
-      }
-    }, error => {
-      console.log("Error:", error);
+    this.tourService.getTourByCategory(location).subscribe({
+      next: (response) => {
+        if (response) {
+          this.locations = response;
+          console.log("Thành công");
+        } else {
+          console.log("Thất bại");
+        }
+      },
+      error(err) {
+        console.log(err);
+      },
     });
   }
 
   goToLocationDetail(locationId?: number) {
-    debugger;
     const path = `/location-details/${locationId}`;
     console.log('Navigating to:', path);
     this.router.navigate([path]);

@@ -23,5 +23,4 @@ public class Booking {
     private Integer idPromotion;
     @Enumerated(EnumType.STRING)
     private TypeBooking typeBooking;
-    // Getters and Setters
 }
