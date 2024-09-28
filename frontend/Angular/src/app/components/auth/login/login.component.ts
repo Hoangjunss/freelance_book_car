@@ -28,26 +28,30 @@ export class LoginComponent {
       const formData = new FormData();
       formData.append('email', this.userForm.value.email);
       formData.append('password', this.userForm.value.password);
-      this.userService.loginUser(formData).subscribe((response) => {
-        
-        console.log(response);
-        debugger;
-        const token = response.accessToken;
-        if(token){
-          localStorage.setItem('token', token);
-        }
-        this.router.navigate(['/home']);
-      }, (error) => {
-        console.log(error);
-        if (error.status === 404) {
-          this.userForm.get('email')?.setErrors({ emailNotFound: true });
-          console.error('Account not found');
-        } 
-        else if (error.status === 500) {
-          this.userForm.get('password')?.setErrors({ invalidCredentials: true });
-          console.error('Password not machines');
+      this.userService.loginUser(formData).subscribe({
+        next: (response) => {
+          console.log(response);
+          const token = response.accessToken;
+          if(token){
+            localStorage.setItem('token', token);
+            this.getCurrentUser();
+          }
+          this.router.navigate(['/home']);
         }
       });
     }
+  }
+
+  getCurrentUser() {
+    this.userService.getCurrentUser().subscribe({
+      next: (user) => {
+        console.log('User response:', user);
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        console.log('Current user data saved:', user);
+      },
+      error: (error) => {
+        console.error('Error fetching current user:', error);
+      }
+    });
   }
 }

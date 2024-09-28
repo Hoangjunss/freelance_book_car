@@ -1,27 +1,29 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { Apiresponse } from '../../models/response/apiresponse';
 
-import { map } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 import { registerUserResponse } from '../../models/response/user/register-response';
 import { loginUserResponse } from '../../models/response/user/login-response';
 import { RefreshToken } from '../../models/response/user/refresh-token';
+import { GetCurrentUserResponse } from '../../models/response/user/get-current-user-response';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  
+
   private baseURL = "http://localhost:8080/auth/";
-  constructor(private http:HttpClient,private router:Router) { }
+  constructor(private http: HttpClient, private router: Router, @Inject(PLATFORM_ID) private platformId: Object) { }
 
   registerUser(formData: FormData): Observable<registerUserResponse> {
     return this.http.post<Apiresponse<registerUserResponse>>(`${this.baseURL}registration`, formData).pipe(
-      map((response: Apiresponse<registerUserResponse>) => { 
+      map((response: Apiresponse<registerUserResponse>) => {
         if (response.success) {
-          return response.data; 
+          return response.data;
         } else {
           throw new Error('Registration failed'); // Ném lỗi nếu không thành công
         }
@@ -52,6 +54,46 @@ export class UserService {
       })
     );
   }
+
   
-  
+    
+  getCurrentUser(): Observable<GetCurrentUserResponse> {
+    console.log('Getting current user' );
+    return this.http.get<Apiresponse<GetCurrentUserResponse>>(`${this.baseURL}currentUser`, { headers: this.createAuthorizationHeader() }).pipe(
+      map((response: Apiresponse<GetCurrentUserResponse>) => {
+        if (response.success) {
+          console.log('Current user response:', response.data);
+          return response.data;
+        } else {
+          throw new Error('Get current user failed');
+        }
+      }),
+      catchError((error) => {
+        if (error.status === 401) {
+          this.router.navigate(['/login']);
+        }
+        return throwError(error);
+      })
+    );
+  }
+
+
+  private createAuthorizationHeader(): HttpHeaders {
+    let token = null;
+
+    if (isPlatformBrowser(this.platformId)) {
+      token = localStorage.getItem('token');
+    }
+    if (token) {
+      console.log('Token found in local store:', token);
+      // Đảm bảo sử dụng "Bearer" đúng cách
+      return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    } else {
+      console.log('Token not found in local store');
+    }
+    return new HttpHeaders();
+  }
+
+
+
 }
