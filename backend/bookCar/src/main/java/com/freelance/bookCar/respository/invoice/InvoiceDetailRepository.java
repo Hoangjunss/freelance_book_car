@@ -10,35 +10,46 @@ import java.util.List;
 
 public interface InvoiceDetailRepository extends JpaRepository<InvoiceDetail,Integer> {
 
+    //
+    @Query(value = "select invoice_detail.* from invoice inner join invoice_detail on invoice.id = invoice_detail.id_invoice where MONTH(invoice.invoice_date) = :month AND YEAR(invoice.invoice_date) = :year AND invoice_detail.id_hotel IS NOT NULL;", nativeQuery = true)
+    List<InvoiceDetail> findByMonthAndHotel(@Param("month") int month, @Param("year") int year);
 
-    @Query(value = "SELECT id.* FROM invoice_detail id JOIN invoice i ON id.id_invoice = i.id WHERE id.id_hotel = :idHotel AND MONTH(i.invoice_date) = :month", nativeQuery = true)
-    List<InvoiceDetail> findByMonthAndHotel(@Param("month") int month, @Param("idHotel") int idHotel);
+    @Query(value = "select invoice_detail.* from invoice inner join invoice_detail on invoice.id = invoice_detail.id_invoice where MONTH(invoice.invoice_date) = :month AND YEAR(invoice.invoice_date) = :year AND invoice_detail.id_tour IS NOT NULL;", nativeQuery = true)
+    List<InvoiceDetail> findByMonthAndTour(@Param("month") int month, @Param("year") int year);
 
-    @Query(value = "SELECT id.* FROM invoice_detail id JOIN invoice i ON id.id_invoice = i.id WHERE id.id_tour = :idTour AND MONTH(i.invoice_date) = :month", nativeQuery = true)
-    List<InvoiceDetail> findByMonthAndTour(@Param("month") int month, @Param("idTour") int idTour);
+    @Query(value = "select invoice_detail.* from invoice inner join invoice_detail on invoice.id = invoice_detail.id_invoice where MONTH(invoice.invoice_date) = :month AND YEAR(invoice.invoice_date) = :year AND invoice_detail.id_tourism IS NOT NULL;", nativeQuery = true)
+    List<InvoiceDetail> findByMonthAndTourism(@Param("month") int month, @Param("year") int year);
 
-    @Query(value = "SELECT id.* FROM invoice_detail id JOIN invoice i ON id.id_invoice = i.id WHERE id.id_tourism = :idTourism AND MONTH(i.invoice_date) = :month", nativeQuery = true)
-    List<InvoiceDetail> findByMonthAndTourism(@Param("month") int month, @Param("idTourism") int idTourism);
-    @Query(value = "SELECT id.* FROM invoice_detail id JOIN invoice i ON id.id_invoice = i.id WHERE id.id_hotel = :idHotel AND MONTH(i.invoice_date) = :month", nativeQuery = true)
-    List<InvoiceDetail> findByMonthAndIsHotel(@Param("month") int month, @Param("idHotel") int idHotel);
+    //
+    @Query(value = "select invoice_detail.* from invoice inner join invoice_detail on invoice.id = invoice_detail.id_invoice where MONTH(invoice.invoice_date) = :month AND YEAR(invoice.invoice_date) = :year AND invoice_detail.id_hotel IS NOT NULL;", nativeQuery = true)
+    List<InvoiceDetail> findByMonthAndIsHotel(@Param("month") int month, @Param("year") int year);
 
-    @Query(value = "SELECT id.* FROM invoice_detail id JOIN invoice i ON id.id_invoice = i.id WHERE id.id_tour = :idTour AND MONTH(i.invoice_date) = :month", nativeQuery = true)
-    List<InvoiceDetail> findByMonthAndIsTour(@Param("month") int month, @Param("idTour") int idTour);
-    @Query(value = "SELECT id.* FROM invoice_detail id JOIN invoice i ON id.id_invoice = i.id WHERE id.id_tourism = :idTourism AND MONTH(i.invoice_date) = :month", nativeQuery = true)
-    List<InvoiceDetail> findByMonthAndIsTourism(@Param("month") int month, @Param("idTourism") int idTourism);
-    @Query(value = "SELECT id.* FROM invoice_detail id JOIN invoice i ON id.id_invoice = i.id WHERE MONTH(i.invoice_date) = :month", nativeQuery = true)
-    List<InvoiceDetail> findByTodayAndIsHotel(@Param("month") LocalDate month);
+    @Query(value = "select invoice_detail.* from invoice inner join invoice_detail on invoice.id = invoice_detail.id_invoice where MONTH(invoice.invoice_date) = :month AND YEAR(invoice.invoice_date) = :year AND invoice_detail.id_tour IS NOT NULL;", nativeQuery = true)
+    List<InvoiceDetail> findByMonthAndIsTour(@Param("month") int month, @Param("year") int year);
 
-    @Query(value = "SELECT id.* FROM invoice_detail id JOIN invoice i ON id.id_invoice = i.id WHERE MONTH(i.invoice_date) = :month", nativeQuery = true)
-    List<InvoiceDetail> findByTodayAndIsTour(@Param("month") LocalDate month);
+    @Query(value = "select invoice_detail.* from invoice inner join invoice_detail on invoice.id = invoice_detail.id_invoice where MONTH(invoice.invoice_date) = :month AND YEAR(invoice.invoice_date) = :year AND invoice_detail.id_tourism IS NOT NULL;", nativeQuery = true)
+    List<InvoiceDetail> findByMonthAndIsTourism(@Param("month") int month, @Param("year") int year);
 
-    @Query(value = "SELECT id.* FROM invoice_detail id JOIN invoice i ON id.id_invoice = i.id WHERE MONTH(i.invoice_date) = :month", nativeQuery = true)
-    List<InvoiceDetail> findByTodayAndIsTourism(@Param("month") LocalDate month);
-    @Query(value = "SELECT idetail.id, idetail.id_hotel, idetail.id_invoice, idetail.id_tour, idetail.id_tourism, idetail.quantity, idetail.total_price " +
-            "FROM invoice_detail idetail " +
-            "JOIN invoice i ON idetail.id_invoice = i.id " +
-            "WHERE YEAR(i.invoice_date) = :year " +
-            "AND MONTH(i.invoice_date) = :month", nativeQuery = true)
+    //
+    @Query(value = "SELECT invoice_detail.* \n" +
+            "FROM invoice \n" +
+            "INNER JOIN invoice_detail ON invoice.id = invoice_detail.id_invoice \n" +
+            "WHERE DATE(invoice.invoice_date) = CURDATE() AND invoice_detail.id_hotel IS NOT NULL;\n", nativeQuery = true)
+    List<InvoiceDetail> findByTodayAndIsHotel();
+
+    @Query(value = "SELECT invoice_detail.* \\n\" +\n" +
+            "            \"FROM invoice \\n\" +\n" +
+            "            \"INNER JOIN invoice_detail ON invoice.id = invoice_detail.id_invoice \\n\" +\n" +
+            "            \"WHERE DATE(invoice.invoice_date) = CURDATE() AND invoice_detail.id_tour IS NOT NULL;\\n", nativeQuery = true)
+    List<InvoiceDetail> findByTodayAndIsTour();
+
+    @Query(value = "SELECT invoice_detail.* \\n\" +\n" +
+            "            \"FROM invoice \\n\" +\n" +
+            "            \"INNER JOIN invoice_detail ON invoice.id = invoice_detail.id_invoice \\n\" +\n" +
+            "            \"WHERE DATE(invoice.invoice_date) = CURDATE() AND invoice_detail.id_tourism IS NOT NULL;\\n", nativeQuery = true)
+    List<InvoiceDetail> findByTodayAndIsTourism();
+    //
+    @Query(value = " select invoice_detail.* from invoice inner join invoice_detail on invoice.id = invoice_detail.id_invoice where YEAR(invoice.invoice_date) = :year AND MONTH(invoice.invoice_date) = :month;", nativeQuery = true)
     List<InvoiceDetail> findByIdInvoiceAndMonthYear(@Param("year") int year, @Param("month") int month);
 
 }

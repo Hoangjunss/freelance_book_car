@@ -199,7 +199,7 @@ public class StatisticYearServiceImpl implements StatisticYearService{
 
     @Override
     public StatisticMonthYear getTodayHotel() {
-        List<GetInvoiceDetailResponse> getInvoiceResponses=invoiceDetailRepository.findByTodayAndIsHotel(LocalDate.now())
+        List<GetInvoiceDetailResponse> getInvoiceResponses=invoiceDetailRepository.findByTodayAndIsHotel()
                 .stream().map(invoiceDetail ->
                         modelMapper.map(invoiceDetail, GetInvoiceDetailResponse.class))
                 .collect(Collectors.toList());
@@ -234,7 +234,7 @@ public class StatisticYearServiceImpl implements StatisticYearService{
 
     @Override
     public StatisticMonthYear getTodayTourism() {
-        List<GetInvoiceDetailResponse> getInvoiceResponses=invoiceDetailRepository.findByTodayAndIsTourism(LocalDate.now())
+        List<GetInvoiceDetailResponse> getInvoiceResponses=invoiceDetailRepository.findByTodayAndIsTourism()
                 .stream().map(invoiceDetail ->
                         modelMapper.map(invoiceDetail, GetInvoiceDetailResponse.class))
                 .collect(Collectors.toList());
@@ -269,7 +269,7 @@ public class StatisticYearServiceImpl implements StatisticYearService{
 
     @Override
     public StatisticMonthYear getTodayTour() {
-        List<GetInvoiceDetailResponse> getInvoiceResponses=invoiceDetailRepository.findByTodayAndIsTour(LocalDate.now())
+        List<GetInvoiceDetailResponse> getInvoiceResponses=invoiceDetailRepository.findByTodayAndIsTour()
                 .stream().map(invoiceDetail ->
                         modelMapper.map(invoiceDetail, GetInvoiceDetailResponse.class))
                 .collect(Collectors.toList());
@@ -304,7 +304,7 @@ public class StatisticYearServiceImpl implements StatisticYearService{
 
     @Override
     public StatisticMonthYear getYesterdayHotel() {
-        List<GetInvoiceDetailResponse> getInvoiceResponses=invoiceDetailRepository.findByTodayAndIsHotel(LocalDate.now().minusDays(1))
+        List<GetInvoiceDetailResponse> getInvoiceResponses=invoiceDetailRepository.findByTodayAndIsHotel()
                 .stream().map(invoiceDetail ->
                         modelMapper.map(invoiceDetail, GetInvoiceDetailResponse.class))
                 .collect(Collectors.toList());
@@ -339,7 +339,7 @@ public class StatisticYearServiceImpl implements StatisticYearService{
 
     @Override
     public StatisticMonthYear getYesterdayTourism() {
-        List<GetInvoiceDetailResponse> getInvoiceResponses=invoiceDetailRepository.findByTodayAndIsTourism(LocalDate.now().minusDays(1))
+        List<GetInvoiceDetailResponse> getInvoiceResponses=invoiceDetailRepository.findByTodayAndIsTourism()
                 .stream().map(invoiceDetail ->
                         modelMapper.map(invoiceDetail, GetInvoiceDetailResponse.class))
                 .collect(Collectors.toList());
@@ -374,7 +374,7 @@ public class StatisticYearServiceImpl implements StatisticYearService{
 
     @Override
     public StatisticMonthYear getYesterdayTour() {
-        List<GetInvoiceDetailResponse> getInvoiceResponses=invoiceDetailRepository.findByTodayAndIsTour(LocalDate.now().minusDays(1))
+        List<GetInvoiceDetailResponse> getInvoiceResponses=invoiceDetailRepository.findByTodayAndIsTour()
                 .stream().map(invoiceDetail ->
                         modelMapper.map(invoiceDetail, GetInvoiceDetailResponse.class))
                 .collect(Collectors.toList());
