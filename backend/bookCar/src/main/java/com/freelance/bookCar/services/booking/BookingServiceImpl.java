@@ -160,7 +160,11 @@ public class BookingServiceImpl implements BookingService{
     }
 
     private boolean ExistBooking(Integer id){
-        return bookingRepository.findById(id).isPresent();
+        log.info("Checking if booking exists with id user: {}", id);
+        if(bookingRepository.findByIdUser(id) != null){
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -182,7 +186,7 @@ public class BookingServiceImpl implements BookingService{
 
         // Check if the booking exists, create if not
         Booking booking = new Booking();
-        if ((addBookingTourRequest.getIdBooking() == null) || !ExistBooking(addBookingTourRequest.getIdBooking())) {
+        if ((addBookingTourRequest.getIdUser() == null) || !ExistBooking(addBookingTourRequest.getIdUser())) {
             // Create a new booking using Builder and ModelMapper
             CreateBookingRequest createBookingRequest = modelMapper
                     .map(addBookingTourRequest,
@@ -200,7 +204,7 @@ public class BookingServiceImpl implements BookingService{
         }
         else {
             // Retrieve the existing booking using ModelMapper
-            booking = modelMapper.map(findById(addBookingTourRequest.getIdBooking()), Booking.class);
+            booking = modelMapper.map(findByIdUser(addBookingTourRequest.getIdUser()), Booking.class);
 
             // Update the total price by adding the price of the new tour
             booking = Booking.builder()
