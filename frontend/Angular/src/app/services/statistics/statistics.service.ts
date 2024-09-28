@@ -37,4 +37,112 @@ export class StatisticsService {
     )
   }
 
+  getStatisticMonthHotel(month: number, year: number){
+    return this.httpClient.get<Apiresponse<StatisticMonthYear>>(`${this.baseUrl}/month/hotel?month=${month}&year=${year}`).pipe(
+      map((response: Apiresponse<StatisticMonthYear>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    )
+  }
+
+  getStatisticMonthTour(month: number, year: number){
+    return this.httpClient.get<Apiresponse<StatisticMonthYear>>(`${this.baseUrl}/month/tour?month=${month}&year=${year}`).pipe(
+      map((response: Apiresponse<StatisticMonthYear>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    )
+  }
+
+  getStatisticMonthTourism(month: number, year: number){
+    return this.httpClient.get<Apiresponse<StatisticMonthYear>>(`${this.baseUrl}/month/tourism?month=${month}&year=${year}`).pipe(
+      map((response: Apiresponse<StatisticMonthYear>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    )
+  }
+
+  getStatisticTodayHotel(){
+    return this.httpClient.get<Apiresponse<StatisticMonthYear>>(`${this.baseUrl}/today/hotel`).pipe(
+      map((response: Apiresponse<StatisticMonthYear>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    )
+  }
+
+  getStatisticTodayTour(){
+    return this.httpClient.get<Apiresponse<StatisticMonthYear>>(`${this.baseUrl}/today/tour`).pipe(
+      map((response: Apiresponse<StatisticMonthYear>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    )
+  }
+
+  getStatisticTodayTourism(){
+    return this.httpClient.get<Apiresponse<StatisticMonthYear>>(`${this.baseUrl}/today/tourism`).pipe(
+      map((response: Apiresponse<StatisticMonthYear>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    )
+  }
+
+  getStatisticYesterdayHotel(){
+    return this.httpClient.get<Apiresponse<StatisticMonthYear>>(`${this.baseUrl}/yesterday/hotel`).pipe(
+      map((response: Apiresponse<StatisticMonthYear>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    )
+  }
+
+  getStatisticYesterdayTour(){
+    return this.httpClient.get<Apiresponse<StatisticMonthYear>>(`${this.baseUrl}/yesterday/tour`).pipe(
+      map((response: Apiresponse<StatisticMonthYear>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    )
+  }
+
+  getStatisticYesterdayTourism(){
+    return this.httpClient.get<Apiresponse<StatisticMonthYear>>(`${this.baseUrl}/yesterday/tourism`).pipe(
+      map((response: Apiresponse<StatisticMonthYear>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    )
+  }
+  
 }
