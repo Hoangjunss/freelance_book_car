@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
+
 public class CreatePageRequest {
     private Integer id;
     private String name;
