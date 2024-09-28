@@ -8,9 +8,11 @@ import com.freelance.bookCar.respository.page.PageRepository;
 import com.freelance.bookCar.services.image.ImageService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
+@Service
 public class PageServiceImpl implements PageService {
     @Autowired
     private ModelMapper modelMapper;
