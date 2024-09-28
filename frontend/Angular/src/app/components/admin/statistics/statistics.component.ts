@@ -22,6 +22,8 @@ export class StatisticsComponent implements OnInit{
   currentMonth = this.currentDate.getMonth() + 1; // Vì getMonth() trả về giá trị từ 0-11, nên cộng thêm 1
   currentYear = this.currentDate.getFullYear();
 
+  isDisplay = false;
+
   months = [
     { name: 'January', value: 1 },
     { name: 'February', value: 2 },
