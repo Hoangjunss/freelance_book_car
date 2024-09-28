@@ -29,9 +29,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   // Ảnh quảng cáo
   images = [
-    { src: 'assets/img/TRANGBIA/CAR_RENTAL.jpg', alt: 'Car', info: 'Thông tin về bức ảnh 1' },
-    { src: 'assets/img/TRANGBIA/hotel.jpg', alt: 'Hotels', info: 'Thông tin về bức ảnh 2' },
-    { src: 'assets/img/TRANGBIA/rungdua.png', alt: 'Attractions', info: 'Thông tin về bức ảnh 3' }
+    { src: 'http://res.cloudinary.com/dgts7tmnb/image/upload/v1727484862/i3nh2gjkh4m08jy0j7uv.jpg', alt: 'Car', info: 'Thông tin về bức ảnh 1' },
+    { src: 'http://res.cloudinary.com/dgts7tmnb/image/upload/v1727485017/qxzmeiczcs8jueb5t2je.jpg', alt: 'Hotels', info: 'Thông tin về bức ảnh 2' },
+    { src: 'http://res.cloudinary.com/dgts7tmnb/image/upload/v1727485410/ffm38bx88a8opqurkrlf.png', alt: 'Attractions', info: 'Thông tin về bức ảnh 3' }
   ];
 
 

@@ -168,13 +168,14 @@ public class BookingServiceImpl implements BookingService{
 
         // Check if the booking exists, create if not
         Booking booking = new Booking();
-        if (!ExistBooking(addBookingTourRequest.getIdBooking())) {
+        if ((addBookingTourRequest.getIdBooking() == null) || !ExistBooking(addBookingTourRequest.getIdBooking())) {
             // Create a new booking using Builder and ModelMapper
             CreateBookingRequest createBookingRequest = modelMapper
                     .map(addBookingTourRequest,
                             CreateBookingRequest.class);
             createBookingRequest.setTotalPrice(addBookingTourRequest.getTotalPrice());
-
+            createBookingRequest.setPaymentMethod(1);
+            log.info("createBookingRequest: {}", createBookingRequest.toString());
             // Default payment method logic can be added here if needed
             CreateBookingResponse createBookingResponse = create(createBookingRequest);
 
