@@ -4,25 +4,26 @@
     <nav class="breadcrumb-nav" aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">RanPolaris Travel</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Khách Sạn Đà Nẵng</li>
+            <li class="breadcrumb-item active" aria-current="page">Khách Sạn {{ locations?.location }}</li>
         </ol>
     </nav>
 
-    <h2 class="fw-bold">Khách Sạn Sang Trọng Tại Đà Nẵng</h2>
-    <p style="margin-top: 5%;">Trải nghiệm lưu trú tuyệt vời với dịch vụ tận tâm tại trung tâm Đà Nẵng</p>
+    <h2 class="fw-bold">{{ locations?.name }}</h2>
+    <p style="margin-top: 5%;">Trải nghiệm lưu trú tuyệt vời với dịch vụ tận tâm tại {{ locations?.name }}</p>
 
     <div class="d-flex align-items-center my-2">
-        <span class="badge me-2">
+        <span class="badge me-3">
             <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
-            4.7
+            {{ locations?.rating }}
         </span>
-        <span class="text-decoration-underline me-2" style="font-weight: 450;">(4K+ Đánh giá)</span>
-        <span class="me-3">
-            Địa chỉ: 123 Đường ABC, Đà Nẵng
+        <span class="text-decoration-underline me-4" style="font-weight: 450;">(4K+ Đánh giá)</span>
+        <span class="me-4">
+            <i class="fa-solid fa-map-marker-alt"></i>
+           Địa chỉ: {{ locations?.location }}
         </span>
-        <span class="text-decoration-underline me-2">
-            <i class="bi bi-geo-alt"></i>
-            Thuê xe riêng ở Đà Nẵng
+        <span class="me-4">
+            <i class="bi bi-telephone-fill"></i>
+            Liên hệ: {{ locations?.contactInfo }}
         </span>
         <span class="ms-auto">
             <i class="fa-regular fa-heart"></i>
@@ -35,8 +36,7 @@
 <!-- Image Section -->
 <div class="container">
     <div class="position-relative">
-        <img src="assets/img/HÀNH TRÌNH/HÀNH TRÌNH/2. Đà Nẵng - Bà Nà (One way - Round Trip)/Đà Nẵng - Bà Nà (One way).jpg"
-            class="img-fluid" alt="Car Rental" />
+        <img [src]="'assets/img/' + locations?.image" class="img-fluid" alt="{{ locations?.name }}" />
     </div>
 </div>
 
@@ -89,7 +89,7 @@
         <!-- Right Column (Price Section) -->
         <div class="col-md-4">
             <div class="border p-3 rounded">
-                <h5 class="text-end text-dark price">₫ 1,200,000
+                <h5 class="text-end text-dark price">₫ {{ totalPrice }}
                     <small class="text-decoration-line-through">₫ 1,500,000</small>
                 </h5>
                 <button class="btn button-price w-100">Đặt phòng ngay</button>
@@ -117,7 +117,7 @@
                         <input type="date" id="endDate" (change)="onEndDateChange($event)" class="form-control" />
                     </div>
                 
-                    <button class="btn button-price btn-warning mb-2" style="border-radius: 14px;" (click)="checkRoomStatus()">
+                    <button class="btn button-price btn-warning mb-2" style="border-radius: 14px;margin-top: 25px;" (click)="checkRoomStatus()">
                         <i class="bi bi-calendar4" style="padding: 0px 5px;"></i>
                         Kiểm tra tình trạng phòng
                     </button>
@@ -224,7 +224,7 @@
                 <!-- Pricing Section -->
                 <div class="mt-4 d-flex justify-content-between align-items-center">
                     <div>
-                        <span class="fs-3 text-dark" style="font-weight: 500;">₫ 631,516</span>
+                        <span class="fs-3 text-dark" style="font-weight: 500;">₫ {{totalPrice}}</span>
                         <small class="text-decoration-line-through text-muted" style="font-weight: bold;">₫
                             357,000</small>
                         <p class="text-muted" style="font-size: small;">Vui lòng hoàn tất các mục yêu cầu để chuyển đến
@@ -239,7 +239,7 @@
         </div>
     </div>
     <!-- Right Section: Service Details -->
-    <div class="container border p-3" style="background-color: #f9f9f9;border-radius: 10px;height: auto;border: none !important;position: relative;">
+    <div class="container border p-3" style="background-color: #f9f9f9;border-radius: 10px;height: auto;border: none !important;position: relative;width: 45%;">
         <div class="triangle"></div>
         <div class="d-flex justify-content-between align-items-center">
             <h5 class="mb-0" style="font-weight: 500;">Chi tiết gói dịch vụ</h5>
@@ -353,7 +353,7 @@
         </div>
         <div class="col-md-4">
             <div class="border p-3 rounded">
-                <h5 class="text-end text-dark price">₫ 298,000
+                <h5 class="text-end text-dark price">₫ {{ totalPrice }}
                     <small class="text-decoration-line-through">₫ 357,000</small>
                 </h5>
                 <button class="btn button-price w-100">Chọn các gói dịch vụ</button>

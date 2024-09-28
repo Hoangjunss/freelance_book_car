@@ -11,6 +11,8 @@ import { GetTicketResponse } from '../../../models/response/product/ticket/ticke
 import { FormsModule } from '@angular/forms';
 import { BookingService } from '../../../services/booking/booking.service';
 import { AddBookingTourismRequest } from '../../../models/request/booking/add-booking-tourism-request';
+import { Title } from '@angular/platform-browser';
+import e from 'express';
 
 @Component({
   selector: 'app-ticket-detail',
@@ -31,7 +33,8 @@ export class TicketDetailComponent {
   locations?: GetTourismDetailResponse;
   getTicketResponse?: GetTicketResponse[] =[];
   availableTourSchedules: GetTicketResponse[] = [];
-  selectedTourSchedule!:number;
+  selectedTourSchedule:number | null = null; 
+  selectedPrice: number | null = null;
 
 
   toggleContent(event: Event) {
@@ -42,7 +45,9 @@ export class TicketDetailComponent {
 
   constructor(private route: ActivatedRoute,private tourismService : TourismService, 
     private ticketService: TicketService,
-    private bookingService: BookingService) { }
+    private bookingService: BookingService,
+    private titleService: Title
+  ) { this.titleService.setTitle("Chi tiết đặt vé");}
 
   ngOnInit(): void {
     console.log("tourismDetailComponent initialized");
@@ -57,8 +62,17 @@ export class TicketDetailComponent {
   }
 
   onTourScheduleChange() {
-    console.log('Selected Tour Schedule ID:', this.selectedTourSchedule);
-    // Bạn có thể thực hiện các hành động khác khi người dùng thay đổi lựa chọn
+    const selectedSchedule = this.availableTourSchedules.find(schedule => {
+      return schedule.id === Number(this.selectedTourSchedule); // Chuyển selectedTourSchedule thành số
+    });
+
+    if (selectedSchedule) {
+      this.selectedPrice = selectedSchedule.tourPrice || null;
+    }
+    else {
+      this.selectedPrice = null;
+    }
+
   }
 
   checkServiceStatus() {
@@ -101,14 +115,24 @@ export class TicketDetailComponent {
     addBookingTourRequest.idUser = parseInt(idUser!);
     addBookingTourRequest.idTicket = id;
     addBookingTourRequest.quantity = 1;
-    addBookingTourRequest.totalPrice = 1000;
+
+    const selectedSchedule = this.availableTourSchedules.find(schedule => {
+      return schedule.id === Number(this.selectedTourSchedule); // Chuyển selectedTourSchedule thành số
+    });
+
+    if(selectedSchedule) {
+      addBookingTourRequest.totalPrice = selectedSchedule.tourPrice;
+      console.log("Gia: ", addBookingTourRequest.totalPrice);
+    }else {
+      addBookingTourRequest.totalPrice = 0;
+    }
 
     // Chuyển đổi thành FormData
     const formData = new FormData();
-    formData.append('idTicket', this.selectedTourSchedule.toString());
+    formData.append('idTicket', this.selectedTourSchedule?.toString() || '');
     formData.append('idUser', addBookingTourRequest.idUser.toString());
     formData.append('quantity', addBookingTourRequest.quantity.toString());
-    formData.append('totalPrice', addBookingTourRequest.totalPrice.toString()); //Chua fetch gia
+    formData.append('totalPrice', addBookingTourRequest.totalPrice ? addBookingTourRequest.totalPrice.toString() : ''); 
 
     formData.forEach((value, key) => {
       console.log(`${key}: ${value}`);

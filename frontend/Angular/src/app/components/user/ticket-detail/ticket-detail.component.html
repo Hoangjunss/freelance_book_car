@@ -4,17 +4,17 @@
     <nav class="breadcrumb-nav" aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">RanPolaris Travel</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Đà Nẵng</li>
+            <li class="breadcrumb-item active" aria-current="page">{{ locations?.location }}</li>
         </ol>
     </nav>
 
-    <h2 class="fw-bold">Thuê Xe Đi Hội An hoặc Vinwonders Nam Hội An từ Đà Nẵng</h2>
-    <p style="margin-top: 5%;">Tận hưởng di lại thoải mái giữa Đà Nẵng và Hội An / Huế / Bà Nà Hills</p>
+    <h2 class="fw-bold">{{ locations?.name }}</h2>
+    <p style="margin-top: 5%;">{{ locations?.description }}</p>
 
     <div class="d-flex align-items-center my-2">
         <span class="badge me-2">
             <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
-            4.7
+            {{ locations?.rating }}
         </span>
         <span class="text-decoration-underline me-2" style="font-weight: 450;">(4K+ Đánh giá)</span>
         <span class="me-3">
@@ -22,7 +22,7 @@
         </span>
         <span class="text-decoration-underline me-2">
             <i class="bi bi-geo-alt"></i>
-            Thuê xe riêng ở Đà Nẵng
+            Mua vé trực tuyến tại {{ locations?.location }}
         </span>
         <span class="ms-auto">
             <i class="fa-regular fa-heart"></i>
@@ -35,8 +35,7 @@
 <!-- Image Section -->
 <div class="container">
     <div class="position-relative">
-        <img src="assets/img/HÀNH TRÌNH/HÀNH TRÌNH/2. Đà Nẵng - Bà Nà (One way - Round Trip)/Đà Nẵng - Bà Nà (One way).jpg"
-            class="img-fluid" alt="Car Rental" />
+        <img [src]="locations?.image || 'assets/img/default-image.jpg'" class="img-fluid" alt="{{ locations?.name }}" />
     </div>
 </div>
 
@@ -48,25 +47,23 @@
             <div class="alert-light" role="alert">
                 <div class="d-flex align-items-center justify-content-between">
                     <i class="fas fa-volume-up"></i>
-                    <span>Các biện pháp tăng cường vệ sinh & bảo vệ sức khoẻ đang được áp dụng cho hoạt động này. Vui
+                    <span>Các biện pháp tăng cường vệ sinh và bảo vệ sức khỏe được áp dụng trong toàn bộ quá trình dịch vụ. Vui
                         lòng...</span>
                     <i class="bi bi-chevron-down"></i>
                 </div>
                 <div class="mt-2 position-relative">
                     <ul class="alert-content" [ngClass]="{'show': isExpanded}">
                         <li class="text-dark rounded-2 px-2 py-1 mb-1">
-                            Tìm hiểu thêm về các biện pháp tăng cường vệ sinh & bảo vệ sức khoẻ của hoạt động này
+                            Thông tin về các gói vé hiện có cho chuyến đi của bạn.
                         </li>
                         <li class="text-dark rounded-2 px-2 py-1 mb-1">
-                            Tận hưởng đi lại thoải mái giữa Đà Nẵng và Hội An / Huế / Bà Nà Hills trên xe hiện đại và
-                            được trang bị điều hoà
+                            Các gói dịch vụ bao gồm: xe riêng, hướng dẫn viên, và bảo hiểm du lịch.
                         </li>
                         <li class="text-dark rounded-2 px-2 py-1 mb-1 hidden-item">
-                            Lựa chọn từ ba loại xe khác nhau: xe bốn chỗ, xe MPV/SUV, hoặc xe van, tuỳ theo nhu cầu của
-                            bạn
+                            Bạn có thể tùy chọn giữa nhiều loại xe: xe bốn chỗ, MPV/SUV, hoặc xe van.
                         </li>
                         <li class="text-dark rounded-2 px-2 py-1 mb-1 hidden-item">
-                            Di chuyển giữa các thành phố thật nhanh chóng và tiện lợi với tài xế chuyên nghiệp
+                            Tận hưởng dịch vụ khách hàng chuyên nghiệp và hỗ trợ 24/7 trong suốt chuyến đi.
                         </li>
                     </ul>
                     <div class="overlay" [ngClass]="{'show': !isExpanded}">
@@ -96,7 +93,7 @@
         <!-- Right Column (Price Section) -->
         <div class="col-md-4">
             <div class="border p-3 rounded">
-                <h5 class="text-end text-dark price">₫ 298,000
+                <h5 class="text-end text-dark price">{{ selectedPrice !== null ? selectedPrice : 0 | currency:'VND' }}
                     <small class="text-decoration-line-through">₫ 357,000</small>
                 </h5>
                 <button class="btn button-price w-100">Chọn các gói dịch vụ</button>
@@ -116,7 +113,7 @@
                     </div>
                     <p class="text-muted">Vui lòng chọn ngày du lịch</p>
                     <select class="form-select mb-2" [(ngModel)]="selectedTourSchedule" (change)="onTourScheduleChange()">
-                        <option selected disabled>-- SELECT TOUR SCHEDULE --</option>
+                        <option [value] = null selected disabled>-- SELECT TOUR SCHEDULE --</option>
                         <option *ngFor="let schedule of availableTourSchedules" [value]="schedule.id">
                             {{ schedule.startDate | date: 'dd/MM/yyyy' }} - Giá: {{ schedule.tourPrice | currency }}
                         </option>                        
@@ -235,7 +232,7 @@
                 <!-- Pricing Section -->
                 <div class="mt-4 d-flex justify-content-between align-items-center">
                     <div>
-                        <span class="fs-3 text-dark" style="font-weight: 500;">₫ 631,516</span>
+                        <span class="fs-3 text-dark" style="font-weight: 500;">{{ selectedPrice !== null ? selectedPrice : 0 | currency:'VND' }}</span>
                         <small class="text-decoration-line-through text-muted" style="font-weight: bold;">₫
                             357,000</small>
                         <p class="text-muted" style="font-size: small;">Vui lòng hoàn tất các mục yêu cầu để chuyển đến
@@ -364,7 +361,7 @@
         </div>
         <div class="col-md-4">
             <div class="border p-3 rounded">
-                <h5 class="text-end text-dark price">₫ 298,000
+                <h5 class="text-end text-dark price">₫ {{ selectedPrice !== null ? selectedPrice : 0 | currency:'VND' }}
                     <small class="text-decoration-line-through">₫ 357,000</small>
                 </h5>
                 <button class="btn button-price w-100">Chọn các gói dịch vụ</button>

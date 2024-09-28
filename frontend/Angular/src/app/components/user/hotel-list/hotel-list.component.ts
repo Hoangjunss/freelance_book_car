@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from '../../../services/auth.interceptor';
 import { UserService } from '../../../services/user/user.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-hotel-list',
@@ -22,7 +23,9 @@ export class HotelListComponent {
   location: string | null = null;
   locations: GetHotelResponse [] = [];
 
-  constructor(private route: ActivatedRoute, private router:Router,private hotelService : HotelService) { }
+  constructor(private route: ActivatedRoute, private router:Router,private hotelService : HotelService,private title:Title) {
+    this.title.setTitle("Danh sách khách sạn");
+   }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {

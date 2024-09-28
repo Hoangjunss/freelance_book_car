@@ -7,6 +7,7 @@ import { LocationListComponent } from '../location-list/location-list.component'
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from '../../../services/auth.interceptor';
 import { UserService } from '../../../services/user/user.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-home',
@@ -35,7 +36,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ];
 
 
-  constructor(private router: Router) { }
+  constructor(private router: Router,private title:Title) {
+    this.title.setTitle("Trang chủ");
+   }
 
   ngAfterViewInit(): void {
     this.initIntersectionObserver();
