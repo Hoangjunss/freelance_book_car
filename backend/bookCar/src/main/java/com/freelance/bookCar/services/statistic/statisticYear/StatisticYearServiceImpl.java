@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -165,6 +166,9 @@ public class StatisticYearServiceImpl implements StatisticYearService{
 
     @Override
     public StatisticMonthYear getMonthTour(int year, int month) {
+        LocalDate startDate = LocalDate.of(year, month, 1);
+        LocalDate endDate = startDate.with(TemporalAdjusters.lastDayOfMonth());
+        log.info("getMonthTour: month, year: {}, {}", year, month);
         List<GetInvoiceDetailResponse> getInvoiceResponses=invoiceDetailRepository.findByMonthAndIsTour(year,month)
                 .stream().map(invoiceDetail ->
                         modelMapper.map(invoiceDetail, GetInvoiceDetailResponse.class))
@@ -173,7 +177,9 @@ public class StatisticYearServiceImpl implements StatisticYearService{
         double avgPrice=0;
         double totalTicket=0;
         double avgTicket=0;
+        log.info("SIZE: {}", getInvoiceResponses.size());
         for (GetInvoiceDetailResponse getInvoiceResponse: getInvoiceResponses){
+            log.info("Invoice: {}", getInvoiceResponse.toString());
             totalPrice+=getInvoiceResponse.getTotalPrice();
             totalTicket+=getInvoiceResponse.getQuantity();
         }

@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { Chart, registerables } from 'chart.js';
 import { StatisticMonthYear } from '../../../models/response/statistics/StatisticMonthYear';
 import { StatisticsService } from '../../../services/statistics/statistics.service';
+import { StatisticYear } from '../../../models/response/statistics/StatisticYear';
+import { StatisticMonths } from '../../../models/response/statistics/StatisticMonth';
 
 Chart.register(...registerables);
 
@@ -15,8 +17,11 @@ Chart.register(...registerables);
   styleUrl: './statistics.component.css'
 })
 export class StatisticsComponent implements OnInit{
+  chart: Chart | null = null;
 
   statisticMonthYear?: StatisticMonthYear;
+  statisticYear?: StatisticYear;
+  statisticMonths?: StatisticMonths[] = [];
 
   currentDate = new Date();
   currentMonth = this.currentDate.getMonth() + 1; // Vì getMonth() trả về giá trị từ 0-11, nên cộng thêm 1
@@ -41,14 +46,31 @@ export class StatisticsComponent implements OnInit{
   years: number[] = [];
   selectedMonth: number = 0;
   selectedYear: number = 0;
+  selectedYears: number = 0;
 
 
   constructor(private statisticService: StatisticsService){}
 
   ngOnInit(): void {
-    this.getStatisticMonthYear(this.currentMonth, this.currentYear);
     this.years = this.generateYears(2020, new Date().getFullYear());
-    this.renderChart();
+    this.getStatisticMonthYear(this.currentMonth, this.currentYear);
+    this.getStatisticYear(2023);
+    
+  }
+
+  getStatisticYear(year: number){
+    this.statisticService.getStatisticYear(year).subscribe({
+      next: (data) => {
+        this.statisticYear = data;
+        if (this.statisticYear) {
+          console.log('statisticYear successfully:', this.statisticYear);
+          this.renderChart();
+        }
+      },
+      error: (err) => {
+        console.error('Error statistic:', err.message);
+      }
+    });
   }
 
   getStatisticMonthYear(month: number, year: number){
@@ -75,37 +97,76 @@ export class StatisticsComponent implements OnInit{
   }
 
   filterTours() {
+    if(this.selectedMonth == 0 || this.selectedYear == 0) {
+      alert("Please select month and year");
+      return;
+    }
     this.getStatisticMonthYear(this.selectedMonth, this.selectedYear);
+  }
+
+  filterYears(){
+    if(this.selectedYears==0){
+      alert("Please select year");
+      return;
+    }
+    console.log(this.selectedYears);
+    this.getStatisticYear(this.selectedYears)
   }
 
   renderChart() {
     const ctx = (document.getElementById('worldwide-sales') as HTMLCanvasElement).getContext('2d');
-    if(ctx!=null){
-      const chart = new Chart(ctx, {
-        type: 'bar', // Bạn có thể thay đổi kiểu biểu đồ ở đây
+    
+    console.log("1", this.statisticYear); // Debug to check statisticYear
+    
+    // Check if statisticYear and statisticMonths are valid
+    if (ctx !== null && this.statisticYear?.statisticMonths) {
+      const statisticMonths = this.statisticYear.statisticMonths;
+      
+      // Destroy the previous chart instance if it exists
+      if (this.chart) {
+        this.chart.destroy();
+      }
+  
+      // Map month labels from statisticMonths
+      const labels = statisticMonths.map((monthData: StatisticMonths) => {
+        const months = ['January', 'February', 'March', 'April', 'May', 'June', 
+                        'July', 'August', 'September', 'October', 'November', 'December'];
+        return months[monthData.month! - 1]; // Adjust index to match month number
+      });
+  
+      // Map data for priceHotel, priceTourism, and priceTour
+      const priceHotelData = statisticMonths.map((monthData: StatisticMonths) => monthData.priceHotel || 0);
+      const priceTourismData = statisticMonths.map((monthData: StatisticMonths) => monthData.priceTourism || 0);
+      const priceTourData = statisticMonths.map((monthData: StatisticMonths) => monthData.priceTour || 0);
+  
+      // Debug log for data
+      console.log('priceHotelData:', priceHotelData);
+      console.log('priceTourismData:', priceTourismData);
+      console.log('priceTourData:', priceTourData);
+  
+      // Create the chart with Chart.js
+      this.chart = new Chart(ctx, {
+        type: 'bar',
         data: {
-          labels: [
-            'January', 'February', 'March', 'April', 'May', 'June',
-            'July', 'August', 'September', 'October', 'November', 'December'
-          ],
+          labels: labels,
           datasets: [
             {
-              label: 'Sales A',
-              data: [30, 45, 70, 60, 90, 80, 100, 50, 75, 90, 85, 100],
+              label: 'Price Hotel',
+              data: priceHotelData,
               backgroundColor: 'rgba(75, 192, 192, 0.6)',
               borderColor: 'rgba(75, 192, 192, 1)',
               borderWidth: 1,
             },
             {
-              label: 'Sales B',
-              data: [20, 30, 50, 40, 60, 70, 80, 40, 60, 70, 80, 90],
+              label: 'Price Tourism',
+              data: priceTourismData,
               backgroundColor: 'rgba(153, 102, 255, 0.6)',
               borderColor: 'rgba(153, 102, 255, 1)',
               borderWidth: 1,
             },
             {
-              label: 'Sales C',
-              data: [10, 20, 30, 20, 40, 30, 50, 20, 40, 50, 60, 70],
+              label: 'Price Tour',
+              data: priceTourData,
               backgroundColor: 'rgba(255, 159, 64, 0.6)',
               borderColor: 'rgba(255, 159, 64, 1)',
               borderWidth: 1,
@@ -116,13 +177,18 @@ export class StatisticsComponent implements OnInit{
           responsive: true,
           scales: {
             y: {
-              beginAtZero: true
-            }
+              beginAtZero: true,
+            },
           },
         },
       });
+    } else {
+      console.error("statisticYear or statisticMonths is invalid or data is missing.");
     }
-    
   }
+  
+  
+  
+  
 
 }

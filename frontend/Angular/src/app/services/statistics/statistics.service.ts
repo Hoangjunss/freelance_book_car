@@ -17,6 +17,7 @@ export class StatisticsService {
     return this.httpClient.get<Apiresponse<StatisticYear>>(`${this.baseUrl}/year?year=${year}`).pipe(
       map((response: Apiresponse<StatisticYear>) => {
         if (response.success) {
+          console.log(response.data);
           return response.data;
         } else {
           throw new Error(response.message);
@@ -144,5 +145,5 @@ export class StatisticsService {
       })
     )
   }
-  
+
 }

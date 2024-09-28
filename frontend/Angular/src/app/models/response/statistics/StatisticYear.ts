@@ -1,4 +1,4 @@
-import { StatisticMonth } from './StatisticMonth';
+import { StatisticMonths } from './StatisticMonth';
 export class StatisticYear{
-    statisticMonth: StatisticMonth[] = []; 
+    statisticMonths: StatisticMonths[] = []; 
 }

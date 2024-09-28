@@ -1,4 +1,4 @@
-export class StatisticMonth{
+export class StatisticMonths{
     month?: number;
     priceHotel?: number;
     priceTour?: number;
