@@ -195,7 +195,7 @@ public class BookingServiceImpl implements BookingService{
 
             // Map the created booking response to the Booking entity using ModelMapper
             booking = modelMapper.map(createBookingResponse, Booking.class);
-            booking.setIdTour(addBookingTourRequest.getIdTour());
+
             log.info("booking1: {}", booking.toString());
         }
         else {

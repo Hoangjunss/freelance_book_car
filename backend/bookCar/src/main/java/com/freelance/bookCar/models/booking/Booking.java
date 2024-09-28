@@ -18,7 +18,6 @@ public class Booking {
     private LocalDateTime dateBook;
     private double totalPrice;
     private Integer idUser;
-    private Integer idTour;
     private Integer idPayment;
     private Integer idVoucher;
     private Integer idPromotion;

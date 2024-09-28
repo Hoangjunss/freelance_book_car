@@ -101,9 +101,7 @@ public class InvoiceServiceImpl implements InvoiceService{
         if(booking.getDateBook() == null){
             throw new CustomException(Error.BOOKING_INVALID_DATE_BOOK);
         }
-        if(booking.getIdTour() == null){
-            throw new CustomException(Error.BOOKING_INVALID_ID_TOUR);
-        }
+
         if(booking.getIdUser() == null){
             throw new CustomException(Error.BOOKING_INVALID_ID_USER);
         }
