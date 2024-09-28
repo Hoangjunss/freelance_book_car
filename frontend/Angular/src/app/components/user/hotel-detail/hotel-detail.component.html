@@ -75,12 +75,7 @@
                         </div>
                     </div>
                 </div>
-
-
-
-
             </div>
-
             <div class="d-flex justify-content-between align-items-center mt-3 custom-background">
                 <p class="text">Ưu đãi cho bạn</p>
                 <div style="margin-right: 20px;">
@@ -112,14 +107,22 @@
                     <div class="d-flex">
                         <p class="text-dark" style="font-weight: 600;">Vui lòng chọn loại phòng</p>
                         <div class="ms-auto">
-                            <button style="text-decoration: underline;background:none;border: none;">Xóa tất cả</button>
+                            <button style="text-decoration: underline;background:none;border: none;" (click)="clearDates()">Xóa tất cả</button>
                         </div>
                     </div>
                     <p class="text-muted">Vui lòng chọn ngày du lịch</p>
-                    <button class="btn button-price btn-warning mb-2" style="border-radius: 14px;"><i
-                            class="bi bi-calendar4" style="padding: 0px 5px;"></i>
-                            Kiểm tra tình trạng phòng</button>
+                    
+                    <div class="d-flex">
+                        <input type="date" id="startDate" (change)="onStartDateChange($event)" class="form-control me-2" />
+                        <input type="date" id="endDate" (change)="onEndDateChange($event)" class="form-control" />
+                    </div>
+                
+                    <button class="btn button-price btn-warning mb-2" style="border-radius: 14px;" (click)="checkRoomStatus()">
+                        <i class="bi bi-calendar4" style="padding: 0px 5px;"></i>
+                        Kiểm tra tình trạng phòng
+                    </button>
                 </div>
+                
 
 
                 <!-- Service Type Selection -->

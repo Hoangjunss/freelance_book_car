@@ -50,7 +50,6 @@ export class TicketListComponent {
   }
 
   goToLocationDetail(locationId?: number) {
-    debugger;
     const path = `/ticket-details/${locationId}`;
     console.log('Navigating to:', path);
     this.router.navigate([path]);

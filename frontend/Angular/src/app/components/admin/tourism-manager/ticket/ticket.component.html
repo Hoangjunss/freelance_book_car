@@ -204,10 +204,6 @@
                         <label for="timeStartTour">Start Time</label>
                         <input type="datetime-local" class="form-control" id="timeStartTour" [(ngModel)]="selectedSchedule.timeStartTour" name="timeStartTour" required>
                     </div>
-                    <div class="form-group">
-                        <label for="timeEndTour">End Time</label>
-                        <input type="datetime-local" class="form-control" id="timeEndTour" [(ngModel)]="selectedSchedule.timeEndTour" name="timeEndTour" required>
-                    </div>
                     <button type="button" class="m-1 btn btn-secondary" (click)="cancelUpdate()">Cancel</button>
                     <button type="button" class="m-1 btn btn-primary" (click)="saveUpdate()">{{ isEditMode ? 'Update' : 'Add' }}</button>
                 </form>

@@ -21,7 +21,6 @@
                 <div class="card-body">
                     <h5 class="card-title">Tour ID: {{ tour.id }}</h5>
                     <p class="card-text">Start Time: {{ tour.timeStartTour | date:'short' }}</p>
-                    <p class="card-text">End Time: {{ tour.timeEndTour | date:'short' }}</p>
                     <p class="card-text">Quantity: {{ tour.quantity }}</p>
                     <p class="card-text">Price: ${{ tour.priceTour }}</p>
                     <button class="btn btn-primary" (click)="viewDetails(1)">Details</button>
@@ -69,7 +68,6 @@
               <tr>
                 <th>#</th>
                 <th>Time Start Tour</th>
-                <th>Time End Tour</th>
                 <th>Tour ID</th>
                 <th>Quantity</th>
                 <th>Price</th>
@@ -81,7 +79,6 @@
               <tr *ngFor="let tour of pagedTours">
                 <th scope="row">{{ tour.id }}</th>
                 <td>{{ tour.timeStartTour | date: 'short' }}</td>
-                <td>{{ tour.timeEndTour | date: 'short' }}</td>
                 <td>{{ tour.idTour }}</td>
                 <td>{{ tour.quantity }}</td>
                 <td>{{ tour.priceTour | currency: 'USD' }}</td>
@@ -210,10 +207,6 @@
                     <div class="form-group">
                         <label for="timeStartTour">Start Time</label>
                         <input type="datetime-local" class="form-control" id="timeStartTour" [(ngModel)]="selectedSchedule.timeStartTour" name="timeStartTour" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="timeEndTour">End Time</label>
-                        <input type="datetime-local" class="form-control" id="timeEndTour" [(ngModel)]="selectedSchedule.timeEndTour" name="timeEndTour" required>
                     </div>
                     <button type="button" class="m-1 btn btn-secondary" (click)="cancelUpdate()">Cancel</button>
                     <button type="button" class="m-1 btn btn-primary" (click)="saveUpdate()">{{ isEditMode ? 'Update' : 'Add' }}</button>
