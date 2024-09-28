@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from '../../../services/auth.interceptor';
 import { UserService } from '../../../services/user/user.service';
+import { BookingService } from '../../../services/booking/booking.service';
 
 @Component({
   selector: 'app-ticket-list',
@@ -22,7 +23,9 @@ export class TicketListComponent {
   location: string | null = null;
   locations: GetTourismResponse [] = [];
 
-  constructor(private route: ActivatedRoute, private router:Router,private tourismService : TourismService) { }
+  constructor(private route: ActivatedRoute, private router:Router,
+    private tourismService : TourismService,
+  ) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {

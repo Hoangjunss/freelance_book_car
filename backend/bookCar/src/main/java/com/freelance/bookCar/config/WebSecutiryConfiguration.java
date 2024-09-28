@@ -41,7 +41,7 @@ private JwtAuthenticationFilter jwtAuthenticationFilter;
                 .csrf(AbstractHttpConfigurer::disable)
 
                 // Configure các luồng truy cập
-                .authorizeHttpRequests((auth) -> auth.requestMatchers("/auth/registration","/auth/login","/auth/refreshtoken","/hotel/*","/tour/*","/tourism/*","/hotel","/tour","/tourism","/hotel/id/*","/tour/id/*","/tourism/id/*", "/statistic", "/statistic/*", "/booking", "/booking/*", "/statistic/*/*", "/tour-schedule", "/tour-schedule/*").permitAll()
+                .authorizeHttpRequests((auth) -> auth.requestMatchers("/auth/registration","/auth/login","/auth/refreshtoken","/hotel/*","/tour/*","/tourism/*","/hotel","/tour","/tourism","/hotel/id/*","/tour/id/*","/tourism/id/*", "/statistic", "/statistic/*", "/booking", "/booking/*", "/statistic/*/*", "/tour-schedule", "/tour-schedule/*",  "/ticket", "/ticket/*").permitAll()
                     // Xác thực tất cả các request
                         .anyRequest()
                         .authenticated()

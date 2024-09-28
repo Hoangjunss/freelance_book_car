@@ -5,6 +5,7 @@ import com.freelance.bookCar.dto.request.product.ticketDTO.ticket.UpdateTicketRe
 import com.freelance.bookCar.dto.response.product.ticketDTO.ticket.CreateTicketResponse;
 import com.freelance.bookCar.dto.response.product.ticketDTO.ticket.GetTicketResponse;
 import com.freelance.bookCar.dto.response.product.ticketDTO.ticket.UpdateTicketResponse;
+import com.freelance.bookCar.dto.response.product.tourDTO.tourSchedule.GetTourScheduleResponse;
 import com.freelance.bookCar.exception.CustomException;
 import com.freelance.bookCar.exception.Error;
 import com.freelance.bookCar.models.product.ticket.Ticket;
@@ -17,7 +18,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -104,6 +107,13 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public Ticket findByIdAndByStartDate(Integer id, LocalDateTime date) {
         return ticketRepository.findByIdAndStartDate(id,date);
+    }
+
+    @Override
+    public List<GetTicketResponse> findAllbyIdTourism(Integer id) {
+        return ticketRepository.findAllByIdTourism(id)
+                .stream().map(
+                        tourSchedule -> modelMapper.map(tourSchedule, GetTicketResponse.class)).collect(Collectors.toList());
     }
 
     private Integer getGenerationId() {

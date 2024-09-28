@@ -9,6 +9,7 @@ import com.freelance.bookCar.models.product.ticket.Ticket;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public interface TicketService {
@@ -16,4 +17,5 @@ public interface TicketService {
     UpdateTicketResponse updateTicket(UpdateTicketRequest updateTicketRequest);
     GetTicketResponse findById(Integer id);
     Ticket findByIdAndByStartDate(Integer id, LocalDateTime date);
+    List<GetTicketResponse> findAllbyIdTourism(Integer id);
 }

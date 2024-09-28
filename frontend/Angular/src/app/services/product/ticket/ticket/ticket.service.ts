@@ -52,4 +52,16 @@ export class TicketService {
       })
     );
   }
+
+  getTicketByIdTourism(id:number):  Observable<GetTicketResponse[]> {
+    return this.httpClient.get<Apiresponse<GetTicketResponse[]>>(`${this.baseUrl}/ticket?idTourism=${id}`).pipe(
+      map((response: Apiresponse<GetTicketResponse[]>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    );
+  }
 }

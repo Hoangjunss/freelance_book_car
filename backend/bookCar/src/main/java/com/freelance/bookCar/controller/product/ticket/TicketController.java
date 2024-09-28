@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/ticket")
 @CrossOrigin(origins = "*")
@@ -34,6 +36,12 @@ public class TicketController {
     @GetMapping()
     public ResponseEntity<ApiResponse<GetTicketResponse>> getTicket(@RequestParam Integer id){
         GetTicketResponse getTicketResponse = ticketService.findById(id);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Get Id Tour  successfully", getTicketResponse));
+    }
+
+    @GetMapping("/ticket")
+    public ResponseEntity<ApiResponse<List<GetTicketResponse>>> getTicketByDate(@RequestParam Integer idTourism){
+        List<GetTicketResponse> getTicketResponse = ticketService.findAllbyIdTourism(idTourism);
         return ResponseEntity.ok(new ApiResponse<>(true, "Get Id Tour  successfully", getTicketResponse));
     }
 

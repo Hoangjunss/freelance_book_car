@@ -126,7 +126,7 @@ public class TourismServiceImpl implements TourismService {
     public GetTourismDetailResponse getDetail(Integer id, LocalDateTime date) {
         GetTourismDetailResponse getTourismDetailResponse=modelMapper.map(findById(id), GetTourismDetailResponse.class);
         Ticket ticket=ticketService.findByIdAndByStartDate(id,date);
-        getTourismDetailResponse.setPrice(ticket.getTourPrice());
+        //getTourismDetailResponse.setPrice(ticket.getTourPrice());
         return getTourismDetailResponse;
     }
 
