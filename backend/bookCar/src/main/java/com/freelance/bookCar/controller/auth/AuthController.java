@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     @Autowired
     private UserService accountService;
-    @PostMapping("/registration")
+            @PostMapping("/registration")
     public ResponseEntity<ApiResponse<RegistrationResponse>> registration(@ModelAttribute @Valid RegistrationRequest registrationRequest){
         RegistrationResponse registrationResponse=accountService.registration(registrationRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Registration  successfully", registrationResponse));
