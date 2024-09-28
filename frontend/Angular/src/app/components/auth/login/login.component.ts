@@ -32,16 +32,19 @@ export class LoginComponent {
         next: (response) => {
           console.log(response);
           const token = response.accessToken;
-          if(token){
+          if (token) {
             localStorage.setItem('token', token);
             this.getCurrentUser();
           }
           this.router.navigate(['/home']);
+        },
+        error: (error) => {
+          console.error('Login error:', error);
         }
       });
     }
   }
-
+  
   getCurrentUser() {
     this.userService.getCurrentUser().subscribe({
       next: (user) => {

@@ -59,14 +59,16 @@ export class UserService {
     
   getCurrentUser(): Observable<GetCurrentUserResponse> {
     console.log('Getting current user' );
-    return this.http.get<Apiresponse<GetCurrentUserResponse>>(`${this.baseURL}currentUser`, { headers: this.createAuthorizationHeader() }).pipe(
-      map((response: Apiresponse<GetCurrentUserResponse>) => {
-        if (response.success) {
+    const headers = this.createAuthorizationHeader();
+    console.log('Authorization header:', headers);
+    return this.http.get<Apiresponse<GetCurrentUserResponse>>(`${this.baseURL}currentUser`, { headers: headers }).pipe(
+      map((response) => {
+        if (response) {
           console.log('Current user response:', response.data);
           return response.data;
         } else {
           throw new Error('Get current user failed');
-        }
+        } 
       }),
       catchError((error) => {
         if (error.status === 401) {

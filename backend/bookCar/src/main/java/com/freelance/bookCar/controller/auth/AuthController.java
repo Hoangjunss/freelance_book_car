@@ -38,7 +38,7 @@ public class AuthController {
         LoginResponse loginResponse=accountService.generateRefreshToken(refreshToken);
         return ResponseEntity.ok(new ApiResponse<>(true, "RefreshToken  successfully", loginResponse));
     }
-    @GetMapping("/current-user")
+    @GetMapping("/currentUser")
     public ResponseEntity<ApiResponse<GetUserResponse>>  getCurrentUser() {
         User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         GetUserResponse getUserResponse=GetUserResponse.builder().id(userDetails.getId()).name(userDetails.getUsername()).build();
