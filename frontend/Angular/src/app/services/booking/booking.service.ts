@@ -8,6 +8,8 @@ import { UpdateBookingRequest } from '../../models/request/booking/update-bookin
 import { UpdateBookingResponse } from '../../models/response/booking/update-booking-response';
 import { GetHotelBookingResponse } from '../../models/response/product/hotel/hotel-booking/get-hotelbooking-response';
 import { AddBookingTourRequest } from '../../models/request/booking/add-booking-tour-request';
+import { GetBookingResponse } from '../../models/response/booking/get-booking-response';
+import { GetBookingDetailResponse } from '../../models/response/booking/get-booking-detail-response';
 
 @Injectable({
   providedIn: 'root'
@@ -115,6 +117,29 @@ export class BookingService {
   addBookingTourism(formData : FormData): Observable<UpdateBookingResponse>{
     return this.httpClient.post<Apiresponse<UpdateBookingResponse>>(`${this.baseUrl}/tourism`,formData).pipe(
       map((response: Apiresponse<UpdateBookingResponse>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    );
+  }
+
+  getBookingByUser(id: number): Observable<GetBookingResponse> {
+    return this.httpClient.get<Apiresponse<GetBookingResponse>>(`${this.baseUrl}/user?idUser=${id}`).pipe(
+      map((response: Apiresponse<GetBookingResponse>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    );
+  }
+  getDetailBooking(id: number): Observable<GetBookingDetailResponse[]> {
+    return this.httpClient.get<Apiresponse<GetBookingDetailResponse[]>>(`${this.baseUrl}/detail?idBooking=${id}`).pipe(
+      map((response: Apiresponse<GetBookingDetailResponse[]>) => {
         if (response.success) {
           return response.data;
         } else {

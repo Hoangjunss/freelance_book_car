@@ -137,7 +137,7 @@ public class InvoiceServiceImpl implements InvoiceService{
         if (bookingDetail.getId() == null) {
             throw new CustomException(Error.BOOKING_DETAIL_INVALID_ID);
         }
-        if (bookingDetail.getIdTour() == null && bookingDetail.getIdTourism() == null && bookingDetail.getIdHotel() == null) {
+        if (bookingDetail.getIdTour() == null && bookingDetail.getIdTicket() == null && bookingDetail.getIdHotel() == null) {
             throw new CustomException(Error.BOOKING_DETAIL_INVALID_ID_SERVICE);
         }
         if (invoiceId == null) {
@@ -160,8 +160,8 @@ public class InvoiceServiceImpl implements InvoiceService{
         if (bookingDetail.getIdTour() != null) {
             invoiceDetailBuilder.idTour(bookingDetail.getIdTour());
         }
-        if (bookingDetail.getIdTourism() != null) {
-            invoiceDetailBuilder.idTourism(bookingDetail.getIdTourism());
+        if (bookingDetail.getIdTicket() != null) {
+            invoiceDetailBuilder.idTourism(bookingDetail.getIdTicket());
         }
         if (bookingDetail.getIdHotel() != null) {
             invoiceDetailBuilder.idHotel(bookingDetail.getIdHotel());

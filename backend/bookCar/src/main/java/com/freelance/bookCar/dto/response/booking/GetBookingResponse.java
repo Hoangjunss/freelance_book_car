@@ -19,4 +19,5 @@ public class GetBookingResponse {
     private Integer paymentMethod;
     private Integer invoice;
     private String type;
+    private Integer idTour;
 }

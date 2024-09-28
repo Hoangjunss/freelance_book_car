@@ -1,12 +1,13 @@
 import { Component, Input } from '@angular/core';
 import { GetHotelDetailResponse } from '../../../models/response/product/hotel/hotel/get-hotel-detail-response';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HotelService } from '../../../services/product/hotel/hotel/hotel.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from '../../../services/auth.interceptor';
 import { UserService } from '../../../services/user/user.service';
 import { BookingService } from '../../../services/booking/booking.service';
 import { AddBookingHotelRequest } from '../../../models/request/booking/add-booking-hotel-request';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-hotel-detail',
@@ -15,7 +16,7 @@ import { AddBookingHotelRequest } from '../../../models/request/booking/add-book
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     UserService
   ],
-  imports: [HttpClientModule],
+  imports: [HttpClientModule,CommonModule],
   templateUrl: './hotel-detail.component.html',
   styleUrl: './hotel-detail.component.css'
 })
@@ -31,7 +32,7 @@ export class HotelDetailComponent {
   }
   
 
-  constructor(private route: ActivatedRoute,private hotelService : HotelService,private bookingService:BookingService) { }
+  constructor(private route: ActivatedRoute,private hotelService : HotelService,private bookingService:BookingService,private router: Router) { }
 
   ngOnInit(): void {
     console.log("HotelDetailComponent initialized");
@@ -41,7 +42,6 @@ export class HotelDetailComponent {
       console.log("hotel"+this.locationId);
       if (this.locationId) {
         this.getHotelDetailById(parseInt(this.locationId));
-        this.addBookingHotel(parseInt(this.locationId));
       }
     });
   }
@@ -59,24 +59,22 @@ export class HotelDetailComponent {
     });
   }
 
-  addBookingHotel(id: number) {
+  addBookingHotel(locationId: string | null) {
     console.log("Add booking hotel");
-
-    const addBookingTourRequest = new AddBookingHotelRequest();
+    const id = locationId ? parseInt(locationId) : 0;
+    const addBookingHotelRequest = new AddBookingHotelRequest();
     const idUser = localStorage.getItem('idUser');
-    addBookingTourRequest.idHotel = id;
-    addBookingTourRequest.idUser = idUser ? parseInt(idUser) : 0;
-    addBookingTourRequest.quantity = 1;
-    addBookingTourRequest.totalPrice = 100;
-    addBookingTourRequest.idBooking = 1;
+    addBookingHotelRequest.idHotel = id;
+    addBookingHotelRequest.idUser = idUser ? parseInt(idUser) : 0;
+    addBookingHotelRequest.quantity = 1;
+    addBookingHotelRequest.totalPrice = 100;
 
     // Chuyển đổi thành FormData
     const formData = new FormData();
-    formData.append('idHotel', addBookingTourRequest.idHotel.toString());
-    formData.append('idUser', addBookingTourRequest.idUser.toString());
-    formData.append('quantity', addBookingTourRequest.quantity.toString());
-    formData.append('totalPrice', addBookingTourRequest.totalPrice.toString());
-    formData.append('idBooking', addBookingTourRequest.idBooking.toString());
+    formData.append('idHotel', addBookingHotelRequest.idHotel.toString());
+    formData.append('idUser', addBookingHotelRequest.idUser.toString());
+    formData.append('quantity', addBookingHotelRequest.quantity.toString());
+    formData.append('totalPrice', addBookingHotelRequest.totalPrice.toString());
 
     formData.forEach((value, key) => {
       console.log(`${key}: ${value}`);
@@ -86,6 +84,8 @@ export class HotelDetailComponent {
         console.log(response);
         if (response) {
             console.log("Thành công");
+            alert("Đặt phòng thành công");
+            this.router.navigate(['/cart']);
         } else {
             console.log("Thất bại");
         }

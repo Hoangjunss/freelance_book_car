@@ -1,7 +1,5 @@
-package com.freelance.bookCar.models.booking;
+package com.freelance.bookCar.dto.response.bookingDetail;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,9 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-public class BookingDetail {
-    @Id
+public class GetBookingDetailResponse {
     private Integer id;
     private Integer idTour;
     private Integer idTicket;
@@ -21,5 +17,4 @@ public class BookingDetail {
     private Integer idBooking;
     private Integer quantity;
     private double totalPrice;
-
 }

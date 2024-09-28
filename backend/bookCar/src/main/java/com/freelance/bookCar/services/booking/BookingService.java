@@ -17,6 +17,7 @@ import com.freelance.bookCar.dto.response.booking.bookingTour.AddBookingTourResp
 import com.freelance.bookCar.dto.response.booking.bookingTour.UpdateBookingTourResponse;
 import com.freelance.bookCar.dto.response.booking.bookingTourism.AddBookingTourismResponse;
 import com.freelance.bookCar.dto.response.booking.bookingTourism.UpdateBookingTourismResponse;
+import com.freelance.bookCar.dto.response.bookingDetail.GetBookingDetailResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,6 +27,8 @@ public interface BookingService {
     CreateBookingResponse create(CreateBookingRequest createBookingRequest);
     UpdateBookingResponse update(UpdateBookingRequest updateBookingRequest);
     GetBookingResponse findById(Integer id);
+    GetBookingResponse findByIdUser(Integer idUser);
+    List<GetBookingDetailResponse> findByIdBooking(Integer idBooking);
     AddBookingTourResponse addBookingTour(AddBookingTourRequest addBookingTourRequest);
     AddBookingTourismResponse addBookingTourism(AddBookingTourismRequest addBookingTourismRequest);
     AddBookingHotelResponse addBookingHotel(AddBookingHotelRequest addBookingHotelRequest);

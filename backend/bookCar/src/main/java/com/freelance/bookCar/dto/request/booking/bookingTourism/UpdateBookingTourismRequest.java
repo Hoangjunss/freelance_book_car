@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class UpdateBookingTourismRequest {
     private Integer idBooking;
-    private Integer idTourism;
+    private Integer idTicket;
     private Integer quantity;
 }

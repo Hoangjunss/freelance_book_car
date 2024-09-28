@@ -12,6 +12,7 @@ import com.freelance.bookCar.dto.response.booking.UpdateBookingResponse;
 import com.freelance.bookCar.dto.response.booking.bookingHotel.AddBookingHotelResponse;
 import com.freelance.bookCar.dto.response.booking.bookingTour.AddBookingTourResponse;
 import com.freelance.bookCar.dto.response.booking.bookingTourism.AddBookingTourismResponse;
+import com.freelance.bookCar.dto.response.bookingDetail.GetBookingDetailResponse;
 import com.freelance.bookCar.services.booking.BookingService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,19 @@ public class BookingController {
         GetBookingResponse GetBookingResponse = bookingService.findById(id);
         return ResponseEntity.ok(new ApiResponse<>(true, "Booking retrieved successfully", GetBookingResponse));
     }
+
+    @GetMapping("/user")
+    public ResponseEntity<ApiResponse<GetBookingResponse>> getByIdUser(@RequestParam Integer idUser){
+        GetBookingResponse GetBookingResponse = bookingService.findByIdUser(idUser);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Booking retrieved successfully", GetBookingResponse));
+    }
+
+    @GetMapping("/detail")
+    public ResponseEntity<ApiResponse<List<GetBookingDetailResponse>>> getByIdBooking(@RequestParam Integer idBooking){
+        List<GetBookingDetailResponse> GetBookingResponse = bookingService.findByIdBooking(idBooking);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Booking retrieved successfully", GetBookingResponse));
+    }
+
     @PostMapping("/tour")
     public ResponseEntity<ApiResponse<AddBookingTourResponse>> createBookingTour(@ModelAttribute @Valid AddBookingTourRequest addBookingTourRequest){
         AddBookingTourResponse addBookingTourResponse=bookingService.addBookingTour(addBookingTourRequest);
