@@ -11,6 +11,7 @@ import { AddBookingTourRequest } from '../../../models/request/booking/add-booki
 import { GetTourScheduleResponse } from '../../../models/response/product/tour/tour-schedule/get-tour-schedule-response';
 import { TourScheduleService } from '../../../services/product/tour/tour-schedule/tour-schedule.service';
 import { FormsModule } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-location-detail',
@@ -28,9 +29,10 @@ export class LocationDetailComponent {
   isExpanded = false;
   locationId: string | null = null;
   locations?: GetTourResponse;
-  getTourScheduleResponse:GetTourScheduleResponse[] = [];
+  getTourScheduleResponse: GetTourScheduleResponse[] = [];
   availableTourSchedules: GetTourScheduleResponse[] = [];
-  selectedTourSchedule!:number;
+  selectedTourSchedule: number | null = null;
+  selectedPrice: number | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -38,7 +40,8 @@ export class LocationDetailComponent {
     private tourService: TourService,
     private bookingService: BookingService,
     private tourScheduleService: TourScheduleService,
-  ) { }
+    private titleService: Title
+  ) { this.titleService.setTitle("Location-detail");}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -53,7 +56,7 @@ export class LocationDetailComponent {
   getTourDetail(id: number) {
     this.tourService.getTourDetailById(id).subscribe({
       next: (response) => {
-        console.log("getTourDetail "+ JSON.stringify(response));
+        console.log("getTourDetail " + JSON.stringify(response));
         if (response) {
           this.locations = response;
           if (this.locations.id !== undefined && this.locations.id !== null) {
@@ -82,16 +85,24 @@ export class LocationDetailComponent {
             }
             return false; // Trả về false nếu timeStartTour là undefined
           });
-          console.log(this.getTourScheduleResponse);
+          console.log("Vé :" + this.getTourScheduleResponse);
         }
       }
     });
   }
-  
+
 
   onTourScheduleChange() {
-    console.log('Selected Tour Schedule ID:', this.selectedTourSchedule);
-    // Bạn có thể thực hiện các hành động khác khi người dùng thay đổi lựa chọn
+    // Lấy ra thông tin chi tiết của lịch trình đã chọn
+    const selectedSchedule = this.availableTourSchedules.find(schedule => {
+      return schedule.id === Number(this.selectedTourSchedule); // Chuyển selectedTourSchedule thành số
+    });
+    
+    if (selectedSchedule) {
+      this.selectedPrice = selectedSchedule.priceTour ?? null; // Cập nhật giá
+    } else {
+      this.selectedPrice = null; // Nếu không có lịch trình, đặt giá thành null
+    }
   }
 
   checkServiceStatus() {
@@ -110,14 +121,29 @@ export class LocationDetailComponent {
     addBookingTourRequest.idUser = parseInt(idUser!);
     addBookingTourRequest.idTour = id;
     addBookingTourRequest.quantity = 1;
-    addBookingTourRequest.totalPrice = 1000;
+
+    
+    const selectedSchedule = this.availableTourSchedules.find(schedule => {
+      return schedule.id === Number(this.selectedTourSchedule);
+    });
+    
+    console.log("selectedSchedule:", selectedSchedule); // Kết quả tìm kiếm
+    
+    if (selectedSchedule) {
+      addBookingTourRequest.totalPrice = selectedSchedule.priceTour;
+      console.log("Giá: " + addBookingTourRequest.totalPrice);
+    } else {
+      addBookingTourRequest.totalPrice = 0;
+      console.error('Selected tour schedule is null or not found');
+      return;
+    }
 
     // Chuyển đổi thành FormData
     const formData = new FormData();
-    formData.append('idTour', this.selectedTourSchedule.toString());
+    formData.append('idTour', this.selectedTourSchedule?.toString() || '');
     formData.append('idUser', addBookingTourRequest.idUser.toString());
     formData.append('quantity', addBookingTourRequest.quantity.toString());
-    formData.append('totalPrice', addBookingTourRequest.totalPrice.toString()); //Chua fetch gia
+    formData.append('totalPrice', addBookingTourRequest.totalPrice ? addBookingTourRequest.totalPrice.toString() : '');
 
     formData.forEach((value, key) => {
       console.log(`${key}: ${value}`);

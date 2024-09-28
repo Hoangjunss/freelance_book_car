@@ -41,6 +41,7 @@ export class LocationListComponent implements OnInit {
       next: (response) => {
         if (response) {
           this.locations = response;
+          console.log(this.locations);
           console.log("Thành công");
         } else {
           console.log("Thất bại");

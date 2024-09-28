@@ -148,5 +148,17 @@ export class BookingService {
       })
     );
   }
+
+  updateTypeBooking(type: string,id: number): Observable<UpdateBookingResponse> {
+    return this.httpClient.patch<Apiresponse<UpdateBookingResponse>>(`${this.baseUrl}/type?type=${type}&id=${id}`, null).pipe(
+      map((response: Apiresponse<UpdateBookingResponse>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    );
+  }
   
 }

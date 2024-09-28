@@ -11,6 +11,7 @@ import { TourService } from '../../../services/product/tour/tour/tour.service';
 import { HotelService } from '../../../services/product/hotel/hotel/hotel.service';
 import { TicketService } from '../../../services/product/ticket/ticket/ticket.service';
 import { TourismService } from '../../../services/product/ticket/tourism/tourism.service';
+import { Title } from '@angular/platform-browser';
 
 
 @Component({
@@ -28,8 +29,14 @@ export class CartComponent implements OnInit {
   
   getBookingDetailResponse: GetBookingDetailResponse [] = [];
   products:any[] = [];
+  idBooking: number | null = null;
 
-  constructor(private bookingService: BookingService,private tourService:TourService,private hotelService : HotelService,private tourismService : TourismService) { }
+  constructor(private bookingService: BookingService,
+    private tourService:TourService,
+    private hotelService : HotelService,
+    private tourismService : TourismService,
+    private title: Title,
+  ) { this.title.setTitle('Giỏ hàng'); }
 
   ngOnInit(): void {
     // lay id user tu localStorage
@@ -61,7 +68,13 @@ export class CartComponent implements OnInit {
       next: (response) => {
         console.log(response);
         if (response && response.id) {
-          this.getBookingDetail(response.id);
+          if (response.type === 'CART') {
+            this.idBooking = response.id;
+            this.getBookingDetail(response.id);
+          } else {
+            console.log("Không phải loại booking CART, không hiển thị sản phẩm.");
+            this.products = []; // Đặt sản phẩm thành mảng rỗng nếu không phải loại CART
+          }
           
         } else {
           console.log("Thất bại");
@@ -144,5 +157,29 @@ export class CartComponent implements OnInit {
       }
     });
   }
+
+  updateBookingType() {
+    const type = 'PENDING'; 
+    if (this.idBooking) {
+      const confirmed = window.confirm("Bạn có chắc chắn muốn thanh toán không?");
+      if (confirmed) {
+        this.bookingService.updateTypeBooking(type, this.idBooking).subscribe({
+          next: (response) => {
+            console.log(`Cập nhật thành công cho booking ID: ${this.idBooking}`, response);
+          },
+          error: (error) => {
+            console.log(`Lỗi khi cập nhật booking ID: ${this.idBooking}`, error);
+          }
+        });
+      } else {
+        console.log("Người dùng đã hủy xác nhận thanh toán.");
+      }
+    } else {
+      console.log("Không có idBooking để cập nhật.");
+    }
+  }
+  
+
+
 
 }

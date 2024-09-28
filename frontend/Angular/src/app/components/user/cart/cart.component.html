@@ -1,7 +1,13 @@
 <div class="container mt-5">
     <h2 class="mb-4">Giỏ hàng của bạn</h2>
 
-    <ul class="list-group mb-4">
+    <!-- Kiểm tra nếu không có sản phẩm trong giỏ hàng -->
+    <div *ngIf="products.length === 0" class="empty-cart-message text-center mt-4">
+        <p>Giỏ hàng của bạn trống</p>
+    </div>
+
+    <!-- Hiển thị danh sách sản phẩm nếu có -->
+    <ul class="list-group mb-4" *ngIf="products.length > 0">
         <li *ngFor="let product of products" class="list-group-item d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center">
                 <img [src]="product.image" alt="{{ product.name }}" class="img-thumbnail mr-3" style="width: 100px;">
@@ -12,19 +18,19 @@
             </div>
             <div class="d-flex align-items-center">
                 <button class="btn btn-sm btn-light" (click)="decreaseQuantity(product)">-</button>
-                <input type="" [(ngModel)]="product.quantity" class="form-control text-center quantity-input" style="width: 50px;" min="1" readonly>
+                <input type="text" [(ngModel)]="product.quantity" class="form-control text-center quantity-input" style="width: 50px;" min="1" readonly>
                 <button class="btn btn-sm btn-light" (click)="increaseQuantity(product)">+</button>
             </div>
-            
         </li>
     </ul>
 
-    <div class="d-flex justify-content-between align-items-center">
+    <!-- Hiển thị tổng cộng chỉ khi có sản phẩm -->
+    <div *ngIf="products.length > 0" class="d-flex justify-content-between align-items-center">
         <h4>Tổng cộng:</h4>
         <h4>{{ total | currency:'VND' }}</h4>
     </div>
 
-    <div class="text-right mt-4">
-        <button class="btn btn-success">Thanh toán</button>
+    <div *ngIf="products.length > 0" class="text-right mt-4">
+        <button class="btn btn-success" (click)="updateBookingType()">Thanh toán</button>
     </div>
 </div>
