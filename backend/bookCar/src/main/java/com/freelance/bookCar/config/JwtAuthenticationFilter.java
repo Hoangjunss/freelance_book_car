@@ -2,6 +2,7 @@ package com.freelance.bookCar.config;
 
 
 
+import com.freelance.bookCar.models.user.User;
 import com.freelance.bookCar.security.JwtTokenUtil;
 import com.freelance.bookCar.security.OurUserDetailsService;
 import jakarta.servlet.FilterChain;
@@ -43,7 +44,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         userEmail = jwtTokenUtil.extractUsernameToken(jwtToken);
         if (userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = ourUserDetailsService.loadUserByUsername(userEmail);
+            User userDetails =(User) ourUserDetailsService.loadUserByUsername(userEmail);
 
             if (jwtTokenUtil.isTokenValid(jwtToken, userDetails)) {
                 SecurityContext securityContext = SecurityContextHolder.createEmptyContext();

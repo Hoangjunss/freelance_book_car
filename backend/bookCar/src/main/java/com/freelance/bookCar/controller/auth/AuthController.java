@@ -8,10 +8,13 @@ import com.freelance.bookCar.dto.request.user.accountDTO.RegistrationRequest;
 import com.freelance.bookCar.dto.response.booking.CreateBookingResponse;
 import com.freelance.bookCar.dto.response.user.accountDTO.LoginResponse;
 import com.freelance.bookCar.dto.response.user.accountDTO.RegistrationResponse;
+import com.freelance.bookCar.dto.response.user.userDTO.GetUserResponse;
+import com.freelance.bookCar.models.user.User;
 import com.freelance.bookCar.services.user.userservice.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -34,6 +37,12 @@ public class AuthController {
     public ResponseEntity<ApiResponse<LoginResponse>> refreshToken(@ModelAttribute @Valid RefreshToken refreshToken){
         LoginResponse loginResponse=accountService.generateRefreshToken(refreshToken);
         return ResponseEntity.ok(new ApiResponse<>(true, "RefreshToken  successfully", loginResponse));
+    }
+    @GetMapping("/current-user")
+    public ResponseEntity<ApiResponse<GetUserResponse>>  getCurrentUser() {
+        User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        GetUserResponse getUserResponse=GetUserResponse.builder().id(userDetails.getId()).name(userDetails.getUsername()).build();
+        return ResponseEntity.ok(new ApiResponse<>(true, "RefreshToken  successfully", getUserResponse));
     }
 
 }
