@@ -72,7 +72,7 @@ export class BookingService {
   } 
   
   getByType(type: string): Observable<GetHotelBookingResponse[]> {
-    return this.httpClient.get<Apiresponse<GetHotelBookingResponse[]>>(`${this.baseUrl}?type=${type}`).pipe(
+    return this.httpClient.get<Apiresponse<GetHotelBookingResponse[]>>(`${this.baseUrl}/type?type=${type}`).pipe(
       map((response: Apiresponse<GetHotelBookingResponse[]>) => {
         if (response.success) {
           return response.data;
