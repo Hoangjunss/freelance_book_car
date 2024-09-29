@@ -1,6 +1,6 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthInterceptor } from '../../../services/auth.interceptor';
 import { UserService } from '../../../services/user/user.service';
@@ -36,13 +36,15 @@ export class CartComponent implements OnInit {
     private hotelService : HotelService,
     private tourismService : TourismService,
     private title: Title,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) { this.title.setTitle('Giỏ hàng'); }
 
   ngOnInit(): void {
-    // lay id user tu localStorage
-    const id = localStorage.getItem('idUser');
-    if (id) {
-      this.getBookingByUser(parseInt(id));
+    if (isPlatformBrowser(this.platformId)) {
+      const id = localStorage.getItem('idUser');
+      if (id) {
+        this.getBookingByUser(parseInt(id));
+      }
     }
   }
 
