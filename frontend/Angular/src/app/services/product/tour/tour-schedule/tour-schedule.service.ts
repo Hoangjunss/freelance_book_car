@@ -17,8 +17,8 @@ export class TourScheduleService {
 
   constructor(private httpClient: HttpClient) { }
 
-  createSchedule(createScheduleRequest: CreateTourScheduleRequest): Observable<CreateTourScheduleResponse> {
-    return this.httpClient.post<Apiresponse<CreateTourScheduleResponse>>(`${this.baseUrl}`, createScheduleRequest).pipe(
+  createSchedule(formData: FormData): Observable<CreateTourScheduleResponse> {
+    return this.httpClient.post<Apiresponse<CreateTourScheduleResponse>>(`${this.baseUrl}`, formData).pipe(
       map((response: Apiresponse<CreateTourScheduleResponse>) => {
         if (response.success) {
           return response.data;
@@ -29,8 +29,8 @@ export class TourScheduleService {
     );
   }
 
-  updateSchedule(updateScheduleRequest: UpdateTourScheduleRequest): Observable<UpdateTourScheduleResponse> {
-    return this.httpClient.put<Apiresponse<UpdateTourScheduleResponse>>(`${this.baseUrl}`, updateScheduleRequest).pipe(
+  updateSchedule(formData: FormData): Observable<UpdateTourScheduleResponse> {
+    return this.httpClient.patch<Apiresponse<UpdateTourScheduleResponse>>(`${this.baseUrl}`, formData).pipe(
       map((response: Apiresponse<UpdateTourScheduleResponse>) => {
         if (response.success) {
           return response.data;
@@ -39,6 +39,19 @@ export class TourScheduleService {
         }
       })
     );
+  }
+
+  getAllTourSchedule(): Observable<UpdateTourScheduleRequest[]> {
+    return this.httpClient.get<Apiresponse<GetTourScheduleResponse[]>>(`${this.baseUrl}/all`).pipe(
+      map((response: Apiresponse<GetTourScheduleResponse[]>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    );
+
   }
 
   getSchedule(id: number): Observable<GetTourScheduleResponse> {

@@ -9,7 +9,7 @@
 </nav>
 
 <!-- Hiển thị danh sách tour -->
-<div class="container mt-4">
+<div *ngIf="getTourResponse.length>0" class="container mt-4">
     <div class="row">
         <div class="col-sm-12">
             <h2 class="text-center">Tour Schedule</h2>
@@ -20,10 +20,10 @@
             <div class="card mb-4">
                 <div class="card-body">
                     <h5 class="card-title">Tour ID: {{ tour.id }}</h5>
-                    <p class="card-text">Start Time: {{ tour.timeStartTour | date:'short' }}</p>
-                    <p class="card-text">Quantity: {{ tour.quantity }}</p>
-                    <p class="card-text">Price: ${{ tour.priceTour }}</p>
-                    <button class="btn btn-primary" (click)="viewDetails(1)">Details</button>
+                    <p class="card-text">Start Time: {{ tour.name}}</p>
+                    <p class="card-text">Quantity: {{ tour.startLocation }}</p>
+                    <p class="card-text">Status: {{ tour.isActive ? 'Avtive' : 'Stop Operation' }}</p>
+                    <button class="btn btn-primary" (click)="viewDetails(tour)">Details</button>
                 </div>
             </div>
         </div>
@@ -34,7 +34,7 @@
             <button class="m-1 btn btn-secondary" (click)="previousPage()"
                 [disabled]="currentPage === 1">Previous</button>
             <button class="m-1 btn btn-secondary" (click)="nextPage()"
-                [disabled]="currentPage >= tours.length / itemsPerPage">Next</button>
+                [disabled]="currentPage >= getTourScheduleResponse.length / itemsPerPage">Next</button>
         </div>
     </div>
 </div>
@@ -52,13 +52,13 @@
             <div class="form-group d-flex align-items-center">
               <!-- Thẻ select -->
               <label for="tourFilter" class="mr-2">Filter by Tour</label>
-              <select class="form-control mr-3" id="tourFilter" name="tourFilter" style="width: auto;">
-                <option value="">-- Select Tour --</option>
-                <option *ngFor="let tour of tours" [value]="tour.id">Tour {{ tour.id }} - {{ tour.priceTour }}$</option>
+              <select class="form-control mr-3" id="tourFilter" [(ngModel)]="tourSelectedId" name="tourFilter" style="width: auto;">
+                <option value="0">-- Select Tour --</option>
+                <option *ngFor="let tour of getTourResponse" [value]="tour.id">{{ tour.name }}</option>
               </select>
               
               <!-- Nút Filter -->
-              <button class="btn btn-primary">Filter</button>
+              <button class="btn btn-primary" (click)="filterTours()">Filter</button>
             </div>
           </div>
           
@@ -72,7 +72,6 @@
                 <th>Quantity</th>
                 <th>Price</th>
                 <th>Schedule Status</th>
-                <th>Action</th>
               </tr>
             </thead>
             <tbody>
@@ -83,28 +82,30 @@
                 <td>{{ tour.quantity }}</td>
                 <td>{{ tour.priceTour | currency: 'USD' }}</td>
                 <td>{{ tour.idTourScheduleStatus }}</td>
-                <td>
-                  <button class="btn btn-warning m-2" (click)="updateSchedule(tour)">Edit</button>
-                </td>
               </tr>
             </tbody>
           </table>
         </div>
       
-        <!-- Pagination Controls -->
         <nav aria-label="Page navigation example">
-          <ul class="pagination justify-content-center">
-            <li class="page-item" [class.disabled]="currentPageSchedule === 1">
-              <a class="page-link" (click)="goToPage(currentPageSchedule - 1)">Previous</a>
-            </li>
-            <li class="page-item" *ngFor="let page of pages" [class.active]="currentPageSchedule === page">
-              <a class="page-link" (click)="goToPage(page)">{{ page }}</a>
-            </li>
-            <li class="page-item" [class.disabled]="currentPageSchedule === totalPages">
-              <a class="page-link" (click)="goToPage(currentPageSchedule + 1)">Next</a>
-            </li>
-          </ul>
-        </nav>
+            <ul class="pagination justify-content-center">
+              <!-- Nút Previous -->
+              <li class="page-item" [class.disabled]="currentPageSchedule === 1">
+                <a class="page-link" (click)="goToPage(currentPageSchedule - 1)">Previous</a>
+              </li>
+          
+              <!-- Các số trang -->
+              <li class="page-item" *ngFor="let page of pages" [class.active]="currentPageSchedule === page">
+                <a class="page-link" (click)="goToPage(page)">{{ page }}</a>
+              </li>
+          
+              <!-- Nút Next -->
+              <li class="page-item" [class.disabled]="currentPageSchedule === totalPages">
+                <a class="page-link" (click)="goToPage(currentPageSchedule + 1)">Next</a>
+              </li>
+            </ul>
+          </nav>
+          
       </div>      
 </div>
 
@@ -123,27 +124,22 @@
                     <form>
                         <div class="form-group">
                             <label for="name">Name</label>
-                            <input type="text" class="form-control" id="name" [(ngModel)]="tour.id" name="name"
+                            <input type="text" [disabled]="true" class="form-control" id="name" [(ngModel)]="tourDetail.name" name="name"
                                 placeholder="Enter tour name" required>
                         </div>
                         <div class="form-group">
                             <label for="description">Description</label>
-                            <textarea class="form-control" id="description" [(ngModel)]="tour.description"
+                            <textarea class="form-control" [disabled]="true" id="description" [(ngModel)]="tourDetail.description"
                                 name="description" placeholder="Enter description"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="startLocation">Start Location</label>
-                            <input type="text" class="form-control" id="startLocation" [(ngModel)]="tour.startLocation"
+                            <input type="text" [disabled]="true" class="form-control" id="startLocation" [(ngModel)]="tourDetail.startLocation"
                                 name="startLocation" placeholder="Enter start location">
                         </div>
                         <div class="form-group">
-                            <label for="endLocation">End Location</label>
-                            <input type="text" class="form-control" id="endLocation" [(ngModel)]="tour.endLocation"
-                                name="endLocation" placeholder="Enter end location">
-                        </div>
-                        <div class="form-group">
-                            <label for="idTourStatus">Tour Status ID</label>
-                            <input type="number" class="form-control" id="idTourStatus" [(ngModel)]="tour.isActive"
+                            <label for="idTourStatus">Avtive</label>
+                            <input type="text" [disabled]="true" class="form-control" id="idTourStatus" [(ngModel)]="tourDetail.isActive"
                                 name="idTourStatus" placeholder="Enter tour status ID">
                         </div>
                     </form>
@@ -152,12 +148,12 @@
                 <!-- Phần bên phải: Danh sách Tour Schedule -->
                 <div class="col-md-6 col-sm-12" style="max-height: 500px; overflow-y: auto;">
                     <h5 class="modal-title">Tour Schedule</h5>
-                    <div *ngFor="let schedule of tourSchedules" class="mb-2 border p-2">
+                    <div *ngFor="let schedule of getTourScheduleByIdTour" class="mb-2 border p-2">
                         <div>
                             <strong>Schedule ID:</strong> {{ schedule.id }}
                         </div>
                         <div>
-                            <strong>Start Time:</strong> {{ schedule.timeStartTour | date:'short' }}
+                            <strong>Start Time:</strong> {{ schedule.timeStartTour | date: 'dd/MM/yyyy' }}
                         </div>
                         <div>
                             <strong>Quantity:</strong> {{ schedule.quantity }}
@@ -165,15 +161,15 @@
                         <div>
                             <strong>Price:</strong> {{ schedule.priceTour | currency }}
                         </div>
-                        <button type="button" class="btn btn-info mt-1" (click)="updateSchedule(schedule)">View</button>
+                        <button type="button" class="btn btn-info mt-1" (click)="updateSchedule(schedule, tourDetail)">View</button>
                     </div>
                 </div>
             </div>
-            <button type="button" class="m-1 btn btn-primary" (click)="save()">Save</button>
             <button type="button" class="m-1 btn btn-secondary" (click)="cancel()">Cancel</button>
         </div>
     </div>
 </div>
+
 
 <!-- Modal for adding/updating tour schedule -->
 <div *ngIf="isUpdateSchedule" class="modal fade show" tabindex="-1" role="dialog"
@@ -189,27 +185,73 @@
                     
                     <!-- Chọn tour -->
                     <div class="form-group">
-                        <label for="tourSelect">Select Tour</label>
-                        <select class="form-control" id="tourSelect" [(ngModel)]="selectedTourId" name="tourSelect" required>
-                            <option *ngFor="let tour of tours" [value]="tour.id">{{ tour.id }}</option>
+                        <label for="tourSelect">Tour Name</label>
+                        <select class="form-control" id="tourSelect" [(ngModel)]="tourSelected.name" name="tourSelect" required>
+                            <option [value]="tourSelected.name">{{ tourSelected.name }}</option>
                         </select>
                     </div>
                     
                     <!-- Số lượng -->
                     <div class="form-group">
                         <label for="scheduleQuantity">Quantity</label>
-                        <input type="number" class="form-control" id="scheduleQuantity" [(ngModel)]="selectedSchedule.quantity" name="scheduleQuantity" placeholder="Enter quantity" required>
+                        <input type="number" class="form-control" id="scheduleQuantity" [(ngModel)]="updateTourScheduleRequest.quantity" name="scheduleQuantity" placeholder="Enter quantity" required>
                     </div>
                     <div class="form-group">
                         <label for="schedulePrice">Price</label>
-                        <input type="number" class="form-control" id="schedulePrice" [(ngModel)]="selectedSchedule.priceTour" name="schedulePrice" placeholder="Enter price" required>
+                        <input type="number" class="form-control" id="schedulePrice" [(ngModel)]="updateTourScheduleRequest.priceTour" name="schedulePrice" placeholder="Enter price" required>
                     </div>
                     <div class="form-group">
                         <label for="timeStartTour">Start Time</label>
-                        <input type="datetime-local" class="form-control" id="timeStartTour" [(ngModel)]="selectedSchedule.timeStartTour" name="timeStartTour" required>
+                        <input type="datetime-local" class="form-control" id="timeStartTour" [(ngModel)]="updateTourScheduleRequest.timeStartTour" name="timeStartTour" required>
                     </div>
                     <button type="button" class="m-1 btn btn-secondary" (click)="cancelUpdate()">Cancel</button>
                     <button type="button" class="m-1 btn btn-primary" (click)="saveUpdate()">{{ isEditMode ? 'Update' : 'Add' }}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div *ngIf="isCreateSchedule" class="modal fade show" tabindex="-1" role="dialog"
+    style="display: block; background: rgba(0, 0, 0, 0.5);">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content slide-in-update">
+            <div class="modal-body-update m-4">
+                <form>
+                    <h5 class="modal-title">{{ isEditMode ? 'Update' : 'Add' }} Tour Schedule</h5>
+                    <button type="button" class="close" aria-label="Close" (click)="closeCreate()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    
+                    <!-- Chọn tour -->
+                    <div class="form-group">
+                        <label for="tourSelect">Select Tour</label>
+                        <select class="form-control" id="tourSelect" [(ngModel)]="createTourScheduleRequest.idTour" name="tourSelect" required>
+                          <option value="0" disabled>-- Select Tour --</option> <!-- Mục mặc định -->
+                          <option *ngFor="let tour of getTourResponse" [value]="tour.id">{{ tour.name }}</option>
+                        </select>
+                      </div>
+                    
+                    <!-- Số lượng -->
+                    <div class="form-group">
+                        <label for="scheduleQuantity">Quantity</label>
+                        <input type="number" class="form-control" id="scheduleQuantity" [(ngModel)]="createTourScheduleRequest.quantity" name="scheduleQuantity" placeholder="Enter quantity" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="schedulePrice">Price</label>
+                        <input type="number" class="form-control" id="schedulePrice" [(ngModel)]="createTourScheduleRequest.priceTour" name="schedulePrice" placeholder="Enter price" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="timeStartTour">Start Time</label>
+                        <input type="datetime-local" class="form-control" id="timeStartTour" [(ngModel)]="timeStartTour" name="timeStartTour" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="timeStartTour">Start Time</label>
+                        <input type="datetime-local" class="form-control" id="timeStartTour" [(ngModel)]="timeEndTour" name="timeStartTour" required>
+                    </div>
+                    <button type="button" class="m-1 btn btn-secondary" (click)="closeCreate()">Cancel</button>
+                    <button type="button" class="m-1 btn btn-primary" (click)="onCreate()">{{ isEditMode ? 'Update' : 'Add' }}</button>
                 </form>
             </div>
         </div>

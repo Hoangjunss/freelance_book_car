@@ -2,9 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Apiresponse } from '../../../../models/response/apiresponse';
-import { CreateTourismRequest } from '../../../../models/request/product/ticket/tourism/create-tourism-request';
 import { CreateTourismResponse } from '../../../../models/response/product/ticket/tourism/create-tourism-response';
-import { UpdateTourismRequest } from '../../../../models/request/product/ticket/tourism/update-tourism-request';
 import { UpdateTourismResponse } from '../../../../models/response/product/ticket/tourism/update-tourism-response';
 import { GetTourismResponse } from '../../../../models/response/product/ticket/tourism/get-tourism-response';
 
