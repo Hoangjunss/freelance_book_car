@@ -30,7 +30,7 @@ export class PromotionService {
   }
 
   updatePromotion(updatePromotionRequest: UpdatePromotionRequest): Observable<UpdatePromotionResponse> {
-    return this.httpClient.put<Apiresponse<UpdatePromotionResponse>>(`${this.baseUrl}`, updatePromotionRequest).pipe(
+    return this.httpClient.patch<Apiresponse<UpdatePromotionResponse>>(`${this.baseUrl}`, updatePromotionRequest).pipe(
       map((response: Apiresponse<UpdatePromotionResponse>) => {
         if (response.success) {
           return response.data;
@@ -52,4 +52,20 @@ export class PromotionService {
       })
     );
   }
+
+  getAll(): Observable<GetPromotionResponse[]> {
+    return this.httpClient.get<Apiresponse<GetPromotionResponse[]>>(`${this.baseUrl}/all`).pipe(
+      map((response: Apiresponse<GetPromotionResponse[]>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    );
+  }
+
+
+
+  
 }

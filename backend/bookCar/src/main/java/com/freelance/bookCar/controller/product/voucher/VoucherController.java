@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/voucher")
 public class VoucherController {
@@ -34,5 +36,11 @@ public class VoucherController {
     public ResponseEntity<ApiResponse<GetVoucherResponse>> getVoucher(@RequestParam Integer id) {
         GetVoucherResponse getVoucherResponse = voucherService.findById(id);
         return ResponseEntity.ok(new ApiResponse<>(true, "Get Voucher successfully", getVoucherResponse));
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<ApiResponse<List<GetVoucherResponse>>> getAllVouchers() {
+        List<GetVoucherResponse> getVoucherResponse = voucherService.getAll();
+        return ResponseEntity.ok(new ApiResponse<>(true, "Get all vouchers successfully", getVoucherResponse));
     }
 }

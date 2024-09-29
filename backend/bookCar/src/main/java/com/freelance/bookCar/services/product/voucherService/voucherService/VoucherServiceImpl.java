@@ -16,7 +16,10 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -88,6 +91,11 @@ public class VoucherServiceImpl implements VoucherService{
     public GetVoucherResponse findById(Integer id) {
         return modelMapper.map(voucherRepository.findById(id).orElseThrow(() ->
                 new CustomException(Error.VOUCHER_NOT_FOUND)), GetVoucherResponse.class);
+    }
+
+    @Override
+    public List<GetVoucherResponse> getAll() {
+        return voucherRepository.findAll().stream().map(voucher -> modelMapper.map(voucher, GetVoucherResponse.class)).collect(Collectors.toList());
     }
 
     private Integer generateId() {

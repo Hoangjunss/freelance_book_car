@@ -3,131 +3,122 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { GetTourScheduleResponse } from '../../../../models/response/product/tour/tour-schedule/get-tour-schedule-response';
 import { GetTourResponse } from '../../../../models/response/product/tour/tour/get-tour-response';
+import { NoDataFoundComponent } from "../../no-data-found/no-data-found.component";
+import { CreateVoucherRequest } from '../../../../models/request/product/voucher/voucher/create-voucher-request';
+import { CreateVoucherResponse } from '../../../../models/response/product/voucher/voucher/create-voucher-response';
+import { UpdateVoucherRequest } from '../../../../models/request/product/voucher/voucher/update-voucher-request';
+import { UpdateVoucherResponse } from '../../../../models/response/product/voucher/voucher/update-voucher-response';
+import { VoucherService } from '../../../../services/product/voucher/voucher/voucher.service';
+import { GetVoucherResponse } from '../../../../models/response/product/voucher/voucher/get-voucher-response';
 
 @Component({
   selector: 'app-voucher',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NoDataFoundComponent],
   templateUrl: './voucher.component.html',
-  styleUrl: './voucher.component.css'
+  styleUrls: ['./voucher.component.css']
 })
 export class VoucherComponent implements OnInit {
+  createVoucherRequest: CreateVoucherRequest = new CreateVoucherRequest();
+  createVoucherResponse: CreateVoucherResponse = new CreateVoucherResponse();
+  updateVoucherRequest: UpdateVoucherRequest = new UpdateVoucherRequest();
+  updateVoucherResponse: UpdateVoucherResponse = new UpdateVoucherResponse();
+
   isDisplayDetails: boolean = false;
-  isUpdateSchedule: boolean = false; 
+  isUpdateSchedule: boolean = false;
   selectedTourId: number | null | undefined = null; // Chấp nhận undefined
   isEditMode: boolean = false;
 
-  selectedSchedule: GetTourScheduleResponse = {};
+  selectedSchedule: GetVoucherResponse[] = [];
 
-  tour: GetTourResponse = {}; 
-  tourSchedules: GetTourScheduleResponse[] = [
-    { id: 1, timeStartTour: new Date(), quantity: 10, priceTour: 100, idTourScheduleStatus: 1 },
-    { id: 2, timeStartTour: new Date(), quantity: 5, priceTour: 150, idTourScheduleStatus: 1 },
-    { id: 1, timeStartTour: new Date(), quantity: 10, priceTour: 100, idTourScheduleStatus: 1 },
-    { id: 2, timeStartTour: new Date(), quantity: 5, priceTour: 150, idTourScheduleStatus: 1 },
-    { id: 1, timeStartTour: new Date(), quantity: 10, priceTour: 100, idTourScheduleStatus: 1 },
-    { id: 2, timeStartTour: new Date(), quantity: 5, priceTour: 150, idTourScheduleStatus: 1 },
-    { id: 1, timeStartTour: new Date(), quantity: 10, priceTour: 100, idTourScheduleStatus: 1 },
-    { id: 2, timeStartTour: new Date(), quantity: 5, priceTour: 150, idTourScheduleStatus: 1 },
-    { id: 1, timeStartTour: new Date(), quantity: 10, priceTour: 100, idTourScheduleStatus: 1 },
-    { id: 2, timeStartTour: new Date(), quantity: 5, priceTour: 150, idTourScheduleStatus: 1 },
+  getVoucherResponse: GetVoucherResponse [] = []; 
+  constructor(private voucherService: VoucherService) {}
 
-  ];
-  tours: GetTourScheduleResponse[] = [
-    { id: 1, timeStartTour: new Date(), idTour: 101, quantity: 2, priceTour: 500, idTourScheduleStatus: 1 },
-    { id: 2, timeStartTour: new Date(), idTour: 102, quantity: 4, priceTour: 700, idTourScheduleStatus: 2 },
-    { id: 3, timeStartTour: new Date(), idTour: 103, quantity: 1, priceTour: 300, idTourScheduleStatus: 1 },
-    { id: 4, timeStartTour: new Date(), idTour: 104, quantity: 3, priceTour: 400, idTourScheduleStatus: 2 },
-    { id: 5, timeStartTour: new Date(), idTour: 105, quantity: 2, priceTour: 600, idTourScheduleStatus: 1 },
-    { id: 6, timeStartTour: new Date(), idTour: 106, quantity: 5, priceTour: 800, idTourScheduleStatus: 2 },
-  ];
-
-  // Pagination variables
-  currentPageSchedule: number = 1;
-  pageSize: number = 3;
-  pagedTours: GetTourScheduleResponse[] = [];
-  totalPages: number = Math.ceil(this.tours.length / this.pageSize);
-  pages: number[] = Array.from({ length: this.totalPages }, (_, i) => i + 1);
-
-  currentPage = 1;
-  itemsPerPage = 4;
-
-  get paginatedTours() {
-    const start = (this.currentPage - 1) * this.itemsPerPage;
-    return this.tours.slice(start, start + this.itemsPerPage);
+  ngOnInit(): void {
+    this.getAllVouchers();
+    console.log(this.selectedSchedule);
   }
 
-  nextPage() {
-    if (this.currentPage < Math.ceil(this.tours.length / this.itemsPerPage)) {
-      this.currentPage++;
-    }
+  getAllVouchers() {
+    this.voucherService.getAll().subscribe({
+      next: (data) => {
+        this.getVoucherResponse = data; // Cập nhật danh sách voucher
+        console.log('All vouchers:', this.getVoucherResponse);
+      },
+      error: (err) => {
+        console.error('Error getting vouchers:', err.message);
+      }
+    });
   }
 
-  addNewSchedule(): void {
-    this.selectedSchedule = {};  // Reset the form
-    this.selectedTourId = undefined;  // Clear selected tour
-    this.isUpdateSchedule = true;
-    this.isEditMode = false;  // Mark as add mode
-  }
-
-  updateSchedule(schedule?: GetTourScheduleResponse) {
-    if (schedule != undefined) {
-      this.selectedSchedule = { ...schedule }; // Gán lịch trình được chọn
-      this.selectedTourId = schedule.idTour; // Gán ID tour tương ứng
-    } else {
-      this.selectedTourId = undefined;
-    }
-    this.isUpdateSchedule = true; // Đóng modal cập nhật
-    this.isEditMode = true;  // Mark as add mode
-
-  }
-  
-
-  cancelUpdate() {
-    this.isUpdateSchedule = false; // Đóng modal cập nhật
-  }
-
-  saveUpdate() {
-    // Logic lưu dữ liệu cho lịch trình
-    // Cập nhật danh sách tourSchedules nếu cần
-    this.isUpdateSchedule = false; // Đóng modal sau khi lưu
-  }
-
-  previousPage() {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-    }
-  }
-
-  viewDetails(id: number) {
-    // Logic xem chi tiết tour
+  displayFormCreate() {
     this.isDisplayDetails = true;
   }
 
-  ngOnInit(): void {
+  closeFormCreate() {
+    this.isDisplayDetails = false;
   }
 
-  cancel() {
-    this.isDisplayDetails = false; // Đóng modal
+  displayFormUpdate(voucher: GetVoucherResponse) {
+    this.updateVoucherRequest = {
+      id: voucher.id,
+      name: voucher.name, // Giả sử có trường name trong voucher
+      discountRate: voucher.discountRate, // Giả sử có trường discountRate
+      endDate: voucher.endDate, // Giả sử có trường endDate
+      isUse: voucher.isUse // Giả sử có trường isUse
+    };
+    this.isEditMode = true;
+    this.isDisplayDetails = true;
   }
 
-  save() {
-    // Logic lưu dữ liệu
+  closeFormUpdate() {
+    this.isEditMode = false;
+    this.isDisplayDetails = false;
   }
 
-  viewSchedule(id: number) {
-    console.log(`Viewing schedule with ID: ${id}`);
-  }
-
-  goToPage(page: number): void {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPageSchedule = page;
-      this.updatePagedTours();
+  onCreateVoucher() {
+    if (!this.createVoucherRequest?.name || !this.createVoucherRequest?.discountRate || !this.createVoucherRequest?.endDate) {
+      alert('Please fill in all required fields: Name, Discount Rate, End Date');
+      return;
     }
+
+    this.voucherService.createVoucher(this.createVoucherRequest).subscribe({
+      next: (data) => {
+        this.createVoucherResponse = data;
+        if (this.createVoucherResponse) {
+          console.log('Voucher created successfully:', this.createVoucherResponse);
+          alert('Voucher created successfully');
+          this.getAllVouchers(); // Làm mới danh sách
+          this.closeFormCreate();
+        }
+      },
+      error: (err) => {
+        console.error('Error creating voucher:', err.message);
+        alert(`Error creating voucher: ${err.message}`);
+      }
+    });
   }
-  updatePagedTours(): void {
-    const start = (this.currentPageSchedule - 1) * this.pageSize;
-    const end = start + this.pageSize;
-    this.pagedTours = this.tours.slice(start, end);
+
+  onUpdateVoucher() {
+    if (!this.updateVoucherRequest?.id) {
+      alert('Voucher Not Found. Please Create!');
+      return;
+    }
+
+    this.voucherService.updateVoucher(this.updateVoucherRequest).subscribe({
+      next: (data) => {
+        this.updateVoucherResponse = data;
+        if (this.updateVoucherResponse) {
+          console.log('Voucher updated successfully:', this.updateVoucherResponse);
+          alert('Voucher updated successfully');
+          this.getAllVouchers(); // Làm mới danh sách
+          this.closeFormUpdate();
+        }
+      },
+      error: (err) => {
+        console.error('Error updating voucher:', err.message);
+        alert(`Error updating voucher: ${err.message}`);
+      }
+    });
   }
 }

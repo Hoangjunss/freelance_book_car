@@ -7,9 +7,12 @@ import com.freelance.bookCar.dto.response.product.voucherDTO.voucher.GetVoucherR
 import com.freelance.bookCar.dto.response.product.voucherDTO.voucher.UpdateVoucherResponse;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public interface VoucherService {
     CreateVoucherResponse create(CreateVoucherRequest createVoucherRequest);
     UpdateVoucherResponse update(UpdateVoucherRequest updateVoucherRequest);
     GetVoucherResponse findById(Integer id);
+    List<GetVoucherResponse> getAll();
 }

@@ -81,14 +81,13 @@ export class TourScheduleComponent implements OnInit {
   isDisplayDetails: boolean = false;
   isUpdateSchedule: boolean = false;
   isCreateSchedule: boolean = false; 
-  selectedTourId: number | null | undefined = null; // Chấp nhận undefined
+  selectedTourId: number | null | undefined = null;
   isEditMode: boolean = false;
 
   selectedSchedule: GetTourScheduleResponse = {};
 
   tour: GetTourResponse = {}; 
 
-  // Pagination variables
   currentPageSchedule: number = 1;
   pageSize: number = 5;
   pagedTours: GetTourScheduleResponse[] = [];
@@ -127,31 +126,25 @@ export class TourScheduleComponent implements OnInit {
     console.log(this.timeStartTour);
     console.log(this.timeEndTour);
 
-    
-    
-    // Chuyển đổi các giá trị chuỗi thành đối tượng Date
-    const startDate = new Date(this.timeStartTour); // Giả sử timeStartTour đã được định dạng đúng
-    const endDate = new Date(this.timeEndTour); // Giả sử timeEndTour đã được định dạng đúng
-    // Chuyển đổi startDate thành chuỗi theo định dạng yyyy-MM-ddTHH:mm:ss
-    let formattedStartDate = startDate.toISOString().slice(0, 19); // loại bỏ phần "Z" để chỉ giữ lại yyyy-MM-ddTHH:mm:ss
+    const startDate = new Date(this.timeStartTour);
+    const endDate = new Date(this.timeEndTour);
+    let formattedStartDate = startDate.toISOString().slice(0, 19);
 
-    // Tương tự cho endDate nếu cần
-    let formattedEndDate = endDate.toISOString().slice(0, 19); // loại bỏ phần "Z"
+    let formattedEndDate = endDate.toISOString().slice(0, 19);
     let isSuccess = false;
 
     if (startDate < new Date()) {
         alert("Ngày bắt đầu không được nhỏ hơn ngày hiện tại.");
-        return; // Dừng lại nếu ngày bắt đầu không hợp lệ
+        return;
     }
 
-    // Kiểm tra xem ngày bắt đầu có nhỏ hơn hoặc bằng ngày kết thúc không
     if (startDate <= endDate) {
         while (startDate <= endDate) {
             const formData = new FormData();
             formData.append('idTour', this.createTourScheduleRequest.idTour?.toString() ?? '');
             formData.append('priceTour', this.createTourScheduleRequest.priceTour?.toString() ?? '');
             formData.append('quantity', this.createTourScheduleRequest.quantity?.toString() ?? '');
-            formData.append('timeStartTour', formattedStartDate); // Chuyển đổi ngày bắt đầu sang ISO string
+            formData.append('timeStartTour', formattedStartDate);
 
             this.tourScheduleService.createSchedule(formData).subscribe({
                 next: (data) => {
@@ -239,14 +232,6 @@ export class TourScheduleComponent implements OnInit {
 
   cancel() {
     this.isDisplayDetails = false; // Đóng modal
-  }
-
-  save() {
-    // Logic lưu dữ liệu
-  }
-
-  viewSchedule(id: number) {
-    console.log(`Viewing schedule with ID: ${id}`);
   }
 
   goToPage(page: number): void {

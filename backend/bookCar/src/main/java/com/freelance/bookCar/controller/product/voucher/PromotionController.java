@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/promotion")
 public class PromotionController {
@@ -34,5 +36,11 @@ public class PromotionController {
     public ResponseEntity<ApiResponse<GetPromotionResponse>> getPromotion(@RequestParam Integer id) {
         GetPromotionResponse getPromotionResponse = promotionService.findById(id);
         return ResponseEntity.ok(new ApiResponse<>(true, "Get Promotion successfully", getPromotionResponse));
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<ApiResponse<List<GetPromotionResponse>>> getAllPromotions() {
+        List<GetPromotionResponse> getPromotionResponse = promotionService.getAll();
+        return ResponseEntity.ok(new ApiResponse<>(true, "Get All Promotions successfully", getPromotionResponse));
     }
 }

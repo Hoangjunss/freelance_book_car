@@ -52,4 +52,16 @@ export class VoucherService {
       })
     );
   }
+
+  getAll(): Observable<GetVoucherResponse[]> {
+    return this.httpClient.get<Apiresponse<GetVoucherResponse[]>>(`${this.baseUrl}/all`).pipe(
+      map((response: Apiresponse<GetVoucherResponse[]>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    );
+  }
 }

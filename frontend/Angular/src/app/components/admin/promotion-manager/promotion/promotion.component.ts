@@ -1,39 +1,53 @@
+import { GetPromotionResponse } from './../../../../models/response/product/voucher/promotion/get-promotion-response';
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { GetHotelResponse } from '../../../../models/response/product/hotel/hotel/get-hotel-response';
+import { NoDataFoundComponent } from "../../no-data-found/no-data-found.component"; // Giả sử có component này
+import { CreatePromotionRequest } from '../../../../models/request/product/voucher/promotion/create-promotion-request';
+import { UpdatePromotionRequest } from '../../../../models/request/product/voucher/promotion/update-promotion-request';
+import { UpdatePromotionResponse } from '../../../../models/response/product/voucher/promotion/update-promotion-response';
+import { CreatePromotionResponse } from '../../../../models/response/product/voucher/promotion/create-promotion-response';
+import { PromotionService } from '../../../../services/product/voucher/promotion/promotion.service';
 
 @Component({
   selector: 'app-promotion',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NoDataFoundComponent],
   templateUrl: './promotion.component.html',
-  styleUrl: './promotion.component.css'
+  styleUrls: ['./promotion.component.css']
 })
 export class PromotionComponent {
+  createPromotionRequest: CreatePromotionRequest = new CreatePromotionRequest();
+  createPromotionResponse: CreatePromotionResponse = new CreatePromotionResponse();
+  updatePromotionRequest: UpdatePromotionRequest = new UpdatePromotionRequest();
+  updatePromotionResponse: UpdatePromotionResponse = new UpdatePromotionResponse();
+  
   selectedImage: string = 'assets/img/DEFAULT/hotel-default.png';
-  isDisplayDetails: boolean = false;
-  hotel?: GetHotelResponse;
-  data: GetHotelResponse[] = [];
+  isDisplayCreate = false;
+  isDisplayUpdate = false;
+  data: GetPromotionResponse[] = [];
   currentPage: number = 1;
   pageSize: number = 5;
-  pagedData: GetHotelResponse[] = [];
+  pagedData: GetPromotionResponse[] = [];
+
+  constructor(private promotionService: PromotionService) {}
 
   ngOnInit(): void {
-    this.data = this.getData();
+    this.getAllPromotions();
     this.updatePagedData();
     console.log(this.selectedImage);
+  }
+
+  goToPage(page: number) {
+    this.currentPage = page;
+    this.updatePagedData();
   }
 
   updatePagedData() {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
     this.pagedData = this.data.slice(startIndex, endIndex);
-  }
-
-  goToPage(page: number) {
-    this.currentPage = page;
-    this.updatePagedData();
   }
 
   get totalPages(): number {
@@ -44,48 +58,86 @@ export class PromotionComponent {
     return Array(this.totalPages).fill(0).map((x, i) => i + 1);
   }
 
-  getData(): GetHotelResponse[] {
-    return [
-      { id: 1, name: 'Hotel California', contactInfo: '123-456-789', pricePerNight: 150, location: 'USA', active: true, rating: 4.5 },
-      { id: 2, name: 'Grand Hotel', contactInfo: '987-654-321', pricePerNight: 200, location: 'France', active: true, rating: 4.2 },
-      { id: 3, name: 'Royal Suite', contactInfo: '555-123-456', pricePerNight: 300, location: 'UK', active: false, rating: 4.8 },
-      { id: 4, name: 'Beach Resort', contactInfo: '444-321-654', pricePerNight: 250, location: 'Australia', active: true, rating: 4.7 },
-      { id: 5, name: 'Mountain Lodge', contactInfo: '222-789-123', pricePerNight: 180, location: 'Canada', active: false, rating: 4.1 },
-      { id: 6, name: 'City Center Hotel', contactInfo: '111-222-333', pricePerNight: 220, location: 'Germany', active: true, rating: 4.3 },
-    ];
+  displayFormCreate() {
+    this.isDisplayCreate = true;
   }
 
-  displayDetailsHotel() {
-    this.isDisplayDetails = true;
+  closeFormCreate() {
+    this.isDisplayCreate = false;
   }
 
-  save() {
-    if (this.hotel) {
-      console.log('Saved:', {
-        id: this.hotel.id,
-        name: this.hotel.name,
-        contacInfo: this.hotel.contactInfo,
-        pricePerNight: this.hotel.pricePerNight,
-        location: this.hotel.location,
-        active: this.hotel.active,
-        rating: this.hotel.rating
-      });
+  displayFormUpdate(promotion: GetPromotionResponse) {
+    this.updatePromotionRequest = {
+      id: promotion.id,
+      name: promotion.name,
+      discountRate: promotion.discountRate,
+      startDate: promotion.startDate,
+      endDate: promotion.endDate,
+      description: promotion.description,
+    };
+    this.isDisplayUpdate = true;
+  }
+
+  closeFormUpdate() {
+    this.isDisplayUpdate = false;
+  }
+
+  getAllPromotions() {
+    this.promotionService.getAll().subscribe({
+      next: (data) => {
+        this.data = data;
+        this.updatePagedData();
+        console.log('All promotions:', this.data);
+      },
+      error: (err) => {
+        console.error('Error getting promotions:', err.message);
+      }
+    });
+  }
+
+  onCreatePromotion() {
+    if (!this.createPromotionRequest?.name || !this.createPromotionRequest?.discountRate || !this.createPromotionRequest?.startDate || !this.createPromotionRequest?.endDate) {
+      alert('Please fill in all required fields: Name, Discount Rate, Start Date, End Date');
+      return;
     }
+
+    this.promotionService.createPromotion(this.createPromotionRequest).subscribe({
+      next: (data) => {
+        this.createPromotionResponse = data;
+        if (this.createPromotionResponse) {
+          console.log('Promotion created successfully:', this.createPromotionResponse);
+          alert('Promotion created successfully');
+          this.getAllPromotions(); // Refresh danh sách
+          this.closeFormCreate();
+        }
+      },
+      error: (err) => {
+        console.error('Error creating promotion:', err.message);
+        alert(`Error creating promotion: ${err.message}`);
+      }
+    });
   }
 
-  onImageSelected(event: any): void {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.selectedImage = e.target.result;
-      };
-      reader.readAsDataURL(file);
+  onUpdatePromotion() {
+    if (!this.updatePromotionRequest?.id) {
+      alert('Promotion Not Found. Please Create!');
+      return;
     }
-  }
 
-  cancel() {
-    this.isDisplayDetails = false;
-    console.log('Cancelled');
+    this.promotionService.updatePromotion(this.updatePromotionRequest).subscribe({
+      next: (data) => {
+        this.updatePromotionResponse = data;
+        if (this.updatePromotionResponse) {
+          console.log('Promotion updated successfully:', this.updatePromotionResponse);
+          alert('Promotion updated successfully');
+          this.getAllPromotions(); // Refresh danh sách
+          this.closeFormUpdate();
+        }
+      },
+      error: (err) => {
+        console.error('Error updating promotion:', err.message);
+        alert(`Error updating promotion: ${err.message}`);
+      }
+    });
   }
 }
