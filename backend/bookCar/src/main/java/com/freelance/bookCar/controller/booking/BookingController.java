@@ -4,14 +4,20 @@ import com.freelance.bookCar.dto.ApiResponse;
 import com.freelance.bookCar.dto.request.booking.CreateBookingRequest;
 import com.freelance.bookCar.dto.request.booking.UpdateBookingRequest;
 import com.freelance.bookCar.dto.request.booking.bookingHotel.AddBookingHotelRequest;
+import com.freelance.bookCar.dto.request.booking.bookingHotel.UpdateBookingHotelRequest;
 import com.freelance.bookCar.dto.request.booking.bookingTour.AddBookingTourRequest;
+import com.freelance.bookCar.dto.request.booking.bookingTour.UpdateBookingTourRequest;
 import com.freelance.bookCar.dto.request.booking.bookingTourism.AddBookingTourismRequest;
+import com.freelance.bookCar.dto.request.booking.bookingTourism.UpdateBookingTourismRequest;
 import com.freelance.bookCar.dto.response.booking.CreateBookingResponse;
 import com.freelance.bookCar.dto.response.booking.GetBookingResponse;
 import com.freelance.bookCar.dto.response.booking.UpdateBookingResponse;
 import com.freelance.bookCar.dto.response.booking.bookingHotel.AddBookingHotelResponse;
+import com.freelance.bookCar.dto.response.booking.bookingHotel.UpdateBookingHotelResponse;
 import com.freelance.bookCar.dto.response.booking.bookingTour.AddBookingTourResponse;
+import com.freelance.bookCar.dto.response.booking.bookingTour.UpdateBookingTourResponse;
 import com.freelance.bookCar.dto.response.booking.bookingTourism.AddBookingTourismResponse;
+import com.freelance.bookCar.dto.response.booking.bookingTourism.UpdateBookingTourismResponse;
 import com.freelance.bookCar.dto.response.bookingDetail.GetBookingDetailResponse;
 import com.freelance.bookCar.services.booking.BookingService;
 import jakarta.validation.Valid;
@@ -87,5 +93,20 @@ public class BookingController {
     public ResponseEntity<ApiResponse<GetBookingResponse>> setType(@RequestParam String type,@RequestParam Integer id){
         GetBookingResponse getBookingResponses=bookingService.updateType(id, type);
         return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", getBookingResponses));
+    }
+    @PatchMapping("/tour")
+    public ResponseEntity<ApiResponse<UpdateBookingTourResponse>> updateBookingTour(@ModelAttribute @Valid UpdateBookingTourRequest updateBookingTourRequest){
+        UpdateBookingTourResponse addBookingTourResponse=bookingService.updateBookingTour(updateBookingTourRequest);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", addBookingTourResponse));
+    }
+    @PatchMapping("/tourism")
+    public ResponseEntity<ApiResponse<UpdateBookingTourismResponse>> updateBookingTourism(@ModelAttribute @Valid UpdateBookingTourismRequest addBookingTourRequest){
+        UpdateBookingTourismResponse addBookingTourResponse=bookingService.updateBookingTourism(addBookingTourRequest);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", addBookingTourResponse));
+    }
+    @PatchMapping("/hotel")
+    public ResponseEntity<ApiResponse<UpdateBookingHotelResponse>> createBookingHotel(@ModelAttribute @Valid UpdateBookingHotelRequest addBookingTourRequest){
+        UpdateBookingHotelResponse addBookingTourResponse=bookingService.updateBookingHotel(addBookingTourRequest);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", addBookingTourResponse));
     }
 }
