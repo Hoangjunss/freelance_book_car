@@ -12,7 +12,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         // Giả định rằng bạn đã lưu token trong local storage hoặc session storage
-        const token = localStorage.getItem('accessToken');
+        const token = localStorage.getItem('token');
 
         // Thêm token vào header nếu có
         if (token) {
@@ -32,11 +32,11 @@ export class AuthInterceptor implements HttpInterceptor {
                     // Gọi hàm refreshToken
                     return this.userService.refreshToken(refreshTokenData).pipe(
                         switchMap((response) => {
-                            const token = localStorage.getItem('accessToken');
+                            const token = localStorage.getItem('token');
 
                             if(token){
                                 // Lưu token mới vào local storage
-                                localStorage.setItem('accessToken', token); // Điều chỉnh tên thuộc tính cho đúng
+                                localStorage.setItem('token', token); // Điều chỉnh tên thuộc tính cho đúng
                             }
                             
 
