@@ -7,6 +7,7 @@ import com.freelance.bookCar.dto.response.product.voucherDTO.promotion.CreatePro
 import com.freelance.bookCar.dto.response.product.voucherDTO.promotion.GetPromotionResponse;
 import com.freelance.bookCar.dto.response.product.voucherDTO.promotion.UpdatePromotionResponse;
 import com.freelance.bookCar.services.product.voucherService.promotionService.PromotionService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,19 +16,20 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/promotion")
+@CrossOrigin(origins = "*")
 public class PromotionController {
 
     @Autowired
     private PromotionService promotionService;
 
     @PostMapping()
-    public ResponseEntity<ApiResponse<CreatePromotionResponse>> create(@RequestBody CreatePromotionRequest createPromotionRequest) {
+    public ResponseEntity<ApiResponse<CreatePromotionResponse>> create(@ModelAttribute @Valid CreatePromotionRequest createPromotionRequest) {
         CreatePromotionResponse createPromotionResponse = promotionService.create(createPromotionRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Promotion created successfully", createPromotionResponse));
     }
 
     @PatchMapping()
-    public ResponseEntity<ApiResponse<UpdatePromotionResponse>> update(@RequestBody UpdatePromotionRequest updatePromotionRequest) {
+    public ResponseEntity<ApiResponse<UpdatePromotionResponse>> update(@ModelAttribute @Valid UpdatePromotionRequest updatePromotionRequest) {
         UpdatePromotionResponse updatePromotionResponse = promotionService.update(updatePromotionRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Promotion updated successfully", updatePromotionResponse));
     }

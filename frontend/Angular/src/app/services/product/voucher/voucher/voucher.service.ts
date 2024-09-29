@@ -17,8 +17,8 @@ export class VoucherService {
 
   constructor(private httpClient: HttpClient) { }
 
-  createVoucher(createVoucherRequest: CreateVoucherRequest): Observable<CreateVoucherResponse> {
-    return this.httpClient.post<Apiresponse<CreateVoucherResponse>>(`${this.baseUrl}`, createVoucherRequest).pipe(
+  createVoucher(formData: FormData): Observable<CreateVoucherResponse> {
+    return this.httpClient.post<Apiresponse<CreateVoucherResponse>>(`${this.baseUrl}`, formData).pipe(
       map((response: Apiresponse<CreateVoucherResponse>) => {
         if (response.success) {
           return response.data;
@@ -29,8 +29,8 @@ export class VoucherService {
     );
   }
 
-  updateVoucher(updateVoucherRequest: UpdateVoucherRequest): Observable<UpdateVoucherResponse> {
-    return this.httpClient.put<Apiresponse<UpdateVoucherResponse>>(`${this.baseUrl}`, updateVoucherRequest).pipe(
+  updateVoucher(formData: FormData): Observable<UpdateVoucherResponse> {
+    return this.httpClient.patch<Apiresponse<UpdateVoucherResponse>>(`${this.baseUrl}`, formData).pipe(
       map((response: Apiresponse<UpdateVoucherResponse>) => {
         if (response.success) {
           return response.data;

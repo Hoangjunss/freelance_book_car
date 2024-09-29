@@ -14,7 +14,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class CreateVoucherResponse {
     private Integer id;
-    private LocalDateTime createDate;
+    private LocalDateTime endDate;
     private boolean isUse;
-    private Integer idPromotion;
+    private String name;
+    private Float discountRate;
 }

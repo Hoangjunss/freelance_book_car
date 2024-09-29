@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class CreatePromotionRequest {
     private String name;
     private Float discountRate;
+    private String description;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    private String description;
 }

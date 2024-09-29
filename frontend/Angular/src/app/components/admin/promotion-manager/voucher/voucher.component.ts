@@ -24,10 +24,14 @@ export class VoucherComponent implements OnInit {
   updateVoucherRequest: UpdateVoucherRequest = new UpdateVoucherRequest();
   updateVoucherResponse: UpdateVoucherResponse = new UpdateVoucherResponse();
 
-  isDisplayDetails: boolean = false;
-  isUpdateSchedule: boolean = false;
+  //isDisplayDetails: boolean = false;
+  isDisplayCreate = false;
+  isDisplayUpdate = false;
   selectedTourId: number | null | undefined = null; // Chấp nhận undefined
   isEditMode: boolean = false;
+  currentPage: number = 1;
+  pageSize: number = 5;
+  pagedData: GetVoucherResponse[] = [];
 
   selectedSchedule: GetVoucherResponse[] = [];
 
@@ -36,6 +40,7 @@ export class VoucherComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllVouchers();
+    this.updatePagedData();
     console.log(this.selectedSchedule);
   }
 
@@ -44,6 +49,7 @@ export class VoucherComponent implements OnInit {
       next: (data) => {
         this.getVoucherResponse = data; // Cập nhật danh sách voucher
         console.log('All vouchers:', this.getVoucherResponse);
+        this.updatePagedData();
       },
       error: (err) => {
         console.error('Error getting vouchers:', err.message);
@@ -51,12 +57,31 @@ export class VoucherComponent implements OnInit {
     });
   }
 
+  goToPage(page: number) {
+    this.currentPage = page;
+    this.updatePagedData();
+  }
+
+  updatePagedData() {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.pagedData = this.getVoucherResponse.slice(startIndex, endIndex);
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.getVoucherResponse.length / this.pageSize);
+  }
+
+  get pages(): number[] {
+    return Array(this.totalPages).fill(0).map((x, i) => i + 1);
+  }
+
   displayFormCreate() {
-    this.isDisplayDetails = true;
+    this.isDisplayCreate = true;
   }
 
   closeFormCreate() {
-    this.isDisplayDetails = false;
+    this.isDisplayCreate = false;
   }
 
   displayFormUpdate(voucher: GetVoucherResponse) {
@@ -68,12 +93,12 @@ export class VoucherComponent implements OnInit {
       isUse: voucher.isUse // Giả sử có trường isUse
     };
     this.isEditMode = true;
-    this.isDisplayDetails = true;
+    this.isDisplayUpdate = true;
   }
 
   closeFormUpdate() {
     this.isEditMode = false;
-    this.isDisplayDetails = false;
+    this.isDisplayUpdate = false;
   }
 
   onCreateVoucher() {
@@ -81,8 +106,18 @@ export class VoucherComponent implements OnInit {
       alert('Please fill in all required fields: Name, Discount Rate, End Date');
       return;
     }
+    const formData = new FormData();
+    formData.append('isUse', this.createVoucherRequest.isUse?.toString() ?? '');
+    formData.append('name', this.createVoucherRequest.name ?? '');
+    formData.append('discountRate', this.createVoucherRequest.discountRate?.toString() ?? '');
 
-    this.voucherService.createVoucher(this.createVoucherRequest).subscribe({
+    if(this.createVoucherRequest.endDate!=undefined ){
+      const endDate = new Date(this.createVoucherRequest.endDate);  
+      const endDateWithoutTimezone = endDate.toISOString().slice(0, 19);
+      formData.append('endDate', endDateWithoutTimezone);
+    }
+
+    this.voucherService.createVoucher(formData).subscribe({
       next: (data) => {
         this.createVoucherResponse = data;
         if (this.createVoucherResponse) {
@@ -104,8 +139,19 @@ export class VoucherComponent implements OnInit {
       alert('Voucher Not Found. Please Create!');
       return;
     }
+    const formData = new FormData();
+    formData.append('id', this.updateVoucherRequest.id?.toString() ?? '');
+    formData.append('isUse', this.updateVoucherRequest.isUse?.toString() ?? '');
+    formData.append('name', this.updateVoucherRequest.name ?? '');
+    formData.append('discountRate', this.updateVoucherRequest.discountRate?.toString() ?? '');
 
-    this.voucherService.updateVoucher(this.updateVoucherRequest).subscribe({
+    if(this.updateVoucherRequest.endDate!=undefined ){
+      const endDate = new Date(this.updateVoucherRequest.endDate);  
+      const endDateWithoutTimezone = endDate.toISOString().slice(0, 19);
+      formData.append('endDate', endDateWithoutTimezone);
+    }
+
+    this.voucherService.updateVoucher(formData).subscribe({
       next: (data) => {
         this.updateVoucherResponse = data;
         if (this.updateVoucherResponse) {

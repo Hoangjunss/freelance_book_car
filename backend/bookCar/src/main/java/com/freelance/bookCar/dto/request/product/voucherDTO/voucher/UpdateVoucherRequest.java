@@ -16,5 +16,6 @@ public class UpdateVoucherRequest {
     private Integer id;
     private LocalDateTime endDate;
     private boolean isUse;
+    private String name;
     private Float discountRate;
 }

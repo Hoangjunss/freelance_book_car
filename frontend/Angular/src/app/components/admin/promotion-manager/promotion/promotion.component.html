@@ -8,7 +8,7 @@
   <button type="button" class="m-3 btn btn-success ml-auto" (click)="displayFormCreate()">Add Promotion</button>
 </nav>
 
-<div class="container" *ngIf="promotions.length > 0; else noData">
+<div class="container" *ngIf="getPromotionResponse.length > 0; else noData">
   <h6 class="mb-4">Responsive Table with Pagination</h6>
   <div class="table-responsive">
     <table class="table">
@@ -17,8 +17,9 @@
           <th>#</th>
           <th>Name</th>
           <th>Discount Rate</th>
+          <th>Start Date</th>
           <th>End Date</th>
-          <th>Status</th>
+          <th>Description</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -27,8 +28,9 @@
           <th scope="row">{{ item.id }}</th>
           <td>{{ item.name }}</td>
           <td>{{ item.discountRate }}%</td>
+          <td>{{ item.startDate | date }}</td>
           <td>{{ item.endDate | date }}</td>
-          <td>{{ item.isUse ? 'Active' : 'Inactive' }}</td>
+          <td>{{ item.description}}</td>
           <td>
             <button class="btn btn-warning m-2" (click)="displayFormUpdate(item)">Edit</button>
           </td>
@@ -59,9 +61,9 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content slide-in">
       <div class="modal-body">
-        <form (ngSubmit)="onCreate()">
+        <form (ngSubmit)="onCreatePromotion()">
           <div class="row">
-            <div class="col-md-6 col-sm-12">
+            <div class="col-md-12 col-sm-12">
               <h5 class="modal-title">Promotion Information</h5>
               <button type="button" class="close" aria-label="Close" (click)="closeFormCreate()">
                 <span aria-hidden="true">&times;</span>
@@ -86,18 +88,20 @@
               </div>
 
               <div class="form-group">
+                <label for="startDate">Start Date</label>
+                <input type="date" class="form-control" id="startDate" [(ngModel)]="createPromotionRequest.startDate"
+                  name="startDate" required #startDateInput="ngModel" />
+                <div *ngIf="startDateInput.invalid && startDateInput.touched" class="text-danger">
+                  Start date is required.
+                </div>
+              </div>
+              <div class="form-group">
                 <label for="endDate">End Date</label>
                 <input type="date" class="form-control" id="endDate" [(ngModel)]="createPromotionRequest.endDate"
                   name="endDate" required #endDateInput="ngModel" />
                 <div *ngIf="endDateInput.invalid && endDateInput.touched" class="text-danger">
                   End date is required.
                 </div>
-              </div>
-
-              <div class="form-group">
-                <label for="isUse">Status</label>
-                <input type="checkbox" class="form-check-input" id="isUse" [(ngModel)]="createPromotionRequest.isUse"
-                  name="isUse" />
               </div>
             </div>
           </div>
@@ -115,9 +119,9 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content slide-in">
       <div class="modal-body">
-        <form (ngSubmit)="onUpdate()">
+        <form (ngSubmit)="onUpdatePromotion()">
           <div class="row">
-            <div class="col-md-6 col-sm-12">
+            <div class="col-md-12 col-sm-12">
               <h5 class="modal-title">Promotion Information</h5>
               <button type="button" class="close" aria-label="Close" (click)="closeFormUpdate()">
                 <span aria-hidden="true">&times;</span>
@@ -143,18 +147,20 @@
               </div>
 
               <div class="form-group">
+                <label for="startDate">End Date</label>
+                <input type="date" class="form-control" id="startDate" [(ngModel)]="updatePromotionRequest.startDate"
+                  name="startDate" required #startDateInput="ngModel" />
+                <div *ngIf="startDateInput.invalid && startDateInput.touched" class="text-danger">
+                  End date is required.
+                </div>
+              </div>
+              <div class="form-group">
                 <label for="endDate">End Date</label>
                 <input type="date" class="form-control" id="endDate" [(ngModel)]="updatePromotionRequest.endDate"
                   name="endDate" required #endDateInput="ngModel" />
                 <div *ngIf="endDateInput.invalid && endDateInput.touched" class="text-danger">
                   End date is required.
                 </div>
-              </div>
-
-              <div class="form-group">
-                <label for="isUse">Status</label>
-                <input type="checkbox" class="form-check-input" id="isUse" [(ngModel)]="updatePromotionRequest.isUse"
-                  name="isUse" />
               </div>
             </div>
           </div>

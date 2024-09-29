@@ -26,7 +26,7 @@ export class PromotionComponent {
   selectedImage: string = 'assets/img/DEFAULT/hotel-default.png';
   isDisplayCreate = false;
   isDisplayUpdate = false;
-  data: GetPromotionResponse[] = [];
+  getPromotionResponse: GetPromotionResponse[] = [];
   currentPage: number = 1;
   pageSize: number = 5;
   pagedData: GetPromotionResponse[] = [];
@@ -47,11 +47,11 @@ export class PromotionComponent {
   updatePagedData() {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
-    this.pagedData = this.data.slice(startIndex, endIndex);
+    this.pagedData = this.getPromotionResponse.slice(startIndex, endIndex);
   }
 
   get totalPages(): number {
-    return Math.ceil(this.data.length / this.pageSize);
+    return Math.ceil(this.getPromotionResponse.length / this.pageSize);
   }
 
   get pages(): number[] {
@@ -85,9 +85,9 @@ export class PromotionComponent {
   getAllPromotions() {
     this.promotionService.getAll().subscribe({
       next: (data) => {
-        this.data = data;
+        this.getPromotionResponse = data;
         this.updatePagedData();
-        console.log('All promotions:', this.data);
+        console.log('All promotions:', this.getPromotionResponse);
       },
       error: (err) => {
         console.error('Error getting promotions:', err.message);
@@ -96,19 +96,37 @@ export class PromotionComponent {
   }
 
   onCreatePromotion() {
-    if (!this.createPromotionRequest?.name || !this.createPromotionRequest?.discountRate || !this.createPromotionRequest?.startDate || !this.createPromotionRequest?.endDate) {
+    // Kiểm tra nếu các trường bắt buộc không được điền
+    if (!this.createPromotionRequest?.name || 
+        !this.createPromotionRequest?.discountRate || 
+        !this.createPromotionRequest?.startDate || 
+        !this.createPromotionRequest?.endDate) {
       alert('Please fill in all required fields: Name, Discount Rate, Start Date, End Date');
       return;
     }
-
-    this.promotionService.createPromotion(this.createPromotionRequest).subscribe({
+  
+    const formData = new FormData();
+    
+    formData.append('name', this.createPromotionRequest.name ?? '');
+    formData.append('discountRate', this.createPromotionRequest.discountRate?.toString() ?? '');
+    formData.append('description', this.createPromotionRequest.description ?? ''); 
+    if(this.createPromotionRequest.startDate!=undefined && this.createPromotionRequest.endDate!=undefined ){
+      const startDate = new Date(this.createPromotionRequest.startDate);  
+      const startDateWithoutTimezone = startDate.toISOString().slice(0, 19);
+      const endDate = new Date(this.createPromotionRequest.endDate);  
+      const endDateWithoutTimezone = endDate.toISOString().slice(0, 19);
+      formData.append('startDate', startDateWithoutTimezone); 
+      formData.append('endDate', endDateWithoutTimezone);
+    }
+  
+    this.promotionService.createPromotion(formData).subscribe({
       next: (data) => {
         this.createPromotionResponse = data;
         if (this.createPromotionResponse) {
           console.log('Promotion created successfully:', this.createPromotionResponse);
           alert('Promotion created successfully');
-          this.getAllPromotions(); // Refresh danh sách
-          this.closeFormCreate();
+          this.getAllPromotions(); // Làm mới danh sách
+          this.closeFormCreate(); // Đóng form sau khi tạo thành công
         }
       },
       error: (err) => {
@@ -117,6 +135,7 @@ export class PromotionComponent {
       }
     });
   }
+  
 
   onUpdatePromotion() {
     if (!this.updatePromotionRequest?.id) {
@@ -124,7 +143,23 @@ export class PromotionComponent {
       return;
     }
 
-    this.promotionService.updatePromotion(this.updatePromotionRequest).subscribe({
+    const formData = new FormData();
+    
+    formData.append('id', this.updatePromotionRequest.id.toString());
+    formData.append('name', this.updatePromotionRequest.name ?? '');
+    formData.append('discountRate', this.updatePromotionRequest.discountRate?.toString() ?? '');
+    formData.append('description', this.updatePromotionRequest.description ?? ''); 
+
+    if(this.updatePromotionRequest.startDate!=undefined && this.updatePromotionRequest.endDate!=undefined ){
+      const startDate = new Date(this.updatePromotionRequest.startDate);  
+      const startDateWithoutTimezone = startDate.toISOString().slice(0, 19);
+      const endDate = new Date(this.updatePromotionRequest.endDate);  
+      const endDateWithoutTimezone = endDate.toISOString().slice(0, 19);
+      formData.append('startDate', startDateWithoutTimezone); 
+      formData.append('endDate', endDateWithoutTimezone);
+    }
+
+    this.promotionService.updatePromotion(formData).subscribe({
       next: (data) => {
         this.updatePromotionResponse = data;
         if (this.updatePromotionResponse) {

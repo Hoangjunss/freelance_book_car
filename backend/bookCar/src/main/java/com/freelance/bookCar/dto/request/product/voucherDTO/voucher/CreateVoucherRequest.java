@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 public class CreateVoucherRequest {
     private LocalDateTime endDate;
     private boolean isUse;
+    private String name;
     private Float discountRate;
 
 }

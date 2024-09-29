@@ -17,8 +17,11 @@ export class PromotionService {
 
   constructor(private httpClient: HttpClient) { }
 
-  createPromotion(createPromotionRequest: CreatePromotionRequest): Observable<CreatePromotionResponse> {
-    return this.httpClient.post<Apiresponse<CreatePromotionResponse>>(`${this.baseUrl}`, createPromotionRequest).pipe(
+  createPromotion(formData: FormData): Observable<CreatePromotionResponse> {
+    formData.forEach((value, key) => {
+      console.log(`${key}: ${value}`);
+    });
+    return this.httpClient.post<Apiresponse<CreatePromotionResponse>>(`${this.baseUrl}`, formData).pipe(
       map((response: Apiresponse<CreatePromotionResponse>) => {
         if (response.success) {
           return response.data;
@@ -29,8 +32,8 @@ export class PromotionService {
     );
   }
 
-  updatePromotion(updatePromotionRequest: UpdatePromotionRequest): Observable<UpdatePromotionResponse> {
-    return this.httpClient.patch<Apiresponse<UpdatePromotionResponse>>(`${this.baseUrl}`, updatePromotionRequest).pipe(
+  updatePromotion(formData: FormData): Observable<UpdatePromotionResponse> {
+    return this.httpClient.patch<Apiresponse<UpdatePromotionResponse>>(`${this.baseUrl}`, formData).pipe(
       map((response: Apiresponse<UpdatePromotionResponse>) => {
         if (response.success) {
           return response.data;

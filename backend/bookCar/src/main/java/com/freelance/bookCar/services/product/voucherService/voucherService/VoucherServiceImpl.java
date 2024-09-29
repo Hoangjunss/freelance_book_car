@@ -42,6 +42,7 @@ public class VoucherServiceImpl implements VoucherService{
 
         Voucher voucher = Voucher.builder()
                 .id(generateId())
+                .name(createVoucherRequest.getName())
                 .endDate(createVoucherRequest.getEndDate())
                 .isUse(createVoucherRequest.isUse())
                 .discountRate(createVoucherRequest.getDiscountRate())
