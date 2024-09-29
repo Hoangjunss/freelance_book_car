@@ -17,8 +17,8 @@ export class TicketService {
 
   constructor(private httpClient: HttpClient) { }
 
-  createTicket(createTicketRequest: CreateTicketRequest): Observable<CreateTicketResponse> {
-    return this.httpClient.post<Apiresponse<CreateTicketResponse>>(`${this.baseUrl}`, createTicketRequest).pipe(
+  createTicket(formData: FormData): Observable<CreateTicketResponse> {
+    return this.httpClient.post<Apiresponse<CreateTicketResponse>>(`${this.baseUrl}`, formData).pipe(
       map((response: Apiresponse<CreateTicketResponse>) => {
         if (response.success) {
           return response.data;
@@ -29,8 +29,8 @@ export class TicketService {
     );
   }
 
-  updateTicket(updateTicketRequest: UpdateTicketRequest): Observable<UpdateTicketResponse> {
-    return this.httpClient.put<Apiresponse<UpdateTicketResponse>>(`${this.baseUrl}`, updateTicketRequest).pipe(
+  updateTicket(formData: FormData): Observable<UpdateTicketResponse> {
+    return this.httpClient.patch<Apiresponse<UpdateTicketResponse>>(`${this.baseUrl}`, formData).pipe(
       map((response: Apiresponse<UpdateTicketResponse>) => {
         if (response.success) {
           return response.data;
@@ -63,5 +63,17 @@ export class TicketService {
         }
       })
     );
+  }
+
+  getAllTickets(): Observable<GetTicketResponse[]> {
+    return this.httpClient.get<Apiresponse<GetTicketResponse[]>>(`${this.baseUrl}/all`).pipe(
+      map((response: Apiresponse<GetTicketResponse[]>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    ); 
   }
 }

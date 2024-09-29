@@ -45,4 +45,10 @@ public class TicketController {
         return ResponseEntity.ok(new ApiResponse<>(true, "Get Id Tour  successfully", getTicketResponse));
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<ApiResponse<List<GetTicketResponse>>> getAllTicket(){
+        List<GetTicketResponse> getTicketResponse = ticketService.findAllTickets();
+        return ResponseEntity.ok(new ApiResponse<>(true, "All Ticket retrieved successfully", getTicketResponse));
+    }
+
 }

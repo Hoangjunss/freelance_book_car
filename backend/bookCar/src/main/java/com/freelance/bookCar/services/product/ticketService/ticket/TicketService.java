@@ -18,4 +18,5 @@ public interface TicketService {
     GetTicketResponse findById(Integer id);
     Ticket findByIdAndByStartDate(Integer id, LocalDateTime date);
     List<GetTicketResponse> findAllbyIdTourism(Integer id);
+    List<GetTicketResponse> findAllTickets();
 }
