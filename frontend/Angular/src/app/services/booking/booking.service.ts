@@ -10,6 +10,9 @@ import { GetHotelBookingResponse } from '../../models/response/product/hotel/hot
 import { AddBookingTourRequest } from '../../models/request/booking/add-booking-tour-request';
 import { GetBookingResponse } from '../../models/response/booking/get-booking-response';
 import { GetBookingDetailResponse } from '../../models/response/booking/get-booking-detail-response';
+import { UpdateQuantityTour } from '../../models/response/booking/update-quantity-tour';
+import { UpdateQuantityTourism } from '../../models/response/booking/update-quantity-tourism';
+import { UpdateQuantityHotel } from '../../models/response/booking/update-quantity-hotel';
 
 @Injectable({
   providedIn: 'root'
@@ -152,6 +155,42 @@ export class BookingService {
   updateTypeBooking(type: string,id: number): Observable<UpdateBookingResponse> {
     return this.httpClient.patch<Apiresponse<UpdateBookingResponse>>(`${this.baseUrl}/type?type=${type}&id=${id}`, null).pipe(
       map((response: Apiresponse<UpdateBookingResponse>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    );
+  }
+
+  updateQuantityTour(formData : FormData): Observable<UpdateQuantityTour> {
+    return this.httpClient.patch<Apiresponse<UpdateQuantityTour>>(`${this.baseUrl}/tour`,formData).pipe(
+      map((response: Apiresponse<UpdateQuantityTour>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    );
+  }
+
+  updateQuantityTourism(formData : FormData): Observable<UpdateQuantityTourism> {
+    return this.httpClient.patch<Apiresponse<UpdateQuantityTourism>>(`${this.baseUrl}/tourism`,formData).pipe(
+      map((response: Apiresponse<UpdateQuantityTourism>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    );
+  }
+
+  updateQuantityHotel(formData : FormData): Observable<UpdateQuantityHotel> {
+    return this.httpClient.patch<Apiresponse<UpdateQuantityHotel>>(`${this.baseUrl}/hotel`,formData).pipe(
+      map((response: Apiresponse<UpdateQuantityHotel>) => {
         if (response.success) {
           return response.data;
         } else {

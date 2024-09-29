@@ -56,11 +56,13 @@ export class CartComponent implements OnInit {
   // Xóa các phương thức tăng/giảm số lượng vì đã chỉnh sửa giao diện
   increaseQuantity(product: any) {
     product.quantity++;
+    this.updateProductQuantity(product);
   }
 
   decreaseQuantity(product: any) {
     if (product.quantity > 0) {
       product.quantity--;
+      this.updateProductQuantity(product);
     }
   }
   getBookingByUser(id: number) {
@@ -93,6 +95,7 @@ export class CartComponent implements OnInit {
         if (response) {
           this.getBookingDetailResponse = response;
           this.products = this.getBookingDetailResponse.map(detail => ({
+            idBookingDetail: detail.id,
             id: detail.idTour || detail.idHotel || detail.idTourism,
             name: detail.idTour ? 'Tour' : detail.idHotel ? 'Khách sạn' : 'Vé',
             price: detail.totalPrice,
@@ -178,6 +181,53 @@ export class CartComponent implements OnInit {
       console.log("Không có idBooking để cập nhật.");
     }
   }
+
+  updateProductQuantity(product: any) {
+    const formData = new FormData();
+    formData.append('idBooking', product.idBookingDetail.toString());
+    formData.append('quantity', product.quantity.toString());
+
+    
+    formData.forEach((value, key) => {
+      console.log(`${key}: ${value}`);
+    });
+  
+    // Kiểm tra loại sản phẩm và thêm đúng tham số
+    if (product.type === 'tour') {
+      this.bookingService.updateQuantityTour(formData).subscribe({
+        next: (response) => {
+          console.log('Cập nhật số lượng tour thành công', response);
+        },
+        error: (error) => {
+          console.log('Lỗi khi cập nhật số lượng tour', error);
+        }
+      });
+    } else if (product.type === 'hotel') {
+      this.bookingService.updateQuantityHotel(formData).subscribe({
+        next: (response) => {
+          console.log('Cập nhật số lượng khách sạn thành công', response);
+        },
+        error: (error) => {
+          console.log('Lỗi khi cập nhật số lượng khách sạn', error);
+        }
+      });
+    } else if (product.type === 'ticket') {
+      this.bookingService.updateQuantityTourism(formData).subscribe({
+        next: (response) => {
+          console.log('Cập nhật số lượng vé thành công', response);
+        },
+        error: (error) => {
+          console.log('Lỗi khi cập nhật số lượng vé', error);
+        }
+      });
+    }
+
+    console.log('Cập nhật số lượng sản phẩm', product);
+
+    
+  }
+  
+  
   
 
 
