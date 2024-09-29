@@ -1,10 +1,14 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { GetTicketResponse } from '../../../../models/response/product/ticket/ticket/get-ticket-response';
 import { GetTourismResponse } from '../../../../models/response/product/ticket/tourism/get-tourism-response';
-import { GetTourScheduleResponse } from '../../../../models/response/product/tour/tour-schedule/get-tour-schedule-response';
-import { GetTourResponse } from '../../../../models/response/product/tour/tour/get-tour-response';
+import { GetTicketResponse } from '../../../../models/response/product/ticket/ticket/get-ticket-response';
+import { TicketService } from '../../../../services/product/ticket/ticket/ticket.service';
+import { TourismService } from '../../../../services/product/ticket/tourism/tourism.service';
+import { CreateTicketRequest } from '../../../../models/request/product/ticket/ticket/create-ticket-request';
+import { UpdateTicketRequest } from '../../../../models/request/product/ticket/ticket/update-ticket-request';
+import { CreateTicketResponse } from '../../../../models/response/product/ticket/ticket/create-ticket-response';
+import { UpdateTicketResponse } from '../../../../models/response/product/ticket/ticket/update-ticket-response';
 
 @Component({
   selector: 'app-ticket',
@@ -14,102 +18,92 @@ import { GetTourResponse } from '../../../../models/response/product/tour/tour/g
   styleUrls: ['./ticket.component.css']
 })
 export class TicketComponent implements OnInit {
+  createTicketRequest: CreateTicketRequest = new CreateTicketRequest();
+  updateTicketRequest: UpdateTicketRequest = new UpdateTicketRequest();
+  createTicketResponse: CreateTicketResponse = new CreateTicketResponse();
+  updateTicketResponse: UpdateTicketResponse = new UpdateTicketResponse();
+
+  tourismDetail: GetTourismResponse = new GetTourismResponse();
+  ticketDetail: GetTicketResponse = new GetTicketResponse();
+
+  getTourismResponse: GetTourismResponse[] = [];
+  getTicketResponse: GetTicketResponse[] = [];
+  getTicketsByTourismId: GetTicketResponse[] = [];
+
+  startDate: Date = new Date();
+  endDate: Date = new Date();
+
+  selectedTourismId: number = 0;
+  selectedTourism: GetTourismResponse = new GetTourismResponse();
+
+  constructor(private ticketService: TicketService, private tourismService: TourismService) {}
+
+  ngOnInit(): void {
+    this.getAllTourism();
+    this.getAllTickets();
+    this.updateDisplayedPages();
+  }
+
+  getAllTourism() {
+    this.tourismService.getAllTourism().subscribe({
+      next: (data) => {
+        if (data) {
+          this.getTourismResponse = data;
+        }
+      },
+    });
+  }
+
+  getTicketsByTourism(id: number) {
+    this.ticketService.getTicketByIdTourism(id).subscribe({
+      next: (data) => {
+        if (data) {
+          this.getTicketsByTourismId = data;
+        }
+      },
+    });
+  }
+
+  getAllTickets() {
+    this.ticketService.getAllTickets().subscribe({
+      next: (data) => {
+        if (data) {
+          this.getTicketResponse = data;
+          this.updatePagedTickets();
+        }
+      },
+    });
+  }
+
+  // Pagination and display logic similar to TourScheduleComponent
   isDisplayDetails: boolean = false;
-  isUpdateSchedule: boolean = false; 
-  selectedTourId: number | null | undefined = null; // Chấp nhận undefined
+  isUpdateTicket: boolean = false;
+  isCreateTicket: boolean = false;
+  selectedTicketId: number | null | undefined = null;
   isEditMode: boolean = false;
 
-  selectedSchedule: GetTourScheduleResponse = {};
+  selectedTicket: GetTicketResponse = {};
 
-  tourisms: GetTourismResponse[] = [
-    { id: 1, name: 'Tourism 1', location: 'Location 1', description: 'A beautiful place to visit', rating: 4.5 },
-    { id: 2, name: 'Tourism 2', location: 'Location 2', description: 'A serene getaway', rating: 4.0 },
-    { id: 3, name: 'Tourism 3', location: 'Location 3', description: 'An adventure for thrill seekers', rating: 4.8 },
-    { id: 4, name: 'Tourism 4', location: 'Location 4', description: 'Rich in culture and history', rating: 4.2 },
-    { id: 5, name: 'Tourism 5', location: 'Location 5', description: 'Perfect for family vacations', rating: 4.7 }
-  ];
+  tourism: GetTourismResponse = {};
 
-  tickets: GetTicketResponse[] = [
-    { id: 1, startDate: new Date('2024-09-01'), tourPrice: 100, idTourism: 1 },
-    { id: 2, startDate: new Date('2024-09-05'), tourPrice: 150, idTourism: 1 },
-    { id: 3, startDate: new Date('2024-09-10'), tourPrice: 200, idTourism: 2 },
-    { id: 4, startDate: new Date('2024-09-15'), tourPrice: 250, idTourism: 3 },
-    { id: 5, startDate: new Date('2024-09-20'), tourPrice: 300, idTourism: 4 },
-    { id: 6, startDate: new Date('2024-09-25'), tourPrice: 350, idTourism: 5 }
-  ];
-
-  tour: GetTourResponse = {}; 
-  tourSchedules: GetTourScheduleResponse[] = [
-    { id: 1, timeStartTour: new Date(), quantity: 10, priceTour: 100, idTourScheduleStatus: 1 },
-    { id: 2, timeStartTour: new Date(), quantity: 5, priceTour: 150, idTourScheduleStatus: 1 },
-    { id: 1, timeStartTour: new Date(), quantity: 10, priceTour: 100, idTourScheduleStatus: 1 },
-    { id: 2, timeStartTour: new Date(), quantity: 5, priceTour: 150, idTourScheduleStatus: 1 },
-    { id: 1, timeStartTour: new Date(), quantity: 10, priceTour: 100, idTourScheduleStatus: 1 },
-    { id: 2, timeStartTour: new Date(), quantity: 5, priceTour: 150, idTourScheduleStatus: 1 },
-    { id: 1, timeStartTour: new Date(), quantity: 10, priceTour: 100, idTourScheduleStatus: 1 },
-    { id: 2, timeStartTour: new Date(), quantity: 5, priceTour: 150, idTourScheduleStatus: 1 },
-    { id: 1, timeStartTour: new Date(), quantity: 10, priceTour: 100, idTourScheduleStatus: 1 },
-    { id: 2, timeStartTour: new Date(), quantity: 5, priceTour: 150, idTourScheduleStatus: 1 },
-
-  ];
-  tours: GetTourScheduleResponse[] = [
-    { id: 1, timeStartTour: new Date(), idTour: 101, quantity: 2, priceTour: 500, idTourScheduleStatus: 1 },
-    { id: 2, timeStartTour: new Date(), idTour: 102, quantity: 4, priceTour: 700, idTourScheduleStatus: 2 },
-    { id: 3, timeStartTour: new Date(), idTour: 103, quantity: 1, priceTour: 300, idTourScheduleStatus: 1 },
-    { id: 4, timeStartTour: new Date(), idTour: 104, quantity: 3, priceTour: 400, idTourScheduleStatus: 2 },
-    { id: 5, timeStartTour: new Date(), idTour: 105, quantity: 2, priceTour: 600, idTourScheduleStatus: 1 },
-    { id: 6, timeStartTour: new Date(), idTour: 106, quantity: 5, priceTour: 800, idTourScheduleStatus: 2 },
-  ];
-
-  // Pagination variables
-  currentPageSchedule: number = 1;
-  pageSize: number = 3;
-  pagedTours: GetTicketResponse[] = [];
-  totalPages: number = Math.ceil(this.tours.length / this.pageSize);
+  currentPageTicket: number = 1;
+  pageSize: number = 5;
+  pagedTickets: GetTicketResponse[] = [];
+  totalPages: number = Math.ceil(this.getTicketResponse.length / this.pageSize);
   pages: number[] = Array.from({ length: this.totalPages }, (_, i) => i + 1);
 
   currentPage = 1;
   itemsPerPage = 4;
 
-  get paginatedTours() {
+  get paginatedTourisms() {
     const start = (this.currentPage - 1) * this.itemsPerPage;
-    return this.tourisms.slice(start, start + this.itemsPerPage);
+    return this.getTourismResponse.slice(start, start + this.itemsPerPage);
   }
 
   nextPage() {
-    if (this.currentPage < Math.ceil(this.tours.length / this.itemsPerPage)) {
+    if (this.currentPage < Math.ceil(this.getTourismResponse.length / this.itemsPerPage)) {
       this.currentPage++;
     }
-  }
-
-  addNewSchedule(): void {
-    this.selectedSchedule = {};  // Reset the form
-    this.selectedTourId = undefined;  // Clear selected tour
-    this.isUpdateSchedule = true;
-    this.isEditMode = false;  // Mark as add mode
-  }
-
-  updateSchedule(schedule?: GetTourScheduleResponse) {
-    if (schedule != undefined) {
-      this.selectedSchedule = { ...schedule }; // Gán lịch trình được chọn
-      this.selectedTourId = schedule.idTour; // Gán ID tour tương ứng
-    } else {
-      this.selectedTourId = undefined;
-    }
-    this.isUpdateSchedule = true; // Đóng modal cập nhật
-    this.isEditMode = true;  // Mark as add mode
-
-  }
-  
-
-  cancelUpdate() {
-    this.isUpdateSchedule = false; // Đóng modal cập nhật
-  }
-
-  saveUpdate() {
-    // Logic lưu dữ liệu cho lịch trình
-    // Cập nhật danh sách tourSchedules nếu cần
-    this.isUpdateSchedule = false; // Đóng modal sau khi lưu
   }
 
   previousPage() {
@@ -118,36 +112,159 @@ export class TicketComponent implements OnInit {
     }
   }
 
-  viewDetails(id: number) {
-    // Logic xem chi tiết tour
+  addNewTicket(): void {
+    this.createTicketRequest = new CreateTicketRequest();
+    this.createTicketRequest.idTourism=0;
+    this.isCreateTicket = true;
+  }
+
+  onCreate() {
+    const startDate = new Date(this.startDate);
+    const endDate = new Date(this.endDate);
+    let formattedStartDate = startDate.toISOString().slice(0, 19);
+    let formattedEndDate = endDate.toISOString().slice(0, 19);
+    let isSuccess = false;
+
+    if (startDate < new Date()) {
+      alert('Start date cannot be in the past.');
+      return;
+    }
+
+    if (startDate <= endDate) {
+      while (startDate <= endDate) {
+        const formData = new FormData();
+        formData.append('idTourism', this.createTicketRequest.idTourism?.toString() ?? '');
+        formData.append('tourPrice', this.createTicketRequest.tourPrice?.toString() ?? '');
+        formData.append('startDate', formattedStartDate);
+
+        this.ticketService.createTicket(formData).subscribe({
+          next: (data) => {
+            if (data) {
+              this.createTicketResponse = data;
+              isSuccess = true;
+            }
+          },
+          error: (error) => {
+            console.error('Error creating ticket:', error);
+          },
+        });
+
+        startDate.setDate(startDate.getDate() + 1);
+        formattedStartDate = startDate.toISOString().slice(0, 19);
+      }
+
+      if (isSuccess) {
+        alert('Ticket created successfully.');
+      } else {
+        alert('Failed to create ticket.');
+      }
+    } else {
+      console.error('Start date must be less than or equal to end date.');
+    }
+  }
+
+  closeCreate() {
+    this.isCreateTicket = false;
+  }
+
+  formatDate(dateString: string): string {
+    return dateString.slice(0, 10);
+  }
+
+  updateTicket(ticket?: GetTicketResponse, tourismDetail?: GetTourismResponse) {
+    if (ticket && tourismDetail) {
+      console.log(ticket);
+      this.updateTicketRequest = ticket;
+      this.selectedTourism = tourismDetail;
+    } else {
+      this.selectedTicketId = undefined;
+    }
+    this.isUpdateTicket = true;
+    this.isEditMode = true;
+  }
+
+  cancelUpdate() {
+    this.isUpdateTicket = false;
+  }
+
+  saveUpdate() {
+    if (this.updateTicketRequest) {
+      console.log(this.updateTicketRequest);
+  
+      const formData = new FormData();
+      formData.append('id', this.updateTicketRequest.id?.toString() ?? '');
+      formData.append('idTourism', this.updateTicketRequest.idTourism?.toString() ?? '');
+      formData.append('tourPrice', this.updateTicketRequest.tourPrice?.toString() ?? '');
+  
+      if(this.updateTicketRequest.startDate!=undefined){
+        const startDate = new Date(this.updateTicketRequest.startDate);  
+        const startDateWithoutTimezone = startDate.toISOString().slice(0, 19); // Keep only YYYY-MM-DDTHH:mm:ss
+        formData.append('startDate', startDateWithoutTimezone);           // Use toISOString()
+      }
+      this.ticketService.updateTicket(formData).subscribe({
+        next: (data) => {
+          if (data) {
+            this.updateTicketResponse = data;
+            alert('Ticket updated successfully!');
+          }
+        },
+      });
+    }
+  }
+  
+
+  viewDetails(tourism: GetTourismResponse) {
+    if (tourism && tourism.id) {
+      this.tourismDetail = tourism;
+      this.getTicketsByTourism(tourism.id);
+    }
     this.isDisplayDetails = true;
   }
 
-  ngOnInit(): void {
-    this.updatePagedTours();
-  }
-
   cancel() {
-    this.isDisplayDetails = false; // Đóng modal
+    this.isDisplayDetails = false;
   }
 
-  save() {
-    // Logic lưu dữ liệu
+  viewTicket(id: number) {
+    console.log(`Viewing ticket with ID: ${id}`);
   }
 
-  viewSchedule(id: number) {
-    console.log(`Viewing schedule with ID: ${id}`);
+  filterTickets(): void {
+    if (this.selectedTourismId !== 0) {
+      this.pagedTickets = this.getTicketResponse.filter(ticket => ticket.idTourism === this.selectedTourismId);
+    } else {
+      this.pagedTickets = this.getTicketResponse.slice();
+    }
+    this.currentPageTicket = 1;
+    this.updatePagedTickets();
   }
+  
 
   goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
-      this.currentPageSchedule = page;
-      this.updatePagedTours();
+      this.currentPageTicket = page;
+      this.updatePagedTickets();
+      this.updateDisplayedPages();
     }
   }
-  updatePagedTours(): void {
-    const start = (this.currentPageSchedule - 1) * this.pageSize;
+
+  updatePagedTickets(): void {
+    const start = (this.currentPageTicket - 1) * this.pageSize;
     const end = start + this.pageSize;
-    this.pagedTours = this.tours.slice(start, end);
+    this.pagedTickets = this.getTicketResponse.slice(start, end);
+    this.totalPages = Math.ceil(this.getTicketResponse.length / this.pageSize);
+    this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+  updateDisplayedPages(): void {
+    const visiblePagesCount = 5;
+    let startPage = Math.max(1, this.currentPageTicket - Math.floor(visiblePagesCount / 2));
+    let endPage = Math.min(this.totalPages, startPage + visiblePagesCount - 1);
+
+    if (endPage - startPage < visiblePagesCount - 1) {
+      startPage = Math.max(1, endPage - visiblePagesCount + 1);
+    }
+
+    this.pages = Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
   }
 }

@@ -116,6 +116,11 @@ public class TicketServiceImpl implements TicketService {
                         tourSchedule -> modelMapper.map(tourSchedule, GetTicketResponse.class)).collect(Collectors.toList());
     }
 
+    @Override
+    public List<GetTicketResponse> findAllTickets() {
+        return ticketRepository.findAll().stream().map(ticket -> modelMapper.map(ticket, GetTicketResponse.class)).collect(Collectors.toList());
+    }
+
     private Integer getGenerationId() {
         UUID uuid = UUID.randomUUID();
         return (int) (uuid.getMostSignificantBits() & 0xFFFFFFFFL);
