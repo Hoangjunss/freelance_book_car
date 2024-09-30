@@ -48,7 +48,7 @@ export class LocationListComponent implements OnInit {
         }
       },
       error(err) {
-        console.log(err);
+        console.log('Error fetching locations:',err);
       },
     });
   }

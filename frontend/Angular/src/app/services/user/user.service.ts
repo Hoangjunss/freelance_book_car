@@ -17,7 +17,7 @@ import { isPlatformBrowser } from '@angular/common';
 export class UserService {
 
   private baseURL = "http://localhost:8080/auth/";
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router, @Inject(PLATFORM_ID) private platformId: Object) { }
 
   registerUser(formData: FormData): Observable<registerUserResponse> {
     return this.http.post<Apiresponse<registerUserResponse>>(`${this.baseURL}registration`, formData).pipe(
@@ -81,7 +81,11 @@ export class UserService {
 
 
   private createAuthorizationHeader(): HttpHeaders {
-    const token = localStorage.getItem('token');
+    let token = null;
+
+    if (isPlatformBrowser(this.platformId)) {
+      token = localStorage.getItem('token');
+    }
     console.log(token);
     if (token) {
       console.log('Token found in local store:', token);

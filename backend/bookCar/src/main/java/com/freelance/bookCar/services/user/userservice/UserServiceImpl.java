@@ -155,13 +155,13 @@ public class UserServiceImpl implements UserService {
         String username = jwtTokenUtil.extractUsernameToken(token.getToken());
         UserDetails userDetails= ourUserDetailsService.loadUserByUsername(username);
 
-        String jwttoken= jwtTokenUtil.generateToken(userDetails);
+        String accessToken = jwtTokenUtil.generateToken(userDetails);
 
         String refreshToken=jwtTokenUtil.generateRefreshToken(userDetails);
 
         return  LoginResponse.builder()
-                .accessToken(jwttoken)
-                .refreshToken(jwttoken)
+                .accessToken(accessToken )
+                .refreshToken(refreshToken)
                 .build();
     }
 

@@ -22,6 +22,7 @@ export class AuthInterceptor implements HttpInterceptor {
                 }
             });
         }
+        console.log('Request headers:', request.headers);
 
         return next.handle(request).pipe(
             catchError(err => {
@@ -32,13 +33,15 @@ export class AuthInterceptor implements HttpInterceptor {
                     // Gọi hàm refreshToken
                     return this.userService.refreshToken(refreshTokenData).pipe(
                         switchMap((response) => {
+                            console.log('Refresh token API response:', response);
+                            console.log('Old token:', response.accessToken);
                             const token = localStorage.getItem('token');
 
-                            if(token){
-                                // Lưu token mới vào local storage
-                                localStorage.setItem('token', token); // Điều chỉnh tên thuộc tính cho đúng
+                            if (token && response.accessToken !== token && response.accessToken) {
+                                console.log('New token:', response.accessToken);
+                                localStorage.setItem('token', response.accessToken); // Điều chỉnh tên thuộc tính cho đún
                             }
-                            
+
 
                             // Cloned lại request với token mới
                             request = request.clone({

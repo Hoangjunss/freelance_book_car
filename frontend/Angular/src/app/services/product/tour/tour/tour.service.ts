@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Apiresponse } from '../../../../models/response/apiresponse';
 import { CreateTourRequest } from '../../../../models/request/product/tour/tour/create-tour-request';
@@ -7,6 +7,7 @@ import { CreateTourResponse } from '../../../../models/response/product/tour/tou
 import { UpdateTourRequest } from '../../../../models/request/product/tour/tour/update-tour-request';
 import { UpdateTourResponse } from '../../../../models/response/product/tour/tour/update-tour-response';
 import { GetTourResponse } from '../../../../models/response/product/tour/tour/get-tour-response';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class TourService {
 
   private baseUrl = 'http://localhost:8080/tour';
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) { }
 
   createTour(fromData: FormData): Observable<CreateTourResponse> {
     const headers = this.createAuthorizationHeader();
@@ -109,7 +110,11 @@ export class TourService {
   }
 
   private createAuthorizationHeader(): HttpHeaders {
-    const token = localStorage.getItem('token');
+    let token = null;
+
+    if (isPlatformBrowser(this.platformId)) {
+      token = localStorage.getItem('token');
+    }
     console.log(token);
     if (token) {
       console.log('Token found in local store:', token);
