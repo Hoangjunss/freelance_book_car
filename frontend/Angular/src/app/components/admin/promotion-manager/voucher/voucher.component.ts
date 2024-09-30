@@ -1,15 +1,13 @@
+import { GetVoucherResponse } from './../../../../models/response/product/voucher/voucher/get-voucher-response';
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { GetTourScheduleResponse } from '../../../../models/response/product/tour/tour-schedule/get-tour-schedule-response';
-import { GetTourResponse } from '../../../../models/response/product/tour/tour/get-tour-response';
 import { NoDataFoundComponent } from "../../no-data-found/no-data-found.component";
 import { CreateVoucherRequest } from '../../../../models/request/product/voucher/voucher/create-voucher-request';
 import { CreateVoucherResponse } from '../../../../models/response/product/voucher/voucher/create-voucher-response';
 import { UpdateVoucherRequest } from '../../../../models/request/product/voucher/voucher/update-voucher-request';
 import { UpdateVoucherResponse } from '../../../../models/response/product/voucher/voucher/update-voucher-response';
 import { VoucherService } from '../../../../services/product/voucher/voucher/voucher.service';
-import { GetVoucherResponse } from '../../../../models/response/product/voucher/voucher/get-voucher-response';
 
 @Component({
   selector: 'app-voucher',
@@ -35,7 +33,10 @@ export class VoucherComponent implements OnInit {
 
   selectedSchedule: GetVoucherResponse[] = [];
 
-  getVoucherResponse: GetVoucherResponse [] = []; 
+  getVoucherResponse: GetVoucherResponse [] = [];
+  filterVoucher: GetVoucherResponse[] = []; 
+
+  searchQuery: string='';
   constructor(private voucherService: VoucherService) {}
 
   ngOnInit(): void {

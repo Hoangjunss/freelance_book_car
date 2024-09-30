@@ -29,7 +29,9 @@ export class PromotionComponent {
   getPromotionResponse: GetPromotionResponse[] = [];
   currentPage: number = 1;
   pageSize: number = 5;
+  filterPromotion: GetPromotionResponse[] = [];
   pagedData: GetPromotionResponse[] = [];
+  searchQuery: string='';
 
   constructor(private promotionService: PromotionService) {}
 
@@ -37,6 +39,22 @@ export class PromotionComponent {
     this.getAllPromotions();
     this.updatePagedData();
     console.log(this.selectedImage);
+  }
+
+  searchTour() {
+    console.log('Search Query:', this.searchQuery);
+    if (this.searchQuery.trim() != '') {
+      this.filterPromotion = this.getPromotionResponse.filter(tour =>
+        tour.name?.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+      console.log(this.filterPromotion);
+      this.updatePagedData();
+    }
+  }
+
+  reset(){
+    this.filterPromotion = this.getPromotionResponse;
+    this.updatePagedData();
   }
 
   goToPage(page: number) {
@@ -47,11 +65,11 @@ export class PromotionComponent {
   updatePagedData() {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
-    this.pagedData = this.getPromotionResponse.slice(startIndex, endIndex);
+    this.pagedData = this.filterPromotion.slice(startIndex, endIndex);
   }
 
   get totalPages(): number {
-    return Math.ceil(this.getPromotionResponse.length / this.pageSize);
+    return Math.ceil(this.filterPromotion.length / this.pageSize);
   }
 
   get pages(): number[] {
@@ -86,6 +104,7 @@ export class PromotionComponent {
     this.promotionService.getAll().subscribe({
       next: (data) => {
         this.getPromotionResponse = data;
+        this.filterPromotion = this.getPromotionResponse;
         this.updatePagedData();
         console.log('All promotions:', this.getPromotionResponse);
       },

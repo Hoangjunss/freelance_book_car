@@ -21,6 +21,7 @@ export class TourismComponent {
   updateTourismRequest: UpdateTourismRequest = new UpdateTourismRequest();
   updateTourismResponse: CreateTourismResponse = new CreateTourismResponse();
   getTourismResponse: GetTourismResponse[] = [];
+  filterTourism: GetTourismResponse[] = [];
 
   isDisplayCreate = false;
   isDisplayUpdate = false;
@@ -30,6 +31,7 @@ export class TourismComponent {
 
   imageFile?: File;
   imageUri?: string;
+  searchQuery: string='';
 
   tour?: GetTourismResponse;
   currentPage: number = 1;
@@ -51,11 +53,11 @@ export class TourismComponent {
   updatePagedData() {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
-    this.pagedData = this.getTourismResponse.slice(startIndex, endIndex);
+    this.pagedData = this.filterTourism.slice(startIndex, endIndex);
   }
 
   get totalPages(): number {
-    return Math.ceil(this.getTourismResponse.length / this.pageSize);
+    return Math.ceil(this.filterTourism.length / this.pageSize);
   }
 
   get pages(): number[] {
@@ -68,6 +70,22 @@ export class TourismComponent {
 
   closeFormCreate(){
     this.isDisplayCreate = false;
+  }
+
+  searchTour(){
+    console.log('Search Query:', this.searchQuery);
+    if (this.searchQuery.trim() != '') {
+      this.filterTourism = this.getTourismResponse.filter(tour =>
+        tour.name?.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+      console.log(this.filterTourism);
+      this.updatePagedData();
+    }
+  }
+
+  reset(){
+    this.filterTourism = this.getTourismResponse;
+    this.updatePagedData();
   }
 
   displayFormUpdate(tourism: GetTourismResponse){
@@ -194,6 +212,7 @@ export class TourismComponent {
     this.tourismService.getAllTourism().subscribe({
       next: (data) =>{
         this.getTourismResponse = data;
+        this.filterTourism = this.getTourismResponse;
         this.updatePagedData();
       },
       error: (err) => {

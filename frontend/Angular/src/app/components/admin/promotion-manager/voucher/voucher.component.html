@@ -1,10 +1,12 @@
 <h2 class="text-center m-2">Voucher Manager</h2>
 
 <nav class="d-flex navbar navbar-expand-lg navbar-light bg-light navbackground">
-  <form class="form-inline my-2 my-lg-0 mr-auto">
-    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-  </form>
+  <div class="form-inline my-2 my-lg-0 mr-auto">
+    <input [(ngModel)]="searchQuery" name="searchQuery" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
+      (keyup.enter)="searchTour()">
+    <button class="btn btn-outline-success my-2 my-sm-0" (click)="searchTour()">Search</button>
+    <button class="btn btn-outline-success my-2 my-sm-0" (click)="reset()">Show all</button>
+  </div>
   <button type="button" class="m-3 btn btn-success ml-auto" (click)="displayFormCreate()">Add Voucher</button>
 </nav>
 

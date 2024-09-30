@@ -25,6 +25,7 @@ export class TourComponent implements OnInit{
 
   imageUrl: string = 'assets/img/DEFAULT/tour-default.png';
   getALlTour: GetTourResponse[] = [];
+  filterTour: GetTourResponse[] = [];
 
   selectedImage: string = 'assets/img/DEFAULT/tour-default.png';
   isDisplayUpdate: boolean = false;
@@ -36,6 +37,8 @@ export class TourComponent implements OnInit{
   imageId?: string;
   imageFile!: File;
   imageUri?: string = 'assets/img/DEFAULT/tour-default.png';
+
+  searchQuery: string='';
 
   constructor(private tourService:TourService){}
 
@@ -53,11 +56,11 @@ export class TourComponent implements OnInit{
   updatePagedData() {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
-    this.pagedData = this.getALlTour.slice(startIndex, endIndex);
+    this.pagedData = this.filterTour.slice(startIndex, endIndex);
   }
 
   get totalPages(): number {
-    return Math.ceil(this.getALlTour.length / this.pageSize);
+    return Math.ceil(this.filterTour.length / this.pageSize);
   }
 
   get pages(): number[] {
@@ -112,7 +115,25 @@ export class TourComponent implements OnInit{
         .then(blob => {
             return new File([blob], fileName, { type: blob.type }); // Tạo đối tượng File từ blob
         });
-}
+  }
+
+  searchTour() {
+    console.log('Search Query:', this.searchQuery);
+    if (this.searchQuery.trim() != '') {
+      this.filterTour = this.getALlTour.filter(tour =>
+        tour.name?.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+      console.log(this.filterTour);
+      this.updatePagedData();
+    }
+  }
+
+  reset(){
+    this.filterTour = this.getALlTour;
+    this.updatePagedData();
+  }
+
+
 
   //On Submit
   onCreate() {
@@ -218,6 +239,7 @@ export class TourComponent implements OnInit{
     this.tourService.getAllTour().subscribe({
       next: (data) => {
         this.getALlTour = data;
+        this.filterTour = this.getALlTour;
         this.updatePagedData();
       },
       error: (err) => {
