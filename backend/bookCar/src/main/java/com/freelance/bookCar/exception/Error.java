@@ -39,7 +39,6 @@ public enum Error {
     USER_INVALID_PASSWORD_FORMAT(1112, "Invalid password format", HttpStatus.BAD_REQUEST),
     USER_INVALID_PASSWORD(1107, "Invalid password", HttpStatus.BAD_REQUEST),
     USER_INVALID_NAME(1108, "Invalid Name", HttpStatus.BAD_REQUEST),
-    // Booking Error
     // Ticket Error
     TICKET_NOT_FOUND(1201, "Ticket not found", HttpStatus.NOT_FOUND),
     TICKET_ALREADY_EXISTS(1202, "Ticket already exists", HttpStatus.CONFLICT),

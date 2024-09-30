@@ -29,9 +29,12 @@ export class TourScheduleComponent implements OnInit {
   getTourResponse: GetTourResponse[] = [];
   getTourScheduleResponse: GetTourScheduleResponse[] = [];
   getTourScheduleByIdTour: GetTourScheduleResponse[] = [];
+  tourScheduleFilter: GetTourScheduleResponse[] = [];
 
   timeStartTour: Date = new Date();
   timeEndTour: Date = new Date();
+
+  stateFilter = false;
 
   tourSelectedId: number=0;
 
@@ -72,6 +75,7 @@ export class TourScheduleComponent implements OnInit {
         if(data){
           this.getTourScheduleResponse = data;
           this.updatePagedTours();
+          this.updateDisplayedPages();
         }
       }
     })
@@ -245,14 +249,17 @@ export class TourScheduleComponent implements OnInit {
   filterTours(): void {
     console.log(this.tourSelectedId);
     if (this.tourSelectedId != 0) {
+      this.stateFilter= true;
+      this.tourScheduleFilter = this.getTourScheduleResponse;
         // Lọc tour theo tourSelectedId
-        this.pagedTours = this.getTourScheduleResponse.filter(tour => tour.idTour == this.tourSelectedId);
+        this.tourScheduleFilter = this.getTourScheduleResponse.filter(tour => tour.idTour == this.tourSelectedId);
         this.updatePagedTourFitler(); 
-        this.updateDisplayedPages();
     } else {
+      this.stateFilter = false;
         // Hiển thị tất cả tour
         this.pagedTours = this.getTourScheduleResponse.slice(); // Tạo một bản sao của danh sách đầy đủ
         this.updatePagedTours();
+        this.updateDisplayedPages();
     }
     console.log(this.pagedTours);
 
@@ -264,29 +271,40 @@ export class TourScheduleComponent implements OnInit {
 updatePagedTourFitler(): void {
   const start = (this.currentPageSchedule - 1) * this.pageSize;
   const end = start + this.pageSize;
-  this.totalPages = Math.ceil(this.pagedTours.length / this.pageSize);
+  this.pagedTours = this.tourScheduleFilter.slice(start, end);
+  this.totalPages = Math.ceil(this.tourScheduleFilter.length / this.pageSize);
   this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
-} 
+  this.updateDisplayedPages();
+}
+
+goToPageFilter(page: number): void {
+  if (page >= 1 && page <= this.totalPages) {
+    this.currentPageSchedule = page;
+    this.updatePagedTourFitler();
+    this.updateDisplayedPages();
+  }
+}
+
+
+
   
 updatePagedTours(): void {
   const start = (this.currentPageSchedule - 1) * this.pageSize;
   const end = start + this.pageSize;
-  this.pagedTours = this.getTourScheduleResponse.slice(start, end); // Cập nhật danh sách tours đã phân trang
+  this.pagedTours = this.getTourScheduleResponse.slice(start, end);
   this.totalPages = Math.ceil(this.getTourScheduleResponse.length / this.pageSize);
   this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
 } 
 
 
   updateDisplayedPages(): void {
-    const visiblePagesCount = 5; // Số lượng trang muốn hiển thị cùng lúc
+    const visiblePagesCount = 5;
     let startPage = Math.max(1, this.currentPageSchedule - Math.floor(visiblePagesCount / 2));
     let endPage = Math.min(this.totalPages, startPage + visiblePagesCount - 1);
   
-    // Điều chỉnh lại nếu startPage đi quá giới hạn
     if (endPage - startPage < visiblePagesCount - 1) {
       startPage = Math.max(1, endPage - visiblePagesCount + 1);
     }
-  
     this.pages = Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
   }
   

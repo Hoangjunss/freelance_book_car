@@ -7,6 +7,7 @@ import com.freelance.bookCar.dto.response.product.tourDTO.tourScheduleStatus.Cre
 import com.freelance.bookCar.dto.response.product.tourDTO.tourScheduleStatus.GetTourScheduleStatusResponse;
 import com.freelance.bookCar.dto.response.product.tourDTO.tourScheduleStatus.UpdateTourScheduleStatusResponse;
 import com.freelance.bookCar.services.product.tourService.tourScheduleStatus.TourScheduleStatusService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +25,7 @@ public class TourScheduleStatusController {
     // API tạo Tour Schedule Status
     @PostMapping()
     public ResponseEntity<ApiResponse<CreateTourScheduleStatusResponse>> create(
-            @RequestBody CreateTourScheduleStatusRequest createTourScheduleStatusRequest) {
+            @ModelAttribute @Valid CreateTourScheduleStatusRequest createTourScheduleStatusRequest) {
         log.info("Creating Tour Schedule Status");
         CreateTourScheduleStatusResponse response = tourScheduleStatusService.create(createTourScheduleStatusRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Tour schedule status created successfully", response));
@@ -33,7 +34,7 @@ public class TourScheduleStatusController {
     // API cập nhật Tour Schedule Status
     @PatchMapping()
     public ResponseEntity<ApiResponse<UpdateTourScheduleStatusResponse>> update(
-            @RequestBody UpdateTourScheduleStatusRequest updateTourScheduleStatusRequest) {
+            @ModelAttribute @Valid UpdateTourScheduleStatusRequest updateTourScheduleStatusRequest) {
         log.info("Updating Tour Schedule Status with id: {}", updateTourScheduleStatusRequest.getId());
         UpdateTourScheduleStatusResponse response = tourScheduleStatusService.update(updateTourScheduleStatusRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Tour schedule status updated successfully", response));

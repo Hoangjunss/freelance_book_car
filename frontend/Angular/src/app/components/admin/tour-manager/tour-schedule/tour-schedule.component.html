@@ -91,17 +91,17 @@
             <ul class="pagination justify-content-center">
               <!-- Nút Previous -->
               <li class="page-item" [class.disabled]="currentPageSchedule === 1">
-                <a class="page-link" (click)="goToPage(currentPageSchedule - 1)">Previous</a>
+                <a class="page-link" (click)="!stateFilter ? goToPage(currentPageSchedule - 1) : goToPageFilter(currentPageSchedule - 1)">Previous</a>
               </li>
           
               <!-- Các số trang -->
               <li class="page-item" *ngFor="let page of pages" [class.active]="currentPageSchedule === page">
-                <a class="page-link" (click)="goToPage(page)">{{ page }}</a>
+                <a class="page-link" (click)="!stateFilter ? goToPage(page) : goToPageFilter(page)">{{ page }}</a>
               </li>
           
               <!-- Nút Next -->
               <li class="page-item" [class.disabled]="currentPageSchedule === totalPages">
-                <a class="page-link" (click)="goToPage(currentPageSchedule + 1)">Next</a>
+                <a class="page-link" (click)="!stateFilter ? goToPage(currentPageSchedule + 1) : goToPageFilter(currentPageSchedule + 1)">Next</a>
               </li>
             </ul>
           </nav>

@@ -198,8 +198,8 @@ export class TicketComponent implements OnInit {
   
       if(this.updateTicketRequest.startDate!=undefined){
         const startDate = new Date(this.updateTicketRequest.startDate);  
-        const startDateWithoutTimezone = startDate.toISOString().slice(0, 19); // Keep only YYYY-MM-DDTHH:mm:ss
-        formData.append('startDate', startDateWithoutTimezone);           // Use toISOString()
+        const startDateWithoutTimezone = startDate.toISOString().slice(0, 19);
+        formData.append('startDate', startDateWithoutTimezone);           
       }
       this.ticketService.updateTicket(formData).subscribe({
         next: (data) => {

@@ -23,6 +23,7 @@ import com.freelance.bookCar.exception.Error;
 import com.freelance.bookCar.models.booking.Booking;
 import com.freelance.bookCar.models.booking.BookingDetail;
 import com.freelance.bookCar.models.booking.TypeBooking;
+import com.freelance.bookCar.models.product.hotel.Hotel;
 import com.freelance.bookCar.models.product.hotel.HotelBooking;
 import com.freelance.bookCar.models.product.ticket.Ticket;
 import com.freelance.bookCar.models.product.ticket.Tourism;
@@ -30,6 +31,7 @@ import com.freelance.bookCar.models.product.tour.Tour;
 import com.freelance.bookCar.models.product.tour.TourSchedule;
 import com.freelance.bookCar.respository.booking.BookingDetailRepository;
 import com.freelance.bookCar.respository.booking.BookingRepository;
+import com.freelance.bookCar.services.product.hotelService.hotel.HotelService;
 import com.freelance.bookCar.services.product.hotelService.hotelBooking.HotelBookingService;
 import com.freelance.bookCar.services.product.ticketService.ticket.TicketService;
 import com.freelance.bookCar.services.product.ticketService.tourism.TourismService;
@@ -62,6 +64,8 @@ public class BookingServiceImpl implements BookingService{
     private TicketService ticketService;
     @Autowired
     private HotelBookingService hotelBookingService;
+    @Autowired
+    private HotelService hotelService;
 
     @Override
     public CreateBookingResponse create(CreateBookingRequest createBookingRequest) {
@@ -159,7 +163,7 @@ public class BookingServiceImpl implements BookingService{
                 .collect(Collectors.toList());
     }
 
-    private boolean ExistBooking(Integer id){
+    private boolean existBooking(Integer id){
         log.info("Checking if booking exists with id user: {}", id);
         if(bookingRepository.findByIdUser(id) != null){
             return true;
@@ -186,7 +190,7 @@ public class BookingServiceImpl implements BookingService{
 
         // Check if the booking exists, create if not
         Booking booking = new Booking();
-        if ((addBookingTourRequest.getIdUser() == null) || !ExistBooking(addBookingTourRequest.getIdUser())) {
+        if ((addBookingTourRequest.getIdUser() == null) || !existBooking(addBookingTourRequest.getIdUser())) {
             // Create a new booking using Builder and ModelMapper
             CreateBookingRequest createBookingRequest = modelMapper
                     .map(addBookingTourRequest,
@@ -265,6 +269,8 @@ public class BookingServiceImpl implements BookingService{
     public AddBookingTourismResponse addBookingTourism(AddBookingTourismRequest addBookingTourismRequest) {
         log.info("Adding tourism to booking: {}", addBookingTourismRequest.getIdBooking());
 
+        log.info("Adding booking tourism request: {}", addBookingTourismRequest.toString());
+
         if(addBookingTourismRequest.getIdTicket() == null){
             throw new CustomException(Error.BOOKING_DETAIL_INVALID_ID_TOURISM);
         }
@@ -279,8 +285,8 @@ public class BookingServiceImpl implements BookingService{
         }
 
         // Check if the booking exists, create if not
-        Booking booking;
-        if ((addBookingTourismRequest.getIdBooking() == null )|| !ExistBooking(addBookingTourismRequest.getIdBooking())) {
+        Booking booking = new Booking();
+        if ((addBookingTourismRequest.getIdUser() == null )|| !existBooking(addBookingTourismRequest.getIdUser())) {
             // Create a new booking using Builder and ModelMapper
             CreateBookingRequest createBookingRequest = modelMapper.map(addBookingTourismRequest, CreateBookingRequest.class);
             createBookingRequest.setTotalPrice(addBookingTourismRequest.getTotalPrice());
@@ -292,7 +298,7 @@ public class BookingServiceImpl implements BookingService{
             booking = modelMapper.map(createBookingResponse, Booking.class);
         } else {
             // Retrieve the existing booking using ModelMapper
-            booking = modelMapper.map(findById(addBookingTourismRequest.getIdBooking()), Booking.class);
+            booking = modelMapper.map(findByIdUser(addBookingTourismRequest.getIdUser()), Booking.class);
 
             // Update the total price by adding the price of the new tourism
             booking = Booking.builder()
@@ -300,7 +306,7 @@ public class BookingServiceImpl implements BookingService{
                     .dateBook(booking.getDateBook())
                     .totalPrice(booking.getTotalPrice() + addBookingTourismRequest.getTotalPrice())
                     .idUser(booking.getIdUser())
-
+                    .idPayment(1)
                     .build();
 
             // Save the updated booking
@@ -312,6 +318,7 @@ public class BookingServiceImpl implements BookingService{
 
         // Create a BookingDetail for tourism using Builder pattern
         BookingDetail bookingDetail = BookingDetail.builder()
+                .id(getGenerationId())
                 .idBooking(booking.getId())
                 .idTicket(tourism.getId())
                 .quantity(addBookingTourismRequest.getQuantity())
@@ -341,6 +348,8 @@ public class BookingServiceImpl implements BookingService{
     public AddBookingHotelResponse addBookingHotel(AddBookingHotelRequest addBookingHotelRequest) {
         log.info("Adding hotel to booking: {}", addBookingHotelRequest.getIdBooking());
 
+        log.info("Adding booking hotel request: {}", addBookingHotelRequest.toString());
+
         if(addBookingHotelRequest.getIdHotel() == null){
             throw new CustomException(Error.BOOKING_DETAIL_INVALID_ID_HOTEL);
         }
@@ -355,8 +364,8 @@ public class BookingServiceImpl implements BookingService{
         }
 
         // Check if the booking exists, create if not
-        Booking booking;
-        if ((addBookingHotelRequest.getIdBooking() == null) || !ExistBooking(addBookingHotelRequest.getIdBooking())) {
+        Booking booking = new Booking();
+        if ((addBookingHotelRequest.getIdUser() == null) || !existBooking(addBookingHotelRequest.getIdUser())) {
             // Create a new booking using Builder and ModelMapper
             CreateBookingRequest createBookingRequest = modelMapper.map(addBookingHotelRequest, CreateBookingRequest.class);
             createBookingRequest.setTotalPrice(addBookingHotelRequest.getTotalPrice());
@@ -370,15 +379,15 @@ public class BookingServiceImpl implements BookingService{
             booking = modelMapper.map(createBookingResponse, Booking.class);
         } else {
             // Retrieve the existing booking using ModelMapper
-            booking = modelMapper.map(findById(addBookingHotelRequest.getIdBooking()), Booking.class);
+            booking = modelMapper.map(findByIdUser(addBookingHotelRequest.getIdUser()), Booking.class);
 
             // Update the total price by adding the price of the new hotel stay
             booking = Booking.builder()
                     .id(booking.getId())
+                    .id(booking.getId())
                     .dateBook(booking.getDateBook())
                     .totalPrice(booking.getTotalPrice() + addBookingHotelRequest.getTotalPrice())
                     .idUser(booking.getIdUser())
-
                     .build();
 
             // Save the updated booking
@@ -386,14 +395,16 @@ public class BookingServiceImpl implements BookingService{
         }
 
         // Get the Hotel entity
-        HotelBooking hotel = modelMapper.map(hotelBookingService.findById(addBookingHotelRequest.getIdHotel()), HotelBooking.class);
+        //HotelBooking hotel = modelMapper.map(hotelBookingService.findById(addBookingHotelRequest.getIdHotel()), HotelBooking.class);
+        Hotel hotels = modelMapper.map(hotelService.findById(addBookingHotelRequest.getIdHotel()), Hotel.class);
 
         // Create a BookingDetail for hotel using Builder pattern
         BookingDetail bookingDetail = BookingDetail.builder()
+                .id(getGenerationId())
                 .idBooking(booking.getId())
-                .idHotel(hotel.getId())
+                .idHotel(hotels.getId())
                 .quantity(addBookingHotelRequest.getQuantity())
-                .totalPrice(hotel.getTotalPrice() * addBookingHotelRequest.getQuantity())
+                .totalPrice(hotels.getPricePerNight() * addBookingHotelRequest.getQuantity())
                 .build();
 
         try {

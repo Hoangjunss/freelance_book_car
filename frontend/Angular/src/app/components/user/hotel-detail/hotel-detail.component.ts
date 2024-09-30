@@ -162,11 +162,20 @@ export class HotelDetailComponent {
     formData.append('idUser', addBookingHotelRequest.idUser.toString());
     formData.append('quantity', addBookingHotelRequest.quantity.toString());
     formData.append('totalPrice', this.totalPrice.toString());
-    if (this.startDate && this.endDate) {
-      console.log(this.startDate);
-      console.log(this.endDate);
-      formData.append('startDate', this.startDate.toString());
-      formData.append('endDate', this.endDate.toString());
+    // if (this.startDate && this.endDate) {
+    //   console.log(this.startDate);
+    //   console.log(this.endDate);
+    //   formData.append('startDate', this.startDate.toString());
+    //   formData.append('endDate', this.endDate.toString());
+    // }
+
+    if(this.startDate!=undefined && this.endDate != undefined){
+      const startDate = new Date(this.startDate);  
+      const startDateWithoutTimezone = startDate.toISOString().slice(0, 19);
+      formData.append('startDate', startDateWithoutTimezone);      
+      const endDate = new Date(this.endDate);  
+      const endDateWithoutTimezone = endDate.toISOString().slice(0, 19);
+      formData.append('endDate', endDateWithoutTimezone);     
     }
 
     formData.forEach((value, key) => {
