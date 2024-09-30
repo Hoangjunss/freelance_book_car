@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Apiresponse } from '../../../../models/response/apiresponse';
@@ -18,7 +18,8 @@ export class TourScheduleService {
   constructor(private httpClient: HttpClient) { }
 
   createSchedule(formData: FormData): Observable<CreateTourScheduleResponse> {
-    return this.httpClient.post<Apiresponse<CreateTourScheduleResponse>>(`${this.baseUrl}`, formData).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.post<Apiresponse<CreateTourScheduleResponse>>(`${this.baseUrl}`, formData, {headers}).pipe(
       map((response: Apiresponse<CreateTourScheduleResponse>) => {
         if (response.success) {
           return response.data;
@@ -30,7 +31,8 @@ export class TourScheduleService {
   }
 
   updateSchedule(formData: FormData): Observable<UpdateTourScheduleResponse> {
-    return this.httpClient.patch<Apiresponse<UpdateTourScheduleResponse>>(`${this.baseUrl}`, formData).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.patch<Apiresponse<UpdateTourScheduleResponse>>(`${this.baseUrl}`, formData, {headers}).pipe(
       map((response: Apiresponse<UpdateTourScheduleResponse>) => {
         if (response.success) {
           return response.data;
@@ -42,7 +44,8 @@ export class TourScheduleService {
   }
 
   getAllTourSchedule(): Observable<UpdateTourScheduleRequest[]> {
-    return this.httpClient.get<Apiresponse<GetTourScheduleResponse[]>>(`${this.baseUrl}/all`).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<GetTourScheduleResponse[]>>(`${this.baseUrl}/all`, {headers}).pipe(
       map((response: Apiresponse<GetTourScheduleResponse[]>) => {
         if (response.success) {
           return response.data;
@@ -55,7 +58,8 @@ export class TourScheduleService {
   }
 
   getSchedule(id: number): Observable<GetTourScheduleResponse> {
-    return this.httpClient.get<Apiresponse<GetTourScheduleResponse>>(`${this.baseUrl}?id=${id}`).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<GetTourScheduleResponse>>(`${this.baseUrl}?id=${id}`, {headers}).pipe(
       map((response: Apiresponse<GetTourScheduleResponse>) => {
         if (response.success) {
           return response.data;
@@ -67,7 +71,8 @@ export class TourScheduleService {
   }
 
   getTourScheduleByidTour(id:number):Observable<GetTourScheduleResponse[]> {
-    return this.httpClient.get<Apiresponse<GetTourScheduleResponse[]>>(`${this.baseUrl}/tour?idTour=${id}`).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<GetTourScheduleResponse[]>>(`${this.baseUrl}/tour?idTour=${id}`, {headers}).pipe(
       map((response: Apiresponse<GetTourScheduleResponse[]>) => {
         if (response.success) {
           return response.data;
@@ -78,5 +83,17 @@ export class TourScheduleService {
     );
   }
 
+  private createAuthorizationHeader(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    console.log(token);
+    if (token) {
+      console.log('Token found in local store:', token);
+      return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    }
+    else {
+      console.log('Token not found in local store');
+    }
+    return new HttpHeaders();
+  }
   
 }

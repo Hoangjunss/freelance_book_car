@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { StatisticYear } from '../../models/response/statistics/StatisticYear';
 import { map, Observable } from 'rxjs';
@@ -14,7 +14,8 @@ export class StatisticsService {
   constructor(private httpClient: HttpClient) { }
 
   getStatisticYear(year: number): Observable<StatisticYear> {
-    return this.httpClient.get<Apiresponse<StatisticYear>>(`${this.baseUrl}/year?year=${year}`).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<StatisticYear>>(`${this.baseUrl}/year?year=${year}`, {headers}).pipe(
       map((response: Apiresponse<StatisticYear>) => {
         if (response.success) {
           console.log(response.data);
@@ -27,7 +28,8 @@ export class StatisticsService {
   }
 
   getStatisticMonthYear(month: number, year: number){
-    return this.httpClient.get<Apiresponse<StatisticMonthYear>>(`${this.baseUrl}/monthyear?month=${month}&year=${year}`).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<StatisticMonthYear>>(`${this.baseUrl}/monthyear?month=${month}&year=${year}`, {headers}).pipe(
       map((response: Apiresponse<StatisticMonthYear>) => {
         if (response.success) {
           return response.data;
@@ -39,7 +41,8 @@ export class StatisticsService {
   }
 
   getStatisticMonthHotel(month: number, year: number){
-    return this.httpClient.get<Apiresponse<StatisticMonthYear>>(`${this.baseUrl}/month/hotel?month=${month}&year=${year}`).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<StatisticMonthYear>>(`${this.baseUrl}/month/hotel?month=${month}&year=${year}`, {headers}).pipe(
       map((response: Apiresponse<StatisticMonthYear>) => {
         if (response.success) {
           return response.data;
@@ -51,7 +54,8 @@ export class StatisticsService {
   }
 
   getStatisticMonthTour(month: number, year: number){
-    return this.httpClient.get<Apiresponse<StatisticMonthYear>>(`${this.baseUrl}/month/tour?month=${month}&year=${year}`).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<StatisticMonthYear>>(`${this.baseUrl}/month/tour?month=${month}&year=${year}`, {headers}).pipe(
       map((response: Apiresponse<StatisticMonthYear>) => {
         if (response.success) {
           return response.data;
@@ -63,7 +67,8 @@ export class StatisticsService {
   }
 
   getStatisticMonthTourism(month: number, year: number){
-    return this.httpClient.get<Apiresponse<StatisticMonthYear>>(`${this.baseUrl}/month/tourism?month=${month}&year=${year}`).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<StatisticMonthYear>>(`${this.baseUrl}/month/tourism?month=${month}&year=${year}`, {headers}).pipe(
       map((response: Apiresponse<StatisticMonthYear>) => {
         if (response.success) {
           return response.data;
@@ -75,7 +80,8 @@ export class StatisticsService {
   }
 
   getStatisticTodayHotel(){
-    return this.httpClient.get<Apiresponse<StatisticMonthYear>>(`${this.baseUrl}/today/hotel`).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<StatisticMonthYear>>(`${this.baseUrl}/today/hotel`, {headers}).pipe(
       map((response: Apiresponse<StatisticMonthYear>) => {
         if (response.success) {
           return response.data;
@@ -87,7 +93,8 @@ export class StatisticsService {
   }
 
   getStatisticTodayTour(){
-    return this.httpClient.get<Apiresponse<StatisticMonthYear>>(`${this.baseUrl}/today/tour`).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<StatisticMonthYear>>(`${this.baseUrl}/today/tour`, {headers}).pipe(
       map((response: Apiresponse<StatisticMonthYear>) => {
         if (response.success) {
           return response.data;
@@ -99,7 +106,8 @@ export class StatisticsService {
   }
 
   getStatisticTodayTourism(){
-    return this.httpClient.get<Apiresponse<StatisticMonthYear>>(`${this.baseUrl}/today/tourism`).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<StatisticMonthYear>>(`${this.baseUrl}/today/tourism`, {headers}).pipe(
       map((response: Apiresponse<StatisticMonthYear>) => {
         if (response.success) {
           return response.data;
@@ -111,7 +119,8 @@ export class StatisticsService {
   }
 
   getStatisticYesterdayHotel(){
-    return this.httpClient.get<Apiresponse<StatisticMonthYear>>(`${this.baseUrl}/yesterday/hotel`).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<StatisticMonthYear>>(`${this.baseUrl}/yesterday/hotel`, {headers}).pipe(
       map((response: Apiresponse<StatisticMonthYear>) => {
         if (response.success) {
           return response.data;
@@ -123,7 +132,8 @@ export class StatisticsService {
   }
 
   getStatisticYesterdayTour(){
-    return this.httpClient.get<Apiresponse<StatisticMonthYear>>(`${this.baseUrl}/yesterday/tour`).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<StatisticMonthYear>>(`${this.baseUrl}/yesterday/tour`, {headers}).pipe(
       map((response: Apiresponse<StatisticMonthYear>) => {
         if (response.success) {
           return response.data;
@@ -135,7 +145,8 @@ export class StatisticsService {
   }
 
   getStatisticYesterdayTourism(){
-    return this.httpClient.get<Apiresponse<StatisticMonthYear>>(`${this.baseUrl}/yesterday/tourism`).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<StatisticMonthYear>>(`${this.baseUrl}/yesterday/tourism`, {headers}).pipe(
       map((response: Apiresponse<StatisticMonthYear>) => {
         if (response.success) {
           return response.data;
@@ -144,6 +155,19 @@ export class StatisticsService {
         }
       })
     )
+  }
+
+  private createAuthorizationHeader(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    console.log(token);
+    if (token) {
+      console.log('Token found in local store:', token);
+      return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    }
+    else {
+      console.log('Token not found in local store');
+    }
+    return new HttpHeaders();
   }
 
 }

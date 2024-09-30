@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CreateBookingRequest } from '../../models/request/booking/create-booking-request';
 import { map, Observable } from 'rxjs';
@@ -24,7 +24,8 @@ export class BookingService {
   private baseUrl = 'http://localhost:8080/booking';
 
   createBooking(createBookingRequest: CreateBookingRequest): Observable<CreateBookingResponse> {
-    return this.httpClient.post<Apiresponse<CreateBookingResponse>>(`${this.baseUrl}`, createBookingRequest).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.post<Apiresponse<CreateBookingResponse>>(`${this.baseUrl}`, createBookingRequest, {headers}).pipe(
       map((response: Apiresponse<CreateBookingResponse>) => {
         if (response.success) {
           return response.data;
@@ -36,7 +37,8 @@ export class BookingService {
   }
 
   updateBooking(updateBookingRequest: UpdateBookingRequest): Observable<UpdateBookingResponse>{
-    return this.httpClient.put<Apiresponse<UpdateBookingResponse>>(`${this.baseUrl}`, updateBookingRequest).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.put<Apiresponse<UpdateBookingResponse>>(`${this.baseUrl}`, updateBookingRequest, {headers}).pipe(
       map((response: Apiresponse<UpdateBookingResponse>) => {
         if (response.success) {
           return response.data;
@@ -48,7 +50,8 @@ export class BookingService {
   }
 
   getBooking(id: number): Observable<GetHotelBookingResponse>{
-    return this.httpClient.get<Apiresponse<GetHotelBookingResponse>>(`${this.baseUrl}?id=${id}`).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<GetHotelBookingResponse>>(`${this.baseUrl}?id=${id}`, {headers}).pipe(
       map((response: Apiresponse<GetHotelBookingResponse>) => {
         if (response.success) {
           return response.data;
@@ -60,7 +63,8 @@ export class BookingService {
   }
 
   getAll(): Observable<GetHotelBookingResponse[]> {
-    return this.httpClient.get<Apiresponse<GetHotelBookingResponse[]>>(`${this.baseUrl}/all`).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<GetHotelBookingResponse[]>>(`${this.baseUrl}/all`, {headers}).pipe(
       map((response: Apiresponse<GetHotelBookingResponse[]>) => {
         if (response.success) {
           return response.data;
@@ -72,7 +76,8 @@ export class BookingService {
   } 
   
   getByType(type: string): Observable<GetHotelBookingResponse[]> {
-    return this.httpClient.get<Apiresponse<GetHotelBookingResponse[]>>(`${this.baseUrl}/type?type=${type}`).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<GetHotelBookingResponse[]>>(`${this.baseUrl}/type?type=${type}`, {headers}).pipe(
       map((response: Apiresponse<GetHotelBookingResponse[]>) => {
         if (response.success) {
           return response.data;
@@ -84,7 +89,8 @@ export class BookingService {
   }
 
   adminSetTypeBooking(id: number, type: string):  Observable<UpdateBookingResponse>{
-    return this.httpClient.get<Apiresponse<UpdateBookingResponse>>(`${this.baseUrl}?id=${id}&type=${type}`).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<UpdateBookingResponse>>(`${this.baseUrl}?id=${id}&type=${type}`, {headers}).pipe(
       map((response: Apiresponse<UpdateBookingResponse>) => {
         if (response.success) {
           return response.data;
@@ -96,7 +102,8 @@ export class BookingService {
   }
 
   addBookingTour(formData : FormData): Observable<UpdateBookingResponse>{
-    return this.httpClient.post<Apiresponse<UpdateBookingResponse>>(`${this.baseUrl}/tour`,formData).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.post<Apiresponse<UpdateBookingResponse>>(`${this.baseUrl}/tour`,formData, {headers}).pipe(
       map((response: Apiresponse<UpdateBookingResponse>) => {
         if (response.success) {
           return response.data;
@@ -107,7 +114,8 @@ export class BookingService {
     );
   }
   addBookingHotel(formData : FormData): Observable<UpdateBookingResponse>{
-    return this.httpClient.post<Apiresponse<UpdateBookingResponse>>(`${this.baseUrl}/hotel`,formData).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.post<Apiresponse<UpdateBookingResponse>>(`${this.baseUrl}/hotel`,formData, {headers}).pipe(
       map((response: Apiresponse<UpdateBookingResponse>) => {
         if (response.success) {
           return response.data;
@@ -118,7 +126,8 @@ export class BookingService {
     );
   }
   addBookingTourism(formData : FormData): Observable<UpdateBookingResponse>{
-    return this.httpClient.post<Apiresponse<UpdateBookingResponse>>(`${this.baseUrl}/tourism`,formData).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.post<Apiresponse<UpdateBookingResponse>>(`${this.baseUrl}/tourism`,formData, {headers}).pipe(
       map((response: Apiresponse<UpdateBookingResponse>) => {
         if (response.success) {
           return response.data;
@@ -130,7 +139,8 @@ export class BookingService {
   }
 
   getBookingByUser(id: number): Observable<GetBookingResponse> {
-    return this.httpClient.get<Apiresponse<GetBookingResponse>>(`${this.baseUrl}/user?idUser=${id}`).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<GetBookingResponse>>(`${this.baseUrl}/user?idUser=${id}`, {headers}).pipe(
       map((response: Apiresponse<GetBookingResponse>) => {
         if (response.success) {
           return response.data;
@@ -141,7 +151,8 @@ export class BookingService {
     );
   }
   getDetailBooking(id: number): Observable<GetBookingDetailResponse[]> {
-    return this.httpClient.get<Apiresponse<GetBookingDetailResponse[]>>(`${this.baseUrl}/detail?idBooking=${id}`).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<GetBookingDetailResponse[]>>(`${this.baseUrl}/detail?idBooking=${id}`, {headers}).pipe(
       map((response: Apiresponse<GetBookingDetailResponse[]>) => {
         if (response.success) {
           return response.data;
@@ -153,7 +164,8 @@ export class BookingService {
   }
 
   updateTypeBooking(type: string,id: number): Observable<UpdateBookingResponse> {
-    return this.httpClient.patch<Apiresponse<UpdateBookingResponse>>(`${this.baseUrl}/type?type=${type}&id=${id}`, null).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.patch<Apiresponse<UpdateBookingResponse>>(`${this.baseUrl}/type?type=${type}&id=${id}`, null, {headers}).pipe(
       map((response: Apiresponse<UpdateBookingResponse>) => {
         if (response.success) {
           return response.data;
@@ -165,7 +177,8 @@ export class BookingService {
   }
 
   updateQuantityTour(formData : FormData): Observable<UpdateQuantityTour> {
-    return this.httpClient.patch<Apiresponse<UpdateQuantityTour>>(`${this.baseUrl}/tour`,formData).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.patch<Apiresponse<UpdateQuantityTour>>(`${this.baseUrl}/tour`,formData, {headers}).pipe(
       map((response: Apiresponse<UpdateQuantityTour>) => {
         if (response.success) {
           return response.data;
@@ -177,7 +190,8 @@ export class BookingService {
   }
 
   updateQuantityTourism(formData : FormData): Observable<UpdateQuantityTourism> {
-    return this.httpClient.patch<Apiresponse<UpdateQuantityTourism>>(`${this.baseUrl}/tourism`,formData).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.patch<Apiresponse<UpdateQuantityTourism>>(`${this.baseUrl}/tourism`,formData, {headers}).pipe(
       map((response: Apiresponse<UpdateQuantityTourism>) => {
         if (response.success) {
           return response.data;
@@ -189,7 +203,8 @@ export class BookingService {
   }
 
   updateQuantityHotel(formData : FormData): Observable<UpdateQuantityHotel> {
-    return this.httpClient.patch<Apiresponse<UpdateQuantityHotel>>(`${this.baseUrl}/hotel`,formData).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.patch<Apiresponse<UpdateQuantityHotel>>(`${this.baseUrl}/hotel`,formData, {headers}).pipe(
       map((response: Apiresponse<UpdateQuantityHotel>) => {
         if (response.success) {
           return response.data;
@@ -198,6 +213,19 @@ export class BookingService {
         }
       })
     );
+  }
+
+  private createAuthorizationHeader(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    console.log(token);
+    if (token) {
+      console.log('Token found in local store:', token);
+      return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    }
+    else {
+      console.log('Token not found in local store');
+    }
+    return new HttpHeaders();
   }
   
 }

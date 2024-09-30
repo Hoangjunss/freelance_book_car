@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Apiresponse } from '../../../../models/response/apiresponse';
@@ -18,7 +18,8 @@ export class TourService {
   constructor(private httpClient: HttpClient) { }
 
   createTour(fromData: FormData): Observable<CreateTourResponse> {
-    return this.httpClient.post<Apiresponse<CreateTourResponse>>(`${this.baseUrl}`, fromData).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.post<Apiresponse<CreateTourResponse>>(`${this.baseUrl}`, fromData, {headers}).pipe(
       map((response: Apiresponse<CreateTourResponse>) => {
         if (response.success) {
           return response.data;
@@ -30,7 +31,8 @@ export class TourService {
   }
 
   updateTour(fomrData: FormData): Observable<UpdateTourResponse> {
-    return this.httpClient.patch<Apiresponse<UpdateTourResponse>>(`${this.baseUrl}`, fomrData).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.patch<Apiresponse<UpdateTourResponse>>(`${this.baseUrl}`, fomrData, {headers}).pipe(
       map((response: Apiresponse<UpdateTourResponse>) => {
         if (response.success) {
           return response.data;
@@ -42,7 +44,8 @@ export class TourService {
   }
 
   getTour(id: number): Observable<GetTourResponse> {
-    return this.httpClient.get<Apiresponse<GetTourResponse>>(`${this.baseUrl}/id/${id}`).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<GetTourResponse>>(`${this.baseUrl}/id/${id}`, {headers}).pipe(
       map((response: Apiresponse<GetTourResponse>) => {
         if (response.success) {
           return response.data;
@@ -54,7 +57,8 @@ export class TourService {
   }
 
   getAllTour(): Observable<GetTourResponse[]> {
-    return this.httpClient.get<Apiresponse<GetTourResponse[]>>(`${this.baseUrl}`).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<GetTourResponse[]>>(`${this.baseUrl}`, {headers}).pipe(
       map((response: Apiresponse<GetTourResponse[]>) => {
         if (response.success) {
           return response.data;
@@ -66,7 +70,8 @@ export class TourService {
   }
 
   getTourByCategory(category: string): Observable<GetTourResponse[]> {
-    return this.httpClient.get<Apiresponse<GetTourResponse[]>>(`${this.baseUrl}/${category}`).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<GetTourResponse[]>>(`${this.baseUrl}/${category}`, {headers}).pipe(
       map((response: Apiresponse<GetTourResponse[]>) => {
         if (response.success) {
           return response.data;
@@ -78,7 +83,8 @@ export class TourService {
   }
 
   getTourById(id: number): Observable<GetTourResponse> {
-    return this.httpClient.get<Apiresponse<GetTourResponse>>(`${this.baseUrl}/id/${id}`).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<GetTourResponse>>(`${this.baseUrl}/id/${id}`, {headers}).pipe(
       map((response: Apiresponse<GetTourResponse>) => {
         if (response.success) {
           return response.data;
@@ -90,7 +96,8 @@ export class TourService {
   }
 
   getTourDetailById(id: number): Observable<GetTourResponse> {
-    return this.httpClient.get<Apiresponse<GetTourResponse>>(`${this.baseUrl}/detail?id=${id}`).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<GetTourResponse>>(`${this.baseUrl}/detail?id=${id}`, {headers}).pipe(
       map((response: Apiresponse<GetTourResponse>) => {
         if (response.success) {
           return response.data;
@@ -99,5 +106,18 @@ export class TourService {
         }
       })
     );
+  }
+
+  private createAuthorizationHeader(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    console.log(token);
+    if (token) {
+      console.log('Token found in local store:', token);
+      return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    }
+    else {
+      console.log('Token not found in local store');
+    }
+    return new HttpHeaders();
   }
 }

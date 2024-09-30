@@ -2,16 +2,22 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from "../../../user/navbar/navbar.component";
+import { HomeComponent } from "../../../user/home/home.component";
+import { GetPageResponse } from '../../../../models/response/home/get-page-response';
 
 @Component({
   selector: 'app-page-home',
   standalone: true,
-  imports: [CommonModule, FormsModule, NavbarComponent],
+  imports: [CommonModule, FormsModule, NavbarComponent, HomeComponent],
   templateUrl: './page-home.component.html',
   styleUrl: './page-home.component.css'
 })
 export class PageHomeComponent implements OnInit{
   defaultVideoUrl: string = 'https://hoianmemoriesland.com/public/media/tvc/tvc0808.mp4';
+
+  homeData: GetPageResponse = new GetPageResponse();
+  detailData: GetPageResponse [] = [];
+  footerData: GetPageResponse = new GetPageResponse();
 
   isDisplayDetails: boolean = false;
 

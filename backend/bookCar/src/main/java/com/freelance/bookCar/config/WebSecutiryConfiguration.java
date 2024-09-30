@@ -37,18 +37,15 @@ private JwtAuthenticationFilter jwtAuthenticationFilter;
             CorsConfigurationSource corsConfigurationSource) throws Exception {
 
         http
-                // Loại bỏ bảo vệ CSRF
+                .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .csrf(AbstractHttpConfigurer::disable)
 
-                // Configure các luồng truy cập
-                .authorizeHttpRequests((auth) -> auth.requestMatchers("/auth/registration","/auth/login","/auth/refreshtoken","/hotel/*","/tour/*","/tourism/*","/hotel","/tour","/tourism","/hotel/id/*","/tour/id/*","/tourism/id/*", "/statistic", "/statistic/*", "/booking", "/booking/*", "/statistic/*/*", "/tour-schedule", "/tour-schedule/*",  "/ticket", "/ticket/*","/page","/page/*", "/voucher", "/voucher/*", "/promotion", "/promotion/*").permitAll()
-                    // Xác thực tất cả các request
+                .authorizeHttpRequests((auth) -> auth.requestMatchers("/auth/registration","/auth/login","/auth/refreshtoken", "/page","/page/*").permitAll()
                         .anyRequest()
                         .authenticated()
 
                 ).httpBasic(Customizer.withDefaults())
 
-                // Add JWT vào chuỗi lọc và ưu tiên loc theo JWT
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(
                         jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class

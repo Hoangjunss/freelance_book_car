@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Apiresponse } from '../../../../models/response/apiresponse';
@@ -16,7 +16,8 @@ export class TourismService {
   constructor(private httpClient: HttpClient) { }
 
   createTour(formData: FormData): Observable<CreateTourismResponse> {
-    return this.httpClient.post<Apiresponse<CreateTourismResponse>>(`${this.baseUrl}`, formData).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.post<Apiresponse<CreateTourismResponse>>(`${this.baseUrl}`, formData, {headers}).pipe(
       map((response: Apiresponse<CreateTourismResponse>) => {
         if (response.success) {
           return response.data;
@@ -28,7 +29,8 @@ export class TourismService {
   }
 
   updateTour(formData: FormData): Observable<UpdateTourismResponse> {
-    return this.httpClient.patch<Apiresponse<UpdateTourismResponse>>(`${this.baseUrl}`, formData).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.patch<Apiresponse<UpdateTourismResponse>>(`${this.baseUrl}`, formData, {headers}).pipe(
       map((response: Apiresponse<UpdateTourismResponse>) => {
         if (response.success) {
           return response.data;
@@ -40,7 +42,8 @@ export class TourismService {
   }
 
   getTour(id: number): Observable<GetTourismResponse> {
-    return this.httpClient.get<Apiresponse<GetTourismResponse>>(`${this.baseUrl}?id=${id}`).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<GetTourismResponse>>(`${this.baseUrl}?id=${id}`, {headers}).pipe(
       map((response: Apiresponse<GetTourismResponse>) => {
         if (response.success) {
           return response.data;
@@ -52,7 +55,8 @@ export class TourismService {
   }
 
   getAllTourism(): Observable<GetTourismResponse[]> {
-    return this.httpClient.get<Apiresponse<GetTourismResponse[]>>(`${this.baseUrl}`).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<GetTourismResponse[]>>(`${this.baseUrl}`, {headers}).pipe(
       map((response: Apiresponse<GetTourismResponse[]>) => {
         if (response.success) {
           return response.data;
@@ -64,7 +68,8 @@ export class TourismService {
   }
 
   getTourismByCategory(category: string): Observable<GetTourismResponse[]> {
-    return this.httpClient.get<Apiresponse<GetTourismResponse[]>>(`${this.baseUrl}/${category}`).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<GetTourismResponse[]>>(`${this.baseUrl}/${category}`, {headers}).pipe(
       map((response: Apiresponse<GetTourismResponse[]>) => {
         if (response.success) {
           return response.data;
@@ -76,7 +81,8 @@ export class TourismService {
   }
 
   getTourismDetailById(id: number): Observable<GetTourismResponse> {
-    return this.httpClient.get<Apiresponse<GetTourismResponse>>(`${this.baseUrl}/detail?id=${id}`).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<GetTourismResponse>>(`${this.baseUrl}/detail?id=${id}`, {headers}).pipe(
       map((response: Apiresponse<GetTourismResponse>) => {
         if (response.success) {
           return response.data;
@@ -87,5 +93,17 @@ export class TourismService {
     );
   }
 
+  private createAuthorizationHeader(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    console.log(token);
+    if (token) {
+      console.log('Token found in local store:', token);
+      return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    }
+    else {
+      console.log('Token not found in local store');
+    }
+    return new HttpHeaders();
+  }
 
 }

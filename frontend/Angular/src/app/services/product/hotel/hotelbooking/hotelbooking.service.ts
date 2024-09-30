@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CreateHotelBookingRequest } from '../../../../models/request/product/hotel/hotel-booking/create-hotelbooking-request';
 import { map, Observable } from 'rxjs';
@@ -18,7 +18,8 @@ export class HotelbookingService {
   constructor(private httpClient: HttpClient) { }
 
   createBooking(createBookingRequest: CreateHotelBookingRequest): Observable<CreateHotelBookingResponse> {
-    return this.httpClient.post<Apiresponse<CreateHotelBookingResponse>>(`${this.baseUrl}`, createBookingRequest).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.post<Apiresponse<CreateHotelBookingResponse>>(`${this.baseUrl}`, createBookingRequest, {headers}).pipe(
       map((response: Apiresponse<CreateHotelBookingResponse>) => {
         if (response.success) {
           return response.data;
@@ -30,7 +31,8 @@ export class HotelbookingService {
   }
 
   updateBooking(updateBookingRequest: UpdateHotelBookingRequest): Observable<UpdateHotelBookingResponse> {
-    return this.httpClient.put<Apiresponse<UpdateHotelBookingResponse>>(`${this.baseUrl}`, updateBookingRequest).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.put<Apiresponse<UpdateHotelBookingResponse>>(`${this.baseUrl}`, updateBookingRequest, {headers}).pipe(
       map((response: Apiresponse<UpdateHotelBookingResponse>) => {
         if (response.success) {
           return response.data;
@@ -42,7 +44,8 @@ export class HotelbookingService {
   }
 
   getBooking(id: number): Observable<GetHotelBookingResponse> {
-    return this.httpClient.get<Apiresponse<GetHotelBookingResponse>>(`${this.baseUrl}?id=${id}`).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<GetHotelBookingResponse>>(`${this.baseUrl}?id=${id}`, {headers}).pipe(
       map((response: Apiresponse<GetHotelBookingResponse>) => {
         if (response.success) {
           return response.data;
@@ -51,5 +54,18 @@ export class HotelbookingService {
         }
       })
     );
+  }
+
+  private createAuthorizationHeader(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    console.log(token);
+    if (token) {
+      console.log('Token found in local store:', token);
+      return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    }
+    else {
+      console.log('Token not found in local store');
+    }
+    return new HttpHeaders();
   }
 }

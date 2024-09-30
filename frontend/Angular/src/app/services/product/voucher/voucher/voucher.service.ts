@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Apiresponse } from '../../../../models/response/apiresponse';
@@ -18,7 +18,8 @@ export class VoucherService {
   constructor(private httpClient: HttpClient) { }
 
   createVoucher(formData: FormData): Observable<CreateVoucherResponse> {
-    return this.httpClient.post<Apiresponse<CreateVoucherResponse>>(`${this.baseUrl}`, formData).pipe(
+    const headers= this.createAuthorizationHeader();
+    return this.httpClient.post<Apiresponse<CreateVoucherResponse>>(`${this.baseUrl}`, formData, {headers}).pipe(
       map((response: Apiresponse<CreateVoucherResponse>) => {
         if (response.success) {
           return response.data;
@@ -30,7 +31,8 @@ export class VoucherService {
   }
 
   updateVoucher(formData: FormData): Observable<UpdateVoucherResponse> {
-    return this.httpClient.patch<Apiresponse<UpdateVoucherResponse>>(`${this.baseUrl}`, formData).pipe(
+    const headers= this.createAuthorizationHeader();
+    return this.httpClient.patch<Apiresponse<UpdateVoucherResponse>>(`${this.baseUrl}`, formData, {headers}).pipe(
       map((response: Apiresponse<UpdateVoucherResponse>) => {
         if (response.success) {
           return response.data;
@@ -42,7 +44,8 @@ export class VoucherService {
   }
 
   getVoucher(id: number): Observable<GetVoucherResponse> {
-    return this.httpClient.get<Apiresponse<GetVoucherResponse>>(`${this.baseUrl}?id=${id}`).pipe(
+    const headers= this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<GetVoucherResponse>>(`${this.baseUrl}?id=${id}`, {headers}).pipe(
       map((response: Apiresponse<GetVoucherResponse>) => {
         if (response.success) {
           return response.data;
@@ -54,7 +57,8 @@ export class VoucherService {
   }
 
   getAll(): Observable<GetVoucherResponse[]> {
-    return this.httpClient.get<Apiresponse<GetVoucherResponse[]>>(`${this.baseUrl}/all`).pipe(
+    const headers= this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<GetVoucherResponse[]>>(`${this.baseUrl}/all`, {headers}).pipe(
       map((response: Apiresponse<GetVoucherResponse[]>) => {
         if (response.success) {
           return response.data;
@@ -64,4 +68,18 @@ export class VoucherService {
       })
     );
   }
+
+  private createAuthorizationHeader(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    console.log(token);
+    if (token) {
+      console.log('Token found in local store:', token);
+      return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    }
+    else {
+      console.log('Token not found in local store');
+    }
+    return new HttpHeaders();
+  }
+
 }

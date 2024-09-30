@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Apiresponse } from '../../../../models/response/apiresponse';
@@ -21,7 +21,8 @@ export class PromotionService {
     formData.forEach((value, key) => {
       console.log(`${key}: ${value}`);
     });
-    return this.httpClient.post<Apiresponse<CreatePromotionResponse>>(`${this.baseUrl}`, formData).pipe(
+    const headers= this.createAuthorizationHeader();
+    return this.httpClient.post<Apiresponse<CreatePromotionResponse>>(`${this.baseUrl}`, formData, {headers}).pipe(
       map((response: Apiresponse<CreatePromotionResponse>) => {
         if (response.success) {
           return response.data;
@@ -33,7 +34,8 @@ export class PromotionService {
   }
 
   updatePromotion(formData: FormData): Observable<UpdatePromotionResponse> {
-    return this.httpClient.patch<Apiresponse<UpdatePromotionResponse>>(`${this.baseUrl}`, formData).pipe(
+    const headers= this.createAuthorizationHeader();
+    return this.httpClient.patch<Apiresponse<UpdatePromotionResponse>>(`${this.baseUrl}`, formData, {headers}).pipe(
       map((response: Apiresponse<UpdatePromotionResponse>) => {
         if (response.success) {
           return response.data;
@@ -45,7 +47,8 @@ export class PromotionService {
   }
 
   getPromotion(id: number): Observable<GetPromotionResponse> {
-    return this.httpClient.get<Apiresponse<GetPromotionResponse>>(`${this.baseUrl}?id=${id}`).pipe(
+    const headers= this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<GetPromotionResponse>>(`${this.baseUrl}?id=${id}`, {headers}).pipe(
       map((response: Apiresponse<GetPromotionResponse>) => {
         if (response.success) {
           return response.data;
@@ -57,7 +60,8 @@ export class PromotionService {
   }
 
   getAll(): Observable<GetPromotionResponse[]> {
-    return this.httpClient.get<Apiresponse<GetPromotionResponse[]>>(`${this.baseUrl}/all`).pipe(
+    const headers= this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<GetPromotionResponse[]>>(`${this.baseUrl}/all`, {headers}).pipe(
       map((response: Apiresponse<GetPromotionResponse[]>) => {
         if (response.success) {
           return response.data;
@@ -68,6 +72,18 @@ export class PromotionService {
     );
   }
 
+  private createAuthorizationHeader(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    console.log(token);
+    if (token) {
+      console.log('Token found in local store:', token);
+      return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    }
+    else {
+      console.log('Token not found in local store');
+    }
+    return new HttpHeaders();
+  }
 
 
   

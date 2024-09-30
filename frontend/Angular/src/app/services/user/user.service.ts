@@ -17,7 +17,7 @@ import { isPlatformBrowser } from '@angular/common';
 export class UserService {
 
   private baseURL = "http://localhost:8080/auth/";
-  constructor(private http: HttpClient, private router: Router, @Inject(PLATFORM_ID) private platformId: Object) { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   registerUser(formData: FormData): Observable<registerUserResponse> {
     return this.http.post<Apiresponse<registerUserResponse>>(`${this.baseURL}registration`, formData).pipe(
@@ -59,9 +59,9 @@ export class UserService {
     
   getCurrentUser(): Observable<GetCurrentUserResponse> {
     console.log('Getting current user' );
-    // const headers = this.createAuthorizationHeader();
-    // console.log('Authorization header:', headers);
-    return this.http.get<Apiresponse<GetCurrentUserResponse>>(`${this.baseURL}currentUser`).pipe(
+    const headers = this.createAuthorizationHeader();
+    console.log('Authorization header:', headers);
+    return this.http.get<Apiresponse<GetCurrentUserResponse>>(`${this.baseURL}currentUser`, {headers}).pipe(
       map((response) => {
         if (response) {
           console.log('Current user response:', response.data);
@@ -81,16 +81,13 @@ export class UserService {
 
 
   private createAuthorizationHeader(): HttpHeaders {
-    let token = null;
-
-    if (isPlatformBrowser(this.platformId)) {
-      token = localStorage.getItem('token');
-    }
+    const token = localStorage.getItem('token');
+    console.log(token);
     if (token) {
       console.log('Token found in local store:', token);
-      // Đảm bảo sử dụng "Bearer" đúng cách
       return new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    } else {
+    }
+    else {
       console.log('Token not found in local store');
     }
     return new HttpHeaders();

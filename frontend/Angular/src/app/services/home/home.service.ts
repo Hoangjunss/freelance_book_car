@@ -14,7 +14,8 @@ export class HomeService {
   constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) { }
 
   getHome():Observable<GetPageResponse> {
-    return this.http.get<Apiresponse<GetPageResponse>>(`${this.baseUrl}home`,).pipe(
+    const headers =this.createAuthorizationHeader();
+    return this.http.get<Apiresponse<GetPageResponse>>(`${this.baseUrl}home`, {headers}).pipe(
       map((response: Apiresponse<GetPageResponse>) => {
         if (response.success) {
           return response.data;
@@ -26,7 +27,8 @@ export class HomeService {
   }
 
   getDetail():Observable<GetPageResponse> {
-    return this.http.get<Apiresponse<GetPageResponse>>(`${this.baseUrl}detail`).pipe(
+    const headers =this.createAuthorizationHeader();
+    return this.http.get<Apiresponse<GetPageResponse>>(`${this.baseUrl}detail`, {headers}).pipe(
       map((response: Apiresponse<GetPageResponse>) => {
         if (response.success) {
           return response.data;
@@ -38,7 +40,8 @@ export class HomeService {
   }
 
   getFooter():Observable<GetPageResponse> {
-    return this.http.get<Apiresponse<GetPageResponse>>(`${this.baseUrl}footer`).pipe(
+    const headers =this.createAuthorizationHeader();
+    return this.http.get<Apiresponse<GetPageResponse>>(`${this.baseUrl}footer`, {headers}).pipe(
       map((response: Apiresponse<GetPageResponse>) => {
         if (response.success) {
           return response.data;
@@ -50,16 +53,13 @@ export class HomeService {
   }
 
   private createAuthorizationHeader(): HttpHeaders {
-    let token = null;
-
-    if (isPlatformBrowser(this.platformId)) {
-      token = localStorage.getItem('token');
-    }
+    const token = localStorage.getItem('token');
+    console.log(token);
     if (token) {
       console.log('Token found in local store:', token);
-      // Đảm bảo sử dụng "Bearer" đúng cách
       return new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    } else {
+    }
+    else {
       console.log('Token not found in local store');
     }
     return new HttpHeaders();

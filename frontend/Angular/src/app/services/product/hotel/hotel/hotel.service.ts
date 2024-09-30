@@ -1,10 +1,11 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { CreateHotelResponse } from '../../../../models/response/product/hotel/hotel/create-hotel-response';
 import { Apiresponse } from '../../../../models/response/apiresponse';
 import { UpdateHotelResponse } from '../../../../models/response/product/hotel/hotel/update-hotel-response';
 import { GetHotelResponse } from '../../../../models/response/product/hotel/hotel/get-hotel-response';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +16,23 @@ export class HotelService {
 
   constructor(private httpClient: HttpClient) { }
 
+  private createAuthorizationHeader(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    console.log(token);
+    if (token) {
+      console.log('Token found in local store:', token);
+      return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    }
+    else {
+      console.log('Token not found in local store');
+    }
+    return new HttpHeaders();
+  }
+
+
   createHotel(formData: FormData): Observable<CreateHotelResponse> {
-    return this.httpClient.post<Apiresponse<CreateHotelResponse>>(`${this.baseUrl}`, formData).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.post<Apiresponse<CreateHotelResponse>>(`${this.baseUrl}`, formData, {headers}).pipe(
       map((response: Apiresponse<CreateHotelResponse>) => {
         if (response.success) {
           return response.data;
@@ -27,11 +43,10 @@ export class HotelService {
     );
   }
 
+
   updateHotel(formData: FormData): Observable<UpdateHotelResponse> {
-    formData.forEach((value, key) => {
-      console.log(`Service: ${key}: ${value}`);
-    });
-    return this.httpClient.patch<Apiresponse<UpdateHotelResponse>>(`${this.baseUrl}`, formData).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.patch<Apiresponse<UpdateHotelResponse>>(`${this.baseUrl}`, formData, {headers}).pipe(
       map((response: Apiresponse<UpdateHotelResponse>) => {
         if (response.success) {
           console.log(`Service: ` + JSON.stringify(response.data));
@@ -44,7 +59,8 @@ export class HotelService {
   }
 
   getHotel(id: number): Observable<GetHotelResponse> {
-    return this.httpClient.get<Apiresponse<GetHotelResponse>>(`${this.baseUrl}?id=${id}`).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<GetHotelResponse>>(`${this.baseUrl}?id=${id}`, {headers}).pipe(
       map((response: Apiresponse<GetHotelResponse>) => {
         if (response.success) {
           return response.data;
@@ -56,7 +72,8 @@ export class HotelService {
   }
 
   getAllHotel(): Observable<GetHotelResponse[]> {
-    return this.httpClient.get<Apiresponse<GetHotelResponse[]>>(`${this.baseUrl}`).pipe(
+    const headers= this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<GetHotelResponse[]>>(`${this.baseUrl}`, {headers}).pipe(
       map((response: Apiresponse<GetHotelResponse[]>) => {
         if (response.success) {
           return response.data;
@@ -68,7 +85,8 @@ export class HotelService {
   }
 
   getHotelByLocation(location: string): Observable<GetHotelResponse[]> {
-    return this.httpClient.get<Apiresponse<GetHotelResponse[]>>(`${this.baseUrl}/${location}`).pipe(
+    const headers= this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<GetHotelResponse[]>>(`${this.baseUrl}/${location}`, {headers}).pipe(
       map((response: Apiresponse<GetHotelResponse[]>) => {
         if (response.success) {
           return response.data;
@@ -80,7 +98,8 @@ export class HotelService {
   }
 
   getHotelDetailById(id: number): Observable<GetHotelResponse> {
-    return this.httpClient.get<Apiresponse<GetHotelResponse>>(`${this.baseUrl}/id/${id}`).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<GetHotelResponse>>(`${this.baseUrl}/id/${id}`, {headers}).pipe(
       map((response: Apiresponse<GetHotelResponse>) => {
         if (response.success) {
           return response.data;

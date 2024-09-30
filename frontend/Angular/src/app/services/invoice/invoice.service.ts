@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CreateInvoiceRequest } from '../../models/request/invoice/create-invoice-request';
 import { map, Observable } from 'rxjs';
@@ -18,7 +18,8 @@ export class InvoiceService {
   private baseUrl = 'http://localhost:8080/invoice';
 
   createInvoice(createInvoiceRequest: CreateInvoiceRequest): Observable<CreateInvoiceResponse> {
-    return this.httpClient.post<Apiresponse<CreateInvoiceResponse>>(`${this.baseUrl}`, createInvoiceRequest).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.post<Apiresponse<CreateInvoiceResponse>>(`${this.baseUrl}`, createInvoiceRequest, {headers}).pipe(
       map((response: Apiresponse<CreateInvoiceResponse>) => {
         if (response.success) {
           return response.data;
@@ -30,7 +31,8 @@ export class InvoiceService {
   }
 
   updateInvoice(updateInvoiceRequest: UpdateInvoiceRequest): Observable<UpdateInvoiceResponse> {
-    return this.httpClient.put<Apiresponse<UpdateInvoiceResponse>>(`${this.baseUrl}`, updateInvoiceRequest).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.put<Apiresponse<UpdateInvoiceResponse>>(`${this.baseUrl}`, updateInvoiceRequest, {headers}).pipe(
       map((response: Apiresponse<UpdateInvoiceResponse>) => {
         if (response.success) {
           return response.data;
@@ -42,7 +44,8 @@ export class InvoiceService {
   }
 
   getInvoice(id: number): Observable<GetInvoiceResponse> {
-    return this.httpClient.get<Apiresponse<GetInvoiceResponse>>(`${this.baseUrl}?id=${id}`).pipe(
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<GetInvoiceResponse>>(`${this.baseUrl}?id=${id}`, {headers}).pipe(
       map((response: Apiresponse<GetInvoiceResponse>) => {
         if (response.success) {
           return response.data; // Trả về dữ liệu nếu thành công
@@ -51,5 +54,18 @@ export class InvoiceService {
         }
       })
     );
+  }
+
+  private createAuthorizationHeader(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    console.log(token);
+    if (token) {
+      console.log('Token found in local store:', token);
+      return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    }
+    else {
+      console.log('Token not found in local store');
+    }
+    return new HttpHeaders();
   }
 }
