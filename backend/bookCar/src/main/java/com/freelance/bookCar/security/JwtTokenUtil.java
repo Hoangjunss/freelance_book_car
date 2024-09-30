@@ -29,11 +29,11 @@ public class JwtTokenUtil {
 //    private  static  final long EXPIRATION_TIME_FOR_TOKEN = 604_800_000; //1 Day
 //    private  static  final long EXPIRATION_TIME_FOR_REFRSH_TOKEN = 604_800_000; //1 Day
 
-//    private static final long EXPIRATION_TIME_FOR_TOKEN = 2_592_000_000L; // 1 Month (30 Days)
-//    private static final long EXPIRATION_TIME_FOR_REFRSH_TOKEN = 2_592_000_000L; // 1 Month (30 Days)
+    private static final long EXPIRATION_TIME_FOR_TOKEN = 2_592_000_000L; // 1 Month (30 Days)
+    private static final long EXPIRATION_TIME_FOR_REFRSH_TOKEN = 2_592_000_000L; // 1 Month (30 Days)
 
-    private static final long EXPIRATION_TIME_FOR_TOKEN =  60 * 1000L; // 5 phút
-    private static final long EXPIRATION_TIME_FOR_REFRSH_TOKEN = 5 * 60 * 1000L; // 5 phút
+//    private static final long EXPIRATION_TIME_FOR_TOKEN =  60 * 1000L; // 5 phút
+//    private static final long EXPIRATION_TIME_FOR_REFRSH_TOKEN = 5 * 60 * 1000L; // 5 phút
 
 
 
