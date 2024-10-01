@@ -14,7 +14,7 @@ import { isPlatformBrowser } from '@angular/common';
 })
 export class TourService {
 
-  private baseUrl = 'http://localhost:8080/tour';
+  private baseUrl = 'http://localhost:8080/api/v1/tour';
 
   constructor(private httpClient: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) { }
 

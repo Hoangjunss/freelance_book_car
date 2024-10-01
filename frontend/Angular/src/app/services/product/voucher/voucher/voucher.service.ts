@@ -13,7 +13,7 @@ import { GetVoucherResponse } from '../../../../models/response/product/voucher/
 })
 export class VoucherService {
 
-  private baseUrl = 'http://localhost:8080/voucher';
+  private baseUrl = 'http://localhost:8080/api/v1/voucher';
 
   constructor(private httpClient: HttpClient) { }
 

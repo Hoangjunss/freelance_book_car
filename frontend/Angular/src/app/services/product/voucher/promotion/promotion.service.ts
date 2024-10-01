@@ -13,7 +13,7 @@ import { GetPromotionResponse } from '../../../../models/response/product/vouche
 })
 export class PromotionService {
 
-  private baseUrl = 'http://localhost:8080/promotion';
+  private baseUrl = 'http://localhost:8080/api/v1/promotion';
 
   constructor(private httpClient: HttpClient) { }
 

@@ -13,7 +13,7 @@ import { GetHotelBookingResponse } from '../../../../models/response/product/hot
 })
 export class HotelbookingService {
 
-  private baseUrl = 'http://localhost:8080/hotel-booking';
+  private baseUrl = 'http://localhost:8080/api/v1/hotel-booking';
 
   constructor(private httpClient: HttpClient) { }
 

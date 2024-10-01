@@ -10,7 +10,7 @@ import { isPlatformBrowser } from '@angular/common';
 })
 export class HomeService {
 
-  private baseUrl = 'http://localhost:8080/page/';
+  private baseUrl = 'http://localhost:8080/api/v1/page/';
   constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) { }
 
   getHome():Observable<GetPageResponse> {

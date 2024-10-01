@@ -15,7 +15,7 @@ export class InvoiceService {
 
   constructor(private httpClient: HttpClient) { }
 
-  private baseUrl = 'http://localhost:8080/invoice';
+  private baseUrl = 'http://localhost:8080/api/v1/invoice';
 
   createInvoice(createInvoiceRequest: CreateInvoiceRequest): Observable<CreateInvoiceResponse> {
     const headers = this.createAuthorizationHeader();
