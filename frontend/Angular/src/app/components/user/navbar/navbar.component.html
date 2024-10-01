@@ -48,13 +48,11 @@
                             <button class="btn w-100">Home</button>
                             <button class="btn btn-secondary mb-2 w-100" routerLink="/auth/login"
                                 *ngIf="!CurrentUser">Sign Up</button>
-                            <button class="btn btn-secondary mb-2 w-100" (click)="logout()"
-                                >Logout</button>
+                            <button class="btn btn-secondary mb-2 w-100" (click)="logout()">Logout</button>
                             <button class="btn btn-danger w-100"><i class="fa-solid fa-user-circle me-2"
                                     ></i>{{CurrentUser}}</button>
-                            <button class="btn btn-danger w-100"><i class="fa-solid fa-user-circle me-2"
-                                    *ngIf="!CurrentUser"></i> My
-                                Account</button>
+                            <button class="btn btn-danger w-100" *ngIf="!CurrentUser"><i class="fa-solid fa-user-circle me-2"
+                                    ></i> My Account</button>
                         </div>
 
                         <!-- Social Icons on Mobile -->
