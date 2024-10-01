@@ -11,10 +11,11 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/tour-schedule-status")
+@RequestMapping("/api/v1/tour-schedule-status")
 @CrossOrigin(origins = "*")
 @Slf4j
 public class TourScheduleStatusController {
@@ -23,6 +24,7 @@ public class TourScheduleStatusController {
     private TourScheduleStatusService tourScheduleStatusService;
 
     // API tạo Tour Schedule Status
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping()
     public ResponseEntity<ApiResponse<CreateTourScheduleStatusResponse>> create(
             @ModelAttribute @Valid CreateTourScheduleStatusRequest createTourScheduleStatusRequest) {
@@ -32,6 +34,7 @@ public class TourScheduleStatusController {
     }
 
     // API cập nhật Tour Schedule Status
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PatchMapping()
     public ResponseEntity<ApiResponse<UpdateTourScheduleStatusResponse>> update(
             @ModelAttribute @Valid UpdateTourScheduleStatusRequest updateTourScheduleStatusRequest) {
@@ -41,6 +44,7 @@ public class TourScheduleStatusController {
     }
 
     // API lấy Tour Schedule Status theo id
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping()
     public ResponseEntity<ApiResponse<GetTourScheduleStatusResponse>> getById(@RequestParam Integer id) {
         log.info("Fetching Tour Schedule Status with id: {}", id);

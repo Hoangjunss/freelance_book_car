@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -40,7 +41,16 @@ private JwtAuthenticationFilter jwtAuthenticationFilter;
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .csrf(AbstractHttpConfigurer::disable)
 
-                .authorizeHttpRequests((auth) -> auth.requestMatchers("/auth/registration","/auth/login","/auth/refreshtoken", "/page","/page/*").permitAll()
+                .authorizeHttpRequests((auth) ->auth
+                        .requestMatchers("/api/v1/auth/registration","/api/v1/auth/login","/api/v1/auth/refreshtoken").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/v1/hotel-booking").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/v1/hotel").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/v1/ticket").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/v1/tourism").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/v1/tour").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/v1/tourSchedule").permitAll()
+
+
                         .anyRequest()
                         .authenticated()
 

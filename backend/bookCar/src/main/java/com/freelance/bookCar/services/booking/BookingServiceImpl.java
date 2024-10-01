@@ -1,6 +1,7 @@
 package com.freelance.bookCar.services.booking;
 
 import com.freelance.bookCar.dto.request.booking.CreateBookingRequest;
+import com.freelance.bookCar.dto.request.booking.OrderRequest;
 import com.freelance.bookCar.dto.request.booking.UpdateBookingRequest;
 import com.freelance.bookCar.dto.request.booking.bookingHotel.AddBookingHotelRequest;
 import com.freelance.bookCar.dto.request.booking.bookingHotel.UpdateBookingHotelRequest;
@@ -10,6 +11,7 @@ import com.freelance.bookCar.dto.request.booking.bookingTourism.AddBookingTouris
 import com.freelance.bookCar.dto.request.booking.bookingTourism.UpdateBookingTourismRequest;
 import com.freelance.bookCar.dto.response.booking.CreateBookingResponse;
 import com.freelance.bookCar.dto.response.booking.GetBookingResponse;
+import com.freelance.bookCar.dto.response.booking.OrderResponse;
 import com.freelance.bookCar.dto.response.booking.UpdateBookingResponse;
 import com.freelance.bookCar.dto.response.booking.bookingHotel.AddBookingHotelResponse;
 import com.freelance.bookCar.dto.response.booking.bookingHotel.UpdateBookingHotelResponse;
@@ -543,6 +545,13 @@ public class BookingServiceImpl implements BookingService{
         Booking booking=modelMapper.map(getBookingResponse,Booking.class);
         booking.setTypeBooking(TypeBooking.valueOf(type));
         return modelMapper.map(bookingRepository.save(booking), GetBookingResponse.class);
+    }
+
+    @Override
+    public OrderResponse order(OrderRequest orderRequest) {
+        GetBookingResponse getBookingResponse=findById(orderRequest.getId());
+        Booking booking=modelMapper.map(getBookingResponse,Booking.class);
+        return null;
     }
 
 

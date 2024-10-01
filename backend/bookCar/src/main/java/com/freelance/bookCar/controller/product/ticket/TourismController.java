@@ -13,47 +13,50 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/tourism")
+@RequestMapping("/api/v1/tourism")
 @CrossOrigin(origins = "*")
 @Slf4j
 public class TourismController {
 
     @Autowired
     private TourismService tourismService;
-
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping()
     public ResponseEntity<ApiResponse<CreateTourismResponse>> create(@ModelAttribute @Valid CreateTourismRequest createTourismRequest) {
             CreateTourismResponse response = tourismService.createTourism(createTourismRequest);
             return ResponseEntity.ok(new ApiResponse<>(true, "Tourism entity created successfully", response));
     }
-
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PatchMapping()
     public ResponseEntity<ApiResponse<UpdateTourismResponse>> update(@ModelAttribute @Valid UpdateTourismRequest updateTourismRequest) {
             UpdateTourismResponse response = tourismService.updateTourism(updateTourismRequest);
             return ResponseEntity.ok(new ApiResponse<>(true, "Tourism entity updated successfully", response));
     }
-
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/id/{id}")
     public ResponseEntity<ApiResponse<GetTourismResponse>> getById(@RequestParam Integer id) {
             GetTourismResponse response = tourismService.findById(id);
             return ResponseEntity.ok(new ApiResponse<>(true, "Tourism entity retrieved successfully", response));
-    }
+    }@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping()
     public ResponseEntity<ApiResponse<List<GetTourismResponse>>> getAll() {
         List<GetTourismResponse> response = tourismService.getAll();
         return ResponseEntity.ok(new ApiResponse<>(true, "Hotel retrieved successfully", response));
     }
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/{location}")
     public ResponseEntity<ApiResponse<List<GetTourismResponse>>> getLocation(@PathVariable String location) {
         List<GetTourismResponse> response = tourismService.findLocation(location);
         return ResponseEntity.ok(new ApiResponse<>(true, "Hotel retrieved successfully", response));
     }
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/detail")
     public ResponseEntity<ApiResponse<GetTourismDetailResponse>> getDetail(@RequestParam Integer id, @RequestParam(required = false)  LocalDateTime dateTime) {
         if(dateTime==null){

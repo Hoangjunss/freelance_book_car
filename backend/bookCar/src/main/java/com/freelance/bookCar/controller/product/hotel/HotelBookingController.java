@@ -11,29 +11,30 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/hotel-booking")
+@RequestMapping("/api/v1/hotel-booking")
 @CrossOrigin(origins = "*")
 @Slf4j
 public class HotelBookingController {
 
     @Autowired
     private HotelBookingService hotelBookingService;
-
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PostMapping()
     public ResponseEntity<ApiResponse<CreateHotelBookingResponse>> create(@ModelAttribute @Valid CreateHotelBookingRequest createHotelBookingRequest) {
             CreateHotelBookingResponse response = hotelBookingService.createHotelBooking(createHotelBookingRequest);
             return ResponseEntity.ok(new ApiResponse<>(true, "Hotel booking created successfully", response));
     }
-
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PatchMapping()
     public ResponseEntity<ApiResponse<UpdateHotelBookingResponse>> update(@ModelAttribute @Valid UpdateHotelBookingRequest updateHotelBookingRequest) {
             UpdateHotelBookingResponse response = hotelBookingService.updateHotelBooking(updateHotelBookingRequest);
             return ResponseEntity.ok(new ApiResponse<>(true, "Hotel booking updated successfully", response));
     }
-
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping()
     public ResponseEntity<ApiResponse<GetHotelBookingResponse>> getById(@RequestParam Integer id) {
             GetHotelBookingResponse response = hotelBookingService.findById(id);
