@@ -38,6 +38,7 @@ export class LoginComponent {
             this.getCurrentUser();
           }
           this.router.navigate(['/home']);
+          window.location.reload();
         },
         error: (error) => {
           console.error('Login error:', error);
