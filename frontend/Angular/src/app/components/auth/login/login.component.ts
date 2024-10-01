@@ -37,7 +37,9 @@ export class LoginComponent {
             localStorage.setItem('token', token);
             this.getCurrentUser();
           }
-          this.router.navigate(['/home']);
+          this.router.navigate(['/home']).then(() => {
+            window.location.reload();
+          });
         },
         error: (error) => {
           console.error('Login error:', error);

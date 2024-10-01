@@ -14,12 +14,12 @@
                       
                       <li class="nav-item" *ngFor="let item of navbarContent">
                         <ng-container *ngIf="item.isUser; else nonUser">
-                          <button class="btn btn-danger" (click)="item.action && item.action()">
+                          <button class="btn btn-danger" >
                             <i class="fa-solid fa-user-circle me-2"></i>{{ item.label }}
                           </button>
                         </ng-container>
                         <ng-template #nonUser>
-                          <button class="btn btn-secondary" [routerLink]="item.routerLink">
+                          <button class="btn btn-secondary" [routerLink]="item.routerLink" (click)="item.action ? item.action($event) : null">
                             {{ item.label }}
                           </button>
                         </ng-template>
