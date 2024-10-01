@@ -114,6 +114,7 @@ export class LocationDetailComponent {
     console.log(id);
     const addBookingTourRequest = new AddBookingTourRequest();
     const idUser = localStorage.getItem('idUser');
+    const idBooking = localStorage.getItem('idBooking');
     addBookingTourRequest.idUser = parseInt(idUser!);
     addBookingTourRequest.idTour = id;
     addBookingTourRequest.quantity = 1;
@@ -138,6 +139,7 @@ export class LocationDetailComponent {
     const formData = new FormData();
     formData.append('idTour', this.selectedTourSchedule?.toString() || '');
     formData.append('idUser', addBookingTourRequest.idUser.toString());
+    formData.append('idBooking', idBooking || '');
     formData.append('quantity', addBookingTourRequest.quantity.toString());
     formData.append('totalPrice', addBookingTourRequest.totalPrice ? addBookingTourRequest.totalPrice.toString() : '');
 

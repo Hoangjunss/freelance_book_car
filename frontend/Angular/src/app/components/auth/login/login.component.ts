@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { Title } from '@angular/platform-browser';
 import { Router, RouterLink } from '@angular/router';
 import { UserService } from '../../../services/user/user.service';
+import { BookingService } from '../../../services/booking/booking.service';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,7 @@ import { UserService } from '../../../services/user/user.service';
 export class LoginComponent {
   userForm : FormGroup;
 
-  constructor(private fb: FormBuilder,private router: Router,private titleService: Title,private userService: UserService) {
+  constructor(private fb: FormBuilder,private router: Router,private titleService: Title,private userService: UserService, private bookingService: BookingService) {
     this.userForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]], 
@@ -50,11 +51,23 @@ export class LoginComponent {
       next: (user) => {
         console.log('User response:', user);
         localStorage.setItem('currentUser', JSON.stringify(user));
-        console.log('Current user data saved:', user);
+        console.log('Current user data saved:', user.id);
+        localStorage.setItem('idUser', JSON.stringify(user.id));
+        if(user.id != undefined){
+          this.getBooking(user.id);
+        }
       },
       error: (error) => {
         console.error('Error fetching current user:', error);
       }
     });
+  }
+
+  getBooking(idUser:number){
+    this.bookingService.getBookingByUser(idUser).subscribe({
+      next: (data) =>{
+        localStorage.setItem('idBooking', JSON.stringify(data.id));
+      }
+    })
   }
 }

@@ -166,7 +166,7 @@ public class BookingServiceImpl implements BookingService{
     @Override
     public GetBookingResponse findByIdUser(Integer idUser) {
         log.info("Finding booking with idUser: {}", idUser);
-        return modelMapper.map(bookingRepository.findByIdUser(idUser), GetBookingResponse.class);
+        return modelMapper.map(bookingRepository.findByTypeBookingAndIdUser(TypeBooking.CART,idUser), GetBookingResponse.class);
     }
 
     @Override
@@ -178,7 +178,14 @@ public class BookingServiceImpl implements BookingService{
 
     private boolean existBooking(Integer id){
         log.info("Checking if booking exists with id user: {}", id);
-        if(bookingRepository.findByIdUser(id) != null){
+        if(bookingRepository.findById(id) != null){
+            return true;
+        }
+        return false;
+    }
+    private boolean existBookingCart(Integer id){
+        log.info("Checking if booking exists with id user: {}", id);
+        if(bookingRepository.findByTypeBookingAndIdUser(TypeBooking.CART,id) != null){
             return true;
         }
         return false;
@@ -203,7 +210,7 @@ public class BookingServiceImpl implements BookingService{
 
         // Check if the booking exists, create if not
         Booking booking = new Booking();
-        if ((addBookingTourRequest.getIdUser() == null) || !existBooking(addBookingTourRequest.getIdUser())) {
+        if (!existBookingCart(addBookingTourRequest.getIdUser())) {
             // Create a new booking using Builder and ModelMapper
             CreateBookingRequest createBookingRequest = modelMapper
                     .map(addBookingTourRequest,
@@ -221,7 +228,7 @@ public class BookingServiceImpl implements BookingService{
         }
         else {
             // Retrieve the existing booking using ModelMapper
-            booking = modelMapper.map(findByIdUser(addBookingTourRequest.getIdUser()), Booking.class);
+            booking = modelMapper.map(findById(addBookingTourRequest.getIdBooking()), Booking.class);
 
             // Update the total price by adding the price of the new tour
             booking = Booking.builder()
@@ -299,7 +306,7 @@ public class BookingServiceImpl implements BookingService{
 
         // Check if the booking exists, create if not
         Booking booking = new Booking();
-        if ((addBookingTourismRequest.getIdUser() == null )|| !existBooking(addBookingTourismRequest.getIdUser())) {
+        if (!existBookingCart(addBookingTourismRequest.getIdUser())) {
             // Create a new booking using Builder and ModelMapper
             CreateBookingRequest createBookingRequest = modelMapper.map(addBookingTourismRequest, CreateBookingRequest.class);
             createBookingRequest.setTotalPrice(addBookingTourismRequest.getTotalPrice());
@@ -311,7 +318,7 @@ public class BookingServiceImpl implements BookingService{
             booking = modelMapper.map(createBookingResponse, Booking.class);
         } else {
             // Retrieve the existing booking using ModelMapper
-            booking = modelMapper.map(findByIdUser(addBookingTourismRequest.getIdUser()), Booking.class);
+            booking = modelMapper.map(findById(addBookingTourismRequest.getIdBooking()), Booking.class);
 
             // Update the total price by adding the price of the new tourism
             booking = Booking.builder()
@@ -378,7 +385,7 @@ public class BookingServiceImpl implements BookingService{
 
         // Check if the booking exists, create if not
         Booking booking = new Booking();
-        if ((addBookingHotelRequest.getIdUser() == null) || !existBooking(addBookingHotelRequest.getIdUser())) {
+        if (!existBookingCart(addBookingHotelRequest.getIdUser())) {
             // Create a new booking using Builder and ModelMapper
             CreateBookingRequest createBookingRequest = modelMapper.map(addBookingHotelRequest, CreateBookingRequest.class);
             createBookingRequest.setTotalPrice(addBookingHotelRequest.getTotalPrice());
@@ -392,7 +399,7 @@ public class BookingServiceImpl implements BookingService{
             booking = modelMapper.map(createBookingResponse, Booking.class);
         } else {
             // Retrieve the existing booking using ModelMapper
-            booking = modelMapper.map(findByIdUser(addBookingHotelRequest.getIdUser()), Booking.class);
+            booking = modelMapper.map(findById(addBookingHotelRequest.getIdBooking()), Booking.class);
 
             // Update the total price by adding the price of the new hotel stay
             booking = Booking.builder()

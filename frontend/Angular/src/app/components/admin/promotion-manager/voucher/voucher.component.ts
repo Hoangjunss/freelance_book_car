@@ -77,13 +77,6 @@ export class VoucherComponent implements OnInit {
     return Array(this.totalPages).fill(0).map((x, i) => i + 1);
   }
 
-  searchTour(){
-
-  }
-  reset(){
-    
-  }
-
   displayFormCreate() {
     this.isDisplayCreate = true;
   }

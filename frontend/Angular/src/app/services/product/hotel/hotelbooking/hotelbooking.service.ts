@@ -56,6 +56,7 @@ export class HotelbookingService {
     );
   }
 
+
   private createAuthorizationHeader(): HttpHeaders {
     const token = localStorage.getItem('token');
     console.log(token);
