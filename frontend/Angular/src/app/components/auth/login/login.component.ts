@@ -1,27 +1,43 @@
 import { CommonModule, JsonPipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { Router, RouterLink } from '@angular/router';
 import { UserService } from '../../../services/user/user.service';
 import { BookingService } from '../../../services/booking/booking.service';
+import { GoogleLoginProvider, GoogleSigninButtonModule, SocialAuthService, SocialLoginModule, SocialUser } from '@abacritt/angularx-social-login';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, RouterLink,FormsModule, ReactiveFormsModule, JsonPipe],
+  imports: [CommonModule, RouterLink, FormsModule, ReactiveFormsModule, JsonPipe,SocialLoginModule,GoogleSigninButtonModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent {
-  userForm : FormGroup;
+export class LoginComponent implements OnInit {
+  userForm: FormGroup;
+  user?: SocialUser;
+  loggerIn: boolean = false;
 
-  constructor(private fb: FormBuilder,private router: Router,private titleService: Title,private userService: UserService, private bookingService: BookingService) {
+  constructor(private fb: FormBuilder,
+    private router: Router,
+    private titleService: Title,
+    private userService: UserService,
+    private bookingService: BookingService,
+    private authService: SocialAuthService
+  ) {
     this.userForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required]], 
+      password: ['', [Validators.required]],
     });
     this.titleService.setTitle("Login");
+  }
+  ngOnInit(): void {
+    this.authService.authState.subscribe((user) => {
+      this.user = user; 
+      this.loggerIn = (user != null);
+
+    });
   }
 
   loginUser() {
@@ -46,13 +62,13 @@ export class LoginComponent {
       });
     }
   }
-  
+
   getCurrentUser() {
     this.userService.getCurrentUser().subscribe({
       next: (user) => {
         localStorage.setItem('currentUser', JSON.stringify(user));
         localStorage.setItem('idUser', JSON.stringify(user.id));
-        if(user.id != undefined){
+        if (user.id != undefined) {
           this.getBooking(user.id);
         }
       },
@@ -62,11 +78,21 @@ export class LoginComponent {
     });
   }
 
-  getBooking(idUser:number){
+  getBooking(idUser: number) {
     this.bookingService.getBookingByUser(idUser).subscribe({
-      next: (data) =>{
+      next: (data) => {
         localStorage.setItem('idBooking', JSON.stringify(data.id));
       }
     })
   }
+
+  signInWithGoogle(): void {
+    console.log('Sign in with Google');
+    this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then((user) => {
+      console.log(user);
+    }).catch((err) => {
+      console.error('Login failed:', err);
+    });
+  }
+
 }
