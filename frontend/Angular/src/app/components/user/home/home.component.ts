@@ -88,7 +88,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   initIntersectionObserver(): void {
     if (typeof IntersectionObserver !== 'undefined') {
       const options = {
-        root: null,
+        root: null as Element | null,
         rootMargin: '0px',
         threshold: 0.1
       };

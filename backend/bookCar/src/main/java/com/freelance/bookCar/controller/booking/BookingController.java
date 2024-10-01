@@ -128,4 +128,10 @@ public class BookingController {
         OrderResponse addBookingTourResponse=bookingService.order(addBookingTourRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", addBookingTourResponse));
     }
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @GetMapping("/id")
+    public ResponseEntity<ApiResponse<List<GetBookingResponse>>> getId(@RequestParam Integer type){
+        List<GetBookingResponse> getBookingResponses=bookingService.findId(type);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", getBookingResponses));
+    }
 }

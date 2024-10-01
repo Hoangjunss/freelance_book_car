@@ -41,4 +41,5 @@ public interface BookingService {
     List<GetBookingResponse> findType(String type);
     GetBookingResponse updateType(Integer id,String type);
     OrderResponse order(OrderRequest orderRequest);
+    List<GetBookingResponse> findId(Integer IdUser);
 }
