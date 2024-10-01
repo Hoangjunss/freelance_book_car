@@ -3,6 +3,7 @@ package com.freelance.bookCar.controller.auth;
 import com.freelance.bookCar.dto.ApiResponse;
 import com.freelance.bookCar.dto.request.booking.CreateBookingRequest;
 import com.freelance.bookCar.dto.request.user.accountDTO.LoginRequest;
+import com.freelance.bookCar.dto.request.user.accountDTO.LoginTokenGoogle;
 import com.freelance.bookCar.dto.request.user.accountDTO.RefreshToken;
 import com.freelance.bookCar.dto.request.user.accountDTO.RegistrationRequest;
 import com.freelance.bookCar.dto.response.booking.CreateBookingResponse;
@@ -17,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RestController
 @RequestMapping("/api/v1/auth")
 @CrossOrigin(origins = "*")
@@ -27,6 +30,11 @@ public class AuthController {
     @PostMapping("/registration")
     public ResponseEntity<ApiResponse<RegistrationResponse>> registration(@ModelAttribute @Valid RegistrationRequest registrationRequest){
         RegistrationResponse registrationResponse=accountService.registration(registrationRequest);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Registration  successfully", registrationResponse));
+    }
+    @PostMapping("/google")
+    public ResponseEntity<ApiResponse<LoginResponse>> loginGoogle(@ModelAttribute @Valid LoginTokenGoogle registrationRequest) throws IOException {
+        LoginResponse registrationResponse=accountService.loginGoogle(registrationRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Registration  successfully", registrationResponse));
     }
 
