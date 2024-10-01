@@ -9,6 +9,7 @@ import com.freelance.bookCar.dto.request.booking.bookingTour.AddBookingTourReque
 import com.freelance.bookCar.dto.request.booking.bookingTour.UpdateBookingTourRequest;
 import com.freelance.bookCar.dto.request.booking.bookingTourism.AddBookingTourismRequest;
 import com.freelance.bookCar.dto.request.booking.bookingTourism.UpdateBookingTourismRequest;
+import com.freelance.bookCar.dto.request.user.userJoinDTO.CreateUserJoinRequest;
 import com.freelance.bookCar.dto.response.booking.CreateBookingResponse;
 import com.freelance.bookCar.dto.response.booking.GetBookingResponse;
 import com.freelance.bookCar.dto.response.booking.OrderResponse;
@@ -20,6 +21,8 @@ import com.freelance.bookCar.dto.response.booking.bookingTour.UpdateBookingTourR
 import com.freelance.bookCar.dto.response.booking.bookingTourism.AddBookingTourismResponse;
 import com.freelance.bookCar.dto.response.booking.bookingTourism.UpdateBookingTourismResponse;
 import com.freelance.bookCar.dto.response.bookingDetail.GetBookingDetailResponse;
+import com.freelance.bookCar.dto.response.user.userInfoDTO.CreateUserInfoResponse;
+import com.freelance.bookCar.dto.response.user.userJoinDTO.CreateUserJoinResponse;
 import com.freelance.bookCar.exception.CustomException;
 import com.freelance.bookCar.exception.Error;
 import com.freelance.bookCar.models.booking.Booking;
@@ -31,6 +34,8 @@ import com.freelance.bookCar.models.product.ticket.Ticket;
 import com.freelance.bookCar.models.product.ticket.Tourism;
 import com.freelance.bookCar.models.product.tour.Tour;
 import com.freelance.bookCar.models.product.tour.TourSchedule;
+import com.freelance.bookCar.models.user.UserInfo;
+import com.freelance.bookCar.models.user.UserJoin;
 import com.freelance.bookCar.respository.booking.BookingDetailRepository;
 import com.freelance.bookCar.respository.booking.BookingRepository;
 import com.freelance.bookCar.services.product.hotelService.hotel.HotelService;
@@ -39,6 +44,8 @@ import com.freelance.bookCar.services.product.ticketService.ticket.TicketService
 import com.freelance.bookCar.services.product.ticketService.tourism.TourismService;
 import com.freelance.bookCar.services.product.tourService.tour.TourService;
 import com.freelance.bookCar.services.product.tourService.tourSchedule.TourScheduleService;
+import com.freelance.bookCar.services.user.userInfoService.UserInfoService;
+import com.freelance.bookCar.services.user.userJoinService.UserJoinService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +75,10 @@ public class BookingServiceImpl implements BookingService{
     private HotelBookingService hotelBookingService;
     @Autowired
     private HotelService hotelService;
+    @Autowired
+    private UserInfoService userInfoService;
+    @Autowired
+    private UserJoinService userJoinService;
 
     @Override
     public CreateBookingResponse create(CreateBookingRequest createBookingRequest) {
@@ -551,7 +562,19 @@ public class BookingServiceImpl implements BookingService{
     public OrderResponse order(OrderRequest orderRequest) {
         GetBookingResponse getBookingResponse=findById(orderRequest.getId());
         Booking booking=modelMapper.map(getBookingResponse,Booking.class);
-        return null;
+        List<CreateUserJoinResponse> createUserJoinResponseList=orderRequest.getCreateUserJoinRequest()
+                .stream().map(createUserJoinRequest -> userJoinService.create(createUserJoinRequest))
+                .collect(Collectors.toList());
+        List<CreateUserInfoResponse> createUserInfoResponseList=orderRequest.getCreateUserInfoRequest()
+                .stream().map(createUserJoinRequest -> userInfoService.create(createUserJoinRequest))
+                .collect(Collectors.toList());
+        booking.setUserInfo(createUserInfoResponseList.stream()
+                .map(createUserInfoResponse -> modelMapper.map(createUserInfoResponse, UserInfo.class))
+                .collect(Collectors.toList()));
+        booking.setUserJoin(createUserJoinResponseList.stream()
+                .map(createUserJoinResponse -> modelMapper.map(createUserJoinResponse, UserJoin.class))
+                .collect(Collectors.toList()));
+        return modelMapper.map(bookingRepository.save(booking),OrderResponse.class);
     }
 
 

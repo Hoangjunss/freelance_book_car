@@ -9,6 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -26,8 +28,8 @@ public class Booking {
     private TypeBooking typeBooking;
     @OneToMany
     @JoinTable
-    private UserJoin userJoin;
+    private List<UserJoin> userJoin;
     @OneToMany
     @JoinTable
-    private UserInfo userInfo;
+    private List<UserInfo> userInfo;
 }
