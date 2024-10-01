@@ -231,12 +231,9 @@ public class BookingServiceImpl implements BookingService{
             booking = modelMapper.map(findById(addBookingTourRequest.getIdBooking()), Booking.class);
 
             // Update the total price by adding the price of the new tour
-            booking = Booking.builder()
-                    .id(booking.getId())
-                    .dateBook(booking.getDateBook())
-                    .totalPrice(booking.getTotalPrice() + addBookingTourRequest.getTotalPrice())
-                    .idUser(booking.getIdUser())
-                    .build();
+            booking.setDateBook(booking.getDateBook());
+            booking.setTotalPrice(booking.getTotalPrice() + addBookingTourRequest.getTotalPrice());
+            booking.setIdUser(booking.getIdUser());
 
             // Save the updated booking
             try {
