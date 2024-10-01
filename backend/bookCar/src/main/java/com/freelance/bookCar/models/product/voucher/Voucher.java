@@ -1,14 +1,14 @@
 package com.freelance.bookCar.models.product.voucher;
 
-import jakarta.persistence.Access;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import com.freelance.bookCar.models.booking.Booking;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Builder
@@ -22,4 +22,7 @@ public class Voucher {
     private boolean isUse;
     private String name;
      private Float discountRate;
+     @ManyToMany
+     @JoinTable
+     private List<Booking> booking;
 }

@@ -1,5 +1,7 @@
 package com.freelance.bookCar.models.booking;
 
+import com.freelance.bookCar.models.user.UserInfo;
+import com.freelance.bookCar.models.user.UserJoin;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,7 +22,12 @@ public class Booking {
     private Integer idUser;
     private Integer idPayment;
     private Integer idVoucher;
-    private Integer idPromotion;
     @Enumerated(EnumType.STRING)
     private TypeBooking typeBooking;
+    @OneToMany
+    @JoinTable
+    private UserJoin userJoin;
+    @OneToMany
+    @JoinTable
+    private UserInfo userInfo;
 }
