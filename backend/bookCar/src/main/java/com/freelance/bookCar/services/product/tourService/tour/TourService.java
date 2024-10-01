@@ -19,4 +19,5 @@ public interface TourService {
     List<GetTourResponse> getAll();
     List<GetTourResponse> getLocation(String location);
     GetTourDetailResponse getDetail(Integer id, LocalDateTime dateTime);
+    List<GetTourResponse> findById(String name);
 }

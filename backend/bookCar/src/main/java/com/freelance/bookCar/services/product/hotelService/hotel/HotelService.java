@@ -6,6 +6,7 @@ import com.freelance.bookCar.dto.response.product.hotelDTO.hotel.CreateHotelResp
 import com.freelance.bookCar.dto.response.product.hotelDTO.hotel.GetHotelDetailResponse;
 import com.freelance.bookCar.dto.response.product.hotelDTO.hotel.GetHotelResponse;
 import com.freelance.bookCar.dto.response.product.hotelDTO.hotel.UpdateHotelResponse;
+import com.freelance.bookCar.dto.response.product.tourDTO.tour.GetTourResponse;
 
 import java.util.List;
 
@@ -15,5 +16,6 @@ public interface HotelService {
     GetHotelResponse findById(Integer id);
     List<GetHotelResponse> getAll();
     List<GetHotelResponse> findByLocation(String location);
+    List<GetHotelResponse> findByName(String name);
 
 }

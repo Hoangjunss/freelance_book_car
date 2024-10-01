@@ -64,6 +64,11 @@ public class TourController {
         GetTourDetailResponse response=tourService.getDetail(id,dateTime);
         return ResponseEntity.ok(new ApiResponse<>(true, "Hotel retrieved successfully", response));
     }
+    @GetMapping()
+    public ResponseEntity<ApiResponse<List<GetTourResponse>>> getAll(@RequestParam String name) {
+        List<GetTourResponse> response = tourService.findById(name);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Hotel retrieved successfully", response));
+    }
 
 
 }

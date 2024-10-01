@@ -1,5 +1,6 @@
 package com.freelance.bookCar.respository.product.ticket;
 
+import com.freelance.bookCar.models.product.hotel.Hotel;
 import com.freelance.bookCar.models.product.ticket.Tourism;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Sort;
@@ -9,4 +10,5 @@ import java.util.List;
 
 public interface TourismRepository extends JpaRepository<Tourism,Integer> {
    List<Tourism> findAllByLocation(String location);
+   List<Tourism> searchAllByLocation(String name);
 }

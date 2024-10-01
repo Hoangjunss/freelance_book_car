@@ -54,6 +54,11 @@ public class HotelController {
         List<GetHotelResponse> response = hotelService.findByLocation(location);
         return ResponseEntity.ok(new ApiResponse<>(true, "Hotel retrieved successfully", response));
     }
+    @GetMapping()
+    public ResponseEntity<ApiResponse<List<GetHotelResponse>>> getAll(@RequestParam String name) {
+        List<GetHotelResponse> response = hotelService.findByName(name);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Hotel retrieved successfully", response));
+    }
 
 
 }

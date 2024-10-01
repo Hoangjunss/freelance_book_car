@@ -6,6 +6,7 @@ import com.freelance.bookCar.dto.response.product.ticketDTO.tourism.CreateTouris
 import com.freelance.bookCar.dto.response.product.ticketDTO.tourism.GetTourismDetailResponse;
 import com.freelance.bookCar.dto.response.product.ticketDTO.tourism.GetTourismResponse;
 import com.freelance.bookCar.dto.response.product.ticketDTO.tourism.UpdateTourismResponse;
+import com.freelance.bookCar.dto.response.product.tourDTO.tour.GetTourResponse;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -19,5 +20,6 @@ public interface TourismService {
     List<GetTourismResponse> getAll();
     List<GetTourismResponse> findLocation(String location);
     GetTourismDetailResponse getDetail(Integer id, LocalDateTime date);
+    List<GetTourismResponse> findById(String name);
 
 }

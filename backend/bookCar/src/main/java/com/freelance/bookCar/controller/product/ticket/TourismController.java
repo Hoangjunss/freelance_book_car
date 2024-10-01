@@ -67,4 +67,9 @@ public class TourismController {
         GetTourismDetailResponse response=tourismService.getDetail(id,dateTime);
         return ResponseEntity.ok(new ApiResponse<>(true, "Hotel retrieved successfully", response));
     }
+    @GetMapping("/search")
+    public ResponseEntity<ApiResponse<List<GetTourismResponse>>> getAll(@RequestParam String name) {
+        List<GetTourismResponse> response = tourismService.findById(name);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Hotel retrieved successfully", response));
+    }
 }

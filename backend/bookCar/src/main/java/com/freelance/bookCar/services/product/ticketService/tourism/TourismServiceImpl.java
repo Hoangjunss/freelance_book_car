@@ -2,6 +2,7 @@ package com.freelance.bookCar.services.product.ticketService.tourism;
 
 import com.freelance.bookCar.dto.request.product.ticketDTO.tourism.CreateTourismRequest;
 import com.freelance.bookCar.dto.request.product.ticketDTO.tourism.UpdateTourismRequest;
+import com.freelance.bookCar.dto.response.product.hotelDTO.hotel.GetHotelResponse;
 import com.freelance.bookCar.dto.response.product.ticketDTO.tourism.CreateTourismResponse;
 import com.freelance.bookCar.dto.response.product.ticketDTO.tourism.GetTourismDetailResponse;
 import com.freelance.bookCar.dto.response.product.ticketDTO.tourism.GetTourismResponse;
@@ -128,6 +129,10 @@ public class TourismServiceImpl implements TourismService {
         Ticket ticket=ticketService.findByIdAndByStartDate(id,date);
         //getTourismDetailResponse.setPrice(ticket.getTourPrice());
         return getTourismDetailResponse;
+    }
+    @Override
+    public List<GetTourismResponse> findById(String name) {
+        return tourismRepository.searchAllByLocation(name).stream().map(hotel -> modelMapper.map(hotel,GetTourismResponse.class)).collect(Collectors.toList());
     }
 
     private Integer getGenerationId() {

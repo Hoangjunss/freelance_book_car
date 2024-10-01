@@ -135,6 +135,10 @@ public class HotelServiceImpl implements HotelService {
         return hotelRepository.findAllByLocation(location).stream().map(hotel -> modelMapper.map(hotel, GetHotelResponse.class)).collect(Collectors.toList());
     }
 
+    @Override
+    public List<GetHotelResponse> findByName(String name) {
+        return hotelRepository.searchAllByLocation(name).stream().map(hotel -> modelMapper.map(hotel,GetHotelResponse.class)).collect(Collectors.toList());
+    }
 
 
     private Integer getGenerationId() {

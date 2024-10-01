@@ -2,6 +2,7 @@ package com.freelance.bookCar.services.product.tourService.tour;
 
 import com.freelance.bookCar.dto.request.product.tourDTO.tour.CreateTourRequest;
 import com.freelance.bookCar.dto.request.product.tourDTO.tour.UpdateTourRequest;
+import com.freelance.bookCar.dto.response.product.hotelDTO.hotel.GetHotelResponse;
 import com.freelance.bookCar.dto.response.product.tourDTO.tour.CreateTourResponse;
 import com.freelance.bookCar.dto.response.product.tourDTO.tour.GetTourDetailResponse;
 import com.freelance.bookCar.dto.response.product.tourDTO.tour.GetTourResponse;
@@ -137,6 +138,10 @@ public class TourServiceImpl implements TourService {
     private Integer getGenerationId() {
         UUID uuid = UUID.randomUUID();
         return (int) (uuid.getMostSignificantBits() & 0xFFFFFFFFL);
+    }
+    @Override
+    public List<GetTourResponse> findById(String name) {
+        return tourRepository.searchAllByLocation(name).stream().map(hotel -> modelMapper.map(hotel,GetTourResponse.class)).collect(Collectors.toList());
     }
 
 }
