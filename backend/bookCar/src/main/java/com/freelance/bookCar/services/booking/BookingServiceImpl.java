@@ -597,6 +597,16 @@ public class BookingServiceImpl implements BookingService{
         return modelMapper.map(bookingRepository.save(booking),OrderResponse.class);
     }
 
+    @Override
+    public List<GetBookingResponse> findId(Integer idUser) {
+        List<Booking> bookingList=bookingRepository.findAllByIdUser(idUser);
+        return bookingList.stream().map(booking -> {
+            GetBookingResponse getBookingResponse=modelMapper.map(booking, GetBookingResponse.class);
+            getBookingResponse.setType(booking.getTypeBooking().name());
+            return getBookingResponse;
+        }).collect(Collectors.toList());
+    }
+
 
     @Override
     public UpdateBookingTourResponse updateBookingTour(UpdateBookingTourRequest updateBookingTourRequest) {
