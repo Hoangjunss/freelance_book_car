@@ -2,6 +2,7 @@ package com.freelance.bookCar.controller.booking;
 
 import com.freelance.bookCar.dto.ApiResponse;
 import com.freelance.bookCar.dto.request.booking.CreateBookingRequest;
+import com.freelance.bookCar.dto.request.booking.OrderRequest;
 import com.freelance.bookCar.dto.request.booking.UpdateBookingRequest;
 import com.freelance.bookCar.dto.request.booking.bookingHotel.AddBookingHotelRequest;
 import com.freelance.bookCar.dto.request.booking.bookingHotel.UpdateBookingHotelRequest;
@@ -11,6 +12,7 @@ import com.freelance.bookCar.dto.request.booking.bookingTourism.AddBookingTouris
 import com.freelance.bookCar.dto.request.booking.bookingTourism.UpdateBookingTourismRequest;
 import com.freelance.bookCar.dto.response.booking.CreateBookingResponse;
 import com.freelance.bookCar.dto.response.booking.GetBookingResponse;
+import com.freelance.bookCar.dto.response.booking.OrderResponse;
 import com.freelance.bookCar.dto.response.booking.UpdateBookingResponse;
 import com.freelance.bookCar.dto.response.booking.bookingHotel.AddBookingHotelResponse;
 import com.freelance.bookCar.dto.response.booking.bookingHotel.UpdateBookingHotelResponse;
@@ -119,6 +121,11 @@ public class BookingController {
     @PatchMapping("/hotel")
     public ResponseEntity<ApiResponse<UpdateBookingHotelResponse>> createBookingHotel(@ModelAttribute @Valid UpdateBookingHotelRequest addBookingTourRequest){
         UpdateBookingHotelResponse addBookingTourResponse=bookingService.updateBookingHotel(addBookingTourRequest);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", addBookingTourResponse));
+    }
+    @PatchMapping("/order")
+    public ResponseEntity<ApiResponse<OrderResponse>> order(@ModelAttribute @Valid OrderRequest addBookingTourRequest){
+        OrderResponse addBookingTourResponse=bookingService.order(addBookingTourRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", addBookingTourResponse));
     }
 }
