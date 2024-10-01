@@ -21,7 +21,7 @@ export class NavbarComponent implements OnInit {
     { icon: 'fa-brands fa-instagram', url: '#' },
   ];
   
-  navbarContent: { label: string, routerLink?: string, action?: () => void, isUser?: boolean }[] = [];
+  navbarContent: { label: string, routerLink?: string,action?: (event?: MouseEvent) => void, isUser?: boolean }[] = [];
   dataLoaded: boolean = false;
 
   constructor(private userService: UserService, private router: Router, @Inject(PLATFORM_ID) private platformId: Object) { }
@@ -44,21 +44,11 @@ export class NavbarComponent implements OnInit {
     this.dataLoaded = true; 
   }
 
-  updateNavbarContent(): void {
-    if (this.CurrentUser) {
-      this.navbarContent = [
-        { label: 'Logout', action: () => this.logout() },
-        { label: `${this.CurrentUser}`, isUser: true }
-      ];
-    } else {
-      this.navbarContent = [
-        { label: 'Sign Up', routerLink: '/auth/login' },
-        { label: 'My Account', isUser: false }
-      ];
+  logout(event?: MouseEvent) {
+    if (event) {
+      event.preventDefault();
     }
-  }
-
-  logout() {
+    console.log('Logout button clicked');
     localStorage.removeItem('currentUser');
     localStorage.removeItem('token');
     this.CurrentUser = null; 
@@ -67,4 +57,20 @@ export class NavbarComponent implements OnInit {
     // Navigate to login page
     this.router.navigate(['/auth/login']);
   }
+  updateNavbarContent(): void {
+    if (this.CurrentUser) {
+      this.navbarContent = [
+        { label: 'Logout', action: (event?: MouseEvent) => this.logout(event) , isUser: false },
+        { label: `${this.CurrentUser}`, isUser: true }
+      ];
+    } else {
+      this.navbarContent = [
+        { label: 'Sign Up', routerLink: '/auth/login', isUser: false },
+        { label: 'My Account', isUser: true }
+      ];
+    }
+    console.log('Navbar Content:', this.navbarContent);
+  }
+
+  
 }
