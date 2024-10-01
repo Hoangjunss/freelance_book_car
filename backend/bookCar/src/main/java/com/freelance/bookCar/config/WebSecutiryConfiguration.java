@@ -49,7 +49,9 @@ private JwtAuthenticationFilter jwtAuthenticationFilter;
                         .requestMatchers(HttpMethod.GET,"/api/v1/tourism").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/v1/tour").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/v1/tourSchedule").permitAll()
-
+                        .requestMatchers(HttpMethod.GET,"/api/v1/page/detail").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/v1/page/home").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/v1/page/footer").permitAll()
 
                         .anyRequest()
                         .authenticated()

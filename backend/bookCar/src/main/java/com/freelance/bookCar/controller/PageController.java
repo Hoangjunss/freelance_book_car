@@ -29,21 +29,21 @@ public class PageController {
         return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", addBookingTourResponse));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+
     @GetMapping("/home")
     public ResponseEntity<ApiResponse<GetPageResponse>> getHome(){
         GetPageResponse addBookingTourResponse=pageService.pageHome();
         return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", addBookingTourResponse));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+
     @GetMapping("/detail")
     public ResponseEntity<ApiResponse<List<GetPageResponse>>> getDetail(){
         List<GetPageResponse> addBookingTourResponse=pageService.pageDetail();
         return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", addBookingTourResponse));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+
     @GetMapping("/footer")
     public ResponseEntity<ApiResponse<GetPageResponse>> getFooter(){
         GetPageResponse addBookingTourResponse=pageService.pageFooter();

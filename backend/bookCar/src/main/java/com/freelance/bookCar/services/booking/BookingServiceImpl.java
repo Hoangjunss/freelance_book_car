@@ -249,16 +249,20 @@ public class BookingServiceImpl implements BookingService{
         }
 
         TourSchedule tour=modelMapper.map(tourScheduleService.findById(addBookingTourRequest.getIdTour()),TourSchedule.class);
-
-        // Create a BookingDetail object using Builder pattern
-        BookingDetail bookingDetail = BookingDetail.builder()
-                .id(getGenerationId())
-                .idBooking(booking.getId())
-                .idTour(tour.getId())
-                .quantity(addBookingTourRequest.getQuantity())
-                .totalPrice(tour.getPriceTour()*addBookingTourRequest.getQuantity())
-                .build();
-
+        BookingDetail bookingDetail=bookingDetaiTourlList(tour.getId());
+        if(bookingDetail==null) {
+            // Create a BookingDetail object using Builder pattern
+             bookingDetail = BookingDetail.builder()
+                    .id(getGenerationId())
+                    .idBooking(booking.getId())
+                    .idTour(tour.getId())
+                    .quantity(addBookingTourRequest.getQuantity())
+                    .totalPrice(tour.getPriceTour() * addBookingTourRequest.getQuantity())
+                    .build();
+        }else{
+            bookingDetail.setQuantity(addBookingTourRequest.getQuantity()+bookingDetail.getQuantity());
+            bookingDetail.setTotalPrice(booking.getTotalPrice()*bookingDetail.getQuantity());
+        }
         log.info("bookingDetail: {}", bookingDetail.toString());
 
         try {
@@ -332,15 +336,21 @@ public class BookingServiceImpl implements BookingService{
 
         // Get the Tourism entity
         Ticket tourism = modelMapper.map(ticketService.findById(addBookingTourismRequest.getIdTicket()), Ticket.class);
-
+        BookingDetail bookingDetail=bookingDetailTourismList(tourism.getId());
+        if(bookingDetail==null) {
+            // Create a BookingDetail object using Builder pattern
+            bookingDetail = BookingDetail.builder()
+                    .id(getGenerationId())
+                    .idBooking(booking.getId())
+                    .idTour(tourism.getId())
+                    .quantity(addBookingTourismRequest.getQuantity())
+                    .totalPrice(tourism.getTourPrice() * addBookingTourismRequest.getQuantity())
+                    .build();
+        }else{
+            bookingDetail.setQuantity(addBookingTourismRequest.getQuantity()+bookingDetail.getQuantity());
+            bookingDetail.setTotalPrice(booking.getTotalPrice()*bookingDetail.getQuantity());
+        }
         // Create a BookingDetail for tourism using Builder pattern
-        BookingDetail bookingDetail = BookingDetail.builder()
-                .id(getGenerationId())
-                .idBooking(booking.getId())
-                .idTicket(tourism.getId())
-                .quantity(addBookingTourismRequest.getQuantity())
-                .totalPrice(tourism.getTourPrice() * addBookingTourismRequest.getQuantity())
-                .build();
 
         try {
             // Save the booking detail for tourism
@@ -415,14 +425,20 @@ public class BookingServiceImpl implements BookingService{
         //HotelBooking hotel = modelMapper.map(hotelBookingService.findById(addBookingHotelRequest.getIdHotel()), HotelBooking.class);
         Hotel hotels = modelMapper.map(hotelService.findById(addBookingHotelRequest.getIdHotel()), Hotel.class);
 
-        // Create a BookingDetail for hotel using Builder pattern
-        BookingDetail bookingDetail = BookingDetail.builder()
-                .id(getGenerationId())
-                .idBooking(booking.getId())
-                .idHotel(hotels.getId())
-                .quantity(addBookingHotelRequest.getQuantity())
-                .totalPrice(hotels.getPricePerNight() * addBookingHotelRequest.getQuantity())
-                .build();
+        BookingDetail bookingDetail=bookingDetailHotelList(hotels.getId());
+        if(bookingDetail==null) {
+            // Create a BookingDetail object using Builder pattern
+            bookingDetail = BookingDetail.builder()
+                    .id(getGenerationId())
+                    .idBooking(booking.getId())
+                    .idTour(hotels.getId())
+                    .quantity(addBookingHotelRequest.getQuantity())
+                    .totalPrice(hotels.getPricePerNight() * addBookingHotelRequest.getQuantity())
+                    .build();
+        }else{
+            bookingDetail.setQuantity(addBookingHotelRequest.getQuantity()+bookingDetail.getQuantity());
+            bookingDetail.setTotalPrice(booking.getTotalPrice()*bookingDetail.getQuantity());
+        }
 
         try {
             // Save the booking detail for hotel
@@ -623,13 +639,22 @@ public class BookingServiceImpl implements BookingService{
 
         // Map and return the response
         UpdateBookingTourResponse response = modelMapper.map(bookingDetail, UpdateBookingTourResponse.class);
+
         response.setIdTour(bookingDetail.getIdTour());
         response.setQuantity(bookingDetail.getQuantity());
         response.setTotalPrice(booking.getTotalPrice()); // Updated total price
 
         return response;
     }
-
+    private BookingDetail bookingDetailHotelList(Integer id){
+        return bookingDetailRepository.findByIsHotel(id);
+    }
+    private BookingDetail bookingDetaiTourlList(Integer id){
+        return bookingDetailRepository.findByIsTour(id);
+    }
+    private BookingDetail bookingDetailTourismList(Integer id){
+        return bookingDetailRepository.findByIsTourism(id);
+    }
 
     private Integer getGenerationId() {
         UUID uuid = UUID.randomUUID();
