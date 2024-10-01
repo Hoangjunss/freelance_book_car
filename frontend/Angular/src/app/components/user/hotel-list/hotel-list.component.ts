@@ -37,15 +37,11 @@ export class HotelListComponent {
   }
 
   getHotelByLocation(location: string) {
-    console.log("Địa điểm " + location);
     this.hotelService.getHotelByLocation(location).subscribe(response => {
-      console.log(response);
       
       if (response) {
         this.locations = response;
-        console.log("Thành công");
       } else {
-        console.log("Thất bại");
       }
     }, error => {
       console.log("Error:", error);
@@ -54,8 +50,6 @@ export class HotelListComponent {
 
   goToLocationDetail(locationId?: number) {
     const path = `/hotel-details/${locationId}`;
-    console.log('Navigating to:', path);
     this.router.navigate([path]);
-    console.log('Navigating to:', path);
   }
 }

@@ -70,18 +70,15 @@ export class CartComponent implements OnInit {
   getBookingByUser(id: number) {
     this.bookingService.getBookingByUser(id).subscribe({
       next: (response) => {
-        console.log(response);
         if (response && response.id) {
           if (response.type === 'CART') {
             this.idBooking = response.id;
             this.getBookingDetail(response.id);
           } else {
-            console.log("Không phải loại booking CART, không hiển thị sản phẩm.");
             this.products = []; // Đặt sản phẩm thành mảng rỗng nếu không phải loại CART
           }
           
         } else {
-          console.log("Thất bại");
         }
       },
       error: (error) => {
@@ -93,7 +90,6 @@ export class CartComponent implements OnInit {
   getBookingDetail(id: number) {
     this.bookingService.getDetailBooking(id).subscribe({
       next: (response) => {
-        console.log(response);
         if (response) {
           this.getBookingDetailResponse = response;
           this.products = this.getBookingDetailResponse.map(detail => ({
@@ -106,7 +102,6 @@ export class CartComponent implements OnInit {
             type: detail.idTour ? 'tour' : detail.idHotel ? 'hotel' : 'ticket'
           }));
         } else {
-          console.log("Thất bại");
         }
       },
       error: (error) => {
@@ -118,11 +113,9 @@ export class CartComponent implements OnInit {
   getTourDetail(id: number) {
     this.tourService.getTourDetailById(id).subscribe({
       next: (response) => {
-        console.log(response);
         if (response) {
           // this.locations = [response]; 
         } else {
-          console.log("Thất bại");
         }
       },
       error: (error) => {
@@ -134,7 +127,6 @@ export class CartComponent implements OnInit {
   getHotelDetailById(id: number) {
     this.hotelService.getHotelDetailById(id).subscribe({
       next: (response) => {
-        console.log(response);
         if (response) {
           // this.locations = [response];
         } else {
@@ -150,11 +142,9 @@ export class CartComponent implements OnInit {
   getTicketDetailById(id: number) {
     this.tourismService.getTourismDetailById(id).subscribe({
       next: (response) => {
-        console.log(response);
         if (response) {
           // this.locations = [response];
         } else {
-          console.log("Thất bại");
         }
       },
       error: (error) => {
@@ -170,17 +160,11 @@ export class CartComponent implements OnInit {
       if (confirmed) {
         this.bookingService.updateTypeBooking(type, this.idBooking).subscribe({
           next: (response) => {
-            console.log(`Cập nhật thành công cho booking ID: ${this.idBooking}`, response);
           },
           error: (error) => {
-            console.log(`Lỗi khi cập nhật booking ID: ${this.idBooking}`, error);
           }
         });
-      } else {
-        console.log("Người dùng đã hủy xác nhận thanh toán.");
       }
-    } else {
-      console.log("Không có idBooking để cập nhật.");
     }
   }
 
@@ -190,15 +174,11 @@ export class CartComponent implements OnInit {
     formData.append('quantity', product.quantity.toString());
 
     
-    formData.forEach((value, key) => {
-      console.log(`${key}: ${value}`);
-    });
   
     // Kiểm tra loại sản phẩm và thêm đúng tham số
     if (product.type === 'tour') {
       this.bookingService.updateQuantityTour(formData).subscribe({
         next: (response) => {
-          console.log('Cập nhật số lượng tour thành công', response);
         },
         error: (error) => {
           console.log('Lỗi khi cập nhật số lượng tour', error);
@@ -207,7 +187,6 @@ export class CartComponent implements OnInit {
     } else if (product.type === 'hotel') {
       this.bookingService.updateQuantityHotel(formData).subscribe({
         next: (response) => {
-          console.log('Cập nhật số lượng khách sạn thành công', response);
         },
         error: (error) => {
           console.log('Lỗi khi cập nhật số lượng khách sạn', error);
@@ -216,7 +195,6 @@ export class CartComponent implements OnInit {
     } else if (product.type === 'ticket') {
       this.bookingService.updateQuantityTourism(formData).subscribe({
         next: (response) => {
-          console.log('Cập nhật số lượng vé thành công', response);
         },
         error: (error) => {
           console.log('Lỗi khi cập nhật số lượng vé', error);
@@ -224,14 +202,6 @@ export class CartComponent implements OnInit {
       });
     }
 
-    console.log('Cập nhật số lượng sản phẩm', product);
-
-    
   }
-  
-  
-  
-
-
 
 }

@@ -50,10 +50,8 @@ export class TicketDetailComponent {
   ) { this.titleService.setTitle("Chi tiết đặt vé");}
 
   ngOnInit(): void {
-    console.log("tourismDetailComponent initialized");
     this.route.paramMap.subscribe(params => {
       this.locationId = params.get('id');
-      console.log("tourism "+this.locationId);
       if (this.locationId) {
         this.getTourismDetailById(parseInt(this.locationId));
         this.getTicketByIdTourism(parseInt(this.locationId));
@@ -77,14 +75,12 @@ export class TicketDetailComponent {
 
   checkServiceStatus() {
     // Logic để kiểm tra trạng thái dịch vụ với selectedTourSchedule
-    console.log('Checking service status for schedule ID:', this.selectedTourSchedule);
   }
 
   getTicketByIdTourism(id: number) {
     this.ticketService.getTicketByIdTourism(id).subscribe({
       next: (response) => {
         if (response) {
-          console.log('Phản hồi vé:', response); // Ghi lại phản hồi
           this.getTicketResponse = response;
           this.availableTourSchedules = response; // Đảm bảo điều này khớp với template của bạn
         }
@@ -95,7 +91,6 @@ export class TicketDetailComponent {
 
   getTourismDetailById(id: number) {
     this.tourismService.getTourismDetailById(id).subscribe(response => {
-      console.log(response);
       if (response) {
         this.locations = response;
       } else {
@@ -107,9 +102,7 @@ export class TicketDetailComponent {
   }
 
   addBookingTour(locationId: string | null) {
-    console.log("addBookingTour");
     const id = locationId ? parseInt(locationId) : 0;
-    console.log(id);
     const addBookingTourRequest = new AddBookingTourismRequest();
     const idUser = localStorage.getItem('idUser');
     addBookingTourRequest.idUser = parseInt(idUser!);
@@ -122,7 +115,6 @@ export class TicketDetailComponent {
 
     if(selectedSchedule) {
       addBookingTourRequest.totalPrice = selectedSchedule.tourPrice;
-      console.log("Gia: ", addBookingTourRequest.totalPrice);
     }else {
       addBookingTourRequest.totalPrice = 0;
     }
@@ -134,15 +126,9 @@ export class TicketDetailComponent {
     formData.append('quantity', addBookingTourRequest.quantity.toString());
     formData.append('totalPrice', addBookingTourRequest.totalPrice ? addBookingTourRequest.totalPrice.toString() : ''); 
 
-    formData.forEach((value, key) => {
-      console.log(`${key}: ${value}`);
-    });
-
     this.bookingService.addBookingTourism(formData).subscribe({
       next: (response) => {
-        console.log(response);
         if (response) {
-          console.log("Thành công");
           alert('ThanhCong');
         }
       },

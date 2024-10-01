@@ -18,9 +18,7 @@ export class HotelService {
 
   private createAuthorizationHeader(): HttpHeaders {
     const token = localStorage.getItem('token');
-    console.log(token);
     if (token) {
-      console.log('Token found in local store:', token);
       return new HttpHeaders().set('Authorization', `Bearer ${token}`);
     }
     else {
@@ -49,7 +47,6 @@ export class HotelService {
     return this.httpClient.patch<Apiresponse<UpdateHotelResponse>>(`${this.baseUrl}`, formData, {headers}).pipe(
       map((response: Apiresponse<UpdateHotelResponse>) => {
         if (response.success) {
-          console.log(`Service: ` + JSON.stringify(response.data));
           return response.data;
         } else {
           throw new Error(response.message);

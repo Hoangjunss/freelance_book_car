@@ -15,7 +15,7 @@ export class HomeService {
 
   getHome():Observable<GetPageResponse> {
     const headers =this.createAuthorizationHeader();
-    return this.http.get<Apiresponse<GetPageResponse>>(`${this.baseUrl}home`, {headers}).pipe(
+    return this.http.get<Apiresponse<GetPageResponse>>(`${this.baseUrl}home`).pipe(
       map((response: Apiresponse<GetPageResponse>) => {
         if (response.success) {
           return response.data;
@@ -28,7 +28,7 @@ export class HomeService {
 
   getDetail():Observable<GetPageResponse> {
     const headers =this.createAuthorizationHeader();
-    return this.http.get<Apiresponse<GetPageResponse>>(`${this.baseUrl}detail`, {headers}).pipe(
+    return this.http.get<Apiresponse<GetPageResponse>>(`${this.baseUrl}detail`).pipe(
       map((response: Apiresponse<GetPageResponse>) => {
         if (response.success) {
           return response.data;
@@ -41,7 +41,7 @@ export class HomeService {
 
   getFooter():Observable<GetPageResponse> {
     const headers =this.createAuthorizationHeader();
-    return this.http.get<Apiresponse<GetPageResponse>>(`${this.baseUrl}footer`, {headers}).pipe(
+    return this.http.get<Apiresponse<GetPageResponse>>(`${this.baseUrl}footer`).pipe(
       map((response: Apiresponse<GetPageResponse>) => {
         if (response.success) {
           return response.data;

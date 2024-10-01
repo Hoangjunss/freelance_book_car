@@ -37,13 +37,9 @@ export class TicketListComponent {
   }
 
   getTourismByCategory(location: string) {
-    console.log("Địa điểm " + location);
     this.tourismService.getTourismByCategory(location).subscribe(response => {
-      console.log(response);
-      
       if (response) {
         this.locations = response;
-        console.log("Thành công");
       } else {
         console.log("Thất bại");
       }
@@ -54,7 +50,6 @@ export class TicketListComponent {
 
   goToLocationDetail(locationId?: number) {
     const path = `/ticket-details/${locationId}`;
-    console.log('Navigating to:', path);
     this.router.navigate([path]);
     console.log('Navigating to:', path);
   }

@@ -38,6 +38,8 @@ export class TourScheduleComponent implements OnInit {
 
   tourSelectedId: number=0;
 
+  searchQuery='';
+
   tourSelected: GetTourResponse = new GetTourResponse();
 
   constructor(private tourService:TourService, private tourScheduleService: TourScheduleService){}

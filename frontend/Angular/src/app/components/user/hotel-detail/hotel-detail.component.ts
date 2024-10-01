@@ -45,11 +45,8 @@ export class HotelDetailComponent {
   ) { this.title.setTitle("Chi tiết khách sạn"); }
 
   ngOnInit(): void {
-    console.log("HotelDetailComponent initialized");
-    console.log("hotel");
     this.route.paramMap.subscribe(params => {
       this.locationId = params.get('id');
-      console.log("hotel" + this.locationId);
       if (this.locationId) {
         this.getHotelDetailById(parseInt(this.locationId));
       }
@@ -59,7 +56,6 @@ export class HotelDetailComponent {
   calculateTotalPrice() {
     if (this.startDate && this.endDate) {
       this.nights = this.calculateDateDifference(this.startDate, this.endDate);
-      console.log("calculateTotalPrice", this.nights);
       if (this.locations != undefined && this.locations.pricePerNight) {
         this.totalPrice = this.nights * this.locations?.pricePerNight; // Tính tổng giá dựa trên số đêm
       }
@@ -132,11 +128,9 @@ export class HotelDetailComponent {
 
   getHotelDetailById(id: number) {
     this.hotelService.getHotelDetailById(id).subscribe(response => {
-      console.log(response);
       if (response) {
         this.locations = response;
       } else {
-        console.log("Thất bại");
       }
     }, error => {
       console.log("Error:", error);
@@ -144,7 +138,6 @@ export class HotelDetailComponent {
   }
 
   addBookingHotel(locationId: string | null) {
-    console.log("Add booking hotel");
     this.calculateTotalPrice();
     const id = locationId ? parseInt(locationId) : 0;
     const addBookingHotelRequest = new AddBookingHotelRequest();
@@ -163,8 +156,6 @@ export class HotelDetailComponent {
     formData.append('quantity', addBookingHotelRequest.quantity.toString());
     formData.append('totalPrice', this.totalPrice.toString());
     // if (this.startDate && this.endDate) {
-    //   console.log(this.startDate);
-    //   console.log(this.endDate);
     //   formData.append('startDate', this.startDate.toString());
     //   formData.append('endDate', this.endDate.toString());
     // }
@@ -178,18 +169,11 @@ export class HotelDetailComponent {
       formData.append('endDate', endDateWithoutTimezone);     
     }
 
-    formData.forEach((value, key) => {
-      console.log(`${key}: ${value}`);
-    });
-    // Gọi service với FormData
     this.bookingService.addBookingHotel(formData).subscribe(response => {
-      console.log(response);
       if (response) {
-        console.log("Thành công");
         alert("Đặt phòng thành công");
         this.router.navigate(['/cart']);
       } else {
-        console.log("Thất bại");
       }
     }, error => {
       console.log("Error:", error);

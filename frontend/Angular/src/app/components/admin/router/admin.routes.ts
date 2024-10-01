@@ -24,10 +24,6 @@ export const adminRoutes: Routes = [
         component: LayoutComponent,
         children:[
             {
-                path: 'dashboard',
-                component: DashboardComponent
-            },
-            {
                 path: 'tour-manager',
                 children: [
                     {

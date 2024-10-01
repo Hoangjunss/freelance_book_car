@@ -51,14 +51,10 @@ export class RegisterComponent {
       if (!hasSpecialChar) errors['noSpecialChar'] = true;
       if (!isValidLength) errors['invalidLength'] = true;
 
-      console.log(Object.keys(errors)); // trả về mảng các key của object errors
-
-      // Nếu có lỗi thì trả về object errors, ngược lại trả về null
       return Object.keys(errors).length ? errors : null;
     };
   }
 
-  // Lấy thông báo lỗi của email
   getPasswordErrorMessage(): string {
     const control = this.userForm.get('password');
     const errors = [];
@@ -95,15 +91,12 @@ export class RegisterComponent {
       this.userService.registerUser(formData).subscribe(   
         (response : registerUserResponse) => {
           const idUser  = response.idUser; 
-          console.log(idUser); 
-          console.log(response);
           if(idUser){
             localStorage.setItem('idUser', idUser.toString());
           }
           this.router.navigate(['/login']);
         },
         (error) => {
-          console.log(error);
           if (error.status === 409 ) { 
             this.userForm.get('email')?.setErrors({ emailExists: true });
           } else {

@@ -73,12 +73,10 @@ export class TourismComponent {
   }
 
   searchTour(){
-    console.log('Search Query:', this.searchQuery);
     if (this.searchQuery.trim() != '') {
       this.filterTourism = this.getTourismResponse.filter(tour =>
         tour.name?.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
-      console.log(this.filterTourism);
       this.updatePagedData();
     }
   }
@@ -117,7 +115,6 @@ export class TourismComponent {
   }
 
   onCreate() {
-    console.log('Tour data:', this.createTourismRequest);
   
     // Kiểm tra các trường bắt buộc
     if (!this.createTourismRequest?.name || !this.createTourismRequest?.location || !this.createTourismRequest?.description) {
@@ -139,16 +136,12 @@ export class TourismComponent {
 
     }
 
-    formData.forEach((value, key) => {
-      console.log(`${key}: ${value}`);
-    });
 
     // Gọi service để tạo tour
     this.tourismService.createTour(formData).subscribe({
       next: (data) => {
         this.createTourismResponse = data;
         if (this.createTourismResponse) {
-          console.log('Tour created successfully:', data);
           alert('Tour created successfully');
           window.location.reload();
         }
@@ -161,7 +154,6 @@ export class TourismComponent {
   }
 
   onUpdate(){
-    console.log('Tour data:', this.updateTourismRequest);
     if(!this.updateTourismRequest?.id){
       alert('Tourism Update Not Found');
       return;
@@ -172,7 +164,6 @@ export class TourismComponent {
       return;
     }
 
-    // Tạo đối tượng FormData
     const formData = new FormData();
     formData.append('id', this.updateTourismRequest.id.toString() || '')
     formData.append('name', this.updateTourismRequest.name || '');
@@ -180,30 +171,22 @@ export class TourismComponent {
     formData.append('location', this.updateTourismRequest.location || '');
     formData.append('rating', this.updateTourismRequest.rating?.toString() || '');
   
-    // Kiểm tra và thêm hình ảnh vào FormData nếu có
     if (this.imageFile != undefined) {
       formData.append('image', this.imageFile);
     }else{
 
     }
 
-    formData.forEach((value, key) => {
-      console.log(`${key}: ${value}`);
-    });
-
-    // Gọi service để tạo tour
     this.tourismService.updateTour(formData).subscribe({
       next: (data) => {
         this.createTourismResponse = data;
         if (this.createTourismResponse) {
-          console.log('Tour update successfully:', data);
           alert('Tour created successfully');
           window.location.reload();
         }
       },
       error: (err) => {
         console.error('Error creating tour:', err.message);
-        alert(`Error creating tour: ${err.message}`);
       }
     });
   }
@@ -217,7 +200,6 @@ export class TourismComponent {
       },
       error: (err) => {
         console.error('Error get all tourism:', err.message);
-        alert(`Error creating tourism: ${err.message}`);
       }
     })
   }

@@ -31,7 +31,6 @@ export class LoginComponent {
       formData.append('password', this.userForm.value.password);
       this.userService.loginUser(formData).subscribe({
         next: (response) => {
-          console.log(response);
           const token = response.accessToken;
           if (token) {
             localStorage.setItem('token', token);
@@ -49,9 +48,7 @@ export class LoginComponent {
   getCurrentUser() {
     this.userService.getCurrentUser().subscribe({
       next: (user) => {
-        console.log('User response:', user);
         localStorage.setItem('currentUser', JSON.stringify(user));
-        console.log('Current user data saved:', user.id);
         localStorage.setItem('idUser', JSON.stringify(user.id));
         if(user.id != undefined){
           this.getBooking(user.id);

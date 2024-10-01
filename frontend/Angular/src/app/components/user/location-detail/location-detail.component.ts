@@ -46,7 +46,6 @@ export class LocationDetailComponent {
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       this.locationId = params.get('id');
-      console.log(this.locationId);
       if (this.locationId) {
         this.getTourDetail(parseInt(this.locationId));
       }
@@ -56,14 +55,12 @@ export class LocationDetailComponent {
   getTourDetail(id: number) {
     this.tourService.getTourDetailById(id).subscribe({
       next: (response) => {
-        console.log("getTourDetail " + JSON.stringify(response));
         if (response) {
           this.locations = response;
           if (this.locations.id !== undefined && this.locations.id !== null) {
             this.getTourScheduleByidTour(this.locations.id);
           }
         } else {
-          console.log("Thất bại");
         }
       },
       error: (error) => {
@@ -85,7 +82,6 @@ export class LocationDetailComponent {
             }
             return false; // Trả về false nếu timeStartTour là undefined
           });
-          console.log("Vé :" + this.getTourScheduleResponse);
         }
       }
     });
@@ -109,9 +105,7 @@ export class LocationDetailComponent {
 
 
   addBookingTour(locationId: string | null) {
-    console.log("addBookingTour");
     const id = locationId ? parseInt(locationId) : 0;
-    console.log(id);
     const addBookingTourRequest = new AddBookingTourRequest();
     const idUser = localStorage.getItem('idUser');
     const idBooking = localStorage.getItem('idBooking');
@@ -124,11 +118,9 @@ export class LocationDetailComponent {
       return schedule.id === Number(this.selectedTourSchedule);
     });
     
-    console.log("selectedSchedule:", selectedSchedule); // Kết quả tìm kiếm
     
     if (selectedSchedule) {
       addBookingTourRequest.totalPrice = selectedSchedule.priceTour;
-      console.log("Giá: " + addBookingTourRequest.totalPrice);
     } else {
       addBookingTourRequest.totalPrice = 0;
       console.error('Selected tour schedule is null or not found');
@@ -143,15 +135,10 @@ export class LocationDetailComponent {
     formData.append('quantity', addBookingTourRequest.quantity.toString());
     formData.append('totalPrice', addBookingTourRequest.totalPrice ? addBookingTourRequest.totalPrice.toString() : '');
 
-    formData.forEach((value, key) => {
-      console.log(`${key}: ${value}`);
-    });
 
     this.bookingService.addBookingTour(formData).subscribe({
       next: (response) => {
-        console.log(response);
         if (response) {
-          console.log("Thành công");
           alert('ThanhCong');
         }
       },

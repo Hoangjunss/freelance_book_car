@@ -138,7 +138,7 @@ export class TourComponent implements OnInit{
   //On Submit
   onCreate() {
     console.log(this.createTourRequest);
-    if (!this.createTourRequest?.name || !this.createTourRequest?.startLocation || !this.createTourRequest?.endLocation || !this.createTourRequest?.description) {
+    if (!this.createTourRequest?.name || !this.createTourRequest?.startLocation || !this.createTourRequest?.description) {
       alert('Please fill in all required fields: Name, Location, Description');
       return;
     }
@@ -151,7 +151,6 @@ export class TourComponent implements OnInit{
     formData.append('name', this.createTourRequest.name || '');
     formData.append('description', this.createTourRequest.description || '');
     formData.append('startLocation', this.createTourRequest.startLocation || '');
-    formData.append('endLocation', this.createTourRequest.endLocation || '');
     formData.append('isActive', this.createTourRequest.isActive ? 'true' : 'false');
   
     if (this.imageFile != undefined) {
@@ -191,7 +190,7 @@ export class TourComponent implements OnInit{
       alert('Not Found Tour Update');
       return;
     }
-    if (!this.updateTourRequest?.name || !this.updateTourRequest?.startLocation || !this.updateTourRequest?.endLocation || !this.updateTourRequest?.description) {
+    if (!this.updateTourRequest?.name || !this.updateTourRequest?.startLocation || !this.updateTourRequest?.description) {
       alert('Please fill in all required fields: Name, Location, Description');
       return;
     }
@@ -205,13 +204,10 @@ export class TourComponent implements OnInit{
     formData.append('name', this.updateTourRequest.name || '');
     formData.append('description', this.updateTourRequest.description || '');
     formData.append('startLocation', this.updateTourRequest.startLocation || '');
-    formData.append('endLocation', this.updateTourRequest.endLocation || '');
     formData.append('isActive', this.updateTourRequest.isActive ? 'true' : 'false');
   
     if (this.imageFile != undefined) {
       formData.append('image', this.imageFile);
-    }else{
-      
     }
 
     console.log(this.updateTourRequest);

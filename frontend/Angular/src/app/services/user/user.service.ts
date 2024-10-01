@@ -86,9 +86,7 @@ export class UserService {
     if (isPlatformBrowser(this.platformId)) {
       token = localStorage.getItem('token');
     }
-    console.log(token);
     if (token) {
-      console.log('Token found in local store:', token);
       return new HttpHeaders().set('Authorization', `Bearer ${token}`);
     }
     else {

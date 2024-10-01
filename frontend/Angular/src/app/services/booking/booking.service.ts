@@ -155,7 +155,6 @@ export class BookingService {
     return this.httpClient.get<Apiresponse<GetBookingDetailResponse[]>>(`${this.baseUrl}/detail?idBooking=${id}`, {headers}).pipe(
       map((response: Apiresponse<GetBookingDetailResponse[]>) => {
         if (response.success) {
-          console.log(response.data);
           return response.data;
         } else {
           throw new Error(response.message);
@@ -218,9 +217,7 @@ export class BookingService {
 
   private createAuthorizationHeader(): HttpHeaders {
     const token = localStorage.getItem('token');
-    console.log(token);
     if (token) {
-      console.log('Token found in local store:', token);
       return new HttpHeaders().set('Authorization', `Bearer ${token}`);
     }
     else {

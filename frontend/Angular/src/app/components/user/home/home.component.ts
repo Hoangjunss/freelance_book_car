@@ -81,8 +81,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
       }
 
       this.router.navigate([path, encodeURIComponent(this.selectedLocation)]);
-      console.log(this.selectedLocation);
-      console.log(`Navigating to: /${path}/${encodeURIComponent(this.selectedLocation)}`);
     }
 
   }
@@ -118,7 +116,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.homeService.getHome().subscribe({
       next: (data: GetPageResponse) => {
         this.homeData = [data];
-        console.log('Home Data: ', this.homeData);
       },
       error: (error) => {
         console.error('Error fetching home data:', error);
@@ -130,9 +127,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.homeService.getDetail().subscribe({
       next: (data: GetPageResponse) => {
         this.detailData = [data];
-        console.log('Detail Data: ', this.detailData);
 
-        // Lấy tất cả ảnh từ detailData và lưu vào image
         this.detailData.forEach((item) => {
           if (item.url ) {
             this.images = this.images.concat(item.url);
@@ -151,7 +146,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.homeService.getFooter().subscribe({
       next: (data: GetPageResponse) => {
         this.footerData = data;
-        console.log('Footer Data: ', this.footerData);
       },
       error: (error) => {
         console.error('Error fetching footer data:', error);

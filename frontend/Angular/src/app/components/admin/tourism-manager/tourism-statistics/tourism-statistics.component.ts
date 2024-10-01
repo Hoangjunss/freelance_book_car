@@ -62,7 +62,6 @@ export class TourismStatisticsComponent implements OnInit {
   }
 
   filterMonth(){
-    console.log(this.selectedMonth + this.selectedYear);
     this.getStatisticMonthTourism(this.selectedMonth, this.selectedYear);
   }
 

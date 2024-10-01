@@ -55,12 +55,10 @@ export class BookingComponent {
   }
 
   saveInfo() {
-    console.log('Thông tin đã được lưu');
     this.toggleForm(); 
   }
 
   saveContactInfo(){
-    console.log('Thông tin liên hệ đã được lưu');
     this.toggleContactForm();
   }
 
