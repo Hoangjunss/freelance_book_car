@@ -105,10 +105,6 @@ export class LocationDetailComponent {
     }
   }
 
-  checkServiceStatus() {
-    // Logic để kiểm tra trạng thái dịch vụ với selectedTourSchedule
-    console.log('Checking service status for schedule ID:', this.selectedTourSchedule);
-  }
 
 
 

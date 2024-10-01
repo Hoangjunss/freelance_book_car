@@ -175,4 +175,17 @@ export class VoucherComponent implements OnInit {
       }
     });
   }
+
+  searchTour(){
+    this.filterVoucher = this.getVoucherResponse.filter((voucher) => {
+      return voucher.name?.toLowerCase().includes(this.searchQuery.toLowerCase());
+    });
+    this.updatePagedData();
+  }
+
+  reset(){
+    this.searchQuery = '';
+    this.filterVoucher = this.getVoucherResponse;
+    this.updatePagedData
+  }
 }
