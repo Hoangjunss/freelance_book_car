@@ -319,13 +319,6 @@ updatePagedTours(): void {
     }
     this.pages = Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
   }
-
-  searchTour(){
-
-  }
-
-  reset(){
-    
-  }
+  
   
 }

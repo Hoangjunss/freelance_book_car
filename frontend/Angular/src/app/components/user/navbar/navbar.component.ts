@@ -61,7 +61,8 @@ export class NavbarComponent implements OnInit {
     if (this.CurrentUser) {
       this.navbarContent = [
         { label: 'Logout', action: (event?: MouseEvent) => this.logout(event) , isUser: false },
-        { label: `${this.CurrentUser}`, isUser: true }
+        { label: `${this.CurrentUser}`, isUser: true },
+        { label: 'View History', routerLink: '/order-history', isUser: false }
       ];
     } else {
       this.navbarContent = [

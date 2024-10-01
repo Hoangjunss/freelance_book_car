@@ -52,11 +52,10 @@
                         </div>
                         <button type="submit" [disabled]="userForm.invalid" class="btn btn-primary py-3 w-100 mb-4">Sign In</button>
                     </form>
-                    <asl-google-signin-button type="icon" size="medium" (click)="signInWithGoogle()"></asl-google-signin-button>
+                    <asl-google-signin-button type="icon" size="medium"></asl-google-signin-button>
                     <p class="text-center mb-0">Don't have an Account? <a routerLink="/auth/register" routerLinkActive="router-link-active">Sign Up</a></p>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Sign In End -->
 </div>
