@@ -24,7 +24,7 @@ public class TourScheduleStatusController {
     private TourScheduleStatusService tourScheduleStatusService;
 
     // API tạo Tour Schedule Status
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping()
     public ResponseEntity<ApiResponse<CreateTourScheduleStatusResponse>> create(
             @ModelAttribute @Valid CreateTourScheduleStatusRequest createTourScheduleStatusRequest) {
@@ -34,7 +34,7 @@ public class TourScheduleStatusController {
     }
 
     // API cập nhật Tour Schedule Status
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping()
     public ResponseEntity<ApiResponse<UpdateTourScheduleStatusResponse>> update(
             @ModelAttribute @Valid UpdateTourScheduleStatusRequest updateTourScheduleStatusRequest) {

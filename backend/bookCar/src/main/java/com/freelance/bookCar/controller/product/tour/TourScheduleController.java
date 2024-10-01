@@ -24,13 +24,13 @@ public class TourScheduleController {
 
     @Autowired
     private TourScheduleService tourScheduleService;
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping()
     public ResponseEntity<ApiResponse<CreateTourScheduleResponse>> create(@ModelAttribute @Valid CreateTourScheduleRequest createTourScheduleRequest) {
             CreateTourScheduleResponse response = tourScheduleService.createTourSchedule(createTourScheduleRequest);
             return ResponseEntity.ok(new ApiResponse<>(true, "Tour schedule created successfully", response));
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping()
     public ResponseEntity<ApiResponse<UpdateTourScheduleResponse>> update(@ModelAttribute @Valid UpdateTourScheduleRequest updateTourScheduleRequest) {
             UpdateTourScheduleResponse response = tourScheduleService.updateTourSchedule(updateTourScheduleRequest);

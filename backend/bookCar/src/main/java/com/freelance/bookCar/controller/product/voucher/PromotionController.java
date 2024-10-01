@@ -22,13 +22,13 @@ public class PromotionController {
 
     @Autowired
     private PromotionService promotionService;
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping()
     public ResponseEntity<ApiResponse<CreatePromotionResponse>> create(@ModelAttribute @Valid CreatePromotionRequest createPromotionRequest) {
         CreatePromotionResponse createPromotionResponse = promotionService.create(createPromotionRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Promotion created successfully", createPromotionResponse));
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping()
     public ResponseEntity<ApiResponse<UpdatePromotionResponse>> update(@ModelAttribute @Valid UpdatePromotionRequest updatePromotionRequest) {
         UpdatePromotionResponse updatePromotionResponse = promotionService.update(updatePromotionRequest);

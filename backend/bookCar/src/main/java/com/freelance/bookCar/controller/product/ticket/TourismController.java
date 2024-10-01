@@ -27,13 +27,13 @@ public class TourismController {
 
     @Autowired
     private TourismService tourismService;
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping()
     public ResponseEntity<ApiResponse<CreateTourismResponse>> create(@ModelAttribute @Valid CreateTourismRequest createTourismRequest) {
             CreateTourismResponse response = tourismService.createTourism(createTourismRequest);
             return ResponseEntity.ok(new ApiResponse<>(true, "Tourism entity created successfully", response));
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping()
     public ResponseEntity<ApiResponse<UpdateTourismResponse>> update(@ModelAttribute @Valid UpdateTourismRequest updateTourismRequest) {
             UpdateTourismResponse response = tourismService.updateTourism(updateTourismRequest);
@@ -44,7 +44,9 @@ public class TourismController {
     public ResponseEntity<ApiResponse<GetTourismResponse>> getById(@RequestParam Integer id) {
             GetTourismResponse response = tourismService.findById(id);
             return ResponseEntity.ok(new ApiResponse<>(true, "Tourism entity retrieved successfully", response));
-    }@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    }
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping()
     public ResponseEntity<ApiResponse<List<GetTourismResponse>>> getAll() {
         List<GetTourismResponse> response = tourismService.getAll();

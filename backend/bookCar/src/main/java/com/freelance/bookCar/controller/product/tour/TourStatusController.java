@@ -22,14 +22,14 @@ public class TourStatusController {
 
     @Autowired
     private TourStatusService tourStatusService;
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping()
     public ResponseEntity<ApiResponse<CreateTourStatusResponse>> create(@ModelAttribute @Valid CreateTourStatusRequest createTourStatusRequest) {
         log.info("Creating tour status");
         CreateTourStatusResponse response = tourStatusService.create(createTourStatusRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Tour status created successfully", response));
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping()
     public ResponseEntity<ApiResponse<UpdateTourStatusResponse>> update(@ModelAttribute @Valid UpdateTourStatusRequest updateTourStatusRequest) {
         log.info("Updating tour status with id: {}", updateTourStatusRequest.getId());

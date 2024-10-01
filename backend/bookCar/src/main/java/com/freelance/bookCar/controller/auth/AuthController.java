@@ -23,21 +23,25 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     @Autowired
     private UserService accountService;
-            @PostMapping("/registration")
+
+    @PostMapping("/registration")
     public ResponseEntity<ApiResponse<RegistrationResponse>> registration(@ModelAttribute @Valid RegistrationRequest registrationRequest){
         RegistrationResponse registrationResponse=accountService.registration(registrationRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Registration  successfully", registrationResponse));
     }
+
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<LoginResponse>> login(@ModelAttribute @Valid LoginRequest loginRequest){
         LoginResponse loginResponse=accountService.login(loginRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Login  successfully", loginResponse));
     }
+
     @PostMapping("/refreshToken")
     public ResponseEntity<ApiResponse<LoginResponse>> refreshToken(@ModelAttribute @Valid RefreshToken refreshToken){
         LoginResponse loginResponse=accountService.generateRefreshToken(refreshToken);
         return ResponseEntity.ok(new ApiResponse<>(true, "RefreshToken  successfully", loginResponse));
     }
+
     @GetMapping("/currentUser")
     public ResponseEntity<ApiResponse<GetUserResponse>>  getCurrentUser() {
         User userDetails = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

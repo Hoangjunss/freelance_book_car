@@ -25,13 +25,13 @@ import java.util.List;
 public class TourController {
     @Autowired
     private TourService tourService;
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping()
     public ResponseEntity<ApiResponse<CreateTourResponse>> create(@ModelAttribute @Valid CreateTourRequest createTourRequest){
         CreateTourResponse createTourResponse=tourService.createTour(createTourRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Tour created successfully", createTourResponse));
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping()
     public ResponseEntity<ApiResponse<UpdateTourResponse>> update(@ModelAttribute @Valid UpdateTourRequest updateTourRequest){
         UpdateTourResponse updateTourResponse=tourService.updateTour(updateTourRequest);

@@ -35,18 +35,21 @@ public class BookingController {
     @Autowired
     private BookingService bookingService;
 
+    @PreAuthorize("hasRole('USER')")
     @PostMapping
     public ResponseEntity<ApiResponse<CreateBookingResponse>> create(@RequestBody CreateBookingRequest createBookingRequest){
         CreateBookingResponse createBookingResponse=bookingService.create(createBookingRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", createBookingResponse));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @PatchMapping()
     public ResponseEntity<ApiResponse<UpdateBookingResponse>> update(@RequestBody UpdateBookingRequest updateBookingRequest){
         UpdateBookingResponse updateBookingResponse =  bookingService.update(updateBookingRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Booking updated successfully", updateBookingResponse));
     }
-    @PreAuthorize("hasRole('ADMIN') ")
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping()
     public ResponseEntity<ApiResponse<GetBookingResponse>> getById(@RequestParam Integer id){
         GetBookingResponse GetBookingResponse = bookingService.findById(id);
@@ -64,25 +67,25 @@ public class BookingController {
         List<GetBookingDetailResponse> GetBookingResponse = bookingService.findByIdBooking(idBooking);
         return ResponseEntity.ok(new ApiResponse<>(true, "Booking retrieved successfully", GetBookingResponse));
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/tour")
     public ResponseEntity<ApiResponse<AddBookingTourResponse>> createBookingTour(@ModelAttribute @Valid AddBookingTourRequest addBookingTourRequest){
         AddBookingTourResponse addBookingTourResponse=bookingService.addBookingTour(addBookingTourRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", addBookingTourResponse));
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/tourism")
     public ResponseEntity<ApiResponse<AddBookingTourismResponse>> createBookingTourism(@ModelAttribute @Valid AddBookingTourismRequest addBookingTourRequest){
         AddBookingTourismResponse addBookingTourResponse=bookingService.addBookingTourism(addBookingTourRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", addBookingTourResponse));
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/hotel")
     public ResponseEntity<ApiResponse<AddBookingHotelResponse>> createBookingHotel(@ModelAttribute @Valid AddBookingHotelRequest addBookingTourRequest){
         AddBookingHotelResponse addBookingTourResponse=bookingService.addBookingHotel(addBookingTourRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", addBookingTourResponse));
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/all")
     public ResponseEntity<ApiResponse<List<GetBookingResponse>>> getAll(){
         List<GetBookingResponse> getBookingResponses=bookingService.getAll();
@@ -94,19 +97,19 @@ public class BookingController {
         List<GetBookingResponse> getBookingResponses=bookingService.findType(type);
         return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", getBookingResponses));
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/type")
     public ResponseEntity<ApiResponse<GetBookingResponse>> setType(@RequestParam String type,@RequestParam Integer id){
         GetBookingResponse getBookingResponses=bookingService.updateType(id, type);
         return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", getBookingResponses));
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('USER')")
     @PatchMapping("/tour")
     public ResponseEntity<ApiResponse<UpdateBookingTourResponse>> updateBookingTour(@ModelAttribute @Valid UpdateBookingTourRequest updateBookingTourRequest){
         UpdateBookingTourResponse addBookingTourResponse=bookingService.updateBookingTour(updateBookingTourRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", addBookingTourResponse));
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('USER')")
     @PatchMapping("/tourism")
     public ResponseEntity<ApiResponse<UpdateBookingTourismResponse>> updateBookingTourism(@ModelAttribute @Valid UpdateBookingTourismRequest addBookingTourRequest){
         UpdateBookingTourismResponse addBookingTourResponse=bookingService.updateBookingTourism(addBookingTourRequest);

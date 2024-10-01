@@ -21,13 +21,13 @@ import java.util.List;
 public class TicketController {
     @Autowired
     private TicketService ticketService;
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping()
     public ResponseEntity<ApiResponse<CreateTicketResponse>> create(@ModelAttribute @Valid CreateTicketRequest createTicketRequest){
         CreateTicketResponse createTicketResponse = ticketService.createTicket(createTicketRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Ticket created successfully", createTicketResponse));
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping()
     public ResponseEntity<ApiResponse<UpdateTicketResponse>> update(@ModelAttribute @Valid UpdateTicketRequest updateTicketRequest){
         UpdateTicketResponse updateTicketResponse = ticketService.updateTicket(updateTicketRequest);

@@ -24,13 +24,13 @@ public class HotelController {
 
     @Autowired
     private HotelService hotelService;
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping()
     public ResponseEntity<ApiResponse<CreateHotelResponse>> create(@ModelAttribute @Valid CreateHotelRequest createHotelRequest) {
             CreateHotelResponse response = hotelService.createHotel(createHotelRequest);
             return ResponseEntity.ok(new ApiResponse<>(true, "Hotel created successfully", response));
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping()
     public ResponseEntity<ApiResponse<UpdateHotelResponse>> update(@ModelAttribute @Valid UpdateHotelRequest updateHotelRequest) {
             UpdateHotelResponse response = hotelService.updateHotel(updateHotelRequest);

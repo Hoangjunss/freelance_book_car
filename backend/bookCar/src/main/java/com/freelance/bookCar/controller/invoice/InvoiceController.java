@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 public class InvoiceController {
     @Autowired
     private InvoiceService invoiceService;
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('USER')")
     @PostMapping()
     public ResponseEntity<ApiResponse<CreateInvoiceResponse>> create(@ModelAttribute @Valid CreateInvoiceRequest createInvoiceRequest){
         CreateInvoiceResponse createInvoiceResponse=invoiceService.create(createInvoiceRequest);
@@ -31,6 +31,7 @@ public class InvoiceController {
         UpdateInvoiceResponse updateInvoiceResponse=invoiceService.update(updateInvoiceRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Invoice updated successfully", updateInvoiceResponse));
     }
+
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping()
     public ResponseEntity<ApiResponse<GetInvoiceResponse>> getInvoiceById(@RequestParam Integer id){

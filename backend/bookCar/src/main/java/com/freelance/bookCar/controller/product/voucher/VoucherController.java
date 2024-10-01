@@ -22,13 +22,13 @@ public class VoucherController {
 
     @Autowired
     private VoucherService voucherService;
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping()
     public ResponseEntity<ApiResponse<CreateVoucherResponse>> create(@ModelAttribute @Valid CreateVoucherRequest createVoucherRequest) {
         CreateVoucherResponse createVoucherResponse = voucherService.create(createVoucherRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Voucher created successfully", createVoucherResponse));
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping()
     public ResponseEntity<ApiResponse<UpdateVoucherResponse>> update(@ModelAttribute @Valid UpdateVoucherRequest updateVoucherRequest) {
         UpdateVoucherResponse updateVoucherResponse = voucherService.update(updateVoucherRequest);

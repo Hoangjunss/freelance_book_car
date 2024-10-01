@@ -10,6 +10,7 @@ import com.freelance.bookCar.services.page.PageService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,21 +21,29 @@ import java.util.List;
 public class PageController {
     @Autowired
     private PageService pageService;
+
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping()
     public ResponseEntity<ApiResponse<CreatePageReponse>> create(@ModelAttribute @Valid CreatePageRequest addBookingTourRequest){
         CreatePageReponse addBookingTourResponse=pageService.page(addBookingTourRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", addBookingTourResponse));
     }
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/home")
     public ResponseEntity<ApiResponse<GetPageResponse>> getHome(){
         GetPageResponse addBookingTourResponse=pageService.pageHome();
         return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", addBookingTourResponse));
     }
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/detail")
     public ResponseEntity<ApiResponse<List<GetPageResponse>>> getDetail(){
         List<GetPageResponse> addBookingTourResponse=pageService.pageDetail();
         return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", addBookingTourResponse));
     }
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/footer")
     public ResponseEntity<ApiResponse<GetPageResponse>> getFooter(){
         GetPageResponse addBookingTourResponse=pageService.pageFooter();
