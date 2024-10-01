@@ -30,6 +30,7 @@ export class TourScheduleComponent implements OnInit {
   getTourScheduleResponse: GetTourScheduleResponse[] = [];
   getTourScheduleByIdTour: GetTourScheduleResponse[] = [];
   tourScheduleFilter: GetTourScheduleResponse[] = [];
+  filterTour: GetTourResponse[] = [];
 
   timeStartTour: Date = new Date();
   timeEndTour: Date = new Date();
@@ -56,6 +57,7 @@ export class TourScheduleComponent implements OnInit {
       next: (data)=> {
           if(data){
             this.getTourResponse = data;
+            this.filterTour = data;
           }
       },
     })
@@ -90,10 +92,6 @@ export class TourScheduleComponent implements OnInit {
   selectedTourId: number | null | undefined = null;
   isEditMode: boolean = false;
 
-  selectedSchedule: GetTourScheduleResponse = {};
-
-  tour: GetTourResponse = {}; 
-
   currentPageSchedule: number = 1;
   pageSize: number = 5;
   pagedTours: GetTourScheduleResponse[] = [];
@@ -107,11 +105,11 @@ export class TourScheduleComponent implements OnInit {
 
   get paginatedTours() {
     const start = (this.currentPage - 1) * this.itemsPerPage;
-    return this.getTourResponse.slice(start, start + this.itemsPerPage);
+    return this.filterTour.slice(start, start + this.itemsPerPage);
   }
 
   nextPage() {
-    if (this.currentPage < Math.ceil(this.getTourResponse.length / this.itemsPerPage)) {
+    if (this.currentPage < Math.ceil(this.filterTour.length / this.itemsPerPage)) {
       this.currentPage++;
     }
   }
@@ -120,6 +118,18 @@ export class TourScheduleComponent implements OnInit {
     if (this.currentPage > 1) {
       this.currentPage--;
     }
+  }
+
+  searchTour(){
+    if (this.searchQuery.trim() != '') {
+      this.filterTour = this.getTourResponse.filter(tour =>
+        tour.name?.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    }
+  }
+
+  reset(){
+    this.filterTour = this.getTourResponse;
   }
 
 

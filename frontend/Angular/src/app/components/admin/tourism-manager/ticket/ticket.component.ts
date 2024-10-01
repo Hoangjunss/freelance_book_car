@@ -27,6 +27,7 @@ export class TicketComponent implements OnInit {
   ticketDetail: GetTicketResponse = new GetTicketResponse();
 
   getTourismResponse: GetTourismResponse[] = [];
+  filterTourism: GetTourismResponse[] = [];
   getTicketResponse: GetTicketResponse[] = [];
   getTicketsByTourismId: GetTicketResponse[] = [];
 
@@ -49,6 +50,7 @@ export class TicketComponent implements OnInit {
       next: (data) => {
         if (data) {
           this.getTourismResponse = data;
+          this.filterTourism = this.getTourismResponse;
         }
       },
     });
@@ -75,16 +77,13 @@ export class TicketComponent implements OnInit {
     });
   }
 
-  // Pagination and display logic similar to TourScheduleComponent
   isDisplayDetails: boolean = false;
   isUpdateTicket: boolean = false;
   isCreateTicket: boolean = false;
   selectedTicketId: number | null | undefined = null;
   isEditMode: boolean = false;
 
-  selectedTicket: GetTicketResponse = {};
-
-  tourism: GetTourismResponse = {};
+  searchQuery='';
 
   currentPageTicket: number = 1;
   pageSize: number = 5;
@@ -97,11 +96,11 @@ export class TicketComponent implements OnInit {
 
   get paginatedTourisms() {
     const start = (this.currentPage - 1) * this.itemsPerPage;
-    return this.getTourismResponse.slice(start, start + this.itemsPerPage);
+    return this.filterTourism.slice(start, start + this.itemsPerPage);
   }
 
   nextPage() {
-    if (this.currentPage < Math.ceil(this.getTourismResponse.length / this.itemsPerPage)) {
+    if (this.currentPage < Math.ceil(this.filterTourism.length / this.itemsPerPage)) {
       this.currentPage++;
     }
   }
@@ -110,6 +109,18 @@ export class TicketComponent implements OnInit {
     if (this.currentPage > 1) {
       this.currentPage--;
     }
+  }
+
+  searchTour(){
+    if (this.searchQuery.trim() != '') {
+      this.filterTourism = this.getTourismResponse.filter(tour =>
+        tour.name?.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    }
+  }
+
+  reset(){
+    this.filterTourism = this.getTourismResponse;
   }
 
   addNewTicket(): void {
