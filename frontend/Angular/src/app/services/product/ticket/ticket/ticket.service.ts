@@ -13,7 +13,7 @@ import { GetTicketResponse } from '../../../../models/response/product/ticket/ti
 })
 export class TicketService {
 
-  private baseUrl = 'http://localhost:8080/ticket';
+  private baseUrl = 'http://localhost:8080/api/v1/ticket';
 
   constructor(private httpClient: HttpClient) { }
 

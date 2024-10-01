@@ -13,7 +13,7 @@ import { GetTourStatusResponse } from '../../../../models/response/product/tour/
 })
 export class TourStatusService {
 
-  private baseUrl = 'http://localhost:8080/tour-status';
+  private baseUrl = 'http://localhost:8080/api/v1/tour-status';
 
   constructor(private httpClient: HttpClient) { }
 

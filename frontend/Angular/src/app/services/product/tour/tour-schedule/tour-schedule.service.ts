@@ -13,7 +13,7 @@ import { GetTourScheduleResponse } from '../../../../models/response/product/tou
 })
 export class TourScheduleService {
 
-  private baseUrl = 'http://localhost:8080/tour-schedule';
+  private baseUrl = 'http://localhost:8080/api/v1/tour-schedule';
 
   constructor(private httpClient: HttpClient) { }
 

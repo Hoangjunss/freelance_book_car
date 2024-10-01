@@ -11,7 +11,7 @@ import { GetTourismResponse } from '../../../../models/response/product/ticket/t
 })
 export class TourismService {
 
-  private baseUrl = 'http://localhost:8080/tourism';
+  private baseUrl = 'http://localhost:8080/api/v1/tourism';
 
   constructor(private httpClient: HttpClient) { }
 

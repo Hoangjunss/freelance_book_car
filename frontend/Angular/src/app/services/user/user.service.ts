@@ -16,7 +16,7 @@ import { isPlatformBrowser } from '@angular/common';
 })
 export class UserService {
 
-  private baseURL = "http://localhost:8080/auth/";
+  private baseURL = "http://localhost:8080/api/v1/auth/";
   constructor(private http: HttpClient, private router: Router, @Inject(PLATFORM_ID) private platformId: Object) { }
 
   registerUser(formData: FormData): Observable<registerUserResponse> {

@@ -9,7 +9,7 @@ import { StatisticMonthYear } from '../../models/response/statistics/StatisticMo
   providedIn: 'root'
 })
 export class StatisticsService {
-  private baseUrl = 'http://localhost:8080/statistic';
+  private baseUrl = 'http://localhost:8080/api/v1/statistic';
 
   constructor(private httpClient: HttpClient) { }
 

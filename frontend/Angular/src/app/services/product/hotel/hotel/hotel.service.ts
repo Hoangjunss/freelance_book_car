@@ -12,7 +12,7 @@ import { isPlatformBrowser } from '@angular/common';
 })
 export class HotelService {
 
-  private baseUrl = 'http://localhost:8080/hotel';
+  private baseUrl = 'http://localhost:8080/api/v1/hotel';
 
   constructor(private httpClient: HttpClient) { }
 

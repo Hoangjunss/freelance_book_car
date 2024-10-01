@@ -21,7 +21,7 @@ export class BookingService {
 
   constructor(private httpClient:HttpClient) { }
 
-  private baseUrl = 'http://localhost:8080/booking';
+  private baseUrl = 'http://localhost:8080/api/v1/booking';
 
   createBooking(createBookingRequest: CreateBookingRequest): Observable<CreateBookingResponse> {
     const headers = this.createAuthorizationHeader();
