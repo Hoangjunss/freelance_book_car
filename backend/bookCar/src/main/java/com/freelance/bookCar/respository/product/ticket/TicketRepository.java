@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface TicketRepository extends JpaRepository<Ticket,Integer> {
+
     Ticket findByIdAndStartDate(Integer id, LocalDateTime date);
 
     List<Ticket> findAllByIdTourism(Integer id);
