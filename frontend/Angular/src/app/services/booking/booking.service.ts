@@ -216,7 +216,18 @@ export class BookingService {
       })
     );
   }
-
+  deleteBookingDetail(id : number): Observable<boolean> {
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.delete<Apiresponse<boolean>>(`${this.baseUrl}?id=${id}`, {headers}).pipe(
+      map((response: Apiresponse<boolean>) => {
+        if (response.success) {
+          return response.success;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    );
+  }
   private createAuthorizationHeader(): HttpHeaders {
     const token = localStorage.getItem('token');
     if (token) {

@@ -208,4 +208,22 @@ export class CartComponent implements OnInit {
 
   }
 
+  removeProduct(product: any) {
+    const confirmed = window.confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');
+    if (confirmed) {
+      // Remove the product from the array
+      this.products = this.products.filter(p => p.idBookingDetail !== product.idBookingDetail);
+  
+      // Optionally, call the API to remove the product from the server (if needed)
+      this.bookingService.deleteBookingDetail(product.idBookingDetail).subscribe({
+        next: (response) => {
+          console.log('Sản phẩm đã được xóa thành công:', response);
+        },
+        error: (error) => {
+          console.log('Lỗi khi xóa sản phẩm:', error);
+        }
+      });
+    }
+  }
+
 }

@@ -21,6 +21,7 @@
                 <input type="text" [(ngModel)]="product.quantity" class="form-control text-center quantity-input" style="width: 50px;" min="1" readonly>
                 <button class="btn btn-sm btn-light" (click)="increaseQuantity(product)">+</button>
             </div>
+            <button class="btn btn-sm btn-danger ml-3" (click)="removeProduct(product)">Xóa</button>
         </li>
     </ul>
 

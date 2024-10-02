@@ -50,7 +50,7 @@
                             <button class="btn btn-secondary mb-2 w-100" routerLink="/auth/login"
                                 *ngIf="!CurrentUser">Sign Up</button>
                             <button class="btn btn-secondary mb-2 w-100" (click)="logout()">Logout</button>
-                            <button class="btn btn-danger w-100"><i
+                            <button class="btn btn-danger w-100 mb-2"><i
                                     class="fa-solid fa-user-circle me-2"></i>{{CurrentUser}}</button>
 
                             <button class="btn btn-secondary mb-2 w-100" routerLink="/order-history" *ngIf="CurrentUser">

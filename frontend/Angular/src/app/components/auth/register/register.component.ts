@@ -94,7 +94,7 @@ export class RegisterComponent {
           if(idUser){
             localStorage.setItem('idUser', idUser.toString());
           }
-          this.router.navigate(['/login']);
+          this.router.navigate(['/auth/login']);
         },
         (error) => {
           if (error.status === 409 ) { 

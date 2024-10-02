@@ -215,7 +215,7 @@ public class BookingServiceImpl implements BookingService{
             CreateBookingRequest createBookingRequest = modelMapper
                     .map(addBookingTourRequest,
                             CreateBookingRequest.class);
-            createBookingRequest.setTotalPrice(addBookingTourRequest.getTotalPrice());
+            createBookingRequest.setTotalPrice(Double.parseDouble(addBookingTourRequest.getTotalPrice()));
             createBookingRequest.setPaymentMethod(1);
             log.info("createBookingRequest: {}", createBookingRequest.toString());
             // Default payment method logic can be added here if needed
@@ -232,7 +232,7 @@ public class BookingServiceImpl implements BookingService{
 
             // Update the total price by adding the price of the new tour
             booking.setDateBook(booking.getDateBook());
-            booking.setTotalPrice(booking.getTotalPrice() + addBookingTourRequest.getTotalPrice());
+            booking.setTotalPrice(booking.getTotalPrice() + Double.parseDouble(addBookingTourRequest.getTotalPrice()));
             booking.setIdUser(booking.getIdUser());
             booking.setTypeBooking(TypeBooking.CART);
             // Save the updated booking
