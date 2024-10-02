@@ -45,7 +45,8 @@ export class BookingComponent implements OnInit {
   createUserJoinRequest: CreateUserJoinRequest[] = [];
   createUserJoin: CreateUserJoinRequest = new CreateUserJoinRequest();
   updateUserJoin: CreateUserJoinRequest = new CreateUserJoinRequest();
-  
+  selectedContactIndex: number | null = null;
+  selectedUserIndex: number | null = null;
 
   constructor(private title: Title,@Inject(PLATFORM_ID) private platformId: Object,private bookingService: BookingService,private router: Router) {
     // Initialize hours (0-23)
@@ -73,10 +74,20 @@ export class BookingComponent implements OnInit {
 
   toggleForm() {
     this.showForm = !this.showForm;
+    if (!this.showForm) {
+      this.createUserJoin = new CreateUserJoinRequest();
+      this.selectedUserIndex = null;
+    }
   }
-  toggleContactForm(){
+  
+  toggleContactForm() {
     this.showContactForm = !this.showContactForm;
+    if (!this.showContactForm) {
+      this.createUserInfo = new CreateUserInfoRequest();
+      this.selectedContactIndex = null;
+    }
   }
+
   toggleEditForm() {
     this.showEditForm = !this.showEditForm;
   }
@@ -85,13 +96,45 @@ export class BookingComponent implements OnInit {
   }
 
   saveInfo() {
-    this.createUserJoinRequest.push(this.createUserJoin);
+    if (this.selectedUserIndex === null) {
+      this.createUserJoinRequest.push({ ...this.createUserJoin });
+    } else {
+      this.createUserJoinRequest[this.selectedUserIndex] = { ...this.createUserJoin };
+      this.selectedUserIndex = null;
+    }
     this.createUserJoin = new CreateUserJoinRequest();
-    this.toggleForm(); 
+    this.toggleForm();
   }
 
-  saveContactInfo(){
+  editUser(index: number) {
+    this.selectedUserIndex = index; 
+    this.createUserJoin = { ...this.createUserJoinRequest[index] };
+    this.showForm = true;
+  }
+
+  deleteUser(index: number) {
+    this.createUserJoinRequest.splice(index, 1);
+  }
+
+  saveContactInfo() {
+    if (this.selectedContactIndex === null) {
+      this.createUserInfoRequest.push({ ...this.createUserInfo });
+    } else {
+      this.createUserInfoRequest[this.selectedContactIndex] = { ...this.createUserInfo };
+      this.selectedContactIndex = null;
+    }
+    this.createUserInfo = new CreateUserInfoRequest();
     this.toggleContactForm();
+  }
+
+  editContact(index: number) {
+    this.selectedContactIndex = index;
+    this.createUserInfo = { ...this.createUserInfoRequest[index] };
+    this.showContactForm = true; 
+  }
+
+  deleteContact(index: number) {
+    this.createUserInfoRequest.splice(index, 1);
   }
 
   updateInfo() {
@@ -146,6 +189,10 @@ export class BookingComponent implements OnInit {
         console.log("Error:", error);
       }
     });
+  }
+
+  onPayment(){
+    
   }
 
 

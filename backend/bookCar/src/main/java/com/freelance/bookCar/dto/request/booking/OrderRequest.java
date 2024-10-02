@@ -22,5 +22,4 @@ public class OrderRequest {
     private List<CreateUserInfoRequest> createUserInfoRequest;
     private List<CreateUserJoinRequest> createUserJoinRequest;
     private Integer paymentMethod;
-
 }
