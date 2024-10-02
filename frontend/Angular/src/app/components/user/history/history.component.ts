@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import { BookingService } from '../../../services/booking/booking.service';
 
 @Component({
   selector: 'app-history',
@@ -9,6 +10,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrl: './history.component.css'
 })
 export class HistoryComponent implements OnInit {
+
+
   orders = [
     {
         id: 1,
@@ -39,12 +42,18 @@ export class HistoryComponent implements OnInit {
     }
 ];
 
-  constructor() {}
+  constructor(private bookingService: BookingService) {}
 
   ngOnInit(): void {}
 
   viewOrderDetails(orderId: number): void {
-    // Ở đây có thể chuyển hướng hoặc mở modal hiển thị chi tiết đơn hàng
     alert(`Chi tiết đơn hàng ${orderId}`);
   }
+
+  getBookingByUser(){
+    const idUser = localStorage.getItem('idUser');
+
+    this.bookingService.getBookingByUser
+  }
+
 }

@@ -1,5 +1,7 @@
 package com.freelance.bookCar.controller.booking;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.freelance.bookCar.dto.ApiResponse;
 import com.freelance.bookCar.dto.request.booking.CreateBookingRequest;
 import com.freelance.bookCar.dto.request.booking.OrderRequest;
@@ -10,6 +12,8 @@ import com.freelance.bookCar.dto.request.booking.bookingTour.AddBookingTourReque
 import com.freelance.bookCar.dto.request.booking.bookingTour.UpdateBookingTourRequest;
 import com.freelance.bookCar.dto.request.booking.bookingTourism.AddBookingTourismRequest;
 import com.freelance.bookCar.dto.request.booking.bookingTourism.UpdateBookingTourismRequest;
+import com.freelance.bookCar.dto.request.user.userInfoDTO.CreateUserInfoRequest;
+import com.freelance.bookCar.dto.request.user.userJoinDTO.CreateUserJoinRequest;
 import com.freelance.bookCar.dto.response.booking.CreateBookingResponse;
 import com.freelance.bookCar.dto.response.booking.GetBookingResponse;
 import com.freelance.bookCar.dto.response.booking.OrderResponse;
@@ -23,17 +27,22 @@ import com.freelance.bookCar.dto.response.booking.bookingTourism.UpdateBookingTo
 import com.freelance.bookCar.dto.response.bookingDetail.GetBookingDetailResponse;
 import com.freelance.bookCar.services.booking.BookingService;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/booking")
 @CrossOrigin(origins = "*")
 public class BookingController {
+    private static final Logger log = LoggerFactory.getLogger(BookingController.class);
     @Autowired
     private BookingService bookingService;
 
@@ -93,6 +102,13 @@ public class BookingController {
         List<GetBookingResponse> getBookingResponses=bookingService.getAll();
         return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", getBookingResponses));
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/history")
+    public ResponseEntity<ApiResponse<List<GetBookingResponse>>> findAllByTypeBookingNotAndIdUser(@RequestParam Integer idUser){
+        List<GetBookingResponse> getBookingResponses=bookingService.findAllByTypeBookingNotAndIdUser(idUser);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", getBookingResponses));
+    }
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/type")
     public ResponseEntity<ApiResponse<List<GetBookingResponse>>> getType(@RequestParam String type){
@@ -123,11 +139,44 @@ public class BookingController {
         UpdateBookingHotelResponse addBookingTourResponse=bookingService.updateBookingHotel(addBookingTourRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", addBookingTourResponse));
     }
-    @PatchMapping("/order")
-    public ResponseEntity<ApiResponse<OrderResponse>> order(@ModelAttribute @Valid OrderRequest addBookingTourRequest){
-        OrderResponse addBookingTourResponse=bookingService.order(addBookingTourRequest);
-        return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", addBookingTourResponse));
+
+
+    @PatchMapping(value = "/order", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ApiResponse<OrderResponse>> order(@RequestParam("id") Integer id,
+                                                            @RequestParam("idUser") Integer idUser,
+                                                            @RequestParam("dateBook") String dateBook,
+                                                            @RequestParam("totalPrice") String totalPrice,
+                                                            @RequestParam("createUserInfoRequest") String createUserInfoRequestJson,
+                                                            @RequestParam("createUserJoinRequest") String createUserJoinRequestJson,
+                                                            @RequestParam("paymentMethod") Integer paymentMethod){
+        try{
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            List<CreateUserInfoRequest> createUserInfoRequest = objectMapper.readValue(
+                    createUserInfoRequestJson, new TypeReference<List<CreateUserInfoRequest>>() {});
+            List<CreateUserJoinRequest> createUserJoinRequest = objectMapper.readValue(
+                    createUserJoinRequestJson, new TypeReference<List<CreateUserJoinRequest>>() {});
+
+            OrderRequest orderRequest = new OrderRequest(
+                    id,
+                    LocalDateTime.parse(dateBook),
+                    totalPrice,
+                    idUser,
+                    createUserInfoRequest,
+                    createUserJoinRequest,
+                    paymentMethod
+            );
+            log.info("Order request: {}", orderRequest.toString());
+            OrderResponse addBookingTourResponse=bookingService.order(orderRequest);
+            return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", addBookingTourResponse));
+        } catch (Exception e) {
+            // Xử lý lỗi nếu có
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body(new ApiResponse<>(false, "Error processing request", null));
+        }
+
     }
+
     @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/id")
     public ResponseEntity<ApiResponse<List<GetBookingResponse>>> getId(@RequestParam Integer type){

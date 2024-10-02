@@ -34,14 +34,6 @@
                             <p style="margin-bottom: 0px;"><strong>{{product.name}}</strong></p>
                             <span>Price: {{product.price | currency: '₫'}}</span><br>
                             <span>Quantity: {{product.quantity}}</span>
-                        <img [src]="product.image" alt="{{product.name}}" class="me-3" style="width: 120px; height: auto;">
-                        <div class="flex-grow-1">
-                            <p style="margin-bottom: 0;"><strong>{{product.name}}</strong></p>
-                            <p *ngIf="product.description">Description: {{product.description}}</p>
-                            <p *ngIf="product.type === 'tour'">{{product.startLocation}} - {{product.endLocation}}</p>
-                            <p *ngIf="product.type === 'hotel'">Start Date: {{product.startDate | date}}</p>
-                            <p *ngIf="product.type === 'hotel'">End Date: {{product.endDate | date}}</p>
-                            <p *ngIf="product.type === 'ticket'">Start Date: {{product.startDate | date}}</p>
                         </div>
                     </div>
 
@@ -214,78 +206,6 @@
                                 [(ngModel)]="specialRequest" (ngModelChange)="updateCharCount()"
                                 maxlength="100"></textarea>
                             <span class="char-count">{{ charCount }}/100</span>
-                        </div>
-                        <div class="row">
-                            <!-- Contact Method -->
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="contact-method">Contact Method and Details (Text
-                                        Message/Zalo/WhatsApp/Wechat/Email): <span class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="contact-method"
-                                        placeholder="E.g. WhatsApp +66 12345678">
-                                </div>
-                            </div>
-
-                            <!-- Pickup Location -->
-                            <div class="col-md-6" style="width: 50%;">
-                                <div class="form-group">
-                                    <label for="pickup-location">Địa điểm đón: <span
-                                            class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="pickup-location"
-                                        placeholder="Nhập địa chỉ đón">
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Time and Drop-off Inputs -->
-                        <div class="row">
-                            <!-- Pickup Time -->
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="pickup-time">Thời gian đón khách:</label>
-                                    <div class="d-flex">
-                                        <select class="form-control">
-                                            <option value="" disabled selected>Chọn giờ</option>
-                                            <option *ngFor="let hour of hours" [value]="hour">{{ hour }}</option>
-                                        </select>
-                                        <span class="mx-2">:</span>
-                                        <select class="form-control">
-                                            <option value="" disabled selected>Chọn phút</option>
-                                            <option *ngFor="let minute of minutes" [value]="minute">{{ minute }}
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Drop-off Location -->
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="dropoff-location">Địa điểm trả khách: <span
-                                            class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="dropoff-location"
-                                        placeholder="Xin nhập">
-                                </div>
-                            </div>
-
-                            <!-- Return Pickup Time -->
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="return-pickup-time">Thời gian đón (chuyến quay về):</label>
-                                    <div class="d-flex">
-                                        <select class="form-control">
-                                            <option value="" disabled selected>Chọn giờ</option>
-                                            <option *ngFor="let hour of hours" [value]="hour">{{ hour }}</option>
-                                        </select>
-                                        <span class="mx-2">:</span>
-                                        <select class="form-control">
-                                            <option value="" disabled selected>Chọn phút</option>
-                                            <option *ngFor="let minute of minutes" [value]="minute">{{ minute }}
-                                            </option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
 
@@ -554,32 +474,16 @@
             <div class="col-lg-4 order-right">
                 <div class="col-md-10" *ngFor="let product of products">
                     <div class="card-custom">
-                        <h5 class="card-title">{{ product.name }}</h5>
-                        <div class="card-content mb-3 mt-4">
-                            <span *ngIf="product.type === 'tour'">Khứ hồi: {{ product.startLocation }} - {{ product.endLocation }}</span>
-                        </div>
+                        <h5 class="card-title">{{product.name}}</h5>
                         <hr style="border: 1px solid #ddd;">
                         <div class="d-flex justify-content-between mb-2">
-                            <span class="card-content">Ngày:</span>
-                            <span *ngIf="product.type === 'hotel'">
-                                {{ product.startDate | date }} - {{ product.endDate | date }}
-                            </span>
-                            <span *ngIf="product.type === 'ticket'">
-                                {{ product.startDate | date }}
-                            </span>
-                            <span *ngIf="product.type === 'tour'">
-                                (Thông tin không có sẵn)
-                            </span>
-                        </div>
-                
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="card-content">Đơn vị:</span>
-                            <span>{{ product.quantity }}</span>
+                            <span class="card-content">Đơn vị</span>
+                            <span>{{product.quantity}}</span>
                         </div>
                         <hr style="border: 1px solid #ddd;">
                         <div class="d-flex justify-content-between">
-                            <span class="text-total">Tổng cộng:</span>
-                            <span class="total-amount">{{ product.price | currency: '₫' }}</span>
+                            <span class="text-total">Tổng cộng</span>
+                            <span class="total-amount">{{product.price | currency: '₫'}}</span>
                         </div>
                     </div>
                 </div>
@@ -589,12 +493,12 @@
                     <div class="card-custom">
                         <div class="d-flex justify-content-between mb-2">
                             <span class="text-total">Tổng cộng</span>
-                            <span class="total-amount">{{totalPrice | currency: '₫' }}</span>
+                            <span class="total-amount">{{totalPrice}}</span>
                         </div>
                         <div class="d-flex justify-content-between">
                             <span class="card-content">Số tiền thanh toán</span>
-                            <span class="total-amount" style="color: #f89c1c;font-size: 1.2rem;font-weight: 600;">
-                                {{totalPrice | currency: '₫' }}</span>
+                            <span class="total-amount" style="color: #f89c1c;font-size: 1.2rem;font-weight: 600;">₫
+                                {{totalPrice}}</span>
                         </div>
                     </div>
                 </div>

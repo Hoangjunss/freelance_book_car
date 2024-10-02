@@ -20,6 +20,8 @@ import com.freelance.bookCar.dto.response.booking.bookingTour.UpdateBookingTourR
 import com.freelance.bookCar.dto.response.booking.bookingTourism.AddBookingTourismResponse;
 import com.freelance.bookCar.dto.response.booking.bookingTourism.UpdateBookingTourismResponse;
 import com.freelance.bookCar.dto.response.bookingDetail.GetBookingDetailResponse;
+import com.freelance.bookCar.models.booking.Booking;
+import com.freelance.bookCar.models.booking.TypeBooking;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,4 +45,5 @@ public interface BookingService {
     OrderResponse order(OrderRequest orderRequest);
     List<GetBookingResponse> findId(Integer IdUser);
     void deleteBookingDetail(Integer id);
+    List<GetBookingResponse> findAllByTypeBookingNotAndIdUser(Integer idUser);
 }

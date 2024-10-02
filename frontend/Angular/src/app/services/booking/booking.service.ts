@@ -153,6 +153,8 @@ export class BookingService {
       })
     );
   }
+
+  
   getDetailBooking(id: number): Observable<GetBookingDetailResponse[]> {
     const headers = this.createAuthorizationHeader();
     return this.httpClient.get<Apiresponse<GetBookingDetailResponse[]>>(`${this.baseUrl}/detail?idBooking=${id}`, {headers}).pipe(
@@ -242,7 +244,7 @@ export class BookingService {
 
   order(formData: FormData): Observable<OrderResponse> {
     const headers = this.createAuthorizationHeader();
-    return this.httpClient.post<Apiresponse<OrderResponse>>(`${this.baseUrl}/order`, formData, { headers }).pipe(
+    return this.httpClient.patch<Apiresponse<OrderResponse>>(`${this.baseUrl}/order`, formData, { headers }).pipe(
       map((response: Apiresponse<OrderResponse>) => {
         if (response.success) {
           return response.data; 

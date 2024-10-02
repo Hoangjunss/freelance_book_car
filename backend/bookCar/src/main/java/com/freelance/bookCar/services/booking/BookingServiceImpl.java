@@ -585,8 +585,8 @@ public class BookingServiceImpl implements BookingService{
         Booking booking=modelMapper.map(getBookingResponse,Booking.class);
         booking.setTypeBooking(TypeBooking.valueOf(type));
         Booking bookingsave=bookingRepository.save(booking);
-        Mail mail=mailService.getMail(booking.getUserInfo().get(0).getEmail(),"Đơn hàng số "+booking.getId()+ "của bạn đã được "+type+"vui long kiểm tra lại ","Đơn hàng số"+booking.getId());
-        mailService.sendMail(mail);
+        //Mail mail=mailService.getMail(booking.getUserInfo().getFirst().getEmail(),"Đơn hàng số "+booking.getId()+ "của bạn đã được "+type+"vui long kiểm tra lại ","Đơn hàng số"+booking.getId());
+        //mailService.sendMail(mail);
         return modelMapper.map(bookingsave, GetBookingResponse.class);
     }
 
@@ -607,7 +607,7 @@ public class BookingServiceImpl implements BookingService{
                 .map(createUserJoinResponse -> modelMapper.map(createUserJoinResponse, UserJoin.class))
                 .collect(Collectors.toList()));
         Booking bookingsave= bookingRepository.save(booking);
-        Mail mail=mailService.getMail(bookingsave.getUserInfo().get(0).getEmail(),"Đơn hàng số "+booking.getId()+ "của bạn đã được đặt vui long kiểm tra lại ","Đơn hàng số"+booking.getId());
+        Mail mail=mailService.getMail(bookingsave.getUserInfo().getFirst().getEmail(),"Đơn hàng số "+booking.getId()+ "của bạn đã được đặt vui long kiểm tra lại ","Đơn hàng số"+booking.getId());
         mailService.sendMail(mail);
         return modelMapper.map(bookingsave,OrderResponse.class);
     }
@@ -626,6 +626,13 @@ public class BookingServiceImpl implements BookingService{
     public void deleteBookingDetail(Integer id) {
         BookingDetail bookingDetail=bookingDetailRepository.findById(id).orElseThrow();
         bookingDetailRepository.delete(bookingDetail);
+    }
+
+    @Override
+    public List<GetBookingResponse> findAllByTypeBookingNotAndIdUser(Integer idUser) {
+        return bookingRepository.findAllByTypeBookingNotAndIdUser(TypeBooking.CART, idUser).stream()
+                .map(booking -> modelMapper.map(booking, GetBookingResponse.class)) // Chuyển đổi Booking thành GetBookingResponse
+                .collect(Collectors.toList());
     }
 
 

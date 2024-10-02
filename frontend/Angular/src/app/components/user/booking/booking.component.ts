@@ -256,10 +256,45 @@ export class BookingComponent implements OnInit {
   }
 
   onPayment(){
-    
+    const formData = new FormData();
+    const idUser = localStorage.getItem('idUser');
+    const idBooking = localStorage.getItem('idBooking');
+
+    formData.append('id', idBooking);
+    formData.append('idUser', idUser);
+    formData.append('dateBook', new Date().toISOString().slice(0, 19));
+    formData.append('totalPrice', this.totalPrice.toString());
+    formData.append('createUserInfoRequest', JSON.stringify(this.createUserInfoRequest));
+    formData.append('createUserJoinRequest', JSON.stringify(this.createUserJoinRequest));
+    formData.append('paymentMethod', 1+"");
+
+    formData.forEach((value, key) => {
+      console.log(`${key}: ${value}`);
+    });
+
+    this.bookingService.order(formData).subscribe({
+      next: (response) => {
+        if(response){
+          this.updateTypeBooking(parseInt(idBooking));
+          alert("Bạn đã đặt thành công. Vui lòng kiểm tra Email và chờ phản hồi");
+        }
+      },
+      error: (error) => {
+        console.log('Payment error:', error);
+      }
+    })
   }
 
-
-
+  updateTypeBooking(id: number) {
+    this.bookingService.updateTypeBooking('PENDING', id).subscribe({
+      next: (value) => { // Sử dụng arrow function
+        if (value) {
+          console.log('successful');
+          this.router.navigate(['order-history']); 
+          localStorage.removeItem('idBooking');
+        }
+      },
+    });
+  }
   
 }
