@@ -154,7 +154,7 @@ export class CartComponent implements OnInit {
   }
 
   updateBookingType() {
-    const type = 'PENDING'; 
+    const type = 'CART'; 
     if (this.idBooking) {
       const confirmed = window.confirm("Bạn có chắc chắn muốn thanh toán không?");
       if (confirmed) {
