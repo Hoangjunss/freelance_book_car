@@ -422,18 +422,18 @@ public class BookingServiceImpl implements BookingService{
         }
 
         // Get the Hotel entity
-        //HotelBooking hotel = modelMapper.map(hotelBookingService.findById(addBookingHotelRequest.getIdHotel()), HotelBooking.class);
-        Hotel hotels = modelMapper.map(hotelService.findById(addBookingHotelRequest.getIdHotel()), Hotel.class);
+        HotelBooking hotel = modelMapper.map(hotelBookingService.findById(addBookingHotelRequest.getIdHotel()), HotelBooking.class);
+        //Hotel hotels = modelMapper.map(hotelService.findById(addBookingHotelRequest.getIdHotel()), Hotel.class);
 
-        BookingDetail bookingDetail=bookingDetailHotelList(hotels.getId());
+        BookingDetail bookingDetail=bookingDetailHotelList(hotel.getId());
         if(bookingDetail==null) {
             // Create a BookingDetail object using Builder pattern
             bookingDetail = BookingDetail.builder()
                     .id(getGenerationId())
                     .idBooking(booking.getId())
-                    .idTour(hotels.getId())
+                    .idHotel(hotel.getId())
                     .quantity(addBookingHotelRequest.getQuantity())
-                    .totalPrice(hotels.getPricePerNight() * addBookingHotelRequest.getQuantity())
+                    .totalPrice(hotel.getTotalPrice() * addBookingHotelRequest.getQuantity())
                     .build();
         }else{
             bookingDetail.setQuantity(addBookingHotelRequest.getQuantity()+bookingDetail.getQuantity());

@@ -82,6 +82,14 @@ nav {
     border-radius: 5px;
 }
 
+.btn {
+    padding: 10px 20px; /* Consistent padding */
+    font-size: 16px;    /* Uniform font size */
+    display: inline-flex;
+    align-items: center; /* Ensure the text and icons are centered */
+    height: 100%; /* Ensure height consistency */
+    margin: 0; /* Remove any default margin if needed */
+  }
 /* Button Styles in Navbar */
 .navbar .btn {
     color: #fff;
@@ -601,6 +609,7 @@ body {
 #navbarNav .nav-item {
     animation: slideInFromLeft 1s ease-out forwards;
     opacity: 0;
+    display: inline-block;
     /* Ensure elements start invisible for animation */
 }
 
