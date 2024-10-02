@@ -37,19 +37,16 @@ public class HotelController {
             UpdateHotelResponse response = hotelService.updateHotel(updateHotelRequest);
             return ResponseEntity.ok(new ApiResponse<>(true, "Hotel updated successfully", response));
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/id/{id}")
     public ResponseEntity<ApiResponse<GetHotelResponse>> getById(@PathVariable Integer id) {
             GetHotelResponse response = hotelService.findById(id);
             return ResponseEntity.ok(new ApiResponse<>(true, "Hotel retrieved successfully", response));
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping()
     public ResponseEntity<ApiResponse<List<GetHotelResponse>>> getAll() {
         List<GetHotelResponse> response = hotelService.getAll();
         return ResponseEntity.ok(new ApiResponse<>(true, "Hotel retrieved successfully", response));
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/{location}")
     public ResponseEntity<ApiResponse<List<GetHotelResponse>>> getLocation(@PathVariable String location) {
         List<GetHotelResponse> response = hotelService.findByLocation(location);

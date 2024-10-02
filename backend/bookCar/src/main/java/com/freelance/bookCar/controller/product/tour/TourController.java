@@ -37,25 +37,21 @@ public class TourController {
         UpdateTourResponse updateTourResponse=tourService.updateTour(updateTourRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Tour update successfully", updateTourResponse));
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/id/{id}")
     public ResponseEntity<ApiResponse<GetTourResponse>> getTour(@PathVariable Integer id){
         GetTourResponse getTourResponse=tourService.findById(id);
         return ResponseEntity.ok(new ApiResponse<>(true, "Get Id Tour  successfully", getTourResponse));
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping()
     public ResponseEntity<ApiResponse<List<GetTourResponse>>> getAll() {
         List<GetTourResponse> response = tourService.getAll();
         return ResponseEntity.ok(new ApiResponse<>(true, "Hotel retrieved successfully", response));
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/{location}")
     public ResponseEntity<ApiResponse<List<GetTourResponse>>> getLocation(@PathVariable String location) {
         List<GetTourResponse> response = tourService.getLocation(location);
         return ResponseEntity.ok(new ApiResponse<>(true, "Hotel retrieved successfully", response));
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/detail")
     public ResponseEntity<ApiResponse<GetTourDetailResponse>> getDetail(@RequestParam Integer id, @RequestParam(required = false) LocalDateTime dateTime) {
         if(dateTime==null){

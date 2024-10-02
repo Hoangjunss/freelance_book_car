@@ -14,7 +14,6 @@ export class HomeService {
   constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) { }
 
   getHome():Observable<GetPageResponse> {
-    const headers =this.createAuthorizationHeader();
     return this.http.get<Apiresponse<GetPageResponse>>(`${this.baseUrl}home`).pipe(
       map((response: Apiresponse<GetPageResponse>) => {
         if (response.success) {
@@ -27,7 +26,6 @@ export class HomeService {
   }
 
   getDetail():Observable<GetPageResponse> {
-    const headers =this.createAuthorizationHeader();
     return this.http.get<Apiresponse<GetPageResponse>>(`${this.baseUrl}detail`).pipe(
       map((response: Apiresponse<GetPageResponse>) => {
         if (response.success) {
@@ -40,7 +38,6 @@ export class HomeService {
   }
 
   getFooter():Observable<GetPageResponse> {
-    const headers =this.createAuthorizationHeader();
     return this.http.get<Apiresponse<GetPageResponse>>(`${this.baseUrl}footer`).pipe(
       map((response: Apiresponse<GetPageResponse>) => {
         if (response.success) {
@@ -54,7 +51,6 @@ export class HomeService {
 
   private createAuthorizationHeader(): HttpHeaders {
     let token = null;
-
     if (isPlatformBrowser(this.platformId)) {
       token = localStorage.getItem('token');
     }

@@ -37,14 +37,12 @@ public class HotelBookingController {
             UpdateHotelBookingResponse response = hotelBookingService.updateHotelBooking(updateHotelBookingRequest);
             return ResponseEntity.ok(new ApiResponse<>(true, "Hotel booking updated successfully", response));
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping()
     public ResponseEntity<ApiResponse<GetHotelBookingResponse>> getById(@RequestParam Integer id) {
             GetHotelBookingResponse response = hotelBookingService.findById(id);
             return ResponseEntity.ok(new ApiResponse<>(true, "Hotel booking retrieved successfully", response));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/hotelbooking")
     public ResponseEntity<ApiResponse<List<GetHotelBookingResponse>>> getHotelBookingByIdBooking(@RequestParam Integer idHotel){
         List<GetHotelBookingResponse> getTicketResponse = hotelBookingService.findAllByIdHotel(idHotel);

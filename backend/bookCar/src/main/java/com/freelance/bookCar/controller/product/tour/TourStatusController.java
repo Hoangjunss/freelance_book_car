@@ -36,7 +36,6 @@ public class TourStatusController {
         UpdateTourStatusResponse response = tourStatusService.update(updateTourStatusRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Tour status updated successfully", response));
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping()
     public ResponseEntity<ApiResponse<GetTourStatusResponse>> getById(@RequestParam Integer id) {
         log.info("Fetching tour status by id: {}", id);

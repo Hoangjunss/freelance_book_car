@@ -34,13 +34,11 @@ public class PromotionController {
         UpdatePromotionResponse updatePromotionResponse = promotionService.update(updatePromotionRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Promotion updated successfully", updatePromotionResponse));
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping()
     public ResponseEntity<ApiResponse<GetPromotionResponse>> getPromotion(@RequestParam Integer id) {
         GetPromotionResponse getPromotionResponse = promotionService.findById(id);
         return ResponseEntity.ok(new ApiResponse<>(true, "Get Promotion successfully", getPromotionResponse));
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/all")
     public ResponseEntity<ApiResponse<List<GetPromotionResponse>>> getAllPromotions() {
         List<GetPromotionResponse> getPromotionResponse = promotionService.getAll();

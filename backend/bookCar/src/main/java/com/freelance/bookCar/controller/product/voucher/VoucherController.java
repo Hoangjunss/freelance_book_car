@@ -34,13 +34,11 @@ public class VoucherController {
         UpdateVoucherResponse updateVoucherResponse = voucherService.update(updateVoucherRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Voucher updated successfully", updateVoucherResponse));
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping()
     public ResponseEntity<ApiResponse<GetVoucherResponse>> getVoucher(@RequestParam Integer id) {
         GetVoucherResponse getVoucherResponse = voucherService.findById(id);
         return ResponseEntity.ok(new ApiResponse<>(true, "Get Voucher successfully", getVoucherResponse));
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/all")
     public ResponseEntity<ApiResponse<List<GetVoucherResponse>>> getAllVouchers() {
         List<GetVoucherResponse> getVoucherResponse = voucherService.getAll();

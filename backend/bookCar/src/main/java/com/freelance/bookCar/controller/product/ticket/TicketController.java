@@ -33,19 +33,16 @@ public class TicketController {
         UpdateTicketResponse updateTicketResponse = ticketService.updateTicket(updateTicketRequest);
         return ResponseEntity.ok(new ApiResponse<>(true, "Ticket updated successfully", updateTicketResponse));
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping()
     public ResponseEntity<ApiResponse<GetTicketResponse>> getTicket(@RequestParam Integer id){
         GetTicketResponse getTicketResponse = ticketService.findById(id);
         return ResponseEntity.ok(new ApiResponse<>(true, "Get Id Tour  successfully", getTicketResponse));
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/ticket")
     public ResponseEntity<ApiResponse<List<GetTicketResponse>>> getTicketByDate(@RequestParam Integer idTourism){
         List<GetTicketResponse> getTicketResponse = ticketService.findAllbyIdTourism(idTourism);
         return ResponseEntity.ok(new ApiResponse<>(true, "Get Id Tour  successfully", getTicketResponse));
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/all")
     public ResponseEntity<ApiResponse<List<GetTicketResponse>>> getAllTicket(){
         List<GetTicketResponse> getTicketResponse = ticketService.findAllTickets();

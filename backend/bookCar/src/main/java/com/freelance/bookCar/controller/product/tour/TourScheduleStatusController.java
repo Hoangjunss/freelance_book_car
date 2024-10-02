@@ -34,7 +34,6 @@ public class TourScheduleStatusController {
     }
 
     // API cập nhật Tour Schedule Status
-    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping()
     public ResponseEntity<ApiResponse<UpdateTourScheduleStatusResponse>> update(
             @ModelAttribute @Valid UpdateTourScheduleStatusRequest updateTourScheduleStatusRequest) {
@@ -44,7 +43,6 @@ public class TourScheduleStatusController {
     }
 
     // API lấy Tour Schedule Status theo id
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping()
     public ResponseEntity<ApiResponse<GetTourScheduleStatusResponse>> getById(@RequestParam Integer id) {
         log.info("Fetching Tour Schedule Status with id: {}", id);

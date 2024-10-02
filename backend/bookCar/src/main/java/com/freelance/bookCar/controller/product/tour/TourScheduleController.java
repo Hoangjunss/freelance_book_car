@@ -36,19 +36,16 @@ public class TourScheduleController {
             UpdateTourScheduleResponse response = tourScheduleService.updateTourSchedule(updateTourScheduleRequest);
             return ResponseEntity.ok(new ApiResponse<>(true, "Tour schedule updated successfully", response));
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping()
     public ResponseEntity<ApiResponse<GetTourScheduleResponse>> getById(@RequestParam Integer id) {
             GetTourScheduleResponse response = tourScheduleService.findById(id);
             return ResponseEntity.ok(new ApiResponse<>(true, "Tour schedule retrieved successfully", response));
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/tour")
     public ResponseEntity<ApiResponse<List<GetTourScheduleResponse>>> getByIdTour(@RequestParam Integer idTour) {
         List<GetTourScheduleResponse> response = tourScheduleService.findAllByIdTour(idTour);
         return ResponseEntity.ok(new ApiResponse<>(true, "Tour schedule retrieved successfully", response));
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/all")
     public ResponseEntity<ApiResponse<List<GetTourScheduleResponse>>> getAll() {
         List<GetTourScheduleResponse> response = tourScheduleService.getAll();

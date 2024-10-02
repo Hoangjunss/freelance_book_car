@@ -39,26 +39,22 @@ public class TourismController {
             UpdateTourismResponse response = tourismService.updateTourism(updateTourismRequest);
             return ResponseEntity.ok(new ApiResponse<>(true, "Tourism entity updated successfully", response));
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/id/{id}")
     public ResponseEntity<ApiResponse<GetTourismResponse>> getById(@RequestParam Integer id) {
             GetTourismResponse response = tourismService.findById(id);
             return ResponseEntity.ok(new ApiResponse<>(true, "Tourism entity retrieved successfully", response));
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping()
     public ResponseEntity<ApiResponse<List<GetTourismResponse>>> getAll() {
         List<GetTourismResponse> response = tourismService.getAll();
         return ResponseEntity.ok(new ApiResponse<>(true, "Hotel retrieved successfully", response));
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/{location}")
     public ResponseEntity<ApiResponse<List<GetTourismResponse>>> getLocation(@PathVariable String location) {
         List<GetTourismResponse> response = tourismService.findLocation(location);
         return ResponseEntity.ok(new ApiResponse<>(true, "Hotel retrieved successfully", response));
     }
-    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
     @GetMapping("/detail")
     public ResponseEntity<ApiResponse<GetTourismDetailResponse>> getDetail(@RequestParam Integer id, @RequestParam(required = false)  LocalDateTime dateTime) {
         if(dateTime==null){
