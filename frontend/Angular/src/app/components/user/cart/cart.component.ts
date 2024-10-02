@@ -51,22 +51,30 @@ export class CartComponent implements OnInit {
 
 
   get total() {
-    return this.products.reduce((sum, product) => sum + (product.price * product.quantity), 0);
+    return this.products.reduce((sum, product) => sum + product.price, 0);
+  }
+
+  updateProductTotalPrice(product: any) {
+    product.price = product.price / product.quantity * product.quantity;
   }
 
 
-  // Xóa các phương thức tăng/giảm số lượng vì đã chỉnh sửa giao diện
   increaseQuantity(product: any) {
     product.quantity++;
     this.updateProductQuantity(product);
+    this.updateProductTotalPrice(product);
   }
 
   decreaseQuantity(product: any) {
-    if (product.quantity > 0) {
+    if (product.quantity > 1) {
       product.quantity--;
       this.updateProductQuantity(product);
+      this.updateProductTotalPrice(product);
     }
   }
+
+  
+
   getBookingByUser(id: number) {
     this.bookingService.getBookingByUser(id).subscribe({
       next: (response) => {
@@ -87,6 +95,8 @@ export class CartComponent implements OnInit {
     });
   }
 
+
+
   getBookingDetail(id: number) {
     this.bookingService.getDetailBooking(id).subscribe({
       next: (response) => {
@@ -97,10 +107,12 @@ export class CartComponent implements OnInit {
             id: detail.idTour || detail.idHotel || detail.idTourism,
             name: detail.idTour ? 'Tour' : detail.idHotel ? 'Khách sạn' : 'Vé',
             price: detail.totalPrice,
+            originalPrice: detail.totalPrice / detail.quantity,
             quantity: detail.quantity,
             image: 'https://via.placeholder.com/100', // You may want to set this dynamically based on type
-            type: detail.idTour ? 'tour' : detail.idHotel ? 'hotel' : 'ticket'
+            type: detail.idTour ? 'tour' : detail.idHotel ? 'hotel' : 'ticket',
           }));
+          console.log('Products:', this.products);
         } else {
         }
       },

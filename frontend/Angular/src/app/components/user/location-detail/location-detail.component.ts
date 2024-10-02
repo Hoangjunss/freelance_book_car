@@ -75,19 +75,22 @@ export class LocationDetailComponent {
         const currentDate = new Date();
         if (response) {
           this.getTourScheduleResponse = response;
-          console.log(this.getTourScheduleResponse);
-          this.selectedPrice = response[0].priceTour;
-          this.selectedTourSchedule = response[0].id;
-          console.log(this.selectedTourSchedule);
-          this.availableTourSchedules = response.filter(schedule => {
+          this.getTourScheduleResponse.forEach(schedule => {
             if (schedule.timeStartTour !== undefined) {
               const scheduleDate = new Date(schedule.timeStartTour);
-              return scheduleDate >= currentDate;
+              if (scheduleDate >= currentDate) {
+                this.availableTourSchedules.push(schedule);
+              }
             }
-            return false;
-          });
+          }
+          );
         }
+        this.availableTourSchedules = this.getTourScheduleResponse; 
+        if(this.availableTourSchedules.length > 0){
+          this.selectedTourSchedule = this.availableTourSchedules[0].id;
+          this.onTourScheduleChange();
       }
+    }
     });
   }
 
