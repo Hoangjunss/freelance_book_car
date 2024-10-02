@@ -12,6 +12,10 @@ import { Router } from '@angular/router';
 import { OrderRequest } from '../../../models/request/booking/order-request';
 import { OrderResponse } from '../../../models/response/booking/order-response';
 import { CreateUserJoinRequest } from '../../../models/request/user/user-join/create-user-join-request';
+import { TourService } from '../../../services/product/tour/tour/tour.service';
+import { HotelService } from '../../../services/product/hotel/hotel/hotel.service';
+import { TicketService } from '../../../services/product/ticket/ticket/ticket.service';
+import { start } from 'repl';
 
 @Component({
   selector: 'app-booking',
@@ -47,7 +51,15 @@ export class BookingComponent implements OnInit {
   updateUserJoin: CreateUserJoinRequest = new CreateUserJoinRequest();
   
 
-  constructor(private title: Title,@Inject(PLATFORM_ID) private platformId: Object,private bookingService: BookingService,private router: Router) {
+  constructor(
+    private title: Title,
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private bookingService: BookingService,
+    private router: Router,
+    private tourService: TourService,
+    private hotelService: HotelService,
+    private ticketService: TicketService,
+  ) {
     // Initialize hours (0-23)
     this.hours = Array.from({ length: 24 }, (_, i) => i);
 
@@ -109,7 +121,6 @@ export class BookingComponent implements OnInit {
           if (response.type === 'CART') {
             this.idBooking = response.id;
             this.getBookingDetail(response.id);
-            console.log('Booking:', response);
             this.totalPrice = response.totalPrice;
           } else {
             this.products = []; 
@@ -138,7 +149,60 @@ export class BookingComponent implements OnInit {
             image: 'https://via.placeholder.com/100',
             type: detail.idTour ? 'tour' : detail.idHotel ? 'hotel' : 'ticket'
           }));
-          console.log('Products:', this.products);
+
+          // Nếu có idTour thì lấy thông tin tour
+          if (this.products.some(p => p.type === 'tour')) {
+            this.products.filter(p => p.type === 'tour').forEach(p => {
+              this.tourService.getTourById(p.id).subscribe({
+                next: (response) => {
+                  console.log('Tour:', response);
+                  p.startLocation = response.startLocation;
+                  p.endLocation = response.endLocation;
+                  p.image = response.image;
+                  p.name = response.name;
+                },
+                error: (error) => {
+                  console.log("Error:", error);
+                }
+              });
+            });
+          }
+
+          // Nếu có idHotel thì lấy thông tin hotel
+          if (this.products.some(p => p.type === 'hotel')) {
+            this.products.filter(p => p.type === 'hotel').forEach(p => {
+              this.hotelService.getHotelDetailById(p.id).subscribe({
+                next: (response) => {
+                  console.log('Hotel:', response);
+                  p.name = response.name;
+                  p.image = response.image;
+                  p.location = response.location;
+            
+
+                },
+                error: (error) => {
+                  console.log("Error:", error);
+                }
+              });
+            });
+          }
+
+          // Nếu có idTicket thì lấy thông tin ticket
+          if (this.products.some(p => p.type === 'ticket')) {
+            this.products.filter(p => p.type === 'ticket').forEach(p => {
+              this.ticketService.getTicket(p.id).subscribe({
+                next: (response) => {
+                  console.log('Ticket:', response);
+                  p.name = response.startDate;
+                },
+                error: (error) => {
+                  console.log("Error:", error);
+                }
+              });
+            });
+          }
+
+
         } else {
         }
       },
@@ -146,9 +210,5 @@ export class BookingComponent implements OnInit {
         console.log("Error:", error);
       }
     });
-  }
-
-
-
-  
+  } 
 }
