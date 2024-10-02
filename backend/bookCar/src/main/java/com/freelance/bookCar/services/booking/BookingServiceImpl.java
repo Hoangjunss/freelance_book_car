@@ -249,7 +249,7 @@ public class BookingServiceImpl implements BookingService{
         }
 
         TourSchedule tour=modelMapper.map(tourScheduleService.findById(addBookingTourRequest.getIdTour()),TourSchedule.class);
-        BookingDetail bookingDetail=bookingDetaiTourlList(tour.getId());
+        BookingDetail bookingDetail=bookingDetaiTourlList(booking.getId(), tour.getId());
         if(bookingDetail==null) {
             // Create a BookingDetail object using Builder pattern
              bookingDetail = BookingDetail.builder()
@@ -337,7 +337,7 @@ public class BookingServiceImpl implements BookingService{
 
         // Get the Tourism entity
         Ticket tourism = modelMapper.map(ticketService.findById(addBookingTourismRequest.getIdTicket()), Ticket.class);
-        BookingDetail bookingDetail=bookingDetailTourismList(tourism.getId());
+        BookingDetail bookingDetail=bookingDetailTourismList(booking.getId(), tourism.getId());
         if(bookingDetail==null) {
             // Create a BookingDetail object using Builder pattern
             bookingDetail = BookingDetail.builder()
@@ -426,9 +426,12 @@ public class BookingServiceImpl implements BookingService{
         HotelBooking hotel = modelMapper.map(hotelBookingService.findById(addBookingHotelRequest.getIdHotel()), HotelBooking.class);
         //Hotel hotels = modelMapper.map(hotelService.findById(addBookingHotelRequest.getIdHotel()), Hotel.class);
 
-        BookingDetail bookingDetail=bookingDetailHotelList(hotel.getId());
+        log.info("429: {}", hotel.getId());
+        BookingDetail bookingDetail=bookingDetailHotelList(booking.getId(), hotel.getId());
+        log.info("430: {}", bookingDetail!=null ? bookingDetail.toString() : "null");
         if(bookingDetail==null) {
             // Create a BookingDetail object using Builder pattern
+
             bookingDetail = BookingDetail.builder()
                     .id(getGenerationId())
                     .idBooking(booking.getId())
@@ -659,14 +662,14 @@ public class BookingServiceImpl implements BookingService{
         return response;
     }
 
-    private BookingDetail bookingDetailHotelList(Integer id){
-        return bookingDetailRepository.findByIsHotel(id);
+    private BookingDetail bookingDetailHotelList(Integer idBooking, Integer idHotel){
+        return bookingDetailRepository.findByIdBookingAndIdHotel(idBooking, idHotel);
     }
-    private BookingDetail bookingDetaiTourlList(Integer id){
-        return bookingDetailRepository.findByIsTour(id);
+    private BookingDetail bookingDetaiTourlList(Integer idBooking, Integer idTour){
+        return bookingDetailRepository.findByIdBookingAndIdTour(idBooking, idTour);
     }
-    private BookingDetail bookingDetailTourismList(Integer id){
-        return bookingDetailRepository.findByIsTourism(id);
+    private BookingDetail bookingDetailTourismList(Integer idBooking, Integer idTour){
+        return bookingDetailRepository.findByIdBookingAndIdTicket(idBooking, idTour);
     }
 
     private Integer getGenerationId() {

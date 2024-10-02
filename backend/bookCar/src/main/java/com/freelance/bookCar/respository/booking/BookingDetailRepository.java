@@ -13,12 +13,9 @@ public interface BookingDetailRepository extends JpaRepository<BookingDetail,Int
 
     List<BookingDetail> findAllByIdBooking(Integer idBooking);
 
-    @Query(value = "select * from booking_detail bd where bd.id_booking = :id AND bd.id_hotel IN (select id_hotel from booking_detail);", nativeQuery = true)
-    BookingDetail findByIsHotel(@Param("id") Integer idBooking);
+    BookingDetail findByIdBookingAndIdHotel(Integer idBooking,Integer idHotel);
 
-    @Query(value = "select * from booking_detail bd where bd.id_booking = :id AND bd.id_tour IN (select id_tour from booking_detail);", nativeQuery = true)
-    BookingDetail findByIsTour(@Param("id") Integer idBooking);
+    BookingDetail findByIdBookingAndIdTour(Integer idBooking, Integer idTour);
 
-    @Query(value = "select * from booking_detail bd where bd.id_booking = :id AND bd.id_ticket IN (select id_ticket from booking_detail);", nativeQuery = true)
-    BookingDetail findByIsTourism(@Param("id") Integer idBooking);
+    BookingDetail findByIdBookingAndIdTicket(Integer idBooking, Integer idTicket);
 }
