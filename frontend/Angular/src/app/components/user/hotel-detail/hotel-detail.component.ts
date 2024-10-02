@@ -20,7 +20,7 @@ import { FormsModule } from '@angular/forms';
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     UserService
   ],
-  imports: [HttpClientModule, CommonModule,FormsModule],
+  imports: [HttpClientModule, CommonModule, FormsModule],
   templateUrl: './hotel-detail.component.html',
   styleUrl: './hotel-detail.component.css'
 })
@@ -34,7 +34,7 @@ export class HotelDetailComponent {
   totalPrice: number = 0;
   nights: number = 1;
   listHotel: GetHotelBookingResponse[] = [];
-  selectedTourSchedule?:number | null = null;
+  selectedTourSchedule?: number | null = null;
   selectedPrice?: number | null = null;
 
   toggleContent(event: Event) {
@@ -56,7 +56,7 @@ export class HotelDetailComponent {
       this.locationId = params.get('id');
       if (this.locationId) {
         this.getHotelDetailById(parseInt(this.locationId));
-        this.getHotelDetailById(parseInt(this.locationId));
+        this.getHotelByIdBooking(parseInt(this.locationId));
       }
     });
   }
@@ -129,12 +129,11 @@ export class HotelDetailComponent {
   checkRoomStatus() {
   }
 
-  
+
   getHotelDetailById(id: number) {
-    this.hotelBooking.getHotelByIdBooking(id).subscribe(response => {
+    this.hotelService.getHotelDetailById(id).subscribe(response => {
       if (response) {
-        this.listHotel = response;
-        console.log(this.listHotel);
+        this.locations = response;
       } else {
       }
     }, error => {
@@ -142,12 +141,21 @@ export class HotelDetailComponent {
     });
   }
 
-  addBookingHotel(locationId: string | null) {
 
-    if(!this.selectedTourSchedule)
-    {
+  getHotelByIdBooking(id: number) {
+    this.hotelBooking.getHotelByIdBooking(id).subscribe(response => {
+      if (response) {
+        this.listHotel = response;
+      } else {
+        console.log("Thất bại");
+      }
+    });
+  }
+
+  addBookingHotel(locationId: string | null) {
+    if (!this.selectedTourSchedule) {
       alert("Please select hotel itinerary")
-      return ;
+      return;
     }
 
 
@@ -177,18 +185,18 @@ export class HotelDetailComponent {
 
 
 
-    if(this.startDate!=undefined && this.endDate != undefined){
-      const startDate = new Date(this.startDate);  
+    if (this.startDate != undefined && this.endDate != undefined) {
+      const startDate = new Date(this.startDate);
       const startDateWithoutTimezone = startDate.toISOString().slice(0, 19);
-      formData.append('startDate', startDateWithoutTimezone);      
-      const endDate = new Date(this.endDate);  
+      formData.append('startDate', startDateWithoutTimezone);
+      const endDate = new Date(this.endDate);
       const endDateWithoutTimezone = endDate.toISOString().slice(0, 19);
-      formData.append('endDate', endDateWithoutTimezone);     
+      formData.append('endDate', endDateWithoutTimezone);
     }
 
     this.bookingService.addBookingHotel(formData).subscribe(response => {
       if (response) {
-        if(idBooking == null){
+        if (idBooking == null) {
           localStorage.setItem('idBooking', response.id + "");
         }
         alert("Đặt phòng thành công");

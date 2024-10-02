@@ -1,6 +1,6 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthInterceptor } from '../../../services/auth.interceptor';
 import { UserService } from '../../../services/user/user.service';
@@ -20,7 +20,7 @@ import { Router } from '@angular/router';
   templateUrl: './booking.component.html',
   styleUrl: './booking.component.css'
 })
-export class BookingComponent {
+export class BookingComponent implements OnInit {
   specialRequest: string = ''; 
   charCount: number = 0; 
   hours: number[] = [];
@@ -32,6 +32,7 @@ export class BookingComponent {
   getBookingDetailResponse: GetBookingDetailResponse [] = [];
   products:any[] = [];
   idBooking: number | null = null;
+  totalPrice: number | null = null;
 
   constructor(private title: Title,@Inject(PLATFORM_ID) private platformId: Object,private bookingService: BookingService,private router: Router) {
     // Initialize hours (0-23)
@@ -41,6 +42,16 @@ export class BookingComponent {
     this.minutes = Array.from({ length: 60 }, (_, i) => (i) ? i : null).filter(n => n !== null);
 
     this.title.setTitle('Điền thông tin');
+  }
+  
+  ngOnInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      const id = localStorage.getItem('idUser');
+      if (id) {
+        this.getBookingByUser(parseInt(id));
+        console.log('ID:', this.products);
+      }
+    }
   }
 
   updateCharCount() {
@@ -80,9 +91,11 @@ export class BookingComponent {
     this.bookingService.getBookingByUser(id).subscribe({
       next: (response) => {
         if (response && response.id) {
-          if (response.type === 'PENDING') {
+          if (response.type === 'CART') {
             this.idBooking = response.id;
             this.getBookingDetail(response.id);
+            console.log('Booking:', response);
+            this.totalPrice = response.totalPrice;
           } else {
             this.products = []; 
           }
@@ -110,6 +123,7 @@ export class BookingComponent {
             image: 'https://via.placeholder.com/100',
             type: detail.idTour ? 'tour' : detail.idHotel ? 'hotel' : 'ticket'
           }));
+          console.log('Products:', this.products);
         } else {
         }
       },
@@ -118,4 +132,7 @@ export class BookingComponent {
       }
     });
   }
+
+
+  
 }

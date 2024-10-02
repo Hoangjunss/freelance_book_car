@@ -57,7 +57,13 @@ export class LoginComponent implements OnInit {
           });
         },
         error: (error) => {
-          console.error('Login error:', error);
+          if(error.status === 404){
+            this.userForm.get('email')?.setErrors({emailNotFound: true});
+          }
+          if(error.status === 500){
+            this.userForm.get('password')?.setErrors({invalidCredentials: true});
+          }
+
         }
       });
     }
