@@ -1,7 +1,7 @@
 export class GetHotelBookingResponse{
     id?: number;
-    startTime?: Date;
-    endTime?: Date;
+    startDate?: Date;
+    endDate?: Date;
     totalPrice?: number;
     hotel?: number;
 }

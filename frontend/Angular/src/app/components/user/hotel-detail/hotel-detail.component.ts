@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import { Title } from '@angular/platform-browser';
 import { HotelbookingService } from '../../../services/product/hotel/hotelbooking/hotelbooking.service';
 import { GetHotelBookingResponse } from '../../../models/response/product/hotel/hotel-booking/get-hotelbooking-response';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-hotel-detail',
@@ -19,7 +20,7 @@ import { GetHotelBookingResponse } from '../../../models/response/product/hotel/
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     UserService
   ],
-  imports: [HttpClientModule, CommonModule],
+  imports: [HttpClientModule, CommonModule,FormsModule],
   templateUrl: './hotel-detail.component.html',
   styleUrl: './hotel-detail.component.css'
 })
@@ -33,6 +34,8 @@ export class HotelDetailComponent {
   totalPrice: number = 0;
   nights: number = 1;
   listHotel: GetHotelBookingResponse[] = [];
+  selectedTourSchedule?:number | null = null;
+  selectedPrice?: number | null = null;
 
   toggleContent(event: Event) {
     event.preventDefault();
@@ -52,6 +55,7 @@ export class HotelDetailComponent {
     this.route.paramMap.subscribe(params => {
       this.locationId = params.get('id');
       if (this.locationId) {
+        this.getHotelDetailById(parseInt(this.locationId));
         this.getHotelDetailById(parseInt(this.locationId));
       }
     });
@@ -123,13 +127,9 @@ export class HotelDetailComponent {
   }
 
   checkRoomStatus() {
-    // Thực hiện kiểm tra tình trạng phòng ở đây
   }
 
   
-
-
-
   getHotelDetailById(id: number) {
     this.hotelBooking.getHotelByIdBooking(id).subscribe(response => {
       if (response) {
@@ -188,6 +188,21 @@ export class HotelDetailComponent {
     }, error => {
       console.log("Error:", error);
     });
+  }
+
+
+  onTourScheduleChange() {
+    const selectedSchedule = this.listHotel.find(schedule => {
+      return schedule.id === Number(this.selectedTourSchedule); // Chuyển selectedTourSchedule thành số
+    });
+
+    if (selectedSchedule) {
+      this.selectedPrice = selectedSchedule.totalPrice || null;
+    }
+    else {
+      this.selectedPrice = null;
+    }
+
   }
 
 }

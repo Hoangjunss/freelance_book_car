@@ -89,7 +89,7 @@
         <!-- Right Column (Price Section) -->
         <div class="col-md-4">
             <div class="border p-3 rounded">
-                <h5 class="text-end text-dark price">₫ {{ totalPrice }}
+                <h5 class="text-end text-dark price">{{ selectedPrice !== null ? selectedPrice : 0 | currency:'VND' }}
                     <small class="text-decoration-line-through">₫ 1,500,000</small>
                 </h5>
                 <button class="btn button-price w-100">Đặt phòng ngay</button>
@@ -110,12 +110,13 @@
                             <button style="text-decoration: underline;background:none;border: none;" (click)="clearDates()">Xóa tất cả</button>
                         </div>
                     </div>
-                    <p class="text-muted">Vui lòng chọn ngày du lịch</p>
-                    
-                    <div class="d-flex">
-                        <input type="date" id="startDate" (change)="onStartDateChange($event)" class="form-control me-2" />
-                        <input type="date" id="endDate" (change)="onEndDateChange($event)" class="form-control" />
-                    </div>
+                    <p class="text-muted">Vui lòng chọn ngày thuê</p>
+                    <select class="form-select mb-2" [(ngModel)]="selectedTourSchedule" (change)="onTourScheduleChange()">
+                        <option [value] = null selected disabled>-- SELECT HOTEL SCHEDULE --</option>
+                        <option *ngFor="let schedule of listHotel" [value]="schedule.id">
+                            {{ schedule.startDate | date: 'dd/MM/yyyy' }} - {{schedule.endDate | date: 'dd/MM/yyyy'}} - Giá: {{ schedule.totalPrice | currency }}
+                        </option>                        
+                    </select>
                 
                     <button class="btn button-price btn-warning mb-2" style="border-radius: 14px;margin-top: 25px;" (click)="checkRoomStatus()">
                         <i class="bi bi-calendar4" style="padding: 0px 5px;"></i>
@@ -224,7 +225,7 @@
                 <!-- Pricing Section -->
                 <div class="mt-4 d-flex justify-content-between align-items-center">
                     <div>
-                        <span class="fs-3 text-dark" style="font-weight: 500;">₫ {{totalPrice}}</span>
+                        <span class="fs-3 text-dark" style="font-weight: 500;">₫{{ selectedPrice !== null ? selectedPrice : 0 | currency:'VND' }}</span>
                         <small class="text-decoration-line-through text-muted" style="font-weight: bold;">₫
                             357,000</small>
                         <p class="text-muted" style="font-size: small;">Vui lòng hoàn tất các mục yêu cầu để chuyển đến
@@ -353,7 +354,7 @@
         </div>
         <div class="col-md-4">
             <div class="border p-3 rounded">
-                <h5 class="text-end text-dark price">₫ {{ totalPrice }}
+                <h5 class="text-end text-dark price">₫ {{ selectedPrice !== null ? selectedPrice : 0 | currency:'VND' }}
                     <small class="text-decoration-line-through">₫ 357,000</small>
                 </h5>
                 <button class="btn button-price w-100">Chọn các gói dịch vụ</button>
