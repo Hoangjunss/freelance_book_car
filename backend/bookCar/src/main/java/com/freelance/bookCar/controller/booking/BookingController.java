@@ -134,4 +134,10 @@ public class BookingController {
         List<GetBookingResponse> getBookingResponses=bookingService.findId(type);
         return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", getBookingResponses));
     }
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @DeleteMapping()
+    public ResponseEntity<ApiResponse<?>> deleteId(@RequestParam Integer id){
+      bookingService.deleteBookingDetail(id);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", "ok"));
+    }
 }

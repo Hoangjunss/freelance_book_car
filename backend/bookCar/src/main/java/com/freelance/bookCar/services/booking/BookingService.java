@@ -42,4 +42,5 @@ public interface BookingService {
     GetBookingResponse updateType(Integer id,String type);
     OrderResponse order(OrderRequest orderRequest);
     List<GetBookingResponse> findId(Integer IdUser);
+    void deleteBookingDetail(Integer id);
 }

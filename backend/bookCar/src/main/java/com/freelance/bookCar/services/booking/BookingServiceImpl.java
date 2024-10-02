@@ -609,6 +609,12 @@ public class BookingServiceImpl implements BookingService{
         }).collect(Collectors.toList());
     }
 
+    @Override
+    public void deleteBookingDetail(Integer id) {
+        BookingDetail bookingDetail=bookingDetailRepository.findById(id).orElseThrow();
+        bookingDetailRepository.delete(bookingDetail);
+    }
+
 
     @Override
     public UpdateBookingTourResponse updateBookingTour(UpdateBookingTourRequest updateBookingTourRequest) {
