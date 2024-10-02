@@ -9,6 +9,8 @@ import { BookingService } from '../../../services/booking/booking.service';
 import { AddBookingHotelRequest } from '../../../models/request/booking/add-booking-hotel-request';
 import { CommonModule } from '@angular/common';
 import { Title } from '@angular/platform-browser';
+import { HotelbookingService } from '../../../services/product/hotel/hotelbooking/hotelbooking.service';
+import { GetHotelBookingResponse } from '../../../models/response/product/hotel/hotel-booking/get-hotelbooking-response';
 
 @Component({
   selector: 'app-hotel-detail',
@@ -30,6 +32,7 @@ export class HotelDetailComponent {
   endDate: Date | null = null;
   totalPrice: number = 0;
   nights: number = 1;
+  listHotel: GetHotelBookingResponse[] = [];
 
   toggleContent(event: Event) {
     event.preventDefault();
@@ -41,7 +44,8 @@ export class HotelDetailComponent {
     private hotelService: HotelService,
     private bookingService: BookingService,
     private router: Router,
-    private title: Title
+    private title: Title,
+    private hotelBooking: HotelbookingService
   ) { this.title.setTitle("Chi tiết khách sạn"); }
 
   ngOnInit(): void {
@@ -127,9 +131,10 @@ export class HotelDetailComponent {
 
 
   getHotelDetailById(id: number) {
-    this.hotelService.getHotelDetailById(id).subscribe(response => {
+    this.hotelBooking.getHotelByIdBooking(id).subscribe(response => {
       if (response) {
-        this.locations = response;
+        this.listHotel = response;
+        console.log(this.listHotel);
       } else {
       }
     }, error => {
@@ -184,7 +189,5 @@ export class HotelDetailComponent {
       console.log("Error:", error);
     });
   }
-
-
 
 }
