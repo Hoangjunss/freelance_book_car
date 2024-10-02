@@ -50,6 +50,8 @@ export class NavbarComponent implements OnInit {
     }
     localStorage.removeItem('currentUser');
     localStorage.removeItem('token');
+    localStorage.removeItem('idUser');
+    localStorage.removeItem('idBooking');
     this.CurrentUser = null; 
     this.updateNavbarContent();
 

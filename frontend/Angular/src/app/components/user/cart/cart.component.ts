@@ -160,6 +160,9 @@ export class CartComponent implements OnInit {
       if (confirmed) {
         this.bookingService.updateTypeBooking(type, this.idBooking).subscribe({
           next: (response) => {
+            if(response){
+              localStorage.removeItem('idBooking');
+            }
           },
           error: (error) => {
           }
