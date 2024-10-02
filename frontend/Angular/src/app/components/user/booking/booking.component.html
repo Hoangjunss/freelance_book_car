@@ -34,6 +34,14 @@
                             <p style="margin-bottom: 0px;"><strong>{{product.name}}</strong></p>
                             <span>Price: {{product.price | currency: '₫'}}</span><br>
                             <span>Quantity: {{product.quantity}}</span>
+                        <img [src]="product.image" alt="{{product.name}}" class="me-3" style="width: 120px; height: auto;">
+                        <div class="flex-grow-1">
+                            <p style="margin-bottom: 0;"><strong>{{product.name}}</strong></p>
+                            <p *ngIf="product.description">Description: {{product.description}}</p>
+                            <p *ngIf="product.type === 'tour'">{{product.startLocation}} - {{product.endLocation}}</p>
+                            <p *ngIf="product.type === 'hotel'">Start Date: {{product.startDate | date}}</p>
+                            <p *ngIf="product.type === 'hotel'">End Date: {{product.endDate | date}}</p>
+                            <p *ngIf="product.type === 'ticket'">Start Date: {{product.startDate | date}}</p>
                         </div>
                     </div>
 
@@ -546,16 +554,32 @@
             <div class="col-lg-4 order-right">
                 <div class="col-md-10" *ngFor="let product of products">
                     <div class="card-custom">
-                        <h5 class="card-title">{{product.name}}</h5>
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <div class="card-content mb-3 mt-4">
+                            <span *ngIf="product.type === 'tour'">Khứ hồi: {{ product.startLocation }} - {{ product.endLocation }}</span>
+                        </div>
                         <hr style="border: 1px solid #ddd;">
                         <div class="d-flex justify-content-between mb-2">
-                            <span class="card-content">Đơn vị</span>
-                            <span>{{product.quantity}}</span>
+                            <span class="card-content">Ngày:</span>
+                            <span *ngIf="product.type === 'hotel'">
+                                {{ product.startDate | date }} - {{ product.endDate | date }}
+                            </span>
+                            <span *ngIf="product.type === 'ticket'">
+                                {{ product.startDate | date }}
+                            </span>
+                            <span *ngIf="product.type === 'tour'">
+                                (Thông tin không có sẵn)
+                            </span>
+                        </div>
+                
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="card-content">Đơn vị:</span>
+                            <span>{{ product.quantity }}</span>
                         </div>
                         <hr style="border: 1px solid #ddd;">
                         <div class="d-flex justify-content-between">
-                            <span class="text-total">Tổng cộng</span>
-                            <span class="total-amount">{{product.price | currency: '₫'}}</span>
+                            <span class="text-total">Tổng cộng:</span>
+                            <span class="total-amount">{{ product.price | currency: '₫' }}</span>
                         </div>
                     </div>
                 </div>
@@ -565,18 +589,15 @@
                     <div class="card-custom">
                         <div class="d-flex justify-content-between mb-2">
                             <span class="text-total">Tổng cộng</span>
-                            <span class="total-amount">{{totalPrice}}</span>
+                            <span class="total-amount">{{totalPrice | currency: '₫' }}</span>
                         </div>
                         <div class="d-flex justify-content-between">
                             <span class="card-content">Số tiền thanh toán</span>
-                            <span class="total-amount" style="color: #f89c1c;font-size: 1.2rem;font-weight: 600;">₫
-                                {{totalPrice}}</span>
+                            <span class="total-amount" style="color: #f89c1c;font-size: 1.2rem;font-weight: 600;">
+                                {{totalPrice | currency: '₫' }}</span>
                         </div>
                     </div>
                 </div>
-    
-                <div class="mt-5" style="margin-top: 60rem !important;"></div>
-    
             </div>
         </div>
 

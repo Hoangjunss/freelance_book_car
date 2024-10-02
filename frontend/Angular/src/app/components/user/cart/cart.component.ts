@@ -20,20 +20,20 @@ import { Title } from '@angular/platform-browser';
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     UserService
   ],
-  imports: [FormsModule,CommonModule,HttpClientModule],
+  imports: [FormsModule, CommonModule, HttpClientModule],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css'
 })
 export class CartComponent implements OnInit {
-  
-  getBookingDetailResponse: GetBookingDetailResponse [] = [];
-  products:any[] = [];
+
+  getBookingDetailResponse: GetBookingDetailResponse[] = [];
+  products: any[] = [];
   idBooking: number | null = null;
 
   constructor(private bookingService: BookingService,
-    private tourService:TourService,
-    private hotelService : HotelService,
-    private tourismService : TourismService,
+    private tourService: TourService,
+    private hotelService: HotelService,
+    private tourismService: TourismService,
     private title: Title,
     @Inject(PLATFORM_ID) private platformId: Object,
     private router: Router
@@ -55,7 +55,7 @@ export class CartComponent implements OnInit {
   }
 
   updateProductTotalPrice(product: any) {
-    product.price = product.price / product.quantity * product.quantity;
+    product.price = product.originalPrice * product.quantity;
   }
 
 
@@ -73,7 +73,7 @@ export class CartComponent implements OnInit {
     }
   }
 
-  
+
 
   getBookingByUser(id: number) {
     this.bookingService.getBookingByUser(id).subscribe({
@@ -85,7 +85,7 @@ export class CartComponent implements OnInit {
           } else {
             this.products = []; // Đặt sản phẩm thành mảng rỗng nếu không phải loại CART
           }
-          
+
         } else {
         }
       },
@@ -113,6 +113,7 @@ export class CartComponent implements OnInit {
             type: detail.idTour ? 'tour' : detail.idHotel ? 'hotel' : 'ticket',
           }));
           console.log('Products:', this.products);
+          console.log('Booking Detail:', this.getBookingDetailResponse);
         } else {
         }
       },
@@ -166,20 +167,11 @@ export class CartComponent implements OnInit {
   }
 
   updateBookingType() {
-    const type = 'CART'; 
+    const type = 'CART';
     if (this.idBooking) {
       const confirmed = window.confirm("Bạn có chắc chắn muốn thanh toán không?");
       if (confirmed) {
-        this.bookingService.updateTypeBooking(type, this.idBooking).subscribe({
-          next: (response) => {
-            if(response){
-              localStorage.removeItem('idBooking');
-              this.router.navigate(['/booking']);
-            }
-          },
-          error: (error) => {
-          }
-        });
+        this.router.navigate(['/booking']);
       }
     }
   }
@@ -188,9 +180,6 @@ export class CartComponent implements OnInit {
     const formData = new FormData();
     formData.append('idBooking', product.idBookingDetail.toString());
     formData.append('quantity', product.quantity.toString());
-
-    
-  
     // Kiểm tra loại sản phẩm và thêm đúng tham số
     if (product.type === 'tour') {
       this.bookingService.updateQuantityTour(formData).subscribe({
@@ -225,7 +214,7 @@ export class CartComponent implements OnInit {
     if (confirmed) {
       // Remove the product from the array
       this.products = this.products.filter(p => p.idBookingDetail !== product.idBookingDetail);
-  
+
       // Optionally, call the API to remove the product from the server (if needed)
       this.bookingService.deleteBookingDetail(product.idBookingDetail).subscribe({
         next: (response) => {
