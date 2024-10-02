@@ -13,5 +13,6 @@ public interface BookingRepository extends JpaRepository<Booking, Integer> {
     Booking findByIdUser(Integer idUser);
 
     Booking findByTypeBookingAndIdUser(TypeBooking status, Integer idUser);
+
     List<Booking> findAllByIdUser(Integer id);
 }

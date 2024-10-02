@@ -157,8 +157,8 @@ export class HotelDetailComponent {
 
     // Chuyển đổi thành FormData
     const formData = new FormData();
-    formData.append('idHotel', addBookingHotelRequest.idHotel.toString());
-    formData.append('idBooking', idBooking);
+    formData.append('idHotel', this.selectedTourSchedule?.toString() || "");
+    formData.append('idBooking', idBooking || '');
     formData.append('idUser', addBookingHotelRequest.idUser.toString());
     formData.append('quantity', addBookingHotelRequest.quantity.toString());
     formData.append('totalPrice', this.totalPrice.toString());
@@ -166,6 +166,8 @@ export class HotelDetailComponent {
     //   formData.append('startDate', this.startDate.toString());
     //   formData.append('endDate', this.endDate.toString());
     // }
+
+    
 
     if(this.startDate!=undefined && this.endDate != undefined){
       const startDate = new Date(this.startDate);  
@@ -179,7 +181,7 @@ export class HotelDetailComponent {
     this.bookingService.addBookingHotel(formData).subscribe(response => {
       if (response) {
         if(idBooking == null){
-          localStorage.setItem('idBooking', response.id.toString());
+          localStorage.setItem('idBooking', response.id + "");
         }
         alert("Đặt phòng thành công");
         this.router.navigate(['/cart']);
@@ -193,7 +195,7 @@ export class HotelDetailComponent {
 
   onTourScheduleChange() {
     const selectedSchedule = this.listHotel.find(schedule => {
-      return schedule.id === Number(this.selectedTourSchedule); // Chuyển selectedTourSchedule thành số
+      return schedule.id === Number(this.selectedTourSchedule);
     });
 
     if (selectedSchedule) {

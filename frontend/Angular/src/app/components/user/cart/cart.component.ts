@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
@@ -6,10 +7,8 @@ import { AuthInterceptor } from '../../../services/auth.interceptor';
 import { UserService } from '../../../services/user/user.service';
 import { GetBookingDetailResponse } from '../../../models/response/booking/get-booking-detail-response';
 import { BookingService } from '../../../services/booking/booking.service';
-import { GetBookingResponse } from '../../../models/response/booking/get-booking-response';
 import { TourService } from '../../../services/product/tour/tour/tour.service';
 import { HotelService } from '../../../services/product/hotel/hotel/hotel.service';
-import { TicketService } from '../../../services/product/ticket/ticket/ticket.service';
 import { TourismService } from '../../../services/product/ticket/tourism/tourism.service';
 import { Title } from '@angular/platform-browser';
 
@@ -36,7 +35,8 @@ export class CartComponent implements OnInit {
     private hotelService : HotelService,
     private tourismService : TourismService,
     private title: Title,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private router: Router
   ) { this.title.setTitle('Giỏ hàng'); }
 
   ngOnInit(): void {
@@ -162,6 +162,7 @@ export class CartComponent implements OnInit {
           next: (response) => {
             if(response){
               localStorage.removeItem('idBooking');
+              this.router.navigate(['/booking']);
             }
           },
           error: (error) => {

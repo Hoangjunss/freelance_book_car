@@ -122,10 +122,14 @@ export class TicketDetailComponent {
 
     const formData = new FormData();
     formData.append('idTicket', this.selectedTourSchedule?.toString() || '');
-    formData.append('idBooking', idBooking);
+    formData.append('idBooking', idBooking || '');
     formData.append('idUser', addBookingTourRequest.idUser.toString());
     formData.append('quantity', addBookingTourRequest.quantity.toString());
     formData.append('totalPrice', addBookingTourRequest.totalPrice ? addBookingTourRequest.totalPrice.toString() : ''); 
+    console.log(idBooking);
+    formData.forEach((value, key) => {
+      console.log(`${key}: ${value}`);
+    });
 
     this.bookingService.addBookingTourism(formData).subscribe({
       next: (response) => {
