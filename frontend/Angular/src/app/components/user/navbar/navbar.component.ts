@@ -48,7 +48,6 @@ export class NavbarComponent implements OnInit {
     if (event) {
       event.preventDefault();
     }
-    console.log('Logout button clicked');
     localStorage.removeItem('currentUser');
     localStorage.removeItem('token');
     this.CurrentUser = null; 
@@ -70,7 +69,6 @@ export class NavbarComponent implements OnInit {
         { label: 'My Account', isUser: true }
       ];
     }
-    console.log('Navbar Content:', this.navbarContent);
   }
 
   
