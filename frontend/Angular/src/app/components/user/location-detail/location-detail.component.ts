@@ -41,7 +41,7 @@ export class LocationDetailComponent {
     private bookingService: BookingService,
     private tourScheduleService: TourScheduleService,
     private titleService: Title
-  ) { this.titleService.setTitle("Location-detail");}
+  ) { this.titleService.setTitle("Location-detail"); }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -93,7 +93,7 @@ export class LocationDetailComponent {
     const selectedSchedule = this.availableTourSchedules.find(schedule => {
       return schedule.id === Number(this.selectedTourSchedule); // Chuyển selectedTourSchedule thành số
     });
-    
+
     if (selectedSchedule) {
       this.selectedPrice = selectedSchedule.priceTour ?? null; // Cập nhật giá
     } else {
@@ -105,6 +105,12 @@ export class LocationDetailComponent {
 
 
   addBookingTour(locationId: string | null) {
+
+    if (!this.selectedTourSchedule) {
+      alert("Please select tour itinerary")
+      return;
+    }
+
     const id = locationId ? parseInt(locationId) : 0;
     const addBookingTourRequest = new AddBookingTourRequest();
     const idUser = localStorage.getItem('idUser');
@@ -113,12 +119,12 @@ export class LocationDetailComponent {
     addBookingTourRequest.idTour = id;
     addBookingTourRequest.quantity = 1;
 
-    
+
     const selectedSchedule = this.availableTourSchedules.find(schedule => {
       return schedule.id === Number(this.selectedTourSchedule);
     });
-    
-    
+
+
     if (selectedSchedule) {
       addBookingTourRequest.totalPrice = selectedSchedule.priceTour;
     } else {
@@ -140,9 +146,9 @@ export class LocationDetailComponent {
       next: (response) => {
         if (response) {
 
-          if(idBooking == null){
+          if (idBooking == null) {
             console.log(response);
-            localStorage.setItem('idBooking', response.idBooking+"");
+            localStorage.setItem('idBooking', response.idBooking + "");
           }
           alert('ThanhCong');
         }

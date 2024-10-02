@@ -21,33 +21,33 @@ import e from 'express';
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     UserService
   ],
-  imports: [CommonModule,HttpClientModule, FormsModule],
+  imports: [CommonModule, HttpClientModule, FormsModule],
   templateUrl: './ticket-detail.component.html',
   styleUrl: './ticket-detail.component.css'
 })
 export class TicketDetailComponent {
 
   @Input() location: string | null = null;
-  isExpanded = false; 
+  isExpanded = false;
   locationId: string | null = null;
   locations?: GetTourismDetailResponse;
-  getTicketResponse?: GetTicketResponse[] =[];
+  getTicketResponse?: GetTicketResponse[] = [];
   availableTourSchedules: GetTicketResponse[] = [];
-  selectedTourSchedule:number | null = null; 
+  selectedTourSchedule: number | null = null;
   selectedPrice: number | null = null;
 
 
   toggleContent(event: Event) {
-    event.preventDefault(); 
+    event.preventDefault();
     this.isExpanded = !this.isExpanded;
   }
-  
 
-  constructor(private route: ActivatedRoute,private tourismService : TourismService, 
+
+  constructor(private route: ActivatedRoute, private tourismService: TourismService,
     private ticketService: TicketService,
     private bookingService: BookingService,
     private titleService: Title
-  ) { this.titleService.setTitle("Chi tiết đặt vé");}
+  ) { this.titleService.setTitle("Chi tiết đặt vé"); }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -102,6 +102,10 @@ export class TicketDetailComponent {
   }
 
   addBookingTour(locationId: string | null) {
+    if (!this.selectedTourSchedule) {
+      alert("Please select ticket ")
+      return;
+    }
     const id = locationId ? parseInt(locationId) : 0;
     const addBookingTourRequest = new AddBookingTourismRequest();
     const idUser = localStorage.getItem('idUser');
@@ -114,9 +118,9 @@ export class TicketDetailComponent {
       return schedule.id === Number(this.selectedTourSchedule); // Chuyển selectedTourSchedule thành số
     });
 
-    if(selectedSchedule) {
+    if (selectedSchedule) {
       addBookingTourRequest.totalPrice = selectedSchedule.tourPrice;
-    }else {
+    } else {
       addBookingTourRequest.totalPrice = 0;
     }
 
@@ -125,7 +129,7 @@ export class TicketDetailComponent {
     formData.append('idBooking', idBooking || '');
     formData.append('idUser', addBookingTourRequest.idUser.toString());
     formData.append('quantity', addBookingTourRequest.quantity.toString());
-    formData.append('totalPrice', addBookingTourRequest.totalPrice ? addBookingTourRequest.totalPrice.toString() : ''); 
+    formData.append('totalPrice', addBookingTourRequest.totalPrice ? addBookingTourRequest.totalPrice.toString() : '');
     console.log(idBooking);
     formData.forEach((value, key) => {
       console.log(`${key}: ${value}`);
@@ -134,8 +138,8 @@ export class TicketDetailComponent {
     this.bookingService.addBookingTourism(formData).subscribe({
       next: (response) => {
         if (response) {
-          if(idBooking == null){
-            localStorage.setItem('idBooking', response.idBooking+"");
+          if (idBooking == null) {
+            localStorage.setItem('idBooking', response.idBooking + "");
           }
           alert('ThanhCong');
         }

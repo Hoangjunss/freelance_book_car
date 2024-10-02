@@ -143,6 +143,14 @@ export class HotelDetailComponent {
   }
 
   addBookingHotel(locationId: string | null) {
+
+    if(!this.selectedTourSchedule)
+    {
+      alert("Please select hotel itinerary")
+      return ;
+    }
+
+
     this.calculateTotalPrice();
     const id = locationId ? parseInt(locationId) : 0;
     const addBookingHotelRequest = new AddBookingHotelRequest();
@@ -167,7 +175,7 @@ export class HotelDetailComponent {
     //   formData.append('endDate', this.endDate.toString());
     // }
 
-    
+
 
     if(this.startDate!=undefined && this.endDate != undefined){
       const startDate = new Date(this.startDate);  
@@ -184,7 +192,6 @@ export class HotelDetailComponent {
           localStorage.setItem('idBooking', response.id + "");
         }
         alert("Đặt phòng thành công");
-        this.router.navigate(['/cart']);
       } else {
       }
     }, error => {
