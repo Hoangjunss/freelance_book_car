@@ -25,6 +25,7 @@ import com.freelance.bookCar.dto.response.user.userInfoDTO.CreateUserInfoRespons
 import com.freelance.bookCar.dto.response.user.userJoinDTO.CreateUserJoinResponse;
 import com.freelance.bookCar.exception.CustomException;
 import com.freelance.bookCar.exception.Error;
+import com.freelance.bookCar.models.Mail;
 import com.freelance.bookCar.models.booking.Booking;
 import com.freelance.bookCar.models.booking.BookingDetail;
 import com.freelance.bookCar.models.booking.TypeBooking;
@@ -38,6 +39,7 @@ import com.freelance.bookCar.models.user.UserInfo;
 import com.freelance.bookCar.models.user.UserJoin;
 import com.freelance.bookCar.respository.booking.BookingDetailRepository;
 import com.freelance.bookCar.respository.booking.BookingRepository;
+import com.freelance.bookCar.services.MailService;
 import com.freelance.bookCar.services.product.hotelService.hotel.HotelService;
 import com.freelance.bookCar.services.product.hotelService.hotelBooking.HotelBookingService;
 import com.freelance.bookCar.services.product.ticketService.ticket.TicketService;
@@ -61,6 +63,8 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class BookingServiceImpl implements BookingService{
+    @Autowired
+    private MailService mailService;
     @Autowired
     private BookingRepository bookingRepository;
     @Autowired
@@ -580,7 +584,10 @@ public class BookingServiceImpl implements BookingService{
         GetBookingResponse getBookingResponse=findById(id);
         Booking booking=modelMapper.map(getBookingResponse,Booking.class);
         booking.setTypeBooking(TypeBooking.valueOf(type));
-        return modelMapper.map(bookingRepository.save(booking), GetBookingResponse.class);
+        Booking bookingsave=bookingRepository.save(booking);
+        Mail mail=mailService.getMail(booking.getUserInfo().get(0).getEmail(),"Đơn hàng số "+booking.getId()+ "của bạn đã được "+type+"vui long kiểm tra lại ","Đơn hàng số"+booking.getId());
+        mailService.sendMail(mail);
+        return modelMapper.map(bookingsave, GetBookingResponse.class);
     }
 
     @Override
@@ -599,7 +606,10 @@ public class BookingServiceImpl implements BookingService{
         booking.setUserJoin(createUserJoinResponseList.stream()
                 .map(createUserJoinResponse -> modelMapper.map(createUserJoinResponse, UserJoin.class))
                 .collect(Collectors.toList()));
-        return modelMapper.map(bookingRepository.save(booking),OrderResponse.class);
+        Booking bookingsave= bookingRepository.save(booking);
+        Mail mail=mailService.getMail(bookingsave.getUserInfo().get(0).getEmail(),"Đơn hàng số "+booking.getId()+ "của bạn đã được đặt vui long kiểm tra lại ","Đơn hàng số"+booking.getId());
+        mailService.sendMail(mail);
+        return modelMapper.map(bookingsave,OrderResponse.class);
     }
 
     @Override
