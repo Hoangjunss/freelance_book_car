@@ -103,7 +103,7 @@ public class BookingController {
         return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", getBookingResponses));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/history")
     public ResponseEntity<ApiResponse<List<GetBookingResponse>>> findAllByTypeBookingNotAndIdUser(@RequestParam Integer idUser){
         List<GetBookingResponse> getBookingResponses=bookingService.findAllByTypeBookingNotAndIdUser(idUser);

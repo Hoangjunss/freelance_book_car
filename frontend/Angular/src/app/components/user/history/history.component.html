@@ -1,13 +1,14 @@
-<div class="container mt-5">
+<div *ngIf="getBookingResponse.length>0; else noData" class="container mt-5">
     <h2 class="mb-4">Lịch sử đặt hàng của bạn</h2>
 
-    <div *ngFor="let order of orders" class="order-card mb-4 border p-3 rounded">
+    <div *ngFor="let order of getBookingResponse" class="order-card mb-4 border p-3 rounded">
         <div class="row">
             <div class="col-md-8">
                 <h5 class="order-header">Đơn hàng #{{ order.id }}</h5>
-                <p>Ngày đặt: {{ order.date }}</p>
+                <p>Ngày đặt: {{ order.dateBook }}</p>
+                <p>Tình trạng: {{ order.type }}</p>
                 
-                <ng-container [ngSwitch]="order.type">
+                <!-- <ng-container [ngSwitch]="order.type">
                     <div *ngSwitchCase="'Đặt Khách Sạn'">
                         <p><strong>Khách sạn:</strong> {{ order.hotelName }}</p>
                         <p><strong>Ngày nhận phòng:</strong> {{ order.checkIn }}</p>
@@ -23,10 +24,14 @@
                         <p><strong>Địa điểm:</strong> {{ order.venue }}</p>
                         <p><strong>Ngày diễn ra:</strong> {{ order.dateEvent }}</p>
                     </div>
-                </ng-container>
+                </ng-container> -->
 
-                <p><strong>Tổng cộng:</strong> <span class="order-total">{{ order.total | currency:'VND' }}</span></p>
+                <p><strong>Tổng cộng:</strong> <span class="order-total">{{ order.totalPrice | currency:'VND' }}</span></p>
             </div>
         </div>
     </div>
 </div>
+
+<ng-template #noData>
+    No Data 
+</ng-template>

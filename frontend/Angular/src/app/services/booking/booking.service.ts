@@ -154,7 +154,19 @@ export class BookingService {
     );
   }
 
-  
+  getHistoryBooking(id:number):  Observable<GetBookingResponse[]> {
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<GetBookingResponse[]>>(`${this.baseUrl}/history?idUser=${id}`, {headers}).pipe(
+      map((response: Apiresponse<GetBookingResponse[]>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    );
+  }
+
   getDetailBooking(id: number): Observable<GetBookingDetailResponse[]> {
     const headers = this.createAuthorizationHeader();
     return this.httpClient.get<Apiresponse<GetBookingDetailResponse[]>>(`${this.baseUrl}/detail?idBooking=${id}`, {headers}).pipe(

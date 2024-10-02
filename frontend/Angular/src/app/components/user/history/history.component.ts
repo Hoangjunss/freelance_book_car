@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { BookingService } from '../../../services/booking/booking.service';
+import { GetBookingResponse } from '../../../models/response/booking/get-booking-response';
 
 @Component({
   selector: 'app-history',
@@ -10,7 +11,7 @@ import { BookingService } from '../../../services/booking/booking.service';
   styleUrl: './history.component.css'
 })
 export class HistoryComponent implements OnInit {
-
+  getBookingResponse: GetBookingResponse[] = [];
 
   orders = [
     {
@@ -44,7 +45,9 @@ export class HistoryComponent implements OnInit {
 
   constructor(private bookingService: BookingService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getBookingByUser();
+  }
 
   viewOrderDetails(orderId: number): void {
     alert(`Chi tiết đơn hàng ${orderId}`);
@@ -53,7 +56,13 @@ export class HistoryComponent implements OnInit {
   getBookingByUser(){
     const idUser = localStorage.getItem('idUser');
 
-    this.bookingService.getBookingByUser
+    this.bookingService.getHistoryBooking(parseInt(idUser)).subscribe({
+      next: (data) =>{
+        if(data){
+          this.getBookingResponse = data;
+        }
+      }
+    })
   }
 
 }
