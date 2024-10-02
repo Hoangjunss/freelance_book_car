@@ -9,5 +9,5 @@ import java.util.List;
 public interface TourScheduleRepository extends JpaRepository<TourSchedule,Integer> {
     TourSchedule findByIdAndTimeStartTour(Integer id, LocalDateTime date);
 
-    List<TourSchedule> findAllByIdTour(Integer idTour);
+    List<TourSchedule> findAllByIdTourOrderByTimeStartTourAsc(Integer idTour);
 }

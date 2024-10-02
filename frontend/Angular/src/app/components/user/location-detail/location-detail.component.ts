@@ -75,12 +75,16 @@ export class LocationDetailComponent {
         const currentDate = new Date();
         if (response) {
           this.getTourScheduleResponse = response;
+          console.log(this.getTourScheduleResponse);
+          this.selectedPrice = response[0].priceTour;
+          this.selectedTourSchedule = response[0].id;
+          console.log(this.selectedTourSchedule);
           this.availableTourSchedules = response.filter(schedule => {
             if (schedule.timeStartTour !== undefined) {
               const scheduleDate = new Date(schedule.timeStartTour);
-              return scheduleDate >= currentDate; // Trả về true nếu ngày lịch trình lớn hơn hoặc bằng ngày hiện tại
+              return scheduleDate >= currentDate;
             }
-            return false; // Trả về false nếu timeStartTour là undefined
+            return false;
           });
         }
       }

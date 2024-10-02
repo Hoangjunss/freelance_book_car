@@ -107,7 +107,7 @@ public class TourScheduleServiceImpl implements TourScheduleService  {
 
     @Override
     public List<GetTourScheduleResponse> findAllByIdTour(Integer idTour) {
-        return tourScheduleRepository.findAllByIdTour(idTour).stream().map(tourSchedule -> modelMapper.map(tourSchedule, GetTourScheduleResponse.class)).collect(Collectors.toList());
+        return tourScheduleRepository.findAllByIdTourOrderByTimeStartTourAsc(idTour).stream().map(tourSchedule -> modelMapper.map(tourSchedule, GetTourScheduleResponse.class)).collect(Collectors.toList());
     }
 
     @Override
