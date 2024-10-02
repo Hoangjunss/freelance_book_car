@@ -67,4 +67,17 @@ export class HotelbookingService {
     }
     return new HttpHeaders();
   }
+
+  getHotelByIdBooking(id: number): Observable<GetHotelBookingResponse[]> {
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<GetHotelBookingResponse[]>>(`${this.baseUrl}/hotelbooking?idHotel=${id}`, {headers}).pipe(
+      map((response: Apiresponse<GetHotelBookingResponse[]>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    );
+  }
 }

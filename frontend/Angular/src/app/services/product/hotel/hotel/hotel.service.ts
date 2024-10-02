@@ -6,6 +6,7 @@ import { Apiresponse } from '../../../../models/response/apiresponse';
 import { UpdateHotelResponse } from '../../../../models/response/product/hotel/hotel/update-hotel-response';
 import { GetHotelResponse } from '../../../../models/response/product/hotel/hotel/get-hotel-response';
 import { isPlatformBrowser } from '@angular/common';
+import { GetHotelBookingResponse } from '../../../../models/response/product/hotel/hotel-booking/get-hotelbooking-response';
 
 @Injectable({
   providedIn: 'root'
@@ -106,6 +107,8 @@ export class HotelService {
       })
     );
   }
+
+  
 
 
 }
