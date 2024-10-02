@@ -13,6 +13,8 @@ import { GetBookingDetailResponse } from '../../models/response/booking/get-book
 import { UpdateQuantityTour } from '../../models/response/booking/update-quantity-tour';
 import { UpdateQuantityTourism } from '../../models/response/booking/update-quantity-tourism';
 import { UpdateQuantityHotel } from '../../models/response/booking/update-quantity-hotel';
+import { AddBookingTourResponse } from '../../models/response/booking/add-booking-tour-response';
+import { AddBookingTicketResponse } from '../../models/response/booking/add-booking-ticket-response';
 
 @Injectable({
   providedIn: 'root'
@@ -101,10 +103,10 @@ export class BookingService {
     );
   }
 
-  addBookingTour(formData : FormData): Observable<UpdateBookingResponse>{
+  addBookingTour(formData : FormData): Observable<AddBookingTourResponse>{
     const headers = this.createAuthorizationHeader();
-    return this.httpClient.post<Apiresponse<UpdateBookingResponse>>(`${this.baseUrl}/tour`,formData, {headers}).pipe(
-      map((response: Apiresponse<UpdateBookingResponse>) => {
+    return this.httpClient.post<Apiresponse<AddBookingTourResponse>>(`${this.baseUrl}/tour`,formData, {headers}).pipe(
+      map((response: Apiresponse<AddBookingTourResponse>) => {
         if (response.success) {
           return response.data;
         } else {
@@ -125,10 +127,10 @@ export class BookingService {
       })
     );
   }
-  addBookingTourism(formData : FormData): Observable<UpdateBookingResponse>{
+  addBookingTourism(formData : FormData): Observable<AddBookingTicketResponse>{
     const headers = this.createAuthorizationHeader();
-    return this.httpClient.post<Apiresponse<UpdateBookingResponse>>(`${this.baseUrl}/tourism`,formData, {headers}).pipe(
-      map((response: Apiresponse<UpdateBookingResponse>) => {
+    return this.httpClient.post<Apiresponse<AddBookingTicketResponse>>(`${this.baseUrl}/tourism`,formData, {headers}).pipe(
+      map((response: Apiresponse<AddBookingTicketResponse>) => {
         if (response.success) {
           return response.data;
         } else {

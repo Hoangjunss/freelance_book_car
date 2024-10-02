@@ -139,6 +139,11 @@ export class LocationDetailComponent {
     this.bookingService.addBookingTour(formData).subscribe({
       next: (response) => {
         if (response) {
+
+          if(idBooking == null){
+            console.log(response);
+            localStorage.setItem('idBooking', response.idBooking+"");
+          }
           alert('ThanhCong');
         }
       },

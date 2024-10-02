@@ -5,6 +5,7 @@ import com.freelance.bookCar.dto.request.product.hotelDTO.hotelBooking.UpdateHot
 import com.freelance.bookCar.dto.response.product.hotelDTO.hotelBooking.CreateHotelBookingResponse;
 import com.freelance.bookCar.dto.response.product.hotelDTO.hotelBooking.GetHotelBookingResponse;
 import com.freelance.bookCar.dto.response.product.hotelDTO.hotelBooking.UpdateHotelBookingResponse;
+import com.freelance.bookCar.dto.response.product.ticketDTO.ticket.GetTicketResponse;
 import com.freelance.bookCar.exception.CustomException;
 import com.freelance.bookCar.exception.Error;
 import com.freelance.bookCar.models.product.hotel.Hotel;
@@ -16,7 +17,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -101,6 +104,13 @@ public class HotelBookingServiceImpl implements HotelBookingService {
                 .orElseThrow(() -> new CustomException(Error.HOTEL_BOOKING_NOT_FOUND));
 
         return modelMapper.map(hotelBooking, GetHotelBookingResponse.class);
+    }
+
+    @Override
+    public List<GetHotelBookingResponse> findAllByIdHotel(Integer idHotel) {
+        return hotelBookingRepository.findAllByHotel(idHotel)
+                .stream()
+                .map(hotelBooking -> modelMapper.map(hotelBooking, GetHotelBookingResponse.class)).collect(Collectors.toList());
     }
 
     private Integer getGenerationId() {

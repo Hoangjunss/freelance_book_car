@@ -6,6 +6,7 @@ import com.freelance.bookCar.dto.request.product.hotelDTO.hotel.UpdateHotelReque
 import com.freelance.bookCar.dto.response.product.hotelDTO.hotel.CreateHotelResponse;
 import com.freelance.bookCar.dto.response.product.hotelDTO.hotel.GetHotelResponse;
 import com.freelance.bookCar.dto.response.product.hotelDTO.hotel.UpdateHotelResponse;
+import com.freelance.bookCar.dto.response.product.ticketDTO.ticket.GetTicketResponse;
 import com.freelance.bookCar.services.product.hotelService.hotel.HotelService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;

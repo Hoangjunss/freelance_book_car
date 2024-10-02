@@ -142,6 +142,7 @@ export class HotelDetailComponent {
     const id = locationId ? parseInt(locationId) : 0;
     const addBookingHotelRequest = new AddBookingHotelRequest();
     const idUser = localStorage.getItem('idUser');
+    const idBooking = localStorage.getItem('idBooking');
     addBookingHotelRequest.idHotel = id;
     addBookingHotelRequest.idUser = idUser ? parseInt(idUser) : 0;
     addBookingHotelRequest.quantity = this.nights;
@@ -152,6 +153,7 @@ export class HotelDetailComponent {
     // Chuyển đổi thành FormData
     const formData = new FormData();
     formData.append('idHotel', addBookingHotelRequest.idHotel.toString());
+    formData.append('idBooking', idBooking);
     formData.append('idUser', addBookingHotelRequest.idUser.toString());
     formData.append('quantity', addBookingHotelRequest.quantity.toString());
     formData.append('totalPrice', this.totalPrice.toString());
@@ -171,6 +173,9 @@ export class HotelDetailComponent {
 
     this.bookingService.addBookingHotel(formData).subscribe(response => {
       if (response) {
+        if(idBooking == null){
+          localStorage.setItem('idBooking', response.id.toString());
+        }
         alert("Đặt phòng thành công");
         this.router.navigate(['/cart']);
       } else {

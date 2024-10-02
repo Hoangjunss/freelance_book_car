@@ -193,7 +193,7 @@ public class BookingServiceImpl implements BookingService{
 
     @Override
     public AddBookingTourResponse addBookingTour(AddBookingTourRequest addBookingTourRequest) {
-        log.info("Adding tour to booking: {}", addBookingTourRequest.getIdBooking());
+        log.info("Adding tour to booking: {}", addBookingTourRequest.toString());
 
         if(addBookingTourRequest.getIdTour() == null){
             throw new CustomException(Error.BOOKING_DETAIL_INVALID_ID_TOUR);
@@ -234,7 +234,7 @@ public class BookingServiceImpl implements BookingService{
             booking.setDateBook(booking.getDateBook());
             booking.setTotalPrice(booking.getTotalPrice() + addBookingTourRequest.getTotalPrice());
             booking.setIdUser(booking.getIdUser());
-
+            booking.setTypeBooking(TypeBooking.CART);
             // Save the updated booking
             try {
                 bookingRepository.save(booking);
@@ -288,7 +288,7 @@ public class BookingServiceImpl implements BookingService{
 
     @Override
     public AddBookingTourismResponse addBookingTourism(AddBookingTourismRequest addBookingTourismRequest) {
-        log.info("Adding tourism to booking: {}", addBookingTourismRequest.getIdBooking());
+        log.info("Adding tourism to booking: {}", addBookingTourismRequest.toString());
 
         log.info("Adding booking tourism request: {}", addBookingTourismRequest.toString());
 
@@ -329,6 +329,7 @@ public class BookingServiceImpl implements BookingService{
                     .idUser(booking.getIdUser())
                     .idPayment(1)
                     .build();
+            booking.setTypeBooking(TypeBooking.CART);
 
             // Save the updated booking
             bookingRepository.save(booking);
@@ -342,7 +343,7 @@ public class BookingServiceImpl implements BookingService{
             bookingDetail = BookingDetail.builder()
                     .id(getGenerationId())
                     .idBooking(booking.getId())
-                    .idTour(tourism.getId())
+                    .idTicket(tourism.getId())
                     .quantity(addBookingTourismRequest.getQuantity())
                     .totalPrice(tourism.getTourPrice() * addBookingTourismRequest.getQuantity())
                     .build();
@@ -373,8 +374,6 @@ public class BookingServiceImpl implements BookingService{
     }
     @Override
     public AddBookingHotelResponse addBookingHotel(AddBookingHotelRequest addBookingHotelRequest) {
-        log.info("Adding hotel to booking: {}", addBookingHotelRequest.getIdBooking());
-
         log.info("Adding booking hotel request: {}", addBookingHotelRequest.toString());
 
         if(addBookingHotelRequest.getIdHotel() == null){
@@ -417,6 +416,8 @@ public class BookingServiceImpl implements BookingService{
                     .idUser(booking.getIdUser())
                     .build();
 
+            booking.setTypeBooking(TypeBooking.CART);
+
             // Save the updated booking
             bookingRepository.save(booking);
         }
@@ -442,6 +443,7 @@ public class BookingServiceImpl implements BookingService{
 
         try {
             // Save the booking detail for hotel
+            booking.setTypeBooking(TypeBooking.CART);
             bookingDetailRepository.save(bookingDetail);
         } catch (DataIntegrityViolationException e) {
             log.error("Error occurred while saving hotel booking detail : {}", e.getMessage(), e);
@@ -461,7 +463,7 @@ public class BookingServiceImpl implements BookingService{
     }
     @Override
     public UpdateBookingTourismResponse updateBookingTourism(UpdateBookingTourismRequest updateBookingTourismRequest) {
-        log.info("Updating tourism in booking: {}", updateBookingTourismRequest.getIdBooking());
+        log.info("Updating tourism in booking: {}", updateBookingTourismRequest.toString());
 
         // Fetch the BookingDetail for the tourism entry
         BookingDetail bookingDetail = bookingDetailRepository.findById(updateBookingTourismRequest.getIdBooking())
@@ -508,7 +510,7 @@ public class BookingServiceImpl implements BookingService{
     }
     @Override
     public UpdateBookingHotelResponse updateBookingHotel(UpdateBookingHotelRequest updateBookingHotelRequest) {
-        log.info("Updating hotel in booking: {}", updateBookingHotelRequest.getIdBooking());
+        log.info("Updating hotel in booking: {}", updateBookingHotelRequest.toString());
 
         // Fetch the BookingDetail for the hotel entry
         BookingDetail bookingDetail = bookingDetailRepository.findById(updateBookingHotelRequest.getIdBooking())
@@ -533,7 +535,7 @@ public class BookingServiceImpl implements BookingService{
             // Recalculate the total price by summing all BookingDetail entries related to this booking
             Double newTotalPrice = bookingDetailRepository.sumTotalPriceByBookingId(booking.getId());
             booking.setTotalPrice(newTotalPrice);
-
+            booking.setTypeBooking(TypeBooking.CART);
             // Save the updated booking with the new total price
         try {
             bookingRepository.save(booking);
@@ -610,7 +612,7 @@ public class BookingServiceImpl implements BookingService{
 
     @Override
     public UpdateBookingTourResponse updateBookingTour(UpdateBookingTourRequest updateBookingTourRequest) {
-        log.info("Updating tour in booking: {}", updateBookingTourRequest.getIdBooking());
+        log.info("Updating tour in booking: {}", updateBookingTourRequest.toString());
 
         // Fetch the BookingDetail for the tour
         BookingDetail bookingDetail = bookingDetailRepository.findById(updateBookingTourRequest.getIdBooking())
@@ -656,6 +658,7 @@ public class BookingServiceImpl implements BookingService{
 
         return response;
     }
+
     private BookingDetail bookingDetailHotelList(Integer id){
         return bookingDetailRepository.findByIsHotel(id);
     }

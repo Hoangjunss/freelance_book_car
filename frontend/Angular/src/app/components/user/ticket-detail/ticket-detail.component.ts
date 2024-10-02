@@ -105,6 +105,7 @@ export class TicketDetailComponent {
     const id = locationId ? parseInt(locationId) : 0;
     const addBookingTourRequest = new AddBookingTourismRequest();
     const idUser = localStorage.getItem('idUser');
+    const idBooking = localStorage.getItem('idBooking');
     addBookingTourRequest.idUser = parseInt(idUser!);
     addBookingTourRequest.idTicket = id;
     addBookingTourRequest.quantity = 1;
@@ -119,9 +120,9 @@ export class TicketDetailComponent {
       addBookingTourRequest.totalPrice = 0;
     }
 
-    // Chuyển đổi thành FormData
     const formData = new FormData();
     formData.append('idTicket', this.selectedTourSchedule?.toString() || '');
+    formData.append('idBooking', idBooking);
     formData.append('idUser', addBookingTourRequest.idUser.toString());
     formData.append('quantity', addBookingTourRequest.quantity.toString());
     formData.append('totalPrice', addBookingTourRequest.totalPrice ? addBookingTourRequest.totalPrice.toString() : ''); 
@@ -129,6 +130,9 @@ export class TicketDetailComponent {
     this.bookingService.addBookingTourism(formData).subscribe({
       next: (response) => {
         if (response) {
+          if(idBooking == null){
+            localStorage.setItem('idBooking', response.idBooking+"");
+          }
           alert('ThanhCong');
         }
       },
