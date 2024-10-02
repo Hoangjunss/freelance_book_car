@@ -17,7 +17,5 @@ public class OrderResponse {
     private LocalDateTime dateBook;
     private double totalPrice;
     private Integer idUser;
-    private CreateUserInfoRequest createUserInfoRequest;
-    private CreateUserJoinRequest createUserJoinRequest;
     private Integer paymentMethod;
 }

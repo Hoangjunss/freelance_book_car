@@ -15,6 +15,7 @@ import { UpdateQuantityTourism } from '../../models/response/booking/update-quan
 import { UpdateQuantityHotel } from '../../models/response/booking/update-quantity-hotel';
 import { AddBookingTourResponse } from '../../models/response/booking/add-booking-tour-response';
 import { AddBookingTicketResponse } from '../../models/response/booking/add-booking-ticket-response';
+import { OrderResponse } from '../../models/response/booking/order-response';
 
 @Injectable({
   providedIn: 'root'
@@ -238,5 +239,19 @@ export class BookingService {
     }
     return new HttpHeaders();
   }
+
+  order(formData: FormData): Observable<OrderResponse> {
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.post<Apiresponse<OrderResponse>>(`${this.baseUrl}/order`, formData, { headers }).pipe(
+      map((response: Apiresponse<OrderResponse>) => {
+        if (response.success) {
+          return response.data; 
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    );
+  }
+  
   
 }

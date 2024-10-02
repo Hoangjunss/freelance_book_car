@@ -40,18 +40,18 @@
                     <div class="form-section">
                         <h6>Thông tin người tham gia</h6>
                         <button class="btn btn-add" (click)="toggleForm()">+ Thêm</button>
-                        <div class="form-group-info">
+                        <div  *ngFor="let user of createUserJoinRequest" class="form-group-info">
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Số điện thoại <span
                                         class="required">*</span></label>
                                 <div class="col-sm-8 form-link">
-                                    <a>Vui lòng nhập</a>
+                                    <a>{{user.phone}}</a>
                                 </div>
                             </div>
                             <div class="form-group row" style="margin-bottom: 0;">
                                 <label class="col-sm-2 col-form-label">Email <span class="required">*</span></label>
                                 <div class="col-sm-8  form-link">
-                                    <a>Vui lòng nhập</a>
+                                    <a>{{user.email}}</a>
                                 </div>
                                 <div class="col-sm-2 text-right">
                                     <span class="btn-edit" (click)="toggleEditForm()">Chỉnh sửa</span>
@@ -73,12 +73,12 @@
                                             <div class="col-sm-6">
                                                 <label for="ho">Họ</label>
                                                 <span class="text-danger">*</span>
-                                                <input type="text" id="ho" class="form-control" placeholder="Nhập họ">
+                                                <input [(ngModel)]="createUserJoin.firstName" type="text" id="ho" class="form-control" placeholder="Nhập họ">
                                             </div>
                                             <div class="col-sm-6">
                                                 <label for="ten">Tên</label>
                                                 <span class="text-danger">*</span>
-                                                <input type="text" id="ten" class="form-control" placeholder="Nhập tên">
+                                                <input [(ngModel)]="createUserJoin.lastName" type="text" id="ten" class="form-control" placeholder="Nhập tên">
                                             </div>
                                         </div>
 
@@ -87,14 +87,8 @@
                                                 <label for="soDienThoai">Số điện thoại</label>
                                                 <span class="text-danger">*</span>
                                                 <div class="d-flex">
-                                                    <select id="maQuocGia" class="form-control" style="width: 268px;">
-                                                    <option value="+84">+84</option>
-                                                    <option value="+1">+1</option>
-                                                    <option value="+44">+44</option>
-                                                    <!-- Thêm mã quốc gia khác nếu cần -->
-                                                    </select>
                                                     <div class="col-sm-6" style="width: 268px;margin-left: 10px;">
-                                                        <input type="text" id="soDienThoai" class="form-control"
+                                                        <input [(ngModel)]="createUserJoin.phone" type="text" id="soDienThoai" class="form-control"
                                                             placeholder="Vui lòng nhập" style="width: 268px;">
                                                     </div>
                                                 </div>
@@ -105,7 +99,7 @@
                                             <div class="col-sm-6">
                                                 <label for="email">Email</label>
                                                 <span class="text-danger">*</span>
-                                                <input type="email" id="email" class="form-control"
+                                                <input [(ngModel)]="createUserJoin.email" type="email" id="email" class="form-control"
                                                     placeholder="Nhập email">
                                             </div>
                                         </div>

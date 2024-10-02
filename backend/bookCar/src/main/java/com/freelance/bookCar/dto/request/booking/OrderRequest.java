@@ -17,7 +17,7 @@ import java.util.List;
 public class OrderRequest {
     private Integer id;
     private LocalDateTime dateBook;
-    private double totalPrice;
+    private String totalPrice;
     private Integer idUser;
     private List<CreateUserInfoRequest> createUserInfoRequest;
     private List<CreateUserJoinRequest> createUserJoinRequest;

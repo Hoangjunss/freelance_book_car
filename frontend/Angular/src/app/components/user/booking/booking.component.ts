@@ -1,3 +1,4 @@
+import { CreateUserInfoRequest } from './../../../models/request/user/user-info/create-user-info-request';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
@@ -8,6 +9,9 @@ import { Title } from '@angular/platform-browser';
 import { GetBookingDetailResponse } from '../../../models/response/booking/get-booking-detail-response';
 import { BookingService } from '../../../services/booking/booking.service';
 import { Router } from '@angular/router';
+import { OrderRequest } from '../../../models/request/booking/order-request';
+import { OrderResponse } from '../../../models/response/booking/order-response';
+import { CreateUserJoinRequest } from '../../../models/request/user/user-join/create-user-join-request';
 
 @Component({
   selector: 'app-booking',
@@ -33,6 +37,15 @@ export class BookingComponent implements OnInit {
   products:any[] = [];
   idBooking: number | null = null;
   totalPrice: number | null = null;
+  orderRequest: OrderRequest = new OrderRequest();
+  orderResponse: OrderResponse = new OrderResponse();
+  createUserInfoRequest: CreateUserInfoRequest[] = []; 
+  createUserInfo: CreateUserInfoRequest = new CreateUserInfoRequest();
+  updateUserInfo: CreateUserInfoRequest = new CreateUserInfoRequest();
+  createUserJoinRequest: CreateUserJoinRequest[] = [];
+  createUserJoin: CreateUserJoinRequest = new CreateUserJoinRequest();
+  updateUserJoin: CreateUserJoinRequest = new CreateUserJoinRequest();
+  
 
   constructor(private title: Title,@Inject(PLATFORM_ID) private platformId: Object,private bookingService: BookingService,private router: Router) {
     // Initialize hours (0-23)
@@ -72,6 +85,8 @@ export class BookingComponent implements OnInit {
   }
 
   saveInfo() {
+    this.createUserJoinRequest.push(this.createUserJoin);
+    this.createUserJoin = new CreateUserJoinRequest();
     this.toggleForm(); 
   }
 
@@ -132,6 +147,7 @@ export class BookingComponent implements OnInit {
       }
     });
   }
+
 
 
   

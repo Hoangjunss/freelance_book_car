@@ -10,6 +10,8 @@ import { loginUserResponse } from '../../models/response/user/login-response';
 import { RefreshToken } from '../../models/response/user/refresh-token';
 import { GetCurrentUserResponse } from '../../models/response/user/get-current-user-response';
 import { isPlatformBrowser } from '@angular/common';
+import { GetUserInfoResponse } from '../../models/response/user/user-info/get-user-info-response';
+import { GetUserJoinResponse } from '../../models/response/user/user-join/get-user-join-response';
 
 @Injectable({
   providedIn: 'root'
@@ -78,6 +80,34 @@ export class UserService {
       })
     );
   }
+
+  getUserInfo(idBooking:number): Observable<GetUserInfoResponse[]>{
+    const headers = this.createAuthorizationHeader();
+    return this.http.get<Apiresponse<GetUserInfoResponse[]>>(`${this.baseURL}/userInfo?idBooking=${idBooking}`, {headers}).pipe(
+      map((response: Apiresponse<GetUserInfoResponse[]>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    );
+  }
+
+  getUserJoin(idBooking:number): Observable<GetUserJoinResponse[]>{
+    const headers = this.createAuthorizationHeader();
+    return this.http.get<Apiresponse<GetUserJoinResponse[]>>(`${this.baseURL}/userJoin?idBooking=${idBooking}`, {headers}).pipe(
+      map((response: Apiresponse<GetUserJoinResponse[]>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    );
+  }
+
+
 
 
   private createAuthorizationHeader(): HttpHeaders {
