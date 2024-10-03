@@ -68,6 +68,7 @@ export class BookingPendingComponent {
   }
 
   setTypeBooking(id?: number, type?: string){
+    console.log(id+type);
     if(id && type){
       this.bookingService.adminSetTypeBooking(id, type).subscribe({
       next: (data) => {

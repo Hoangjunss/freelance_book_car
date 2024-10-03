@@ -22,6 +22,7 @@ public class UserJoin {
     private String LastName;
     private String phone;
     private String email;
+    private Integer idBooking;
     @ManyToOne
     @JoinColumn(name = "booking_id")
     private Booking booking;

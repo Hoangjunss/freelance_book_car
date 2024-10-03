@@ -46,6 +46,7 @@ public class UserJoinServiceImpl implements UserJoinService{
 
         UserJoin userJoin = userJoinBuilder.build();
         userJoin.setBooking(booking);
+        userJoin.setIdBooking(booking.getId());
         return modelMapper.map(userJoinRepository.save(userJoin), CreateUserJoinResponse.class);
     }
 

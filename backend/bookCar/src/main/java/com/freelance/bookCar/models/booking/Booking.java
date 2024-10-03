@@ -27,11 +27,10 @@ public class Booking {
     private Integer idVoucher;
     @Enumerated(EnumType.STRING)
     private TypeBooking typeBooking;
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "booking_id")
-    private List<UserJoin> userJoin = new ArrayList<>();;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "booking_id")
-    private List<UserInfo> userInfo = new ArrayList<>();;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "booking")
+    private List<UserJoin> userJoin = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "booking")
+    private List<UserInfo> userInfo = new ArrayList<>();
 }

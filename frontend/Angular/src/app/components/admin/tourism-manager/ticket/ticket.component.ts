@@ -229,6 +229,9 @@ export class TicketComponent implements OnInit {
       });
     }
   }
+  addNewTicket(){
+    
+  }
   
 
   viewDetails(tourism: GetTourismResponse) {

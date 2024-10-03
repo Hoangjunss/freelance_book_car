@@ -611,7 +611,7 @@ public class BookingServiceImpl implements BookingService{
         booking.getUserJoin().addAll(updatedUserJoin);
         log.info("615: {}", booking.toString());
         Booking bookingsave= bookingRepository.save(booking);
-        Mail mail=mailService.getMail(bookingsave.getUserInfo().getFirst().getEmail(),"Đơn hàng số "+booking.getId()+ "của bạn đã được đặt vui long kiểm tra lại ","Đơn hàng số"+booking.getId());
+        Mail mail=mailService.getMail(booking.getUserInfo().getFirst().getEmail(),"Đơn hàng số "+booking.getId()+ "của bạn đã được đặt vui lòng kiểm tra lại ","Đơn hàng số: "+booking.getId());
         mailService.sendMail(mail);
         return modelMapper.map(bookingsave,OrderResponse.class);
     }

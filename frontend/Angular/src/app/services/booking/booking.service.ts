@@ -91,10 +91,10 @@ export class BookingService {
     );
   }
 
-  adminSetTypeBooking(id: number, type: string):  Observable<UpdateBookingResponse>{
+  adminSetTypeBooking(id: number, type: string): Observable<GetBookingResponse>{
     const headers = this.createAuthorizationHeader();
-    return this.httpClient.get<Apiresponse<UpdateBookingResponse>>(`${this.baseUrl}?id=${id}&type=${type}`, {headers}).pipe(
-      map((response: Apiresponse<UpdateBookingResponse>) => {
+    return this.httpClient.patch<Apiresponse<GetBookingResponse>>(`http://localhost:8080/api/v1/booking/type?type=${type}&id=${id}`, {headers}).pipe(
+      map((response: Apiresponse<GetBookingResponse>) => {
         if (response.success) {
           return response.data;
         } else {

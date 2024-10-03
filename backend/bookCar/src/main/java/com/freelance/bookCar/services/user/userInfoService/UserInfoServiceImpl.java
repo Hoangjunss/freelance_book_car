@@ -51,6 +51,7 @@ public class UserInfoServiceImpl implements  UserInfoService{
 
         UserInfo userInfo = userInfoBuilder.build();
         userInfo.setBooking(booking);
+        userInfo.setIdBooking(booking.getId());
         log.info("UserInfo:{}", userInfo.toString());
         return modelMapper.map(userInfoRepository.save(userInfo), CreateUserInfoResponse.class);
     }
