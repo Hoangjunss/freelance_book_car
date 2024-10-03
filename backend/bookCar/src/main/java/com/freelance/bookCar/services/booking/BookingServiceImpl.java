@@ -594,18 +594,20 @@ public class BookingServiceImpl implements BookingService{
     public OrderResponse order(OrderRequest orderRequest) {
         GetBookingResponse getBookingResponse=findById(orderRequest.getId());
         Booking booking=modelMapper.map(getBookingResponse,Booking.class);
-        List<CreateUserJoinResponse> createUserJoinResponseList=orderRequest.getCreateUserJoinRequest()
-                .stream().map(createUserJoinRequest -> userJoinService.create(createUserJoinRequest))
-                .collect(Collectors.toList());
-        List<CreateUserInfoResponse> createUserInfoResponseList=orderRequest.getCreateUserInfoRequest()
-                .stream().map(createUserJoinRequest -> userInfoService.create(createUserJoinRequest))
-                .collect(Collectors.toList());
-        booking.setUserInfo(createUserInfoResponseList.stream()
-                .map(createUserInfoResponse -> modelMapper.map(createUserInfoResponse, UserInfo.class))
-                .collect(Collectors.toList()));
-        booking.setUserJoin(createUserJoinResponseList.stream()
-                .map(createUserJoinResponse -> modelMapper.map(createUserJoinResponse, UserJoin.class))
-                .collect(Collectors.toList()));
+        List<UserInfo> updatedUserInfo = orderRequest.getCreateUserInfoRequest().stream()
+                .map(createUserInfoResponse ->modelMapper.map(userInfoService.create(createUserInfoResponse),UserInfo.class))
+                .toList();
+        log.info("600: {}", updatedUserInfo.toString());
+
+        booking.setUserInfo(updatedUserInfo);
+
+        List<UserJoin> updatedUserJoin = orderRequest.getCreateUserJoinRequest().stream()
+                .map(createUserJoinResponse -> modelMapper.map(userJoinService.create(createUserJoinResponse), UserJoin.class))
+                .toList();
+        log.info("609: {}", updatedUserJoin.toString());
+
+        booking.getUserJoin().addAll(updatedUserJoin);
+        log.info("615: {}", booking.toString());
         Booking bookingsave= bookingRepository.save(booking);
         Mail mail=mailService.getMail(bookingsave.getUserInfo().getFirst().getEmail(),"Đơn hàng số "+booking.getId()+ "của bạn đã được đặt vui long kiểm tra lại ","Đơn hàng số"+booking.getId());
         mailService.sendMail(mail);

@@ -16,6 +16,12 @@ import { TourService } from '../../../services/product/tour/tour/tour.service';
 import { HotelService } from '../../../services/product/hotel/hotel/hotel.service';
 import { TicketService } from '../../../services/product/ticket/ticket/ticket.service';
 import { start } from 'repl';
+import { GetTourResponse } from '../../../models/response/product/tour/tour/get-tour-response';
+import { GetTourismResponse } from '../../../models/response/product/ticket/tourism/get-tourism-response';
+import { GetHotelResponse } from '../../../models/response/product/hotel/hotel/get-hotel-response';
+import { TourismService } from '../../../services/product/ticket/tourism/tourism.service';
+import { HotelbookingService } from '../../../services/product/hotel/hotelbooking/hotelbooking.service';
+import { TourScheduleService } from '../../../services/product/tour/tour-schedule/tour-schedule.service';
 
 @Component({
   selector: 'app-booking',
@@ -41,6 +47,7 @@ export class BookingComponent implements OnInit {
   products:any[] = [];
   idBooking: number | null = null;
   totalPrice: number | null = null;
+
   orderRequest: OrderRequest = new OrderRequest();
   orderResponse: OrderResponse = new OrderResponse();
   createUserInfoRequest: CreateUserInfoRequest[] = []; 
@@ -49,6 +56,11 @@ export class BookingComponent implements OnInit {
   createUserJoinRequest: CreateUserJoinRequest[] = [];
   createUserJoin: CreateUserJoinRequest = new CreateUserJoinRequest();
   updateUserJoin: CreateUserJoinRequest = new CreateUserJoinRequest();
+
+  getTour: GetTourResponse[] = [];
+  getTourism: GetTourismResponse[] = [];
+  getHotel: GetHotelResponse[] = [];
+
   selectedContactIndex: number | null = null;
   selectedUserIndex: number | null = null;
 
@@ -58,13 +70,14 @@ export class BookingComponent implements OnInit {
     private bookingService: BookingService,
     private router: Router,
     private tourService: TourService,
+    private tourScheduleService: TourScheduleService,
+    private tourismService: TourismService,
     private hotelService: HotelService,
+    private hotelBookingService: HotelbookingService,
     private ticketService: TicketService,
   ) {
-    // Initialize hours (0-23)
     this.hours = Array.from({ length: 24 }, (_, i) => i);
 
-    // Initialize minutes (0-59)
     this.minutes = Array.from({ length: 60 }, (_, i) => (i) ? i : null).filter(n => n !== null);
 
     this.title.setTitle('Điền thông tin');
@@ -182,6 +195,7 @@ export class BookingComponent implements OnInit {
     this.bookingService.getDetailBooking(id).subscribe({
       next: (response) => {
         if (response) {
+          console.log(response);
           this.getBookingDetailResponse = response;
           this.products = this.getBookingDetailResponse.map(detail => ({
             idBookingDetail: detail.id,
@@ -193,7 +207,6 @@ export class BookingComponent implements OnInit {
             type: detail.idTour ? 'tour' : detail.idHotel ? 'hotel' : 'ticket'
           }));
 
-          // Nếu có idTour thì lấy thông tin tour
           if (this.products.some(p => p.type === 'tour')) {
             this.products.filter(p => p.type === 'tour').forEach(p => {
               this.tourService.getTourById(p.id).subscribe({
@@ -211,7 +224,6 @@ export class BookingComponent implements OnInit {
             });
           }
 
-          // Nếu có idHotel thì lấy thông tin hotel
           if (this.products.some(p => p.type === 'hotel')) {
             this.products.filter(p => p.type === 'hotel').forEach(p => {
               this.hotelService.getHotelDetailById(p.id).subscribe({
@@ -230,7 +242,6 @@ export class BookingComponent implements OnInit {
             });
           }
 
-          // Nếu có idTicket thì lấy thông tin ticket
           if (this.products.some(p => p.type === 'ticket')) {
             this.products.filter(p => p.type === 'ticket').forEach(p => {
               this.ticketService.getTicket(p.id).subscribe({
@@ -244,8 +255,6 @@ export class BookingComponent implements OnInit {
               });
             });
           }
-
-
         } else {
         }
       },
@@ -259,6 +268,15 @@ export class BookingComponent implements OnInit {
     const formData = new FormData();
     const idUser = localStorage.getItem('idUser');
     const idBooking = localStorage.getItem('idBooking');
+    if(this.createUserInfoRequest == null){
+      alert('Vui lòng điền ít nhất một thông tin liên hệ');
+      return;
+    }
+    if(this.createUserJoinRequest == null){
+      alert('Vui lòng điền ít nhất một thông tin người tham gia');
+      return;
+    }
+    
 
     formData.append('id', idBooking);
     formData.append('idUser', idUser);
@@ -287,7 +305,7 @@ export class BookingComponent implements OnInit {
 
   updateTypeBooking(id: number) {
     this.bookingService.updateTypeBooking('PENDING', id).subscribe({
-      next: (value) => { // Sử dụng arrow function
+      next: (value) => {
         if (value) {
           console.log('successful');
           this.router.navigate(['order-history']); 

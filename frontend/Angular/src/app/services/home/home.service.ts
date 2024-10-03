@@ -25,9 +25,9 @@ export class HomeService {
     );
   }
 
-  getDetail():Observable<GetPageResponse> {
-    return this.http.get<Apiresponse<GetPageResponse>>(`${this.baseUrl}detail`).pipe(
-      map((response: Apiresponse<GetPageResponse>) => {
+  getDetail():Observable<GetPageResponse[]> {
+    return this.http.get<Apiresponse<GetPageResponse[]>>(`${this.baseUrl}detail`).pipe(
+      map((response: Apiresponse<GetPageResponse[]>) => {
         if (response.success) {
           return response.data;
         } else {

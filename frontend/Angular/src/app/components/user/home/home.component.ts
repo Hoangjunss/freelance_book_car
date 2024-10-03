@@ -29,10 +29,12 @@ export class HomeComponent implements OnInit, AfterViewInit {
   locations: string[] = ['Đà Nẵng', 'Hội An', 'Bà Nà', 'Sân Bay', 'Nam Hội An'];
   selectedLocation: string | null = null;
   isDropdownVisible: { [key: string]: boolean } = {};
-  homeData: GetPageResponse  [] = [];
+  homeData: GetPageResponse = new GetPageResponse();
   detailData: GetPageResponse [] = [];
-  footerData: GetPageResponse | null = null;
+  footerData: GetPageResponse = new GetPageResponse();
   images: any = [];
+
+  tourismlink = '';
 
   constructor(private router: Router,private title:Title,private homeService: HomeService) {
     this.title.setTitle("Trang chủ");
@@ -56,18 +58,15 @@ export class HomeComponent implements OnInit, AfterViewInit {
   selectTab(tab: { label: string, icon: string, component: Type<any> }): void {
     this.selectedTab = tab;
 
-     // Nếu tab đã được chọn, đảo ngược trạng thái hiển thị menu
      if (this.isDropdownVisible[tab.label]) {
       this.isDropdownVisible[tab.label] = !this.isDropdownVisible[tab.label];
     } else {
-      // Nếu không, đặt menu cho tab này thành visible và các tab khác thành false
       this.isDropdownVisible = { [tab.label]: true };
     }
   }
 
   selectLocation(location: string): void {
     this.selectedLocation = location;
-    // Điều hướng đến đúng đường dẫn dựa trên tab hiện tại
     if (this.selectedTab) {
       const tabLabel = this.selectedTab.label;
       let path = '';
@@ -84,6 +83,11 @@ export class HomeComponent implements OnInit, AfterViewInit {
     }
 
   }
+
+  navigateTo(url: string): void {
+    this.router.navigate([`/${url}`, 'Đà Nẵng']);
+  }
+
 
   initIntersectionObserver(): void {
     if (typeof IntersectionObserver !== 'undefined') {
@@ -115,7 +119,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   fetchHomeData(): void {
     this.homeService.getHome().subscribe({
       next: (data: GetPageResponse) => {
-        this.homeData = [data];
+        this.homeData = data;
       },
       error: (error) => {
         console.error('Error fetching home data:', error);
@@ -125,16 +129,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   fetchDetailData(): void {
     this.homeService.getDetail().subscribe({
-      next: (data: GetPageResponse) => {
-        this.detailData = [data];
-
+      next: (data) => {
+        this.detailData = data;
         this.detailData.forEach((item) => {
           if (item.url ) {
             this.images = this.images.concat(item.url);
           }
         });
-
-        
       },
       error: (error) => {
         console.error('Error fetching detail data:', error);

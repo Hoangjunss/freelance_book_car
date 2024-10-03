@@ -28,3 +28,7 @@
     background-color: #0056b3;
   }
   
+.empty-cart-message {
+    font-size: 1.5em;
+    color: #999;
+}

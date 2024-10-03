@@ -7,24 +7,6 @@
                 <h5 class="order-header">Đơn hàng #{{ order.id }}</h5>
                 <p>Ngày đặt: {{ order.dateBook }}</p>
                 <p>Tình trạng: {{ order.type }}</p>
-                
-                <!-- <ng-container [ngSwitch]="order.type">
-                    <div *ngSwitchCase="'Đặt Khách Sạn'">
-                        <p><strong>Khách sạn:</strong> {{ order.hotelName }}</p>
-                        <p><strong>Ngày nhận phòng:</strong> {{ order.checkIn }}</p>
-                        <p><strong>Ngày trả phòng:</strong> {{ order.checkOut }}</p>
-                    </div>
-                    <div *ngSwitchCase="'Đặt Xe'">
-                        <p><strong>Loại xe:</strong> {{ order.carType }}</p>
-                        <p><strong>Địa điểm đón:</strong> {{ order.pickupLocation }}</p>
-                        <p><strong>Địa điểm trả:</strong> {{ order.dropOffLocation }}</p>
-                    </div>
-                    <div *ngSwitchCase="'Đặt Vé'">
-                        <p><strong>Sự kiện:</strong> {{ order.event }}</p>
-                        <p><strong>Địa điểm:</strong> {{ order.venue }}</p>
-                        <p><strong>Ngày diễn ra:</strong> {{ order.dateEvent }}</p>
-                    </div>
-                </ng-container> -->
 
                 <p><strong>Tổng cộng:</strong> <span class="order-total">{{ order.totalPrice | currency:'VND' }}</span></p>
             </div>
@@ -33,5 +15,24 @@
 </div>
 
 <ng-template #noData>
-    No Data 
+    <div class="empty-cart-message text-center mt-4">
+        <p>Bạn chưa có bất kỳ hóa đơn nào</p>
+    </div>
+    <div class="text-center">
+        <button class="btn btn-primary m-2" routerLink="home" routerLinkActive="active">Khám phá trang chủ</button>
+    </div>
 </ng-template>
+
+<div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-labelledby="orderDetailsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content slide-in">
+            <div class="modal-header">
+                <h5 class="modal-title" id="orderDetailsModalLabel">Chi tiết đơn hàng</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                
+            </div>
+        </div>
+    </div>
+</div>

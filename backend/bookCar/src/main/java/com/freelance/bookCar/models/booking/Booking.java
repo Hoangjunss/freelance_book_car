@@ -26,10 +26,11 @@ public class Booking {
     private Integer idVoucher;
     @Enumerated(EnumType.STRING)
     private TypeBooking typeBooking;
-    @OneToMany
-    @JoinTable
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn()
     private List<UserJoin> userJoin;
-    @OneToMany
-    @JoinTable
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn()
     private List<UserInfo> userInfo;
 }
