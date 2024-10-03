@@ -50,7 +50,8 @@
                                 </div>
                                 <div class="col-sm-2 text-right">
                                     <span class="btn-edit" (click)="editUser(i)">Chỉnh sửa</span>
-                                    <span class="btn-delete" (click)="deleteUser(i)">Xóa</span>
+                                    <span class="btn-delete" (click)="deleteUser(i)"
+                                        style="margin-right: 10px;">Xóa</span>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -77,13 +78,22 @@
                                                 <label for="ho">Họ</label>
                                                 <span class="text-danger">*</span>
                                                 <input [(ngModel)]="createUserJoin.firstName" type="text" id="ho"
-                                                    class="form-control" placeholder="Nhập họ">
+                                                    class="form-control" placeholder="Nhập họ" required>
+
+                                                <div *ngIf="formInvalid && !createUserJoin.firstName"
+                                                    class="text-danger">
+                                                    Họ là bắt buộc.
+                                                </div>
                                             </div>
                                             <div class="col-sm-6">
                                                 <label for="ten">Tên</label>
                                                 <span class="text-danger">*</span>
                                                 <input [(ngModel)]="createUserJoin.lastName" type="text" id="ten"
-                                                    class="form-control" placeholder="Nhập tên">
+                                                    class="form-control" placeholder="Nhập tên" required>
+                                                <div *ngIf="formInvalid && !createUserJoin.lastName"
+                                                    class="text-danger">
+                                                    Tên là bắt buộc.
+                                                </div>
                                             </div>
                                         </div>
 
@@ -92,16 +102,31 @@
                                                 <label for="soDienThoai">Số điện thoại</label>
                                                 <span class="text-danger">*</span>
                                                 <input [(ngModel)]="createUserJoin.phone" type="text" id="soDienThoai"
-                                                    class="form-control" placeholder="Vui lòng nhập">
+                                                    class="form-control" placeholder="Vui lòng nhập" required
+                                                    pattern="^\d{10}$">
+                                                <div *ngIf="formInvalid && !createUserJoin.phone" class="text-danger">
+                                                    Số điện thoại là bắt buộc.
+                                                </div>
+                                                <div *ngIf="formInvalid && createUserJoin.phone && !isValidPhone(createUserJoin.phone)"
+                                                    class="text-danger">
+                                                    Số điện thoại không hợp lệ.
+                                                </div>
                                             </div>
                                         </div>
 
                                         <div class="form-group">
-                                            <div class="col-sm-6">
+                                            <div class="col-sm-6" style="padding-left: 0px;">
                                                 <label for="email">Email</label>
                                                 <span class="text-danger">*</span>
                                                 <input [(ngModel)]="createUserJoin.email" type="email" id="email"
-                                                    class="form-control" placeholder="Nhập email">
+                                                    class="form-control" placeholder="Nhập email" required>
+                                                <div *ngIf="formInvalid && !createUserJoin.email" class="text-danger">
+                                                    Email là bắt buộc.
+                                                </div>
+                                                <div *ngIf="formInvalid && createUserJoin.email && !isValidEmail(createUserJoin.email)"
+                                                    class="text-danger">
+                                                    Email không hợp lệ.
+                                                </div>
                                             </div>
                                         </div>
 
@@ -263,12 +288,19 @@
                                                     <span class="text-danger">*</span>
                                                     <input [(ngModel)]="createUserInfo.firstName" type="text" id="ho"
                                                         class="form-control" placeholder="Vd: Nguyen">
+
+                                                    <div *ngIf=" formInvalid && !createUserInfo.firstName" class="text-danger">
+                                                        Họ là bắt buộc.
+                                                    </div>
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <label for="ten">Tên</label>
                                                     <span class="text-danger">*</span>
                                                     <input [(ngModel)]="createUserInfo.lastName" type="text" id="ten"
                                                         class="form-control" placeholder="Vd: Huong">
+                                                    <div *ngIf="formInvalid && !createUserInfo.lastName" class="text-danger">
+                                                        Tên là bắt buộc.
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="form-group row">
@@ -278,6 +310,13 @@
                                                     <input [(ngModel)]="createUserInfo.phone" type="text"
                                                         id="soDienThoai" class="form-control"
                                                         placeholder="Vui lòng nhập">
+                                                    <div *ngIf="formInvalid && !createUserInfo.phone" class="text-danger">
+                                                        Số điện thoại là bắt buộc.
+                                                    </div>
+                                                    <div *ngIf="createUserInfo.phone && !isValidPhone(createUserInfo.phone)"
+                                                        class="text-danger">
+                                                        Số điện thoại không hợp lệ.
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -285,6 +324,13 @@
                                                 <span class="text-danger">*</span>
                                                 <input [(ngModel)]="createUserInfo.email" type="email" id="email"
                                                     class="form-control" placeholder="Vui lòng nhập">
+                                                <div *ngIf="formInvalid && !createUserInfo.email" class="text-danger">
+                                                    Email là bắt buộc.
+                                                </div>
+                                                <div *ngIf="formInvalid && createUserInfo.email && !isValidEmail(createUserInfo.email)"
+                                                    class="text-danger">
+                                                    Email không hợp lệ.
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="form-group">
@@ -300,7 +346,8 @@
                                     </div>
                                     <hr style="border: 1px solid #ddd;">
                                     <div class="popup-footer">
-                                        <button class="btn btn-secondary" (click)="toggleContactForm()">Hủy bỏ</button>
+                                        <button class="btn btn-secondary" (click)="toggleContactForm()"
+                                            style="margin-right: 15px;">Hủy bỏ</button>
                                         <button class="btn btn-primary" (click)="saveContactInfo()">Lưu</button>
                                     </div>
                                 </div>
@@ -487,18 +534,18 @@
                         </div>
                     </div>
                 </div>
-    
+
                 <!-- Tổng thanh toán và Credit -->
                 <div class="col-md-10">
                     <div class="card-custom">
                         <div class="d-flex justify-content-between mb-2">
                             <span class="text-total">Tổng cộng</span>
-                            <span class="total-amount">{{totalPrice}}</span>
+                            <span class="total-amount">{{totalPrice | currency: '₫'}}</span>
                         </div>
                         <div class="d-flex justify-content-between">
                             <span class="card-content">Số tiền thanh toán</span>
                             <span class="total-amount" style="color: #f89c1c;font-size: 1.2rem;font-weight: 600;">₫
-                                {{totalPrice}}</span>
+                                {{totalPrice | currency: '₫'}}</span>
                         </div>
                     </div>
                 </div>
@@ -506,6 +553,6 @@
         </div>
 
         <!-- Order Summary -->
-        
+
     </div>
 </div>

@@ -146,8 +146,10 @@ export class HotelDetailComponent {
     this.hotelBooking.getHotelByIdBooking(id).subscribe(response => {
       if (response) {
         this.listHotel = response;
-      } else {
-        console.log("Thất bại");
+      } 
+      if (this.listHotel.length > 0) {
+        this.selectedTourSchedule = this.listHotel[0].id;
+        this.onTourScheduleChange();
       }
     });
   }
@@ -169,8 +171,9 @@ export class HotelDetailComponent {
     addBookingHotelRequest.quantity = this.nights;
     addBookingHotelRequest.totalPrice = 100;
 
-    if(!idUser){
-      alert("Please login to book tour")
+
+    if (!idUser) {
+      alert("Please login to book hotel")
       this.router.navigate(['/auth/login']);
       return;
     }

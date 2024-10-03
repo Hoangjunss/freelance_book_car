@@ -85,6 +85,10 @@ export class TicketDetailComponent {
           this.getTicketResponse = response;
           this.availableTourSchedules = response; // Đảm bảo điều này khớp với template của bạn
         }
+        if (this.availableTourSchedules.length > 0) {
+          this.selectedTourSchedule = this.availableTourSchedules[0].id;
+          this.onTourScheduleChange();
+        }
       },
       error: (err) => console.error('Lỗi khi lấy vé:', err)
     });

@@ -93,7 +93,7 @@
         <!-- Right Column (Price Section) -->
         <div class="col-md-4">
             <div class="border p-3 rounded">
-                <h5 class="text-end text-dark price">{{ selectedPrice !== null ? selectedPrice : 0 | currency:'VND' }}
+                <h5 class="text-end text-dark price">{{ selectedPrice !== null ? selectedPrice : 0 | currency: '₫' }}
                     <small class="text-decoration-line-through">₫ 357,000</small>
                 </h5>
                 <button class="btn button-price w-100">Chọn các gói dịch vụ</button>
@@ -104,8 +104,8 @@
 <h5 class="container">Các gói dịch vụ</h5>
 <div class="container my-3 d-flex">
     <!-- Left Section: Service Package Selection -->
-    <div class="row-left">
-        <div class="col-md-11">
+    <div class="row-left" style="width: 100%;">
+        <div class="col-md-11" style="max-width: 100%;width: 98%;">
             <div class="p-4 rounded shadow-sm">
                 <div>
                     <div class="d-flex">
@@ -127,7 +127,7 @@
                 <!-- Pricing Section -->
                 <div class="mt-4 d-flex justify-content-between align-items-center">
                     <div>
-                        <span class="fs-3 text-dark" style="font-weight: 500;">{{ selectedPrice !== null ? selectedPrice : 0 | currency:'VND' }}</span>
+                        <span class="fs-3 text-dark" style="font-weight: 500;">đ{{ selectedPrice !== null ? selectedPrice : 0 | currency: '₫' }}</span>
                         <small class="text-decoration-line-through text-muted" style="font-weight: bold;">₫
                             357,000</small>
                         <p class="text-muted" style="font-size: small;">Vui lòng hoàn tất các mục yêu cầu để chuyển đến
@@ -142,7 +142,7 @@
         </div>
     </div>
     <!-- Right Section: Service Details -->
-    <div class="container border p-3" style="background-color: #f9f9f9;border-radius: 10px;height: auto;border: none !important;position: relative;">
+    <div class="container border p-3" style="background-color: #f9f9f9;border-radius: 10px;height: auto;border: none !important;position: relative;width: 45%;">
         <div class="triangle"></div>
         <div class="d-flex justify-content-between align-items-center">
             <h5 class="mb-0" style="font-weight: 500;">Chi tiết gói dịch vụ</h5>
