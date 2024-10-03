@@ -18,7 +18,6 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 public class Booking {
-
     @Id
     private Integer id;
     private LocalDateTime dateBook;
@@ -26,13 +25,13 @@ public class Booking {
     private Integer idUser;
     private Integer idPayment;
     private Integer idVoucher;
-
     @Enumerated(EnumType.STRING)
     private TypeBooking typeBooking;
-
-    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "booking_id")
     private List<UserJoin> userJoin = new ArrayList<>();;
 
-    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "booking_id")
     private List<UserInfo> userInfo = new ArrayList<>();;
 }

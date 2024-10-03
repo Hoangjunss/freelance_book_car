@@ -34,10 +34,6 @@ public class HotelBookingServiceImpl implements HotelBookingService {
     public CreateHotelBookingResponse createHotelBooking(CreateHotelBookingRequest createHotelBookingRequest) {
         log.info("Creating hotel booking for hotel ID: {}", createHotelBookingRequest.getHotel());
 
-        // Validation
-        if (createHotelBookingRequest.getEndDate() == null) {
-            throw new CustomException(Error.HOTEL_BOOKING_INVALID_END_DATE);
-        }
         if (createHotelBookingRequest.getStartDate() == null) {
             throw new CustomException(Error.HOTEL_BOOKING_INVALID_START_DATE);
         }
@@ -51,7 +47,6 @@ public class HotelBookingServiceImpl implements HotelBookingService {
         HotelBooking hotelBooking = HotelBooking.builder()
                 .id(getGenerationId())
                 .hotel(createHotelBookingRequest.getHotel())
-                .endDate(createHotelBookingRequest.getEndDate())
                 .startDate(createHotelBookingRequest.getStartDate())
                 .totalPrice(createHotelBookingRequest.getTotalPrice())
                 .build();
@@ -110,6 +105,12 @@ public class HotelBookingServiceImpl implements HotelBookingService {
     public List<GetHotelBookingResponse> findAllByIdHotel(Integer idHotel) {
         return hotelBookingRepository.findAllByHotel(idHotel)
                 .stream()
+                .map(hotelBooking -> modelMapper.map(hotelBooking, GetHotelBookingResponse.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<GetHotelBookingResponse> getAll() {
+        return hotelBookingRepository.findAll().stream()
                 .map(hotelBooking -> modelMapper.map(hotelBooking, GetHotelBookingResponse.class)).collect(Collectors.toList());
     }
 

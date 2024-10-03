@@ -5,6 +5,7 @@ import com.freelance.bookCar.dto.request.user.userInfoDTO.UpdateUserInfoRequest;
 import com.freelance.bookCar.dto.response.user.userInfoDTO.CreateUserInfoResponse;
 import com.freelance.bookCar.dto.response.user.userInfoDTO.GetUserInfoResponse;
 import com.freelance.bookCar.dto.response.user.userInfoDTO.UpdateUserInforesponse;
+import com.freelance.bookCar.models.booking.Booking;
 import com.freelance.bookCar.models.user.UserInfo;
 import com.freelance.bookCar.respository.user.UserInfoRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +25,7 @@ public class UserInfoServiceImpl implements  UserInfoService{
 
 
     @Override
-    public CreateUserInfoResponse create(CreateUserInfoRequest createUserInfoRequest) {
+    public CreateUserInfoResponse create(CreateUserInfoRequest createUserInfoRequest, Booking booking) {
         log.info("CreateUserInfoResponse 28: {}", createUserInfoRequest.toString());
         UserInfo.UserInfoBuilder userInfoBuilder = UserInfo.builder().id(getGenerationId());
 
@@ -49,7 +50,8 @@ public class UserInfoServiceImpl implements  UserInfoService{
         }
 
         UserInfo userInfo = userInfoBuilder.build();
-
+        userInfo.setBooking(booking);
+        log.info("UserInfo:{}", userInfo.toString());
         return modelMapper.map(userInfoRepository.save(userInfo), CreateUserInfoResponse.class);
     }
 

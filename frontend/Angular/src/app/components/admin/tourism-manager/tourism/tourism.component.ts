@@ -99,6 +99,7 @@ export class TourismComponent {
   }
 
   closeFormUpdate(){
+    this.imageUri='assets/img/DEFAULT/tour-default.png';
     this.isDisplayUpdate = false;
   }
 
@@ -116,13 +117,11 @@ export class TourismComponent {
 
   onCreate() {
   
-    // Kiểm tra các trường bắt buộc
     if (!this.createTourismRequest?.name || !this.createTourismRequest?.location || !this.createTourismRequest?.description) {
       alert('Please fill in all required fields: Name, Location, Description');
       return;
     }
 
-    // Tạo đối tượng FormData
     const formData = new FormData();
     formData.append('name', this.createTourismRequest.name || '');
     formData.append('description', this.createTourismRequest.description || '');
@@ -133,7 +132,8 @@ export class TourismComponent {
     if (this.imageFile != undefined) {
       formData.append('image', this.imageFile);
     }else{
-
+      alert('Please select image');
+      return;
     }
 
 

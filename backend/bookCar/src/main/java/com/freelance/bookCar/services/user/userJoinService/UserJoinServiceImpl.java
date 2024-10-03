@@ -5,6 +5,7 @@ import com.freelance.bookCar.dto.request.user.userJoinDTO.UpdateUserJoinRequest;
 import com.freelance.bookCar.dto.response.user.userInfoDTO.UpdateUserInforesponse;
 import com.freelance.bookCar.dto.response.user.userJoinDTO.CreateUserJoinResponse;
 import com.freelance.bookCar.dto.response.user.userJoinDTO.GetUserJoinResponse;
+import com.freelance.bookCar.models.booking.Booking;
 import com.freelance.bookCar.models.user.UserJoin;
 import com.freelance.bookCar.respository.user.UserJoinRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +24,7 @@ public class UserJoinServiceImpl implements UserJoinService{
     private ModelMapper modelMapper;
 
     @Override
-    public CreateUserJoinResponse create(CreateUserJoinRequest createUserJoinRequest) {
+    public CreateUserJoinResponse create(CreateUserJoinRequest createUserJoinRequest, Booking booking) {
         log.info("CreateUserJoinResponse 27: {}", createUserJoinRequest.toString());
         UserJoin.UserJoinBuilder userJoinBuilder = UserJoin.builder().id(getGenerationId());
 
@@ -44,7 +45,7 @@ public class UserJoinServiceImpl implements UserJoinService{
         }
 
         UserJoin userJoin = userJoinBuilder.build();
-
+        userJoin.setBooking(booking);
         return modelMapper.map(userJoinRepository.save(userJoin), CreateUserJoinResponse.class);
     }
 

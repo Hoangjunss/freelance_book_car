@@ -5,11 +5,12 @@ import com.freelance.bookCar.dto.request.user.userJoinDTO.UpdateUserJoinRequest;
 import com.freelance.bookCar.dto.response.user.userInfoDTO.UpdateUserInforesponse;
 import com.freelance.bookCar.dto.response.user.userJoinDTO.CreateUserJoinResponse;
 import com.freelance.bookCar.dto.response.user.userJoinDTO.GetUserJoinResponse;
+import com.freelance.bookCar.models.booking.Booking;
 import org.springframework.stereotype.Service;
 
 @Service
 public interface UserJoinService {
-    CreateUserJoinResponse create(CreateUserJoinRequest createUserInfoRequest);
+    CreateUserJoinResponse create(CreateUserJoinRequest createUserInfoRequest, Booking booking);
     UpdateUserInforesponse update(UpdateUserJoinRequest updateUserInfoRequest);
     GetUserJoinResponse findById(Integer id);
 }

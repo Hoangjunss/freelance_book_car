@@ -20,7 +20,6 @@
           <th>#</th>
           <th>Name</th>
           <th>Start Location</th>
-          <th>End Location</th>
           <th>Is Active</th>
           <th>Action</th>
         </tr>
@@ -30,7 +29,6 @@
           <th scope="row">{{ tour.id }}</th>
           <td>{{ tour.name }}</td>
           <td>{{ tour.startLocation }}</td>
-          <td>{{ tour.endLocation }}</td>
           <td>
             <input type="checkbox" [checked]="tour.isActive" disabled>
           </td>

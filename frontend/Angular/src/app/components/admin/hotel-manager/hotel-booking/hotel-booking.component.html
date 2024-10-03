@@ -1,29 +1,31 @@
 <h2 class="text-center m-2">Hotel Booking Manager</h2>
 
 <nav class="d-flex navbar navbar-expand-lg navbar-light bg-light navbackground">
-    <form class="form-inline my-2 my-lg-0 mr-auto">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    </form>
-    <button type="button" class="m-3 btn btn-success ml-auto" (click)="addNewSchedule()">New Schedule</button>
+    <div class="form-inline my-2 my-lg-0 mr-auto">
+        <input [(ngModel)]="searchQuery" name="searchQuery" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
+          (keyup.enter)="searchHotel()">
+        <button class="btn btn-outline-success my-2 my-sm-0" (click)="searchHotel()">Search</button>
+        <button class="btn btn-outline-success my-2 my-sm-0" (click)="reset()">Show all</button>
+      </div>
+    <button type="button" class="m-3 btn btn-success ml-auto" (click)="addNewBooking()">New Booking</button>
 </nav>
 
-<!-- Hiển thị danh sách tour -->
-<div class="container mt-4">
+<!-- Hiển thị danh sách khách sạn -->
+<div *ngIf="getHotelResponse.length > 0" class="container mt-4">
     <div class="row">
         <div class="col-sm-12">
-            <h2 class="text-center">Tour Schedule</h2>
+            <h2 class="text-center">Hotel List</h2>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-3" *ngFor="let tour of paginatedTours">
+        <div class="col-md-3" *ngFor="let hotel of paginatedHotels">
             <div class="card mb-4">
                 <div class="card-body">
-                    <h5 class="card-title">Tour ID: {{ tour.id }}</h5>
-                    <p class="card-text">Start Time: {{ tour.timeStartTour | date:'short' }}</p>
-                    <p class="card-text">Quantity: {{ tour.quantity }}</p>
-                    <p class="card-text">Price: ${{ tour.priceTour }}</p>
-                    <button class="btn btn-primary" (click)="viewDetails(1)">Details</button>
+                    <h5 class="card-title">Hotel ID: {{ hotel.id }}</h5>
+                    <p class="card-text">Name: {{ hotel.name }}</p>
+                    <p class="card-text">Location: {{ hotel.location }}</p>
+                    <p class="card-text">Price per Night: {{ hotel.pricePerNight | currency }}</p>
+                    <button class="btn btn-primary" (click)="viewDetails(hotel)">Details</button>
                 </div>
             </div>
         </div>
@@ -34,12 +36,12 @@
             <button class="m-1 btn btn-secondary" (click)="previousPage()"
                 [disabled]="currentPage === 1">Previous</button>
             <button class="m-1 btn btn-secondary" (click)="nextPage()"
-                [disabled]="currentPage >= tours.length / itemsPerPage">Next</button>
+                [disabled]="currentPage >= getHotelResponse.length / itemsPerPage">Next</button>
         </div>
     </div>
 </div>
 
-<!-- Hiển thị danh sách lịch tua trong ngày -->
+<!-- Hiển thị danh sách lịch đặt phòng khách sạn -->
 <div class="container mt-4">
     <div class="row">
         <div class="col-sm-12">
@@ -48,17 +50,13 @@
     </div>
     <div class="container">
         <div class="container">
-            <!-- Dùng d-flex để căn hàng ngang -->
             <div class="form-group d-flex align-items-center">
-              <!-- Thẻ select -->
-              <label for="tourFilter" class="mr-2">Filter by Tour</label>
-              <select class="form-control mr-3" id="tourFilter" name="tourFilter" style="width: auto;">
-                <option value="">-- Select Tour --</option>
-                <option *ngFor="let tour of tours" [value]="tour.id">Tour {{ tour.id }} - {{ tour.priceTour }}$</option>
+              <label for="hotelFilter" class="mr-2">Filter by Hotel</label>
+              <select class="form-control mr-3" id="hotelFilter" [(ngModel)]="hotelSelectedId" name="hotelFilter" style="width: auto;">
+                <option value="0">-- Select Hotel --</option>
+                <option *ngFor="let hotel of getHotelResponse" [value]="hotel.id">{{ hotel.name }}</option>
               </select>
-              
-              <!-- Nút Filter -->
-              <button class="btn btn-primary">Filter</button>
+              <button class="btn btn-primary" (click)="filterBookings()">Filter</button>
             </div>
           </div>
           
@@ -67,149 +65,172 @@
             <thead>
               <tr>
                 <th>#</th>
-                <th>Time Start Tour</th>
-                <th>Tour ID</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Schedule Status</th>
-                <th>Action</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Hotel ID</th>
+                <th>Total Price</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let tour of pagedTours">
-                <th scope="row">{{ tour.id }}</th>
-                <td>{{ tour.timeStartTour | date: 'short' }}</td>
-                <td>{{ tour.idTour }}</td>
-                <td>{{ tour.quantity }}</td>
-                <td>{{ tour.priceTour | currency: 'USD' }}</td>
-                <td>{{ tour.idTourScheduleStatus }}</td>
-                <td>
-                  <button class="btn btn-warning m-2" (click)="updateSchedule(tour)">Edit</button>
-                </td>
+              <tr *ngFor="let booking of pagedBookings">
+                <th scope="row">{{ booking.id }}</th>
+                <td>{{ booking.startDate | date: 'short' }}</td>
+                <td>{{ booking.endDate | date: 'short' }}</td>
+                <td>{{ booking.hotel }}</td>
+                <td>{{ booking.totalPrice | currency: 'USD' }}</td>
               </tr>
             </tbody>
           </table>
         </div>
       
-        <!-- Pagination Controls -->
         <nav aria-label="Page navigation example">
-          <ul class="pagination justify-content-center">
-            <li class="page-item" [class.disabled]="currentPageSchedule === 1">
-              <a class="page-link" (click)="goToPage(currentPageSchedule - 1)">Previous</a>
-            </li>
-            <li class="page-item" *ngFor="let page of pages" [class.active]="currentPageSchedule === page">
-              <a class="page-link" (click)="goToPage(page)">{{ page }}</a>
-            </li>
-            <li class="page-item" [class.disabled]="currentPageSchedule === totalPages">
-              <a class="page-link" (click)="goToPage(currentPageSchedule + 1)">Next</a>
-            </li>
-          </ul>
-        </nav>
+            <ul class="pagination justify-content-center">
+              <li class="page-item" [class.disabled]="currentPageBooking === 1">
+                <a class="page-link" (click)="!stateFilter ? goToPage(currentPageBooking - 1) : goToPageFilter(currentPageBooking - 1)">Previous</a>
+              </li>
+          
+              <li class="page-item" *ngFor="let page of pages" [class.active]="currentPageBooking === page">
+                <a class="page-link" (click)="!stateFilter ? goToPage(page) : goToPageFilter(page)">{{ page }}</a>
+              </li>
+          
+              <li class="page-item" [class.disabled]="currentPageBooking === totalPages">
+                <a class="page-link" (click)="!stateFilter ? goToPage(currentPageBooking + 1) : goToPageFilter(currentPageBooking + 1)">Next</a>
+              </li>
+            </ul>
+          </nav>
       </div>      
 </div>
 
-<!-- Form Hiển thị chi tiết Tour -->
+<!-- Form Hiển thị chi tiết Hotel -->
 <div *ngIf="isDisplayDetails" class="modal fade show" tabindex="-1" role="dialog"
     style="display: block; background: rgba(0, 0, 0, 0.5);">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content slide-in">
             <div class="modal-body d-flex">
-                <!-- Phần bên trái: Thông tin Tour -->
                 <div class="col-md-6 col-sm-12">
-                    <h5 class="modal-title">Tour Information</h5>
+                    <h5 class="modal-title">Hotel Information</h5>
                     <button type="button" class="close" aria-label="Close" (click)="cancel()">
                         <span aria-hidden="true">&times;</span>
                     </button>
                     <form>
                         <div class="form-group">
                             <label for="name">Name</label>
-                            <input type="text" class="form-control" id="name" [(ngModel)]="tour.id" name="name"
-                                placeholder="Enter tour name" required>
+                            <input type="text" [disabled]="true" class="form-control" id="name" [(ngModel)]="hotelDetail.name" name="name"
+                                placeholder="Enter hotel name" required>
                         </div>
                         <div class="form-group">
-                            <label for="description">Description</label>
-                            <textarea class="form-control" id="description" [(ngModel)]="tour.description"
-                                name="description" placeholder="Enter description"></textarea>
+                            <label for="location">Location</label>
+                            <input type="text" [disabled]="true" class="form-control" id="location" [(ngModel)]="hotelDetail.location"
+                                name="location" placeholder="Enter location">
                         </div>
                         <div class="form-group">
-                            <label for="startLocation">Start Location</label>
-                            <input type="text" class="form-control" id="startLocation" [(ngModel)]="tour.startLocation"
-                                name="startLocation" placeholder="Enter start location">
+                            <label for="pricePerNight">Price per Night</label>
+                            <input type="text" [disabled]="true" class="form-control" id="pricePerNight" [(ngModel)]="hotelDetail.pricePerNight"
+                                name="pricePerNight" placeholder="Enter price per night">
                         </div>
                         <div class="form-group">
-                            <label for="endLocation">End Location</label>
-                            <input type="text" class="form-control" id="endLocation" [(ngModel)]="tour.endLocation"
-                                name="endLocation" placeholder="Enter end location">
-                        </div>
-                        <div class="form-group">
-                            <label for="idTourStatus">Tour Status ID</label>
-                            <input type="number" class="form-control" id="idTourStatus" [(ngModel)]="tour.isActive"
-                                name="idTourStatus" placeholder="Enter tour status ID">
+                            <label for="rating">Rating</label>
+                            <input type="text" [disabled]="true" class="form-control" id="rating" [(ngModel)]="hotelDetail.rating"
+                                name="rating" placeholder="Enter hotel rating">
                         </div>
                     </form>
                 </div>
 
-                <!-- Phần bên phải: Danh sách Tour Schedule -->
+                <!-- Phần bên phải: Danh sách Hotel Booking -->
                 <div class="col-md-6 col-sm-12" style="max-height: 500px; overflow-y: auto;">
-                    <h5 class="modal-title">Tour Schedule</h5>
-                    <div *ngFor="let schedule of tourSchedules" class="mb-2 border p-2">
+                    <h5 class="modal-title">Hotel Bookings</h5>
+                    <div *ngFor="let booking of getHotelBookingByIdHotel" class="mb-2 border p-2">
                         <div>
-                            <strong>Schedule ID:</strong> {{ schedule.id }}
+                            <strong>Booking ID:</strong> {{ booking.id }}
                         </div>
                         <div>
-                            <strong>Start Time:</strong> {{ schedule.timeStartTour | date:'short' }}
+                            <strong>Start Date:</strong> {{ booking.startDate | date: 'dd/MM/yyyy' }}
                         </div>
                         <div>
-                            <strong>Quantity:</strong> {{ schedule.quantity }}
+                            <strong>Total Price:</strong> {{ booking.totalPrice | currency }}
                         </div>
-                        <div>
-                            <strong>Price:</strong> {{ schedule.priceTour | currency }}
-                        </div>
-                        <button type="button" class="btn btn-info mt-1" (click)="updateSchedule(schedule)">View</button>
+                        <button type="button" class="btn btn-info mt-1" (click)="updateBooking(booking, hotelDetail)">View</button>
                     </div>
                 </div>
             </div>
-            <button type="button" class="m-1 btn btn-primary" (click)="save()">Save</button>
             <button type="button" class="m-1 btn btn-secondary" (click)="cancel()">Cancel</button>
         </div>
     </div>
 </div>
 
-<!-- Modal for adding/updating tour schedule -->
-<div *ngIf="isUpdateSchedule" class="modal fade show" tabindex="-1" role="dialog"
+<!-- Modal for adding/updating hotel booking -->
+<div *ngIf="isUpdateBooking" class="modal fade show" tabindex="-1" role="dialog"
     style="display: block; background: rgba(0, 0, 0, 0.5);">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content slide-in-update">
             <div class="modal-body-update m-4">
                 <form>
-                    <h5 class="modal-title">{{ isEditMode ? 'Update' : 'Add' }} Tour Schedule</h5>
+                    <h5 class="modal-title">{{ isEditMode ? 'Update' : 'Add' }} Hotel Booking</h5>
                     <button type="button" class="close" aria-label="Close" (click)="cancelUpdate()">
                         <span aria-hidden="true">&times;</span>
                     </button>
                     
-                    <!-- Chọn tour -->
+                    <!-- Chọn khách sạn -->
                     <div class="form-group">
-                        <label for="tourSelect">Select Tour</label>
-                        <select class="form-control" id="tourSelect" [(ngModel)]="selectedTourId" name="tourSelect" required>
-                            <option *ngFor="let tour of tours" [value]="tour.id">{{ tour.id }}</option>
+                        <label for="hotelSelect">Hotel Name</label>
+                        <select class="form-control" id="hotelSelect" [(ngModel)]="hotelSelected.name" name="hotelSelect" required>
+                            <option [value]="hotelSelected.name">{{ hotelSelected.name }}</option>
                         </select>
                     </div>
                     
-                    <!-- Số lượng -->
+                    <!-- Số lượng đêm -->
                     <div class="form-group">
-                        <label for="scheduleQuantity">Quantity</label>
-                        <input type="number" class="form-control" id="scheduleQuantity" [(ngModel)]="selectedSchedule.quantity" name="scheduleQuantity" placeholder="Enter quantity" required>
+                        <label for="totalPrice">Total Price</label>
+                        <input type="number" class="form-control" id="totalPrice" [(ngModel)]="updateHotelBookingRequest.totalPrice" name="totalPrice" placeholder="Enter total price" required>
                     </div>
                     <div class="form-group">
-                        <label for="schedulePrice">Price</label>
-                        <input type="number" class="form-control" id="schedulePrice" [(ngModel)]="selectedSchedule.priceTour" name="schedulePrice" placeholder="Enter price" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="timeStartTour">Start Time</label>
-                        <input type="datetime-local" class="form-control" id="timeStartTour" [(ngModel)]="selectedSchedule.timeStartTour" name="timeStartTour" required>
+                        <label for="startTime">Start Date</label>
+                        <input type="datetime-local" class="form-control" id="startTime" [(ngModel)]="updateHotelBookingRequest.startTime" name="startTime" required>
                     </div>
                     <button type="button" class="m-1 btn btn-secondary" (click)="cancelUpdate()">Cancel</button>
                     <button type="button" class="m-1 btn btn-primary" (click)="saveUpdate()">{{ isEditMode ? 'Update' : 'Add' }}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for creating a new booking -->
+<div *ngIf="isCreateBooking" class="modal fade show" tabindex="-1" role="dialog"
+    style="display: block; background: rgba(0, 0, 0, 0.5);">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content slide-in-update">
+            <div class="modal-body-update m-4">
+                <form>
+                    <h5 class="modal-title">Add New Hotel Booking</h5>
+                    <button type="button" class="close" aria-label="Close" (click)="closeCreate()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    
+                    <!-- Chọn khách sạn -->
+                    <div class="form-group">
+                        <label for="hotelSelect">Select Hotel</label>
+                        <select class="form-control" id="hotelSelect" [(ngModel)]="createHotelBookingRequest.hotel" name="hotelSelect" required>
+                          <option value="0" disabled>-- Select Hotel --</option> <!-- Mục mặc định -->
+                          <option *ngFor="let hotel of getHotelResponse" [value]="hotel.id">{{ hotel.name }}</option>
+                        </select>
+                      </div>
+                    
+                    <!-- Tổng giá -->
+                    <div class="form-group">
+                        <label for="totalPrice">Total Price</label>
+                        <input type="number" class="form-control" id="totalPrice" [(ngModel)]="createHotelBookingRequest.totalPrice" name="totalPrice" placeholder="Enter total price" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="startTime">Start Date</label>
+                        <input type="datetime-local" class="form-control" id="startTime" [(ngModel)]="startTimeHotel" name="startTime" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="endTime">End Date</label>
+                        <input type="datetime-local" class="form-control" id="endTime" [(ngModel)]="endTimeHotel" name="endTime" required>
+                    </div>
+                    <button type="button" class="m-1 btn btn-secondary" (click)="closeCreate()">Cancel</button>
+                    <button type="button" class="m-1 btn btn-primary" (click)="onCreate()">Add</button>
                 </form>
             </div>
         </div>

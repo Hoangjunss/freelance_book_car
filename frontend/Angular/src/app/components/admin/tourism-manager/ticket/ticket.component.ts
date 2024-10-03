@@ -29,10 +29,13 @@ export class TicketComponent implements OnInit {
   getTourismResponse: GetTourismResponse[] = [];
   filterTourism: GetTourismResponse[] = [];
   getTicketResponse: GetTicketResponse[] = [];
+  filterTicket: GetTicketResponse[] = [];
   getTicketsByTourismId: GetTicketResponse[] = [];
 
   startDate: Date = new Date();
   endDate: Date = new Date();
+
+  stateFilter = false;
 
   selectedTourismId: number = 0;
   selectedTourism: GetTourismResponse = new GetTourismResponse();
@@ -72,6 +75,7 @@ export class TicketComponent implements OnInit {
         if (data) {
           this.getTicketResponse = data;
           this.updatePagedTickets();
+          this.updateDisplayedPages();
         }
       },
     });
@@ -111,7 +115,7 @@ export class TicketComponent implements OnInit {
     }
   }
 
-  searchTour(){
+  searchTour() {
     if (this.searchQuery.trim() != '') {
       this.filterTourism = this.getTourismResponse.filter(tour =>
         tour.name?.toLowerCase().includes(this.searchQuery.toLowerCase())
@@ -119,13 +123,16 @@ export class TicketComponent implements OnInit {
     }
   }
 
-  reset(){
+  reset() {
     this.filterTourism = this.getTourismResponse;
+    this.filterTicket = this.getTicketResponse;
+    this.updatePagedTickets();
+    this.updateDisplayedPages();
   }
 
-  addNewTicket(): void {
+  aaddNewTicket(): void {
     this.createTicketRequest = new CreateTicketRequest();
-    this.createTicketRequest.idTourism=0;
+    this.createTicketRequest.idTourism = 0;
     this.isCreateTicket = true;
   }
 
@@ -241,13 +248,36 @@ export class TicketComponent implements OnInit {
   }
 
   filterTickets(): void {
-    if (this.selectedTourismId !== 0) {
-      this.pagedTickets = this.getTicketResponse.filter(ticket => ticket.idTourism === this.selectedTourismId);
+    if (this.selectedTourismId != 0) {
+      this.stateFilter = true;
+      this.filterTicket = this.getTicketResponse.filter(ticket => ticket.idTourism == this.selectedTourismId);
+      this.currentPage = 1; // Reset về trang đầu tiên khi lọc
+      this.updatePagedTicketFilter();
     } else {
+      this.stateFilter = false;
       this.pagedTickets = this.getTicketResponse.slice();
+      this.currentPageTicket = 1; // Reset về trang đầu tiên khi không lọc
+      this.updatePagedTickets();
     }
-    this.currentPageTicket = 1;
-    this.updatePagedTickets();
+    this.updateDisplayedPages();
+  }
+  
+  
+  updatePagedTicketFilter(): void {
+    const start = (this.currentPage - 1) * this.pageSize;
+    const end = start + this.pageSize;
+    this.pagedTickets = this.filterTicket.slice(start, end);
+    this.totalPages = Math.ceil(this.filterTicket.length / this.pageSize);
+    this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+  
+  goToPageFilter(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.updatePagedTicketFilter();
+      this.updateDisplayedPages();
+    }
   }
   
 

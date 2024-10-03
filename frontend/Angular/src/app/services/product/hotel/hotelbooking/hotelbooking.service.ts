@@ -17,9 +17,9 @@ export class HotelbookingService {
 
   constructor(private httpClient: HttpClient) { }
 
-  createBooking(createBookingRequest: CreateHotelBookingRequest): Observable<CreateHotelBookingResponse> {
+  createBooking(formData: FormData): Observable<CreateHotelBookingResponse> {
     const headers = this.createAuthorizationHeader();
-    return this.httpClient.post<Apiresponse<CreateHotelBookingResponse>>(`${this.baseUrl}`, createBookingRequest, {headers}).pipe(
+    return this.httpClient.post<Apiresponse<CreateHotelBookingResponse>>(`${this.baseUrl}`, formData, {headers}).pipe(
       map((response: Apiresponse<CreateHotelBookingResponse>) => {
         if (response.success) {
           return response.data;
@@ -30,9 +30,9 @@ export class HotelbookingService {
     );
   }
 
-  updateBooking(updateBookingRequest: UpdateHotelBookingRequest): Observable<UpdateHotelBookingResponse> {
+  updateBooking(formData: FormData): Observable<UpdateHotelBookingResponse> {
     const headers = this.createAuthorizationHeader();
-    return this.httpClient.put<Apiresponse<UpdateHotelBookingResponse>>(`${this.baseUrl}`, updateBookingRequest, {headers}).pipe(
+    return this.httpClient.patch<Apiresponse<UpdateHotelBookingResponse>>(`${this.baseUrl}`, formData, {headers}).pipe(
       map((response: Apiresponse<UpdateHotelBookingResponse>) => {
         if (response.success) {
           return response.data;
@@ -71,6 +71,19 @@ export class HotelbookingService {
   getHotelByIdBooking(id: number): Observable<GetHotelBookingResponse[]> {
     const headers = this.createAuthorizationHeader();
     return this.httpClient.get<Apiresponse<GetHotelBookingResponse[]>>(`${this.baseUrl}/hotelbooking?idHotel=${id}`, {headers}).pipe(
+      map((response: Apiresponse<GetHotelBookingResponse[]>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    );
+  }
+
+  getAllHotelBooking():  Observable<GetHotelBookingResponse[]> {
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<GetHotelBookingResponse[]>>(`${this.baseUrl}/all`, {headers}).pipe(
       map((response: Apiresponse<GetHotelBookingResponse[]>) => {
         if (response.success) {
           return response.data;

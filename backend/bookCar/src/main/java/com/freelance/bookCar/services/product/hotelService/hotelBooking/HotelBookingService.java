@@ -13,4 +13,5 @@ public interface HotelBookingService {
     UpdateHotelBookingResponse updateHotelBooking(UpdateHotelBookingRequest updateHotelBookingRequest);
     GetHotelBookingResponse findById(Integer id);
     List<GetHotelBookingResponse> findAllByIdHotel(Integer idHotel);
+    List<GetHotelBookingResponse> getAll();
 }

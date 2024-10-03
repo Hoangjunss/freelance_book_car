@@ -43,6 +43,12 @@ public class HotelBookingController {
             return ResponseEntity.ok(new ApiResponse<>(true, "Hotel booking retrieved successfully", response));
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<ApiResponse<List<GetHotelBookingResponse>>> getAll() {
+            List<GetHotelBookingResponse> response = hotelBookingService.getAll();
+            return ResponseEntity.ok(new ApiResponse<>(true, "Hotel booking retrieved successfully", response));
+    }
+
     @GetMapping("/hotelbooking")
     public ResponseEntity<ApiResponse<List<GetHotelBookingResponse>>> getHotelBookingByIdBooking(@RequestParam Integer idHotel){
         List<GetHotelBookingResponse> getTicketResponse = hotelBookingService.findAllByIdHotel(idHotel);

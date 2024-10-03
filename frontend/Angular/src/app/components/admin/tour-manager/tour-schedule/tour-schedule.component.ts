@@ -146,7 +146,15 @@ export class TourScheduleComponent implements OnInit {
     const endDate = new Date(this.timeEndTour);
     let formattedStartDate = startDate.toISOString().slice(0, 19);
 
-    let formattedEndDate = endDate.toISOString().slice(0, 19);
+    if(this.createTourScheduleRequest.idTour == 0){
+      alert("Vui lòng chọn Tour để thêm.");
+        return;
+    }
+
+    if(this.createTourScheduleRequest.priceTour <0 || this.createTourScheduleRequest.quantity == null){
+      alert("Vui lòng điền đầy đủ thông tin.");
+        return;
+    }
     let isSuccess = false;
 
     if (startDate < new Date()) {
@@ -164,11 +172,10 @@ export class TourScheduleComponent implements OnInit {
 
             this.tourScheduleService.createSchedule(formData).subscribe({
                 next: (data) => {
+                  console.log(data);
                     if (data) {
                         this.createTourScheduleResponse = data;
                         isSuccess = true;
-                    } else {
-                        isSuccess = false;
                     }
                 },
                 error: (error) => {
@@ -179,12 +186,7 @@ export class TourScheduleComponent implements OnInit {
             startDate.setDate(startDate.getDate() + 1);
             formattedStartDate = startDate.toISOString().slice(0, 19);
         }
-        
-        if (isSuccess) {
-            alert('Create TourSchedule is success');
-        } else {
-            alert('False');
-        }
+        alert('Create TourSchedule is success');
     } else {
         console.error('Start date must be less than or equal to end date.');
     }
@@ -263,20 +265,17 @@ export class TourScheduleComponent implements OnInit {
     if (this.tourSelectedId != 0) {
       this.stateFilter= true;
       this.tourScheduleFilter = this.getTourScheduleResponse;
-        // Lọc tour theo tourSelectedId
         this.tourScheduleFilter = this.getTourScheduleResponse.filter(tour => tour.idTour == this.tourSelectedId);
         this.updatePagedTourFitler(); 
     } else {
       this.stateFilter = false;
-        // Hiển thị tất cả tour
-        this.pagedTours = this.getTourScheduleResponse.slice(); // Tạo một bản sao của danh sách đầy đủ
+        this.pagedTours = this.getTourScheduleResponse.slice();
         this.updatePagedTours();
         this.updateDisplayedPages();
     }
     console.log(this.pagedTours);
 
-    this.currentPageSchedule = 1; // Đặt lại trang hiện tại về 1 sau khi lọc
-    // Cập nhật các tour đã phân trang
+    this.currentPageSchedule = 1;
 }
 
 

@@ -23,4 +23,7 @@ public class UserInfo {
     private String phone;
     private String email;
     private String address;
+    @ManyToOne
+    @JoinColumn(name = "booking_id")
+    private Booking booking;
 }

@@ -89,16 +89,17 @@ export class TourComponent implements OnInit{
   }
 
   closeFormUpdate(){
+    this.imageUri = 'assets/img/DEFAULT/tour-default.png';
     this.isDisplayUpdate = false;
   }
 
   onImageSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
-      this.imageFile = file; // Gán tệp ảnh đã chọn vào thuộc tính image của createTourRequest
+      this.imageFile = file;
       const reader = new FileReader();
       reader.onload = () => {
-        this.imageUri = reader.result as string; // Hiển thị ảnh vừa chọn trong form
+        this.imageUri = reader.result as string;
       };
       reader.readAsDataURL(file);
     }
