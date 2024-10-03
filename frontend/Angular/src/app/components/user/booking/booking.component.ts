@@ -30,27 +30,27 @@ import { TourScheduleService } from '../../../services/product/tour/tour-schedul
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     UserService
   ],
-  imports: [FormsModule,CommonModule,HttpClientModule],
+  imports: [FormsModule, CommonModule, HttpClientModule],
   templateUrl: './booking.component.html',
   styleUrl: './booking.component.css'
 })
 export class BookingComponent implements OnInit {
-  specialRequest: string = ''; 
-  charCount: number = 0; 
+  specialRequest: string = '';
+  charCount: number = 0;
   hours: number[] = [];
   minutes: number[] = [];
   showForm: boolean = false;
   showContactForm: boolean = false;
   showEditForm: boolean = false;
   showContactEditForm: boolean = false;
-  getBookingDetailResponse: GetBookingDetailResponse [] = [];
-  products:any[] = [];
+  getBookingDetailResponse: GetBookingDetailResponse[] = [];
+  products: any[] = [];
   idBooking: number | null = null;
   totalPrice: number | null = null;
 
   orderRequest: OrderRequest = new OrderRequest();
   orderResponse: OrderResponse = new OrderResponse();
-  createUserInfoRequest: CreateUserInfoRequest[] = []; 
+  createUserInfoRequest: CreateUserInfoRequest[] = [];
   createUserInfo: CreateUserInfoRequest = new CreateUserInfoRequest();
   updateUserInfo: CreateUserInfoRequest = new CreateUserInfoRequest();
   createUserJoinRequest: CreateUserJoinRequest[] = [];
@@ -63,7 +63,9 @@ export class BookingComponent implements OnInit {
 
   selectedContactIndex: number | null = null;
   selectedUserIndex: number | null = null;
-
+  originalUserJoin: CreateUserJoinRequest;
+  originalUserInfo: CreateUserInfoRequest;
+  formInvalid: boolean = false;
   constructor(
     private title: Title,
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -82,7 +84,7 @@ export class BookingComponent implements OnInit {
 
     this.title.setTitle('Điền thông tin');
   }
-  
+
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       const id = localStorage.getItem('idUser');
@@ -91,6 +93,7 @@ export class BookingComponent implements OnInit {
         console.log('ID:', this.products);
       }
     }
+    this.originalUserJoin = new CreateUserJoinRequest();
   }
 
   updateCharCount() {
@@ -102,38 +105,58 @@ export class BookingComponent implements OnInit {
     if (!this.showForm) {
       this.createUserJoin = new CreateUserJoinRequest();
       this.selectedUserIndex = null;
+      this.formInvalid = false;
     }
   }
-  
+
   toggleContactForm() {
     this.showContactForm = !this.showContactForm;
     if (!this.showContactForm) {
       this.createUserInfo = new CreateUserInfoRequest();
       this.selectedContactIndex = null;
+      this.formInvalid = false;
     }
   }
 
   toggleEditForm() {
     this.showEditForm = !this.showEditForm;
   }
-  toggleContactEditForm(){
+  toggleContactEditForm() {
     this.showContactEditForm = !this.showContactEditForm;
   }
 
   saveInfo() {
+    this.formInvalid = !this.isFormValid();
+
+    if (this.originalUserJoin && (
+      this.createUserJoin.firstName === this.originalUserJoin.firstName &&
+      this.createUserJoin.lastName === this.originalUserJoin.lastName &&
+      this.createUserJoin.phone === this.originalUserJoin.phone &&
+      this.createUserJoin.email === this.originalUserJoin.email
+    )) {
+      alert("Vui lòng chọn nội dung thay đổi.");
+      return;
+    }
     if (this.selectedUserIndex === null) {
       this.createUserJoinRequest.push({ ...this.createUserJoin });
     } else {
       this.createUserJoinRequest[this.selectedUserIndex] = { ...this.createUserJoin };
       this.selectedUserIndex = null;
     }
+
     this.createUserJoin = new CreateUserJoinRequest();
+    console.log('First Name:', this.createUserJoin.firstName);
+    console.log('Form Invalid:', this.formInvalid);
+
+
     this.toggleForm();
   }
 
+
   editUser(index: number) {
-    this.selectedUserIndex = index; 
+    this.selectedUserIndex = index;
     this.createUserJoin = { ...this.createUserJoinRequest[index] };
+    this.originalUserJoin = { ...this.createUserJoin };
     this.showForm = true;
   }
 
@@ -142,6 +165,22 @@ export class BookingComponent implements OnInit {
   }
 
   saveContactInfo() {
+    this.formInvalid = !this.isContactFormValid();
+    if(this.formInvalid && this.selectedContactIndex === null)
+    {
+      alert('Vui lòng điền đầy đủ thông tin');
+      return;
+    }
+
+    if (this.originalUserInfo && (
+      this.createUserInfo.firstName === this.originalUserInfo.firstName &&
+      this.createUserInfo.lastName === this.originalUserInfo.lastName &&
+      this.createUserInfo.phone === this.originalUserInfo.phone &&
+      this.createUserInfo.email === this.originalUserInfo.email
+  )) {
+      alert("Vui lòng chọn nội dung thay đổi.");
+      return;
+  }
     if (this.selectedContactIndex === null) {
       this.createUserInfoRequest.push({ ...this.createUserInfo });
     } else {
@@ -155,7 +194,8 @@ export class BookingComponent implements OnInit {
   editContact(index: number) {
     this.selectedContactIndex = index;
     this.createUserInfo = { ...this.createUserInfoRequest[index] };
-    this.showContactForm = true; 
+    this.originalUserInfo = { ...this.createUserInfo };
+    this.showContactForm = true;
   }
 
   deleteContact(index: number) {
@@ -166,7 +206,7 @@ export class BookingComponent implements OnInit {
     this.toggleEditForm();
   }
 
-  updateContactInfo(){
+  updateContactInfo() {
     this.toggleContactEditForm();
   }
 
@@ -179,9 +219,9 @@ export class BookingComponent implements OnInit {
             this.getBookingDetail(response.id);
             this.totalPrice = response.totalPrice;
           } else {
-            this.products = []; 
+            this.products = [];
           }
-          
+
         } else {
         }
       },
@@ -232,7 +272,7 @@ export class BookingComponent implements OnInit {
                   p.name = response.name;
                   p.image = response.image;
                   p.location = response.location;
-            
+
 
                 },
                 error: (error) => {
@@ -264,19 +304,19 @@ export class BookingComponent implements OnInit {
     });
   }
 
-  onPayment(){
+  onPayment() {
     const formData = new FormData();
     const idUser = localStorage.getItem('idUser');
     const idBooking = localStorage.getItem('idBooking');
-    if(this.createUserInfoRequest == null){
+    if (this.createUserInfoRequest == null) {
       alert('Vui lòng điền ít nhất một thông tin liên hệ');
       return;
     }
-    if(this.createUserJoinRequest == null){
+    if (this.createUserJoinRequest == null) {
       alert('Vui lòng điền ít nhất một thông tin người tham gia');
       return;
     }
-    
+
 
     formData.append('id', idBooking);
     formData.append('idUser', idUser);
@@ -284,7 +324,7 @@ export class BookingComponent implements OnInit {
     formData.append('totalPrice', this.totalPrice.toString());
     formData.append('createUserInfoRequest', JSON.stringify(this.createUserInfoRequest));
     formData.append('createUserJoinRequest', JSON.stringify(this.createUserJoinRequest));
-    formData.append('paymentMethod', 1+"");
+    formData.append('paymentMethod', 1 + "");
 
     formData.forEach((value, key) => {
       console.log(`${key}: ${value}`);
@@ -292,7 +332,7 @@ export class BookingComponent implements OnInit {
 
     this.bookingService.order(formData).subscribe({
       next: (response) => {
-        if(response){
+        if (response) {
           this.updateTypeBooking(parseInt(idBooking));
           alert("Bạn đã đặt thành công. Vui lòng kiểm tra Email và chờ phản hồi");
         }
@@ -308,11 +348,48 @@ export class BookingComponent implements OnInit {
       next: (value) => {
         if (value) {
           console.log('successful');
-          this.router.navigate(['order-history']); 
+          this.router.navigate(['order-history']);
           localStorage.removeItem('idBooking');
         }
       },
     });
   }
-  
+
+  validateForm() {
+    this.formInvalid = !this.isFormValid();
+  }
+
+
+  isFormValid() {
+    console.log('First Name:', this.createUserJoin.firstName);
+    console.log('Form Invalid:', this.formInvalid);
+
+    return this.createUserJoin.firstName &&
+      this.createUserJoin.lastName &&
+      this.createUserJoin.phone &&
+      this.isValidPhone(this.createUserJoin.phone) &&
+      this.createUserJoin.email &&
+      this.isValidEmail(this.createUserJoin.email);
+  }
+
+  isContactFormValid() {
+    return this.createUserInfo.firstName &&
+      this.createUserInfo.lastName &&
+      this.createUserInfo.phone &&
+      this.isValidPhone(this.createUserInfo.phone) &&
+      this.createUserInfo.email &&
+      this.isValidEmail(this.createUserInfo.email);
+  }
+
+
+
+  isValidPhone(phone: string): boolean {
+    const phonePattern = /^\d{10}$/; // Change the regex according to your requirements
+    return phonePattern.test(phone);
+  }
+
+  isValidEmail(email: string): boolean {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Simple email regex
+    return emailPattern.test(email);
+  }
 }

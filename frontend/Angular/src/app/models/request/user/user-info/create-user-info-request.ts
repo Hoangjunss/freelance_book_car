@@ -3,5 +3,4 @@ export class CreateUserInfoRequest{
     lastName?: string;
     phone?: string;
     email?: string;
-    address?: string;
 }
