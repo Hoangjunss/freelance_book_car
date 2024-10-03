@@ -13,6 +13,7 @@ import { TicketDetailComponent } from './components/user/ticket-detail/ticket-de
 import { HotelDetailComponent } from './components/user/hotel-detail/hotel-detail.component';
 import { CartComponent } from './components/user/cart/cart.component';
 import { HistoryComponent } from './components/user/history/history.component';
+import { SearchComponent } from './components/user/search/search.component';
 
 
 export const routes: Routes = [
@@ -92,6 +93,10 @@ export const routes: Routes = [
   {
     path: 'order-history',
     component: HistoryComponent
+  },
+  {
+    path: 'search',
+    component: SearchComponent
   },
   {
     path: '**',

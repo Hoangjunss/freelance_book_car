@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, Inject, Input, PLATFORM_ID } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TourService } from '../../../services/product/tour/tour/tour.service';
 import { GetTourResponse } from '../../../models/response/product/tour/tour/get-tour-response';
@@ -40,7 +40,7 @@ export class LocationDetailComponent {
     private tourService: TourService,
     private bookingService: BookingService,
     private tourScheduleService: TourScheduleService,
-    private titleService: Title
+    private titleService: Title,
   ) { this.titleService.setTitle("Location-detail"); }
 
   ngOnInit(): void {
@@ -125,6 +125,12 @@ export class LocationDetailComponent {
     addBookingTourRequest.idUser = parseInt(idUser!);
     addBookingTourRequest.idTour = id;
     addBookingTourRequest.quantity = 1;
+
+    if(!idUser){
+      alert("Please login to book tour")
+      this.router.navigate(['/auth/login']);
+      return;
+    }
 
 
     const selectedSchedule = this.availableTourSchedules.find(schedule => {

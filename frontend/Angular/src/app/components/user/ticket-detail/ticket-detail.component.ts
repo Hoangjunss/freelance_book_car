@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { GetTourismDetailResponse } from '../../../models/response/product/ticket/tourism/get-tourism-detail-response';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TourismService } from '../../../services/product/ticket/tourism/tourism.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from '../../../services/auth.interceptor';
@@ -46,7 +46,8 @@ export class TicketDetailComponent {
   constructor(private route: ActivatedRoute, private tourismService: TourismService,
     private ticketService: TicketService,
     private bookingService: BookingService,
-    private titleService: Title
+    private titleService: Title,
+    private router: Router
   ) { this.titleService.setTitle("Chi tiết đặt vé"); }
 
   ngOnInit(): void {
@@ -114,6 +115,11 @@ export class TicketDetailComponent {
     addBookingTourRequest.idTicket = id;
     addBookingTourRequest.quantity = 1;
 
+    if(!idUser){
+      alert("Please login to book tour")
+      this.router.navigate(['/auth/login']);
+      return;
+    }
     const selectedSchedule = this.availableTourSchedules.find(schedule => {
       return schedule.id === Number(this.selectedTourSchedule); // Chuyển selectedTourSchedule thành số
     });

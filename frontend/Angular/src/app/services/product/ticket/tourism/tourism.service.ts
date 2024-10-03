@@ -1,10 +1,11 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Apiresponse } from '../../../../models/response/apiresponse';
 import { CreateTourismResponse } from '../../../../models/response/product/ticket/tourism/create-tourism-response';
 import { UpdateTourismResponse } from '../../../../models/response/product/ticket/tourism/update-tourism-response';
 import { GetTourismResponse } from '../../../../models/response/product/ticket/tourism/get-tourism-response';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class TourismService {
 
   private baseUrl = 'http://localhost:8080/api/v1/tourism';
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) { }
 
   createTour(formData: FormData): Observable<CreateTourismResponse> {
     const headers = this.createAuthorizationHeader();
@@ -94,12 +95,13 @@ export class TourismService {
   }
 
   private createAuthorizationHeader(): HttpHeaders {
-    const token = localStorage.getItem('token');
+    let token = null;
+
+    if (isPlatformBrowser(this.platformId)) {
+      token = localStorage.getItem('token');
+    }
     if (token) {
       return new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    }
-    else {
-      console.log('Token not found in local store');
     }
     return new HttpHeaders();
   }

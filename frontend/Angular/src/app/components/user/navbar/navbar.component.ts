@@ -2,11 +2,12 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { UserService } from '../../../services/user/user.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink,FormsModule],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
@@ -23,6 +24,8 @@ export class NavbarComponent implements OnInit {
   
   navbarContent: { label: string, routerLink?: string,action?: (event?: MouseEvent) => void, isUser?: boolean }[] = [];
   dataLoaded: boolean = false;
+
+  searchQuery: string = '';
 
   constructor(private userService: UserService, private router: Router, @Inject(PLATFORM_ID) private platformId: Object) { }
 
@@ -49,9 +52,10 @@ export class NavbarComponent implements OnInit {
       event.preventDefault();
     }
     localStorage.removeItem('currentUser');
-    localStorage.removeItem('token');
     localStorage.removeItem('idUser');
     localStorage.removeItem('idBooking');
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('token');
     this.CurrentUser = null; 
     this.updateNavbarContent();
 
@@ -73,5 +77,10 @@ export class NavbarComponent implements OnInit {
     }
   }
 
+  onSearch() {
+    if (this.searchQuery) {
+      this.router.navigate(['/search'], { queryParams: { query: this.searchQuery } });
+    }
+  }
   
 }

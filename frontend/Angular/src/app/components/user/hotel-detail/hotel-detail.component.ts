@@ -169,7 +169,11 @@ export class HotelDetailComponent {
     addBookingHotelRequest.quantity = this.nights;
     addBookingHotelRequest.totalPrice = 100;
 
-
+    if(!idUser){
+      alert("Please login to book tour")
+      this.router.navigate(['/auth/login']);
+      return;
+    }
 
     // Chuyển đổi thành FormData
     const formData = new FormData();

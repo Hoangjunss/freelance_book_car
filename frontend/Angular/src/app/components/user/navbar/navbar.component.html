@@ -76,8 +76,8 @@
         <div class="header-content d-flex align-items-center justify-content-between text-white p-3">
             <img src="" alt="Logo" class="logo" routerLink="/home">
             <div class="search-container position-relative">
-                <input type="search" class="form-control search-box" placeholder="Tìm theo điểm đến, hoạt động">
-                <i class="fa-solid fa-search search-icon position-absolute"></i>
+                <input type="search" class="form-control search-box" placeholder="Tìm theo điểm đến, hoạt động" [(ngModel)]="searchQuery" (keydown.enter)="onSearch()">
+                <i class="fa-solid fa-search search-icon position-absolute" (click)="onSearch()"></i>
             </div>
             <div class="extra-options d-flex align-items-center gap-5">
                 <div class="dropdown">
