@@ -294,7 +294,6 @@ export class BookingComponent implements OnInit {
       next: (response) => {
         if(response){
           this.updateTypeBooking(parseInt(idBooking));
-          alert("Bạn đã đặt thành công. Vui lòng kiểm tra Email và chờ phản hồi");
         }
       },
       error: (error) => {
@@ -308,6 +307,7 @@ export class BookingComponent implements OnInit {
       next: (value) => {
         if (value) {
           console.log('successful');
+          alert("Bạn đã đặt thành công. Vui lòng kiểm tra Email và chờ phản hồi");
           this.router.navigate(['order-history']); 
           localStorage.removeItem('idBooking');
         }

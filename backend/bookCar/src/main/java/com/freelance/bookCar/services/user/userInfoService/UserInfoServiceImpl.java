@@ -25,6 +25,7 @@ public class UserInfoServiceImpl implements  UserInfoService{
 
     @Override
     public CreateUserInfoResponse create(CreateUserInfoRequest createUserInfoRequest) {
+        log.info("CreateUserInfoResponse 28: {}", createUserInfoRequest.toString());
         UserInfo.UserInfoBuilder userInfoBuilder = UserInfo.builder().id(getGenerationId());
 
         if (createUserInfoRequest.getFirstName() != null) {

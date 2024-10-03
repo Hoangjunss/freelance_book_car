@@ -24,7 +24,7 @@ public class UserJoinServiceImpl implements UserJoinService{
 
     @Override
     public CreateUserJoinResponse create(CreateUserJoinRequest createUserJoinRequest) {
-        // Sử dụng builder pattern để xây dựng UserJoin
+        log.info("CreateUserJoinResponse 27: {}", createUserJoinRequest.toString());
         UserJoin.UserJoinBuilder userJoinBuilder = UserJoin.builder().id(getGenerationId());
 
         if (createUserJoinRequest.getFirstName() != null) {

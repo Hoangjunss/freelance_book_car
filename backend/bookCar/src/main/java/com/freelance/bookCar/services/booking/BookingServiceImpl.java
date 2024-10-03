@@ -56,6 +56,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -592,26 +593,58 @@ public class BookingServiceImpl implements BookingService{
 
     @Override
     public OrderResponse order(OrderRequest orderRequest) {
-        GetBookingResponse getBookingResponse=findById(orderRequest.getId());
-        Booking booking=modelMapper.map(getBookingResponse,Booking.class);
+        // Lấy thông tin booking hiện tại
+        GetBookingResponse getBookingResponse = findById(orderRequest.getId());
+        Booking booking = modelMapper.map(getBookingResponse, Booking.class);
+
+        // Cập nhật UserInfo
+        List<UserInfo> existingUserInfo = booking.getUserInfo(); // Lấy danh sách hiện tại
         List<UserInfo> updatedUserInfo = orderRequest.getCreateUserInfoRequest().stream()
-                .map(createUserInfoResponse ->modelMapper.map(userInfoService.create(createUserInfoResponse),UserInfo.class))
+                .map(createUserInfoResponse -> modelMapper.map(userInfoService.create(createUserInfoResponse), UserInfo.class))
                 .toList();
-        log.info("600: {}", updatedUserInfo.toString());
 
-        booking.setUserInfo(updatedUserInfo);
+        // Xóa những UserInfo không còn trong danh sách mới
+        existingUserInfo.removeIf(userInfo -> !updatedUserInfo.contains(userInfo));
 
+        // Thêm mới những UserInfo chưa có trong danh sách
+        updatedUserInfo.forEach(newUserInfo -> {
+            if (!existingUserInfo.contains(newUserInfo)) {
+                existingUserInfo.add(newUserInfo);
+            }
+        });
+
+        booking.setUserInfo(existingUserInfo);
+
+        // Cập nhật UserJoin
+        List<UserJoin> existingUserJoin = booking.getUserJoin(); // Lấy danh sách hiện tại
         List<UserJoin> updatedUserJoin = orderRequest.getCreateUserJoinRequest().stream()
                 .map(createUserJoinResponse -> modelMapper.map(userJoinService.create(createUserJoinResponse), UserJoin.class))
                 .toList();
-        log.info("609: {}", updatedUserJoin.toString());
 
-        booking.getUserJoin().addAll(updatedUserJoin);
+        // Xóa những UserJoin không còn trong danh sách mới
+        existingUserJoin.removeIf(userJoin -> !updatedUserJoin.contains(userJoin));
+
+        // Thêm mới những UserJoin chưa có trong danh sách
+        updatedUserJoin.forEach(newUserJoin -> {
+            if (!existingUserJoin.contains(newUserJoin)) {
+                existingUserJoin.add(newUserJoin);
+            }
+        });
+
+        booking.setUserJoin(existingUserJoin);
+
         log.info("615: {}", booking.toString());
-        Booking bookingsave= bookingRepository.save(booking);
-        Mail mail=mailService.getMail(bookingsave.getUserInfo().getFirst().getEmail(),"Đơn hàng số "+booking.getId()+ "của bạn đã được đặt vui long kiểm tra lại ","Đơn hàng số"+booking.getId());
+
+        // Lưu booking vào cơ sở dữ liệu
+        Booking bookingsave = bookingRepository.save(booking);
+
+        // Gửi email xác nhận đơn hàng
+        Mail mail = mailService.getMail(bookingsave.getUserInfo().get(0).getEmail(),
+                "Đơn hàng số " + booking.getId() + " của bạn đã được đặt, vui lòng kiểm tra lại",
+                "Đơn hàng số " + booking.getId());
         mailService.sendMail(mail);
-        return modelMapper.map(bookingsave,OrderResponse.class);
+
+        return modelMapper.map(bookingsave, OrderResponse.class);
     }
 
     @Override

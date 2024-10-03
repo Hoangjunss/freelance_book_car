@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -17,6 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 public class Booking {
+
     @Id
     private Integer id;
     private LocalDateTime dateBook;
@@ -24,13 +26,13 @@ public class Booking {
     private Integer idUser;
     private Integer idPayment;
     private Integer idVoucher;
+
     @Enumerated(EnumType.STRING)
     private TypeBooking typeBooking;
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn()
-    private List<UserJoin> userJoin;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn()
-    private List<UserInfo> userInfo;
+    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
+    private List<UserJoin> userJoin = new ArrayList<>();;
+
+    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
+    private List<UserInfo> userInfo = new ArrayList<>();;
 }
