@@ -1,6 +1,6 @@
 
 
-<div class="container my-4">
+<div class="container my-4 header">
     <nav class="breadcrumb-nav" aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">RanPolaris Travel</a></li>
@@ -11,7 +11,7 @@
     <h2 class="fw-bold">{{ locations?.name }}</h2>
     <p style="margin-top: 5%;">{{ locations?.description }}</p>
 
-    <div class="d-flex align-items-center my-2">
+    <div class="d-flex align-items-center my-2 info">
         <span class="badge me-2">
             <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
             {{ locations?.rating }}
@@ -91,9 +91,9 @@
         </div>
 
         <!-- Right Column (Price Section) -->
-        <div class="col-md-4">
+        <div class="col-md-4 price-section">
             <div class="border p-3 rounded">
-                <h5 class="text-end text-dark price">{{ selectedPrice !== null ? selectedPrice : 0 | currency: '₫' }}
+                <h5 class="text-end text-dark price">đ{{ selectedPrice !== null ? selectedPrice : 0 | currency: '₫' }}
                     <small class="text-decoration-line-through">₫ 357,000</small>
                 </h5>
                 <button class="btn button-price w-100">Chọn các gói dịch vụ</button>
@@ -101,8 +101,8 @@
         </div>
     </div>
 </div>
-<h5 class="container">Các gói dịch vụ</h5>
-<div class="container my-3 d-flex">
+<h5 class="container ">Các gói dịch vụ</h5>
+<div class="container my-3 d-flex container-service">
     <!-- Left Section: Service Package Selection -->
     <div class="row-left" style="width: 100%;">
         <div class="col-md-11" style="max-width: 100%;width: 98%;">
@@ -118,14 +118,14 @@
                             {{ schedule.startDate | date: 'dd/MM/yyyy' }} - Giá: {{ schedule.tourPrice | currency }}
                         </option>                        
                     </select>
-                    <button class="btn button-price btn-warning mb-2" style="border-radius: 14px;" (click)="checkServiceStatus()">
+                    <!-- <button class="btn button-price btn-warning mb-2" style="border-radius: 14px;" (click)="checkServiceStatus()">
                         <i class="bi bi-calendar4" style="padding: 0px 5px;"></i>
                         Xem trạng thái dịch vụ
-                    </button>
+                    </button> -->
                 </div>
 
                 <!-- Pricing Section -->
-                <div class="mt-4 d-flex justify-content-between align-items-center">
+                <div class="mt-4 d-flex justify-content-between align-items-center footer">
                     <div>
                         <span class="fs-3 text-dark" style="font-weight: 500;">đ{{ selectedPrice !== null ? selectedPrice : 0 | currency: '₫' }}</span>
                         <small class="text-decoration-line-through text-muted" style="font-weight: bold;">
@@ -133,7 +133,7 @@
                         <p class="text-muted" style="font-size: small;">Vui lòng hoàn tất các mục yêu cầu để chuyển đến
                             bước tiếp theo</p>
                     </div>
-                    <div class="d-flex flex-wrap justify-content-between" style="width: 35%;">
+                    <div class="d-flex flex-wrap justify-content-between btn-cart" style="width: 35%;">
                         <button class="btn button-price border" style="background-color: orange;" (click)="addBookingTour(locationId)">Thêm vào giỏ hàng</button>
                         <button class="btn button-price">Đặt ngay</button>
                     </div>
@@ -142,7 +142,7 @@
         </div>
     </div>
     <!-- Right Section: Service Details -->
-    <div class="container border p-3" style="background-color: #f9f9f9;border-radius: 10px;height: auto;border: none !important;position: relative;width: 45%;">
+    <div class="container border p-3 service-detail" style="background-color: #f9f9f9;border-radius: 10px;height: auto;border: none !important;position: relative;width: 45%;">
         <div class="triangle"></div>
         <div class="d-flex justify-content-between align-items-center">
             <h5 class="mb-0" style="font-weight: 500;">Chi tiết gói dịch vụ</h5>

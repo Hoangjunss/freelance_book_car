@@ -1,6 +1,6 @@
 
 
-<div class="container my-4">
+<div class="container my-4 header">
     <nav class="breadcrumb-nav" aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">RanPolaris Travel</a></li>
@@ -11,7 +11,7 @@
     <h2 class="fw-bold">{{ locations?.name }}</h2>
     <p style="margin-top: 5%;">Trải nghiệm lưu trú tuyệt vời với dịch vụ tận tâm tại {{ locations?.name }}</p>
 
-    <div class="d-flex align-items-center my-2">
+    <div class="d-flex align-items-center my-2 info">
         <span class="badge me-3">
             <i class="fa-solid fa-star" style="color: #FFD43B;"></i>
             {{ locations?.rating }}
@@ -87,7 +87,7 @@
         </div>
 
         <!-- Right Column (Price Section) -->
-        <div class="col-md-4">
+        <div class="col-md-4 price-section">
             <div class="border p-3 rounded">
                 <h5 class="text-end text-dark price">{{ selectedPrice !== null ? selectedPrice : 0 | currency:'VND' }}
                     <small class="text-decoration-line-through">₫ 1,500,000</small>
@@ -98,7 +98,7 @@
     </div>
 </div>
 <h5 class="container">Các loại phòng</h5>
-<div class="container my-3 d-flex">
+<div class="container my-3 d-flex container-service">
     <!-- Left Section: Service Package Selection -->
     <div class="row-left" style="width: 100%;">
         <div class="col-md-11" style="max-width: 100%;width: 98%;">
@@ -106,9 +106,9 @@
                 <div>
                     <div class="d-flex">
                         <p class="text-dark" style="font-weight: 600;">Vui lòng chọn loại phòng</p>
-                        <div class="ms-auto">
+                        <!-- <div class="ms-auto">
                             <button style="text-decoration: underline;background:none;border: none;" (click)="clearDates()">Xóa tất cả</button>
-                        </div>
+                        </div> -->
                     </div>
                     <p class="text-muted">Vui lòng chọn ngày thuê</p>
                     <select class="form-select mb-2" [(ngModel)]="selectedTourSchedule" (change)="onTourScheduleChange()">
@@ -120,7 +120,7 @@
                 </div>
 
                 <!-- Pricing Section -->
-                <div class="mt-4 d-flex justify-content-between align-items-center">
+                <div class="mt-4 d-flex justify-content-between align-items-center footer">
                     <div>
                         <span class="fs-3 text-dark" style="font-weight: 500;">{{ selectedPrice !== null ? selectedPrice : 0 | currency:'VND' }}</span>
                         <small class="text-decoration-line-through text-muted" style="font-weight: bold;">₫
@@ -128,7 +128,7 @@
                         <p class="text-muted" style="font-size: small;">Vui lòng hoàn tất các mục yêu cầu để chuyển đến
                             bước tiếp theo</p>
                     </div>
-                    <div class="d-flex flex-wrap justify-content-between" style="width: 35%;">
+                    <div class="d-flex flex-wrap justify-content-between btn-cart" style="width: 35%;">
                         <button class="btn button-price border" style="background-color: orange;width:65%" (click)="addBookingHotel(locationId)">Thêm vào giỏ hàng</button>
                         <button class="btn button-price">Đặt ngay</button>
                     </div>
@@ -137,7 +137,7 @@
         </div>
     </div>
     <!-- Right Section: Service Details -->
-    <div class="container border p-3" style="background-color: #f9f9f9;border-radius: 10px;height: auto;border: none !important;position: relative;width: 45%;">
+    <div class="container border p-3 service-detail" style="background-color: #f9f9f9;border-radius: 10px;height: auto;border: none !important;position: relative;width: 45%;">
         <div class="triangle"></div>
         <div class="d-flex justify-content-between align-items-center">
             <h5 class="mb-0" style="font-weight: 500;">Chi tiết gói dịch vụ</h5>
