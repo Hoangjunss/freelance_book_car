@@ -2,11 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { BookingService } from '../../../services/booking/booking.service';
 import { GetBookingResponse } from '../../../models/response/booking/get-booking-response';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-history',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,RouterLink],
   templateUrl: './history.component.html',
   styleUrl: './history.component.css'
 })

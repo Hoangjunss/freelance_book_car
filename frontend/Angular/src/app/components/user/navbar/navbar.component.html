@@ -46,7 +46,7 @@
 
                         <!-- Home, Sign Up, and My Account Buttons on Mobile -->
                         <div class="d-flex flex-column align-items-start p-3">
-                            <button class="btn w-100">Home</button>
+                            <button class="btn w-100" routerLink="/home">Home</button>
                             <button class="btn btn-secondary mb-2 w-100" routerLink="/auth/login"
                                 *ngIf="!CurrentUser">Sign Up</button>
                             <button class="btn btn-secondary mb-2 w-100" (click)="logout()">Logout</button>

@@ -31,7 +31,7 @@ export class AppComponent {
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
         // Kiểm tra URL sau khi điều hướng hoàn tất
-        this.shouldShowNavbar = !(event.url.startsWith('/auth') || event.url.startsWith('/admin'));
+        this.shouldShowNavbar = !(event.url.startsWith('/auth') || event.url.startsWith('/admin') );
       });
   }
 
