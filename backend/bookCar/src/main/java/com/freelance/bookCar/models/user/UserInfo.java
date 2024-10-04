@@ -1,10 +1,7 @@
 package com.freelance.bookCar.models.user;
 
 import com.freelance.bookCar.models.booking.Booking;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,4 +20,6 @@ public class UserInfo {
     private String phone;
     private String email;
     private String address;
+    @OneToOne(mappedBy = "userInfo", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Booking booking;
 }

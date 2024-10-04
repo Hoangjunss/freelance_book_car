@@ -28,11 +28,11 @@ public class Booking {
     @Enumerated(EnumType.STRING)
     private TypeBooking typeBooking;
 
-    @OneToMany( cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn()
     private List<UserJoin> userJoin = new ArrayList<>();;
 
-    @OneToMany( cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "booking",cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn()
     private List<UserInfo> userInfo = new ArrayList<>();;
 }
