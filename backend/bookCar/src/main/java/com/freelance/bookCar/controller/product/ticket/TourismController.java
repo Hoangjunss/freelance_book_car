@@ -39,7 +39,7 @@ public class TourismController {
             UpdateTourismResponse response = tourismService.updateTourism(updateTourismRequest);
             return ResponseEntity.ok(new ApiResponse<>(true, "Tourism entity updated successfully", response));
     }
-    @GetMapping("/id/{id}")
+    @GetMapping("/id")
     public ResponseEntity<ApiResponse<GetTourismResponse>> getById(@RequestParam Integer id) {
             GetTourismResponse response = tourismService.findById(id);
             return ResponseEntity.ok(new ApiResponse<>(true, "Tourism entity retrieved successfully", response));

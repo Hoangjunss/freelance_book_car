@@ -44,7 +44,7 @@ export class TourismService {
 
   getTour(id: number): Observable<GetTourismResponse> {
     const headers = this.createAuthorizationHeader();
-    return this.httpClient.get<Apiresponse<GetTourismResponse>>(`${this.baseUrl}?id=${id}`, {headers}).pipe(
+    return this.httpClient.get<Apiresponse<GetTourismResponse>>(`${this.baseUrl}/id?id=${id}`, {headers}).pipe(
       map((response: Apiresponse<GetTourismResponse>) => {
         if (response.success) {
           return response.data;
