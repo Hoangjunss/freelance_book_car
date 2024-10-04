@@ -123,55 +123,85 @@ export class CartComponent implements OnInit {
   getBookingDetail(id: number) {
     this.bookingService.getDetailBooking(id).subscribe({
       next: (response) => {
-        console.log(response);
         if (response) {
-          const tourObservables: Observable<GetTourScheduleResponse>[] = [];
-          const hotelObservables: Observable<GetHotelBookingResponse>[] = [];
-          const ticketObservables: Observable<GetTicketResponse>[] = [];
-          response.forEach((detail) => {
-            if (detail.idTour != null) {
-              tourObservables.push(this.tourScheduleService.getSchedule(detail.idTour));
-            }
-            if (detail.idHotel != null) {
-              hotelObservables.push(this.hotelBookingService.getBooking(detail.idHotel));
-            }
-            if (detail.idTicket != null) {
-              ticketObservables.push(this.ticketService.getTicket(detail.idTicket));
-            }
-          });
-          forkJoin([...tourObservables, ...hotelObservables, ...ticketObservables]).subscribe(
-            (results) => {
-              const tourResults = results.slice(0, tourObservables.length);
-              const hotelResults = results.slice(tourObservables.length, tourObservables.length + hotelObservables.length);
-              const ticketResults = results.slice(tourObservables.length + hotelObservables.length);
-              this.getTourScheduleResposne.push(...tourResults);
-              this.getHotelBookingResponse.push(...hotelResults);
-              this.getTicketResponse.push(...ticketResults);
-              if (this.getTourScheduleResposne.length > 0) {
-                this.getTourScheduleResposne.forEach((tour) => {
-                  if (tour && tour.idTour) {
-                    this.getTourDetail(tour.idTour);
-                  }
-                });
-              } else {
-                console.log("No tours available.");
-              }
-              this.getHotelBookingResponse.forEach((hotel) => {
-                this.getHotelDetailById(hotel.hotel);
+          this.getBookingDetailResponse = response;
+          this.products = this.getBookingDetailResponse.map(detail => ({
+            idBookingDetail: detail.id,
+            id: detail.idTour || detail.idHotel || detail.idTicket,
+            name: detail.idTour ? 'Tour' : detail.idHotel ? 'Khách sạn' : 'Vé',
+            price: detail.totalPrice,
+            originalPrice: detail.totalPrice / detail.quantity,
+            quantity: detail.quantity,
+            image: 'https://via.placeholder.com/100',
+            type: detail.idTour ? 'tour' : detail.idHotel ? 'hotel' : 'ticket',
+
+          }));
+
+          if (this.products.some(p => p.type === 'tour')) {
+            this.products.filter(p => p.type === 'tour').forEach(p => {
+              this.getTourDetail(p.id);
+              this.tourScheduleService.getSchedule(p.id).subscribe({
+                next: (scheduleResponse) => {
+                  p.schedule = scheduleResponse;
+                },
+                error: (error: any) => {
+                  console.log("Error:", error);
+                }
               });
-  
-              this.getTicketResponse.forEach((tourism) => {
-                this.getTicketDetailById(tourism.idTourism);
+            });
+          }
+
+          if (this.products.some(p => p.type === 'hotel')) {
+            this.products.filter(p => p.type === 'hotel').forEach(p => {
+              this.hotelService.getHotelDetailById(p.id).subscribe({
+                next: (hotelResponse) => {
+                  p.name = hotelResponse.name;
+                  p.image = hotelResponse.image;
+                  p.location = hotelResponse.location;
+                  this.hotelBookingService.getBooking(p.id).subscribe({
+                    next: (hotelBookingResponse) => {
+                      p.startDate = hotelBookingResponse.startDate;
+                      p.endDate = hotelBookingResponse.endDate;
+                    },
+                    error: (error) => {
+                      console.log("Error:", error);
+                    }
+                  });
+
+
+                },
+                error: (error) => {
+                  console.log("Error:", error);
+                }
               });
-  
-              console.log("Tour Schedule Response:", this.getTourScheduleResposne);
-              console.log("Hotel Booking Response:", this.getHotelBookingResponse);
-              console.log("Ticket Response:", this.getTicketResponse);
-            },
-            (error) => {
-              console.error('Error in forkJoin:', error);
-            }
-          );
+            });
+          }
+
+
+          if (this.products.some(p => p.type === 'ticket')) {
+            this.products.filter(p => p.type === 'ticket').forEach(p => {
+              console.log('Ticket ID:', p.id);
+              this.ticketService.getTicket(p.id).subscribe({
+                next: (ticketResponse) => {
+                  p.dateEvent = ticketResponse.startDate;
+                  this.tourismService.getTour(p.id).subscribe({
+                    next: (scheduleTicketResponse) => {
+                      p.image = scheduleTicketResponse.image;
+                      p.venue = scheduleTicketResponse.location;
+                      p.name = scheduleTicketResponse.name;
+                    },
+                    error: (error) => {
+                      console.log("Error:", error);
+                    }
+                  });
+                },
+                error: (error) => {
+                  console.log("Error:", error);
+                }
+              });
+            });
+          }
+        } else {
         }
       },
       error: (error) => {
@@ -179,6 +209,7 @@ export class CartComponent implements OnInit {
       }
     });
   }
+
 
   getTourDetail(id: number) {
     this.tourService.getTourDetailById(id).subscribe({
@@ -224,13 +255,38 @@ export class CartComponent implements OnInit {
 
   updateBookingType() {
     const type = 'CART';
-    if (this.idBooking) {
-      const confirmed = window.confirm("Bạn có chắc chắn muốn thanh toán không?");
-      if (confirmed) {
-        this.router.navigate(['/booking']);
-      }
+    if (this.products.length === 0) {
+        alert("Giỏ hàng của bạn hiện đang trống. Vui lòng thêm sản phẩm trước khi tiến hành thanh toán.");
+        return; 
     }
-  }
+
+    const pastProducts = this.products.filter(product => {
+        if (product.type === 'tour') {
+            return this.isPastStartDate(product.schedule?.timeStartTour);
+        } else if (product.type === 'hotel') {
+            return this.isPastStartDate(product.startDate);
+        } else if (product.type === 'ticket') {
+            return this.isPastStartDate(product.dateEvent);
+        }
+        return false;
+    });
+
+    if (pastProducts.length > 0) {
+        const pastProductNames = pastProducts.map(p => `${p.name}`).join(', ');
+        // alert(`Một hoặc nhiều sản phẩm trong giỏ hàng của bạn đã quá thời gian. Vui lòng xóa chúng trước khi tiến hành thanh toán: ${pastProductNames}`);
+        alert(`Có một số sản phẩm trong giỏ hàng của bạn đã hết hạn. Vui lòng kiểm tra lại các sản phẩm sau: ${pastProductNames}`);
+        return;
+    }
+
+    if (this.idBooking) {
+        const confirmed = window.confirm("Bạn có chắc chắn muốn thanh toán không?");
+        if (confirmed) {
+            this.router.navigate(['/booking']);
+        }
+    }
+}
+
+
 
   updateProductQuantity(product: any) {
     const formData = new FormData();
@@ -278,6 +334,12 @@ export class CartComponent implements OnInit {
         }
       });
     }
+  }
+
+  isPastStartDate(startDate: string): boolean {
+    const now = new Date();
+    const start = new Date(startDate);
+    return now > start;
   }
 
 }

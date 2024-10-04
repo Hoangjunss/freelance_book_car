@@ -82,5 +82,11 @@ export class NavbarComponent implements OnInit {
       this.router.navigate(['/search'], { queryParams: { query: this.searchQuery } });
     }
   }
+
+  navigateToHome(): void {
+    this.router.navigate(['/home']).then(() => {
+      window.location.reload();
+    });
+  }
   
 }

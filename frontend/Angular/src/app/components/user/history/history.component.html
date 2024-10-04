@@ -8,7 +8,7 @@
                 <p>Ngày đặt: {{ order.dateBook }}</p>
                 <p>Tình trạng: {{ order.type }}</p>
 
-                <p><strong>Tổng cộng:</strong> <span class="order-total">{{ order.totalPrice | currency:'VND' }}</span>
+                <p><strong>Tổng cộng:</strong> <span class="order-total">{{ order.totalPrice | number }}đ</span>
                 </p>
             </div>
             <div class="col-md-4 text-right">
@@ -49,13 +49,13 @@
               <h5 class="product-name">{{ product.name }}</h5>
               <p><strong>Loại:</strong> {{ product.type }}</p>
               <p><strong>Số lượng:</strong> {{ product.quantity }}</p>
-              <p><strong>Tổng giá:</strong> {{ product.price | currency: 'VND' }}</p>
+              <p><strong>Tổng giá:</strong> {{ product.price | number }} đ</p>
   
               <!-- Tour-specific details -->
               <div *ngIf="product.type === 'tour' && product.schedule">
                 <h6 class="section-title">Lịch trình Tour:</h6>
                 <p><strong>Ngày bắt đầu:</strong> {{ product.schedule.timeStartTour | date:'dd/MM/yyyy HH:mm' }}</p>
-                <p><strong>Giá tour:</strong> {{ product.schedule.priceTour | currency:'VND' }}</p>
+                <p><strong>Giá tour:</strong> {{ product.schedule.priceTour | number }} đ</p>
                 <p><strong>Điểm bắt đầu:</strong> {{ product.startLocation }}</p>
                 <p><strong>Điểm kết thúc:</strong> {{ product.endLocation }}</p>
               </div>

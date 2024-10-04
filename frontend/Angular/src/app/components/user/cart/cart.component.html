@@ -1,82 +1,60 @@
-<div class="container mt-5">
-    <h2 class="mb-4">Giỏ hàng của bạn</h2>
+<div class="container mt-5 cart-container">
+    <h2 class="mb-4 text-center">Giỏ hàng của bạn</h2>
 
-    <!-- Kiểm tra nếu không có sản phẩm trong giỏ hàng -->
-    <div *ngIf="products.length === 0" class="empty-cart-message text-center mt-4">
-        <p>Giỏ hàng của bạn trống</p>
-    </div>
-<ng-container *ngIf="getTourResponse.length>0;">
-    <ul class="list-group mb-4" *ngFor="let tour of getTourResponse">
-        <li *ngFor="let product of getTourScheduleResposne" class="list-group-item d-flex justify-content-between align-items-center">
-            <ng-container *ngIf="tour.id==product.idTour">
-            <div class="d-flex align-items-center">
-                <img [src]="tour.image" alt="{{ tour.name }}" class="img-thumbnail mr-3" style="width: 200px;">
-                <div>
-                    <h3>{{tour.name}}</h3>
-                    <h5>Ngày bắt đầu: {{ product.timeStartTour | date: 'dd/MM/yyyy'  }}</h5>
-                    <p class="mb-0">Giá : {{ product.priceTour| currency:'VND' }}</p>
-                </div>
-            </div>
-            <div class="d-flex align-items-center">
-                <button class="btn btn-sm btn-light" (click)="decreaseQuantity(product)">-</button>
-                <input type="text" [(ngModel)]="product.quantity" class="form-control text-center quantity-input" style="width: 50px;" min="1" readonly>
-                <button class="btn btn-sm btn-light" (click)="increaseQuantity(product)">+</button>
-            </div>
-            <button class="btn btn-sm btn-danger ml-3" (click)="removeProduct(product)">Xóa</button>
-        </ng-container>
-        </li>
-    </ul>
-</ng-container>
-
-<ng-container *ngIf="getHotelResponse.length>0;">
-    <ul class="list-group mb-4" *ngFor="let tour of getHotelResponse">
-        <li *ngFor="let product of getHotelBookingResponse" class="list-group-item d-flex justify-content-between align-items-center">
-            <ng-container *ngIf="tour.id==product.hotel">
-            <div class="d-flex align-items-center">
-                <img [src]="tour.image" alt="{{ tour.name }}" class="img-thumbnail mr-3" style="width: 200px;">
-                <div>
-                    <h3>{{tour.name}}</h3>
-                    <h5>Ngày bắt đầu: {{ product.startDate| date: 'dd/MM/yyyy'  }}</h5>
-                    <p class="mb-0">Giá : {{ product.totalPrice| currency:'VND' }}</p>
-                </div>
-            </div>
-            <div class="d-flex align-items-center">
-                <button class="btn btn-sm btn-light" (click)="decreaseQuantity(product)">-</button>
-                <input type="text" [(ngModel)]="product.totalPrice" class="form-control text-center quantity-input" style="width: 50px;" min="1" readonly>
-                <button class="btn btn-sm btn-light" (click)="increaseQuantity(product)">+</button>
-            </div>
-            <button class="btn btn-sm btn-danger ml-3" (click)="removeProduct(product)">Xóa</button>
-        </ng-container>
-        </li>
-    </ul>
-</ng-container>
-
-    <!-- Hiển thị danh sách sản phẩm nếu có -->
+    <!-- Product list -->
     <ul class="list-group mb-4" *ngIf="products.length > 0">
-        <li *ngFor="let product of products" class="list-group-item d-flex justify-content-between align-items-center">
-            <div class="d-flex align-items-center">
-                <img [src]="product.image" alt="{{ product.name }}" class="img-thumbnail mr-3" style="width: 100px;">
-                <div>
+        <li *ngFor="let product of products"
+            class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+            <div class="d-flex align-items-center flex-column flex-md-row">
+                <img [src]="product.image" alt="{{ product.name }}" class="img-thumbnail mr-3 mb-3 mb-md-0"
+                    style="width: 100px;">
+                <div class="product-info ml-md-3 text-center text-md-left">
                     <h5>{{ product.name }}</h5>
-                    <p class="mb-0">Giá : {{ product.price | currency:'VND' }}</p>
+
+                    <div *ngIf="product.type === 'tour' && product.schedule">
+                        <p><strong>Ngày bắt đầu:</strong> {{ product.schedule.timeStartTour | date:'dd/MM/yyyy HH:mm' }}
+                        </p>
+                        <p><strong>Điểm bắt đầu:</strong> {{ product.startLocation }}</p>
+                        <p><strong>Điểm kết thúc:</strong> {{ product.endLocation }}</p>
+                    </div>
+
+                    <div *ngIf="product.type === 'hotel'">
+                        <p><strong>Thời gian check-in:</strong> {{ product.startDate | date:'dd/MM/yyyy' }}</p>
+                        <p><strong>Thời gian check-out:</strong> {{ product.endDate | date:'dd/MM/yyyy' }}</p>
+                        <p><strong>Vị trí:</strong> {{ product.location }}</p>
+                    </div>
+
+                    <div *ngIf="product.type === 'ticket'">
+                        <p><strong>Địa điểm:</strong> {{ product.venue }}</p>
+                        <p><strong>Ngày diễn ra:</strong> {{ product.dateEvent | date:'dd/MM/yyyy' }}</p>
+                        <p><strong>Sự kiện:</strong> {{ product.name }}</p>
+                    </div>
+
+                    <p class="price mb-0">Giá: {{ product.price | number }} đ</p>
                 </div>
             </div>
-            <div class="d-flex align-items-center">
+            <div class="quantity-controls d-flex align-items-center">
                 <button class="btn btn-sm btn-light" (click)="decreaseQuantity(product)">-</button>
-                <input type="text" [(ngModel)]="product.quantity" class="form-control text-center quantity-input" style="width: 50px;" min="1" readonly>
+                <input type="text" [(ngModel)]="product.quantity" class="form-control text-center quantity-input"
+                    readonly>
                 <button class="btn btn-sm btn-light" (click)="increaseQuantity(product)">+</button>
             </div>
             <button class="btn btn-sm btn-danger ml-3" (click)="removeProduct(product)">Xóa</button>
         </li>
     </ul>
 
-    <!-- Hiển thị tổng cộng chỉ khi có sản phẩm -->
-    <div *ngIf="products.length > 0" class="d-flex justify-content-between align-items-center">
-        <h4>Tổng cộng:</h4>
-        <h4>{{ total | currency:'VND' }}</h4>
+    <!-- Total Price and Checkout -->
+    <div *ngIf="products.length > 0" class="d-flex justify-content-between align-items-center total-container">
+        <h4 class="total-label">Tổng cộng:</h4>
+        <h4 class="total-price">{{ total | number }} đ</h4>
     </div>
 
     <div *ngIf="products.length > 0" class="text-right mt-4">
-        <button class="btn btn-success" (click)="updateBookingType()">Thanh toán</button>
+        <button class="btn btn-success btn-checkout" (click)="updateBookingType()">Thanh toán</button>
+    </div>
+
+     <!-- Empty cart message -->
+     <div *ngIf="products.length === 0" class="empty-cart-message text-center mt-4">
+        <p>Giỏ hàng của bạn trống</p>
     </div>
 </div>

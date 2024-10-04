@@ -89,8 +89,8 @@
         <!-- Right Column (Price Section) -->
         <div class="col-md-4 price-section">
             <div class="border p-3 rounded">
-                <h5 class="text-end text-dark price">{{ selectedPrice !== null ? selectedPrice : 0 | currency:'VND' }}
-                    <small class="text-decoration-line-through">₫ 1,500,000</small>
+                <h5 class="text-end text-dark price">{{ selectedPrice !== null ? selectedPrice : 0 | number }} ₫
+                    <small class="text-decoration-line-through">1,500,000 ₫</small>
                 </h5>
                 <button class="btn button-price w-100">Đặt phòng ngay</button>
             </div>
@@ -114,17 +114,17 @@
                     <select class="form-select mb-2" [(ngModel)]="selectedTourSchedule" (change)="onTourScheduleChange()">
                         <option [value] = null selected disabled>-- SELECT HOTEL SCHEDULE --</option>
                         <option *ngFor="let schedule of listHotel" [value]="schedule.id">
-                            {{ schedule.startDate | date: 'dd/MM/yyyy' }} - {{schedule.endDate | date: 'dd/MM/yyyy'}} - Giá: {{ schedule.totalPrice | currency }}
-                        </option>                        
+                            {{ schedule.startDate | date: 'dd/MM/yyyy' }} - {{schedule.endDate | date: 'dd/MM/yyyy'}} - Giá: {{ schedule.totalPrice| number }} 
+                                                    </option>                        
                     </select>
                 </div>
 
                 <!-- Pricing Section -->
                 <div class="mt-4 d-flex justify-content-between align-items-center footer">
                     <div>
-                        <span class="fs-3 text-dark" style="font-weight: 500;">{{ selectedPrice !== null ? selectedPrice : 0 | currency:'VND' }}</span>
-                        <small class="text-decoration-line-through text-muted" style="font-weight: bold;">₫
-                            357,000</small>
+                        <span class="fs-3 text-dark" style="font-weight: 500;">{{ selectedPrice !== null ? selectedPrice : 0 | number }} đ</span>
+                        <small class="text-decoration-line-through text-muted" style="font-weight: bold;">
+                            357,000 ₫</small>
                         <p class="text-muted" style="font-size: small;">Vui lòng hoàn tất các mục yêu cầu để chuyển đến
                             bước tiếp theo</p>
                     </div>

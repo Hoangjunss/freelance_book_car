@@ -74,7 +74,7 @@
         </nav>
 
         <div class="header-content d-flex align-items-center justify-content-between text-white p-3">
-            <img src="" alt="Logo" class="logo" routerLink="/home">
+            <img src="" alt="Logo" class="logo" (click)="navigateToHome()">
             <div class="search-container position-relative">
                 <input type="search" class="form-control search-box" placeholder="Tìm theo điểm đến, hoạt động" [(ngModel)]="searchQuery" (keydown.enter)="onSearch()">
                 <i class="fa-solid fa-search search-icon position-absolute" (click)="onSearch()"></i>
