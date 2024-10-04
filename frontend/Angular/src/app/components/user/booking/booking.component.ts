@@ -239,7 +239,7 @@ export class BookingComponent implements OnInit {
           this.getBookingDetailResponse = response;
           this.products = this.getBookingDetailResponse.map(detail => ({
             idBookingDetail: detail.id,
-            id: detail.idTour || detail.idHotel || detail.idTourism,
+            id: detail.idTour || detail.idHotel || detail.idTicket,
             name: detail.idTour ? 'Tour' : detail.idHotel ? 'Khách sạn' : 'Vé',
             price: detail.totalPrice,
             quantity: detail.quantity,
