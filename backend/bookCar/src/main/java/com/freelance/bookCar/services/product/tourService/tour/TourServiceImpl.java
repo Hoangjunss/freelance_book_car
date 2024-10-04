@@ -46,9 +46,6 @@ public class TourServiceImpl implements TourService {
         if (createTourRequest.getDescription() == null || createTourRequest.getDescription().isEmpty()) {
             throw new CustomException(Error.TOUR_INVALID_DESCRIPTION);
         }
-        if (createTourRequest.getEndLocation() == null || createTourRequest.getEndLocation().isEmpty()) {
-            throw new CustomException(Error.TOUR_INVALID_END_LOCATION);
-        }
         if (createTourRequest.getStartLocation() == null || createTourRequest.getStartLocation().isEmpty()) {
             throw new CustomException(Error.TOUR_INVALID_START_LOCATION);
         }

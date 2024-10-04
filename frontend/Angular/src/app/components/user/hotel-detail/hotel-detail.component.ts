@@ -12,6 +12,8 @@ import { Title } from '@angular/platform-browser';
 import { HotelbookingService } from '../../../services/product/hotel/hotelbooking/hotelbooking.service';
 import { GetHotelBookingResponse } from '../../../models/response/product/hotel/hotel-booking/get-hotelbooking-response';
 import { FormsModule } from '@angular/forms';
+import { UpdateBookingResponse } from '../../../models/response/booking/update-booking-response';
+import { UpdateBookingHotelResponse } from '../../../models/response/booking/update-hotel-booking-response';
 
 @Component({
   selector: 'app-hotel-detail',
@@ -36,6 +38,8 @@ export class HotelDetailComponent {
   listHotel: GetHotelBookingResponse[] = [];
   selectedTourSchedule?: number | null = null;
   selectedPrice?: number | null = null;
+
+  updateBookingResponse: UpdateBookingHotelResponse = new UpdateBookingHotelResponse();
 
   toggleContent(event: Event) {
     event.preventDefault();
@@ -201,17 +205,17 @@ export class HotelDetailComponent {
       formData.append('endDate', endDateWithoutTimezone);
     }
 
-    this.bookingService.addBookingHotel(formData).subscribe(response => {
-      if (response) {
-        if (idBooking == null) {
-          localStorage.setItem('idBooking', response.id + "");
+    this.bookingService.addBookingHotel(formData).subscribe({
+      next: response => {
+        if (response) {
+          console.log(response);
+          if (idBooking == null) {
+            localStorage.setItem('idBooking', response.idBooking + "");
+          }
+          alert("Đặt phòng thành công");
         }
-        alert("Đặt phòng thành công");
-      } else {
       }
-    }, error => {
-      console.log("Error:", error);
-    });
+    })
   }
 
 

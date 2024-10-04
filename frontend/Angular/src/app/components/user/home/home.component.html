@@ -36,7 +36,7 @@
                     <img [src]="data.url" class="card-img-top" alt="{{data.name}}" />
                     <div class="img-caption fadeInRight position-absolute bottom-0 start-0 text-white p-4">
                         <h5 class="card-title">{{ data.name }}</h5>
-                        <p class="card-text">{{data.name}}</p>
+                        <p class="card-text">{{data.description}}</p>
                     </div>
                 </div>
                 <div class="card-body fadeInRight">
@@ -69,7 +69,7 @@
                         <div class="slider-container">
                             <div class="owl-carousel owl-theme">
                                 <div class="item" *ngFor="let img of images">
-                                    <img [src]="img.src" alt="Slide" />
+                                    <img [src]="footerData?.url" alt="Slide" />
                                     <div class="flash"></div>
                                 </div>
                             </div>
@@ -85,7 +85,7 @@
                             {{footerData?.name}}
                         </h3>
                         <div class="desc fadeInUp delay02">
-                            {{footerData?.name}}
+                            {{footerData?.description}}
                         </div>
                         <div class="control">
                             <a href="https://hoianmemoriesland.com/en/the-real-world-performance-s1"

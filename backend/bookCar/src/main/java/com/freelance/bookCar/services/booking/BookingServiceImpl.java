@@ -597,14 +597,14 @@ public class BookingServiceImpl implements BookingService{
         Booking booking=modelMapper.map(getBookingResponse,Booking.class);
         log.info("Booking id 598: {}" , booking.getId());
         List<UserInfo> updatedUserInfo = orderRequest.getCreateUserInfoRequest().stream()
-                .map(createUserInfoResponse ->modelMapper.map(userInfoService.create(createUserInfoResponse, booking),UserInfo.class))
+                .map(createUserInfoResponse ->modelMapper.map(userInfoService.create(createUserInfoResponse),UserInfo.class))
                 .toList();
         log.info("600: {}", updatedUserInfo.toString());
 
         booking.setUserInfo(updatedUserInfo);
 
         List<UserJoin> updatedUserJoin = orderRequest.getCreateUserJoinRequest().stream()
-                .map(createUserJoinResponse -> modelMapper.map(userJoinService.create(createUserJoinResponse, booking), UserJoin.class))
+                .map(createUserJoinResponse -> modelMapper.map(userJoinService.create(createUserJoinResponse), UserJoin.class))
                 .toList();
         log.info("609: {}", updatedUserJoin.toString());
 

@@ -24,7 +24,7 @@ public class UserJoinServiceImpl implements UserJoinService{
     private ModelMapper modelMapper;
 
     @Override
-    public CreateUserJoinResponse create(CreateUserJoinRequest createUserJoinRequest, Booking booking) {
+    public CreateUserJoinResponse create(CreateUserJoinRequest createUserJoinRequest) {
         log.info("CreateUserJoinResponse 27: {}", createUserJoinRequest.toString());
         UserJoin.UserJoinBuilder userJoinBuilder = UserJoin.builder().id(getGenerationId());
 
@@ -45,8 +45,6 @@ public class UserJoinServiceImpl implements UserJoinService{
         }
 
         UserJoin userJoin = userJoinBuilder.build();
-        userJoin.setBooking(booking);
-        userJoin.setIdBooking(booking.getId());
         return modelMapper.map(userJoinRepository.save(userJoin), CreateUserJoinResponse.class);
     }
 

@@ -160,7 +160,6 @@ export class LocationDetailComponent {
         if (response) {
 
           if (idBooking == null) {
-            console.log(response);
             localStorage.setItem('idBooking', response.idBooking + "");
           }
           alert('ThanhCong');

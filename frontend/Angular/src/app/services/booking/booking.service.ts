@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { CreateBookingRequest } from '../../models/request/booking/create-booking-request';
 import { map, Observable } from 'rxjs';
 import { CreateBookingResponse } from '../../models/response/booking/create-booking-response';
@@ -16,13 +16,15 @@ import { UpdateQuantityHotel } from '../../models/response/booking/update-quanti
 import { AddBookingTourResponse } from '../../models/response/booking/add-booking-tour-response';
 import { AddBookingTicketResponse } from '../../models/response/booking/add-booking-ticket-response';
 import { OrderResponse } from '../../models/response/booking/order-response';
+import { isPlatformBrowser } from '@angular/common';
+import { UpdateBookingHotelResponse } from '../../models/response/booking/update-hotel-booking-response';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BookingService {
 
-  constructor(private httpClient:HttpClient) { }
+  constructor(private httpClient:HttpClient, @Inject(PLATFORM_ID) private platformId: Object) { }
 
   private baseUrl = 'http://localhost:8080/api/v1/booking';
 
@@ -104,6 +106,21 @@ export class BookingService {
     );
   }
 
+  setBookingType(type: string,id: number): Observable<AddBookingTourResponse>{
+    const headers = this.createAuthorizationHeader();
+    console.log(headers);
+    return this.httpClient.patch<Apiresponse<AddBookingTourResponse>>(`${this.baseUrl}/settype?type=${type}&id=${id}`, null, {headers}).pipe(
+      map((response: Apiresponse<AddBookingTourResponse>) => {
+        console.log(response);
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    );
+  }
+
   addBookingTour(formData : FormData): Observable<AddBookingTourResponse>{
     const headers = this.createAuthorizationHeader();
     return this.httpClient.post<Apiresponse<AddBookingTourResponse>>(`${this.baseUrl}/tour`,formData, {headers}).pipe(
@@ -116,10 +133,11 @@ export class BookingService {
       })
     );
   }
-  addBookingHotel(formData : FormData): Observable<UpdateBookingResponse>{
+
+  addBookingHotel(formData : FormData): Observable<UpdateBookingHotelResponse>{
     const headers = this.createAuthorizationHeader();
-    return this.httpClient.post<Apiresponse<UpdateBookingResponse>>(`${this.baseUrl}/hotel`,formData, {headers}).pipe(
-      map((response: Apiresponse<UpdateBookingResponse>) => {
+    return this.httpClient.post<Apiresponse<UpdateBookingHotelResponse>>(`${this.baseUrl}/hotel`,formData, {headers}).pipe(
+      map((response: Apiresponse<UpdateBookingHotelResponse>) => {
         if (response.success) {
           return response.data;
         } else {
@@ -182,7 +200,7 @@ export class BookingService {
 
   updateTypeBooking(type: string,id: number): Observable<UpdateBookingResponse> {
     const headers = this.createAuthorizationHeader();
-    return this.httpClient.patch<Apiresponse<UpdateBookingResponse>>(`${this.baseUrl}/type?type=${type}&id=${id}`, null, {headers}).pipe(
+    return this.httpClient.patch<Apiresponse<UpdateBookingResponse>>(`${this.baseUrl}/settype?type=${type}&id=${id}`, null, {headers}).pipe(
       map((response: Apiresponse<UpdateBookingResponse>) => {
         if (response.success) {
           return response.data;
@@ -244,8 +262,13 @@ export class BookingService {
     );
   }
   private createAuthorizationHeader(): HttpHeaders {
-    const token = localStorage.getItem('token');
+    let token = null;
+
+    if (isPlatformBrowser(this.platformId)) {
+      token = localStorage.getItem('token');
+    }
     if (token) {
+      console.log(token);
       return new HttpHeaders().set('Authorization', `Bearer ${token}`);
     }
     else {

@@ -25,7 +25,7 @@ public class UserInfoServiceImpl implements  UserInfoService{
 
 
     @Override
-    public CreateUserInfoResponse create(CreateUserInfoRequest createUserInfoRequest, Booking booking) {
+    public CreateUserInfoResponse create(CreateUserInfoRequest createUserInfoRequest) {
         log.info("CreateUserInfoResponse 28: {}", createUserInfoRequest.toString());
         UserInfo.UserInfoBuilder userInfoBuilder = UserInfo.builder().id(getGenerationId());
 
@@ -50,9 +50,6 @@ public class UserInfoServiceImpl implements  UserInfoService{
         }
 
         UserInfo userInfo = userInfoBuilder.build();
-        userInfo.setBooking(booking);
-        userInfo.setIdBooking(booking.getId());
-        log.info("UserInfo:{}", userInfo.toString());
         return modelMapper.map(userInfoRepository.save(userInfo), CreateUserInfoResponse.class);
     }
 

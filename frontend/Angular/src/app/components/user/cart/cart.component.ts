@@ -11,6 +11,7 @@ import { TourService } from '../../../services/product/tour/tour/tour.service';
 import { HotelService } from '../../../services/product/hotel/hotel/hotel.service';
 import { TourismService } from '../../../services/product/ticket/tourism/tourism.service';
 import { Title } from '@angular/platform-browser';
+import { GetTicketResponse } from '../../../models/response/product/ticket/ticket/get-ticket-response';
 
 
 @Component({
@@ -27,6 +28,9 @@ import { Title } from '@angular/platform-browser';
 export class CartComponent implements OnInit {
 
   getBookingDetailResponse: GetBookingDetailResponse[] = [];
+  getTicketResponse: GetTicketResponse[] = [];
+  
+
   products: any[] = [];
   idBooking: number | null = null;
 

@@ -17,5 +17,5 @@ public class CreatePageRequest {
     private String name;
     private MultipartFile file;
     private String type;
-
+    private String description;
 }

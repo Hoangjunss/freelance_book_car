@@ -21,5 +21,5 @@ public class Page {
     private String url;
     @Enumerated(EnumType.STRING)
     private TypePage type;
-
+    private String description;
 }
