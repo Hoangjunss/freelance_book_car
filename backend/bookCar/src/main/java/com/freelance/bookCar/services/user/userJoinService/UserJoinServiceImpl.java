@@ -13,7 +13,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -84,6 +86,13 @@ public class UserJoinServiceImpl implements UserJoinService{
         return modelMapper.map(userJoinRepository
                         .findById(id).orElseThrow(() -> new RuntimeException("User not found")),
                 GetUserJoinResponse.class);
+    }
+
+    @Override
+    public List<GetUserJoinResponse> getUserJoinByBookingId(Integer bookingId) {
+        return userJoinRepository.findUserJoinByBookingId(bookingId).stream().map(userJoin ->
+            modelMapper.map(userJoin, GetUserJoinResponse.class)
+        ).collect(Collectors.toList());
     }
 
     private Integer getGenerationId() {

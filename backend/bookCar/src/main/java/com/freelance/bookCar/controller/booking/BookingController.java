@@ -25,7 +25,12 @@ import com.freelance.bookCar.dto.response.booking.bookingTour.UpdateBookingTourR
 import com.freelance.bookCar.dto.response.booking.bookingTourism.AddBookingTourismResponse;
 import com.freelance.bookCar.dto.response.booking.bookingTourism.UpdateBookingTourismResponse;
 import com.freelance.bookCar.dto.response.bookingDetail.GetBookingDetailResponse;
+import com.freelance.bookCar.dto.response.user.userInfoDTO.GetUserInfoResponse;
+import com.freelance.bookCar.dto.response.user.userJoinDTO.GetUserJoinResponse;
+import com.freelance.bookCar.respository.user.UserInfoRepository;
 import com.freelance.bookCar.services.booking.BookingService;
+import com.freelance.bookCar.services.user.userInfoService.UserInfoService;
+import com.freelance.bookCar.services.user.userJoinService.UserJoinService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +50,10 @@ public class BookingController {
     private static final Logger log = LoggerFactory.getLogger(BookingController.class);
     @Autowired
     private BookingService bookingService;
+    @Autowired
+    private UserJoinService userJoinService;
+    @Autowired
+    private UserInfoService userInfoService;
 
     @PreAuthorize("hasRole('USER')")
     @PostMapping
@@ -189,4 +198,20 @@ public class BookingController {
       bookingService.deleteBookingDetail(id);
         return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", "ok"));
     }
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @GetMapping("/userinfo")
+    public ResponseEntity<ApiResponse<List<GetUserInfoResponse>>> getUserInfo(@RequestParam Integer idBooking){
+        List<GetUserInfoResponse> createUserInfoRequest = userInfoService.getUserInfoByBookingId(idBooking);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", createUserInfoRequest));
+    }
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @GetMapping("/userjoin")
+    public ResponseEntity<ApiResponse<List<GetUserJoinResponse>>> getUserJoin(@RequestParam Integer idBooking){
+        List<GetUserJoinResponse> createUserInfoRequest = userJoinService.getUserJoinByBookingId(idBooking);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Booking created successfully", createUserInfoRequest));
+    }
+
+
 }

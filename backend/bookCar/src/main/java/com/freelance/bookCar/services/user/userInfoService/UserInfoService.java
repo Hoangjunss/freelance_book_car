@@ -8,10 +8,12 @@ import com.freelance.bookCar.dto.response.user.userInfoDTO.UpdateUserInforespons
 import com.freelance.bookCar.models.booking.Booking;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public interface UserInfoService {
     CreateUserInfoResponse create(CreateUserInfoRequest createUserInfoRequest);
     UpdateUserInforesponse update(UpdateUserInfoRequest updateUserInfoRequest);
     GetUserInfoResponse findById(Integer id);
-
+    List<GetUserInfoResponse> getUserInfoByBookingId(Integer bookingId);
 }

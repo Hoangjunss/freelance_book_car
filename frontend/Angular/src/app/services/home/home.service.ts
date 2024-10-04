@@ -5,17 +5,18 @@ import { GetPageResponse } from '../../models/response/home/get-page-response';
 import { Apiresponse } from '../../models/response/apiresponse';
 import { isPlatformBrowser } from '@angular/common';
 import { environment } from '../environment';
+import { CreatePageResponse } from '../../models/response/home/create-page-response';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HomeService {
 
-  private baseUrl = `${environment.apiBaseUrl}/api/v1/page/`;
+  private baseUrl = `${environment.apiBaseUrl}/api/v1/page`;
   constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) { }
 
   getHome():Observable<GetPageResponse> {
-    return this.http.get<Apiresponse<GetPageResponse>>(`${this.baseUrl}home`).pipe(
+    return this.http.get<Apiresponse<GetPageResponse>>(`${this.baseUrl}/home`).pipe(
       map((response: Apiresponse<GetPageResponse>) => {
         if (response.success) {
           return response.data;
@@ -27,7 +28,7 @@ export class HomeService {
   }
 
   getDetail():Observable<GetPageResponse[]> {
-    return this.http.get<Apiresponse<GetPageResponse[]>>(`${this.baseUrl}detail`).pipe(
+    return this.http.get<Apiresponse<GetPageResponse[]>>(`${this.baseUrl}/detail`).pipe(
       map((response: Apiresponse<GetPageResponse[]>) => {
         if (response.success) {
           return response.data;
@@ -39,8 +40,21 @@ export class HomeService {
   }
 
   getFooter():Observable<GetPageResponse> {
-    return this.http.get<Apiresponse<GetPageResponse>>(`${this.baseUrl}footer`).pipe(
+    return this.http.get<Apiresponse<GetPageResponse>>(`${this.baseUrl}/footer`).pipe(
       map((response: Apiresponse<GetPageResponse>) => {
+        if (response.success) {
+          return response.data;
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    );
+  }
+
+  editPage(formData: FormData): Observable<CreatePageResponse>{
+    const headers = this.createAuthorizationHeader();
+    return this.http.post<Apiresponse<CreatePageResponse>>(`${this.baseUrl}`, formData, {headers}).pipe(
+      map((response: Apiresponse<CreatePageResponse>) => {
         if (response.success) {
           return response.data;
         } else {
