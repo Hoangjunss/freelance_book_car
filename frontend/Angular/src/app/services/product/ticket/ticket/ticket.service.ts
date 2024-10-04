@@ -8,13 +8,14 @@ import { UpdateTicketRequest } from '../../../../models/request/product/ticket/t
 import { UpdateTicketResponse } from '../../../../models/response/product/ticket/ticket/update-ticket-response';
 import { GetTicketResponse } from '../../../../models/response/product/ticket/ticket/get-ticket-response';
 import { isPlatformBrowser } from '@angular/common';
+import { environment } from '../../../environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TicketService {
 
-  private baseUrl = 'http://localhost:8080/api/v1/ticket';
+  private baseUrl = `${environment.apiBaseUrl}/api/v1/ticket`;
 
   constructor(private httpClient: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) { }
 

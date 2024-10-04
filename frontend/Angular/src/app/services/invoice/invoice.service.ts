@@ -7,6 +7,7 @@ import { Apiresponse } from '../../models/response/apiresponse';
 import { GetInvoiceResponse } from '../../models/response/invoice/get-invoice-response';
 import { UpdateInvoiceRequest } from '../../models/request/invoice/update-invoice-request';
 import { UpdateInvoiceResponse } from '../../models/response/invoice/update-invoice-response';
+import { environment } from '../environment';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class InvoiceService {
 
   constructor(private httpClient: HttpClient) { }
 
-  private baseUrl = 'http://localhost:8080/api/v1/invoice';
+  private baseUrl = `${environment.apiBaseUrl}/api/v1/invoice`;
 
   createInvoice(createInvoiceRequest: CreateInvoiceRequest): Observable<CreateInvoiceResponse> {
     const headers = this.createAuthorizationHeader();

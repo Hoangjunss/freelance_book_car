@@ -7,13 +7,14 @@ import { CreateVoucherResponse } from '../../../../models/response/product/vouch
 import { UpdateVoucherRequest } from '../../../../models/request/product/voucher/voucher/update-voucher-request';
 import { UpdateVoucherResponse } from '../../../../models/response/product/voucher/voucher/update-voucher-response';
 import { GetVoucherResponse } from '../../../../models/response/product/voucher/voucher/get-voucher-response';
+import { environment } from '../../../environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VoucherService {
 
-  private baseUrl = 'http://localhost:8080/api/v1/voucher';
+  private baseUrl = `${environment.apiBaseUrl}/api/v1/voucher`;
 
   constructor(private httpClient: HttpClient) { }
 

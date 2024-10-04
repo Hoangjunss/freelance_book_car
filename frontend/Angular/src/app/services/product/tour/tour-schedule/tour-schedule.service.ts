@@ -7,13 +7,14 @@ import { CreateTourScheduleResponse } from '../../../../models/response/product/
 import { UpdateTourScheduleRequest } from '../../../../models/request/product/tour/tour-schedule/update-tour-schedule-request';
 import { UpdateTourScheduleResponse } from '../../../../models/response/product/tour/tour-schedule/update-tour-schedule-response';
 import { GetTourScheduleResponse } from '../../../../models/response/product/tour/tour-schedule/get-tour-schedule-response';
+import { environment } from '../../../environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TourScheduleService {
 
-  private baseUrl = 'http://localhost:8080/api/v1/tour-schedule';
+  private baseUrl = `${environment.apiBaseUrl}/api/v1/tour-schedule`;
 
   constructor(private httpClient: HttpClient) { }
 

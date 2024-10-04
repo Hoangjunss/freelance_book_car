@@ -8,13 +8,14 @@ import { UpdateTourRequest } from '../../../../models/request/product/tour/tour/
 import { UpdateTourResponse } from '../../../../models/response/product/tour/tour/update-tour-response';
 import { GetTourResponse } from '../../../../models/response/product/tour/tour/get-tour-response';
 import { isPlatformBrowser } from '@angular/common';
+import { environment } from '../../../environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TourService {
 
-  private baseUrl = 'http://localhost:8080/api/v1/tour';
+  private baseUrl = `${environment.apiBaseUrl}/api/v1/tour`;
 
   constructor(private httpClient: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) { }
 

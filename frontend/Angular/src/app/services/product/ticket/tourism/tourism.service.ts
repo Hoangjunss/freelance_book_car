@@ -6,13 +6,14 @@ import { CreateTourismResponse } from '../../../../models/response/product/ticke
 import { UpdateTourismResponse } from '../../../../models/response/product/ticket/tourism/update-tourism-response';
 import { GetTourismResponse } from '../../../../models/response/product/ticket/tourism/get-tourism-response';
 import { isPlatformBrowser } from '@angular/common';
+import { environment } from '../../../environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TourismService {
 
-  private baseUrl = 'http://localhost:8080/api/v1/tourism';
+  private baseUrl = `${environment.apiBaseUrl}/api/v1/tourism`;
 
   constructor(private httpClient: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) { }
 

@@ -18,6 +18,7 @@ import { AddBookingTicketResponse } from '../../models/response/booking/add-book
 import { OrderResponse } from '../../models/response/booking/order-response';
 import { isPlatformBrowser } from '@angular/common';
 import { UpdateBookingHotelResponse } from '../../models/response/booking/update-hotel-booking-response';
+import { environment } from '../environment';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +27,7 @@ export class BookingService {
 
   constructor(private httpClient:HttpClient, @Inject(PLATFORM_ID) private platformId: Object) { }
 
-  private baseUrl = 'http://localhost:8080/api/v1/booking';
+  private baseUrl = `${environment.apiBaseUrl}/api/v1/booking`;
 
   createBooking(createBookingRequest: CreateBookingRequest): Observable<CreateBookingResponse> {
     const headers = this.createAuthorizationHeader();

@@ -4,12 +4,13 @@ import { StatisticYear } from '../../models/response/statistics/StatisticYear';
 import { map, Observable } from 'rxjs';
 import { Apiresponse } from '../../models/response/apiresponse';
 import { StatisticMonthYear } from '../../models/response/statistics/StatisticMonthYear';
+import { environment } from '../environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StatisticsService {
-  private baseUrl = 'http://localhost:8080/api/v1/statistic';
+  private baseUrl = `${environment.apiBaseUrl}/api/v1/statistic`;
 
   constructor(private httpClient: HttpClient) { }
 

@@ -12,13 +12,14 @@ import { GetCurrentUserResponse } from '../../models/response/user/get-current-u
 import { isPlatformBrowser } from '@angular/common';
 import { GetUserInfoResponse } from '../../models/response/user/user-info/get-user-info-response';
 import { GetUserJoinResponse } from '../../models/response/user/user-join/get-user-join-response';
+import { environment } from '../environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  private baseURL = "http://localhost:8080/api/v1/auth/";
+  private baseURL = `${environment.apiBaseUrl}/api/v1/auth/`;
   constructor(private http: HttpClient, private router: Router, @Inject(PLATFORM_ID) private platformId: Object) { }
 
   registerUser(formData: FormData): Observable<registerUserResponse> {

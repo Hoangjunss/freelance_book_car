@@ -7,13 +7,14 @@ import { CreateTourStatusResponse } from '../../../../models/response/product/to
 import { UpdateTourStatusRequest } from '../../../../models/request/product/tour/tour-status/update-tour-status-request';
 import { UpdateTourStatusResponse } from '../../../../models/response/product/tour/tour-status/update-tour-status-response';
 import { GetTourStatusResponse } from '../../../../models/response/product/tour/tour-status/get-tour-status-response';
+import { environment } from '../../../environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TourStatusService {
 
-  private baseUrl = 'http://localhost:8080/api/v1/tour-status';
+  private baseUrl = `${environment.apiBaseUrl}/api/v1/tour-status`;
 
   constructor(private httpClient: HttpClient) { }
 

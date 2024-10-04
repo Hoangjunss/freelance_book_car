@@ -7,13 +7,14 @@ import { CreateHotelBookingResponse } from '../../../../models/response/product/
 import { UpdateHotelBookingRequest } from '../../../../models/request/product/hotel/hotel-booking/update-hotelbooking-request';
 import { UpdateHotelBookingResponse } from '../../../../models/response/product/hotel/hotel-booking/update-hotelbooking-response';
 import { GetHotelBookingResponse } from '../../../../models/response/product/hotel/hotel-booking/get-hotelbooking-response';
+import { environment } from '../../../environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HotelbookingService {
 
-  private baseUrl = 'http://localhost:8080/api/v1/hotel-booking';
+  private baseUrl = `${environment.apiBaseUrl}/api/v1/hotel-booking`;
 
   constructor(private httpClient: HttpClient) { }
 

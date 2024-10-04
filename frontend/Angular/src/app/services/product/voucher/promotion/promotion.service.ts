@@ -7,13 +7,14 @@ import { CreatePromotionResponse } from '../../../../models/response/product/vou
 import { UpdatePromotionRequest } from '../../../../models/request/product/voucher/promotion/update-promotion-request';
 import { UpdatePromotionResponse } from '../../../../models/response/product/voucher/promotion/update-promotion-response';
 import { GetPromotionResponse } from '../../../../models/response/product/voucher/promotion/get-promotion-response';
+import { environment } from '../../../environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PromotionService {
 
-  private baseUrl = 'http://localhost:8080/api/v1/promotion';
+  private baseUrl = `${environment.apiBaseUrl}/api/v1/promotion`;
 
   constructor(private httpClient: HttpClient) { }
 

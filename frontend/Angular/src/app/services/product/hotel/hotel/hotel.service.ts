@@ -7,13 +7,14 @@ import { UpdateHotelResponse } from '../../../../models/response/product/hotel/h
 import { GetHotelResponse } from '../../../../models/response/product/hotel/hotel/get-hotel-response';
 import { isPlatformBrowser } from '@angular/common';
 import { GetHotelBookingResponse } from '../../../../models/response/product/hotel/hotel-booking/get-hotelbooking-response';
+import { environment } from '../../../environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HotelService {
 
-  private baseUrl = 'http://localhost:8080/api/v1/hotel';
+  private baseUrl = `${environment.apiBaseUrl}/api/v1/hotel`;
 
   constructor(private httpClient: HttpClient) { }
 

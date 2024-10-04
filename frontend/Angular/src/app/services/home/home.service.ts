@@ -4,13 +4,14 @@ import { map, Observable } from 'rxjs';
 import { GetPageResponse } from '../../models/response/home/get-page-response';
 import { Apiresponse } from '../../models/response/apiresponse';
 import { isPlatformBrowser } from '@angular/common';
+import { environment } from '../environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HomeService {
 
-  private baseUrl = 'http://localhost:8080/api/v1/page/';
+  private baseUrl = `${environment.apiBaseUrl}/api/v1/page/`;
   constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) { }
 
   getHome():Observable<GetPageResponse> {
