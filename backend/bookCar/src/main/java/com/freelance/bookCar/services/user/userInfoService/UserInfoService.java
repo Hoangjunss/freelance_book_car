@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface UserInfoService {
-    CreateUserInfoResponse create(CreateUserInfoRequest createUserInfoRequest, Booking booking);
+    CreateUserInfoResponse create(CreateUserInfoRequest createUserInfoRequest);
     UpdateUserInforesponse update(UpdateUserInfoRequest updateUserInfoRequest);
     GetUserInfoResponse findById(Integer id);
 

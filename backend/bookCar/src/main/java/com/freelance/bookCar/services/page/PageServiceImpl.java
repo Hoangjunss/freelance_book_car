@@ -30,6 +30,7 @@ public class PageServiceImpl implements PageService {
                     .id(getGenerationId())
                     .url(imageService.saveImage(createPageRequest.getFile()))
                     .name(createPageRequest.getName())
+                    .description(createPageRequest.getDescription())
                     .type(TypePage.valueOf(createPageRequest.getType())).build();
                 return modelMapper.map(pageRepository.save(page), CreatePageReponse.class);
 

@@ -68,11 +68,14 @@ export class BookingPendingComponent {
   }
 
   setTypeBooking(id?: number, type?: string){
+    console.log("Click");
     console.log(id+type);
     if(id && type){
-      this.bookingService.adminSetTypeBooking(id, type).subscribe({
+      this.bookingService.setBookingType(type, id).subscribe({
       next: (data) => {
+        alert('Thành công');
         this.updateBookingResponse = data;
+        window.location.reload();
         }
       })
     }

@@ -14,4 +14,5 @@ public class CreatePageReponse {
     private String name;
     private String url;
     private String type;
+    private String description;
 }
