@@ -8,7 +8,14 @@
                 <p>Ngày đặt: {{ order.dateBook }}</p>
                 <p>Tình trạng: {{ order.type }}</p>
 
-                <p><strong>Tổng cộng:</strong> <span class="order-total">{{ order.totalPrice | currency:'VND' }}</span></p>
+                <p><strong>Tổng cộng:</strong> <span class="order-total">{{ order.totalPrice | currency:'VND' }}</span>
+                </p>
+            </div>
+            <div class="col-md-4 text-right">
+                <button class="btn btn-primary btn-sm" (click)="viewOrderDetails(order.id)" data-bs-toggle="modal"
+                    data-bs-target="#orderDetailsModal">
+                    Xem chi tiết
+                </button>
             </div>
         </div>
     </div>
@@ -23,15 +30,33 @@
     </div>
 </ng-template>
 
-<div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-labelledby="orderDetailsModalLabel" aria-hidden="true">
+<div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-labelledby="orderDetailsModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content slide-in">
-            <div class="modal-header">
-                <h5 class="modal-title" id="orderDetailsModalLabel">Chi tiết đơn hàng</h5>
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="orderDetailsModalLabel">Chi tiết đơn hàng #{{ selectedOrder?.id }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                
+                <!-- Hiển thị chi tiết sản phẩm trong đơn hàng -->
+                <div *ngFor="let product of products" class="product-card border-bottom pb-3 mb-3">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <img *ngIf="product.image" [src]="product.image" alt="Product image"
+                                class="img-fluid rounded" style="max-width: 100%;">
+                        </div>
+                        <div class="col-md-9">
+                            <p><strong>Tên sản phẩm:</strong> {{ product.name }}</p>
+                            <p><strong>Loại:</strong> {{ product.type }}</p>
+                            <p><strong>Số lượng:</strong> {{ product.quantity }}</p>
+                            <p><strong>Giá:</strong> {{ product.price | currency: 'VND' }}</p>
+                            <p *ngIf="product.startLocation"><strong>Điểm bắt đầu:</strong> {{ product.startLocation }}
+                            </p>
+                            <p *ngIf="product.endLocation"><strong>Điểm kết thúc:</strong> {{ product.endLocation }}</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
