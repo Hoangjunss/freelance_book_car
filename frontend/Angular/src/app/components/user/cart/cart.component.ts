@@ -1,3 +1,5 @@
+import { TicketService } from './../../../services/product/ticket/ticket/ticket.service';
+import { GetHotelBookingResponse } from './../../../models/response/product/hotel/hotel-booking/get-hotelbooking-response';
 import { Router } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
@@ -12,6 +14,9 @@ import { HotelService } from '../../../services/product/hotel/hotel/hotel.servic
 import { TourismService } from '../../../services/product/ticket/tourism/tourism.service';
 import { Title } from '@angular/platform-browser';
 import { GetTicketResponse } from '../../../models/response/product/ticket/ticket/get-ticket-response';
+import { GetTourScheduleResponse } from '../../../models/response/product/tour/tour-schedule/get-tour-schedule-response';
+import { TourScheduleStatusService } from '../../../services/product/tour/tour-schedule-status/tour-schedule-status.service';
+import { HotelbookingService } from '../../../services/product/hotel/hotelbooking/hotelbooking.service';
 
 
 @Component({
@@ -28,7 +33,10 @@ import { GetTicketResponse } from '../../../models/response/product/ticket/ticke
 export class CartComponent implements OnInit {
 
   getBookingDetailResponse: GetBookingDetailResponse[] = [];
+
+  getHotelBookingResponse: GetHotelBookingResponse[] = [];
   getTicketResponse: GetTicketResponse[] = [];
+  getTourScheduleResposne: GetTourScheduleResponse[] = [];
   
 
   products: any[] = [];
@@ -36,7 +44,10 @@ export class CartComponent implements OnInit {
 
   constructor(private bookingService: BookingService,
     private tourService: TourService,
+    private tourScheduleService: TourScheduleStatusService,
+    private ticketService: TicketService,
     private hotelService: HotelService,
+    private hotelBookingService: HotelbookingService,
     private tourismService: TourismService,
     private title: Title,
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -113,7 +124,7 @@ export class CartComponent implements OnInit {
             price: detail.totalPrice,
             originalPrice: detail.totalPrice / detail.quantity,
             quantity: detail.quantity,
-            image: 'https://via.placeholder.com/100', // You may want to set this dynamically based on type
+            image: 'https://via.placeholder.com/100',
             type: detail.idTour ? 'tour' : detail.idHotel ? 'hotel' : 'ticket',
           }));
           console.log('Products:', this.products);

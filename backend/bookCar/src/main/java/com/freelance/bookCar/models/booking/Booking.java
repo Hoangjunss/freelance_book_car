@@ -29,10 +29,8 @@ public class Booking {
     private TypeBooking typeBooking;
 
     @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn()
-    private List<UserJoin> userJoin = new ArrayList<>();;
+    private List<UserJoin> userJoin = new ArrayList<>();
 
-    @OneToMany(mappedBy = "booking",cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn()
-    private List<UserInfo> userInfo = new ArrayList<>();;
+    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserInfo> userInfo = new ArrayList<>();
 }

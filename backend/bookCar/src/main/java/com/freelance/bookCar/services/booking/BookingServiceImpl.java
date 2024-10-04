@@ -9,6 +9,7 @@ import com.freelance.bookCar.dto.request.booking.bookingTour.AddBookingTourReque
 import com.freelance.bookCar.dto.request.booking.bookingTour.UpdateBookingTourRequest;
 import com.freelance.bookCar.dto.request.booking.bookingTourism.AddBookingTourismRequest;
 import com.freelance.bookCar.dto.request.booking.bookingTourism.UpdateBookingTourismRequest;
+import com.freelance.bookCar.dto.request.user.userInfoDTO.CreateUserInfoRequest;
 import com.freelance.bookCar.dto.request.user.userJoinDTO.CreateUserJoinRequest;
 import com.freelance.bookCar.dto.response.booking.CreateBookingResponse;
 import com.freelance.bookCar.dto.response.booking.GetBookingResponse;
@@ -595,23 +596,35 @@ public class BookingServiceImpl implements BookingService{
     public OrderResponse order(OrderRequest orderRequest) {
         GetBookingResponse getBookingResponse=findById(orderRequest.getId());
         Booking booking=modelMapper.map(getBookingResponse,Booking.class);
+        Booking bookingsave= bookingRepository.save(booking);
         log.info("Booking id 598: {}" , booking.getId());
         List<UserInfo> updatedUserInfo = orderRequest.getCreateUserInfoRequest().stream()
-                .map(createUserInfoResponse ->modelMapper.map(userInfoService.create(createUserInfoResponse),UserInfo.class))
+                .map(createUserInfoResponse -> {
+                     UserInfo userInfo = modelMapper.map(createUserInfoResponse, UserInfo.class);
+                     userInfo.setBooking(bookingsave);
+                    UserInfo userInfoSave=modelMapper.map( userInfoService.create(modelMapper.map(userInfo, CreateUserInfoRequest.class)),UserInfo.class);
+                     return userInfoSave;
+                 })
+
                 .toList();
         log.info("600: {}", updatedUserInfo.toString());
 
-        booking.setUserInfo(updatedUserInfo);
+
 
         List<UserJoin> updatedUserJoin = orderRequest.getCreateUserJoinRequest().stream()
-                .map(createUserJoinResponse -> modelMapper.map(userJoinService.create(createUserJoinResponse), UserJoin.class))
+                .map(createUserJoinResponse -> {
+                    UserJoin userJoin = modelMapper.map(createUserJoinResponse, UserJoin.class);
+                    userJoin.setBooking(bookingsave);
+                    UserJoin userInfoSave=modelMapper.map( userJoinService.create(modelMapper.map(userJoin, CreateUserJoinRequest.class)),UserJoin.class);
+                    return userInfoSave;
+                })
                 .toList();
         log.info("609: {}", updatedUserJoin.toString());
 
-        booking.getUserJoin().addAll(updatedUserJoin);
-        log.info("615: {}", booking.toString());
-        Booking bookingsave= bookingRepository.save(booking);
-        Mail mail=mailService.getMail(booking.getUserInfo().getFirst().getEmail(),"Đơn hàng số "+booking.getId()+ "của bạn đã được đặt vui lòng kiểm tra lại ","Đơn hàng số: "+booking.getId());
+
+        log.info("615: {}", bookingsave.toString());
+
+        Mail mail=mailService.getMail(updatedUserInfo.getFirst().getEmail(),"Đơn hàng số "+booking.getId()+ "của bạn đã được đặt vui lòng kiểm tra lại ","Đơn hàng số: "+booking.getId());
         mailService.sendMail(mail);
         return modelMapper.map(bookingsave,OrderResponse.class);
     }

@@ -20,6 +20,7 @@ public class UserJoin {
     private String phone;
     private String email;
 
-    @OneToOne(mappedBy = "userJoin", cascade = CascadeType.ALL, orphanRemoval = true)
-     private Booking booking;
+    @ManyToOne
+    @JoinColumn(name = "booking_id") // Chỉ định khóa ngoại
+    private Booking booking;
 }
