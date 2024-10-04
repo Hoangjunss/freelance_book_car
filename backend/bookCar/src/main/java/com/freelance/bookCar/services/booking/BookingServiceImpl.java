@@ -145,8 +145,6 @@ public class BookingServiceImpl implements BookingService{
             existingBooking.setIdUser(updateBookingRequest.getIdUser());
         }
 
-
-
         try {
             Booking updatedBooking = bookingRepository.save(existingBooking);
             UpdateBookingResponse updateBookingResponse=modelMapper.map(updatedBooking, UpdateBookingResponse.class);
@@ -241,6 +239,8 @@ public class BookingServiceImpl implements BookingService{
             booking.setTotalPrice(booking.getTotalPrice() + Double.parseDouble(addBookingTourRequest.getTotalPrice()));
             booking.setIdUser(booking.getIdUser());
             booking.setTypeBooking(TypeBooking.CART);
+            booking.setUserInfo(new ArrayList<>());
+            booking.setUserJoin(new ArrayList<>());
             // Save the updated booking
             try {
                 bookingRepository.save(booking);
@@ -336,6 +336,8 @@ public class BookingServiceImpl implements BookingService{
                     .idPayment(1)
                     .build();
             booking.setTypeBooking(TypeBooking.CART);
+            booking.setUserInfo(new ArrayList<>());
+            booking.setUserJoin(new ArrayList<>());
 
             // Save the updated booking
             bookingRepository.save(booking);
@@ -378,6 +380,7 @@ public class BookingServiceImpl implements BookingService{
 
         return response;
     }
+
     @Override
     public AddBookingHotelResponse addBookingHotel(AddBookingHotelRequest addBookingHotelRequest) {
         log.info("Adding booking hotel request: {}", addBookingHotelRequest.toString());
@@ -423,7 +426,8 @@ public class BookingServiceImpl implements BookingService{
                     .build();
 
             booking.setTypeBooking(TypeBooking.CART);
-
+            booking.setUserInfo(new ArrayList<>());
+            booking.setUserJoin(new ArrayList<>());
             // Save the updated booking
             bookingRepository.save(booking);
         }

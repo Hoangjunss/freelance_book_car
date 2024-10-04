@@ -5,6 +5,51 @@
     <div *ngIf="products.length === 0" class="empty-cart-message text-center mt-4">
         <p>Giỏ hàng của bạn trống</p>
     </div>
+<ng-container *ngIf="getTourResponse.length>0;">
+    <ul class="list-group mb-4" *ngFor="let tour of getTourResponse">
+        <li *ngFor="let product of getTourScheduleResposne" class="list-group-item d-flex justify-content-between align-items-center">
+            <ng-container *ngIf="tour.id==product.idTour">
+            <div class="d-flex align-items-center">
+                <img [src]="tour.image" alt="{{ tour.name }}" class="img-thumbnail mr-3" style="width: 200px;">
+                <div>
+                    <h3>{{tour.name}}</h3>
+                    <h5>Ngày bắt đầu: {{ product.timeStartTour | date: 'dd/MM/yyyy'  }}</h5>
+                    <p class="mb-0">Giá : {{ product.priceTour| currency:'VND' }}</p>
+                </div>
+            </div>
+            <div class="d-flex align-items-center">
+                <button class="btn btn-sm btn-light" (click)="decreaseQuantity(product)">-</button>
+                <input type="text" [(ngModel)]="product.quantity" class="form-control text-center quantity-input" style="width: 50px;" min="1" readonly>
+                <button class="btn btn-sm btn-light" (click)="increaseQuantity(product)">+</button>
+            </div>
+            <button class="btn btn-sm btn-danger ml-3" (click)="removeProduct(product)">Xóa</button>
+        </ng-container>
+        </li>
+    </ul>
+</ng-container>
+
+<ng-container *ngIf="getHotelResponse.length>0;">
+    <ul class="list-group mb-4" *ngFor="let tour of getHotelResponse">
+        <li *ngFor="let product of getHotelBookingResponse" class="list-group-item d-flex justify-content-between align-items-center">
+            <ng-container *ngIf="tour.id==product.hotel">
+            <div class="d-flex align-items-center">
+                <img [src]="tour.image" alt="{{ tour.name }}" class="img-thumbnail mr-3" style="width: 200px;">
+                <div>
+                    <h3>{{tour.name}}</h3>
+                    <h5>Ngày bắt đầu: {{ product.startDate| date: 'dd/MM/yyyy'  }}</h5>
+                    <p class="mb-0">Giá : {{ product.totalPrice| currency:'VND' }}</p>
+                </div>
+            </div>
+            <div class="d-flex align-items-center">
+                <button class="btn btn-sm btn-light" (click)="decreaseQuantity(product)">-</button>
+                <input type="text" [(ngModel)]="product.totalPrice" class="form-control text-center quantity-input" style="width: 50px;" min="1" readonly>
+                <button class="btn btn-sm btn-light" (click)="increaseQuantity(product)">+</button>
+            </div>
+            <button class="btn btn-sm btn-danger ml-3" (click)="removeProduct(product)">Xóa</button>
+        </ng-container>
+        </li>
+    </ul>
+</ng-container>
 
     <!-- Hiển thị danh sách sản phẩm nếu có -->
     <ul class="list-group mb-4" *ngIf="products.length > 0">

@@ -1,3 +1,6 @@
+import { GetTourismResponse } from './../../../models/response/product/ticket/tourism/get-tourism-response';
+import { GetTourResponse } from './../../../models/response/product/tour/tour/get-tour-response';
+import { GetHotelResponse } from './../../../models/response/product/hotel/hotel/get-hotel-response';
 import { TicketService } from './../../../services/product/ticket/ticket/ticket.service';
 import { GetHotelBookingResponse } from './../../../models/response/product/hotel/hotel-booking/get-hotelbooking-response';
 import { Router } from '@angular/router';
@@ -17,6 +20,8 @@ import { GetTicketResponse } from '../../../models/response/product/ticket/ticke
 import { GetTourScheduleResponse } from '../../../models/response/product/tour/tour-schedule/get-tour-schedule-response';
 import { TourScheduleStatusService } from '../../../services/product/tour/tour-schedule-status/tour-schedule-status.service';
 import { HotelbookingService } from '../../../services/product/hotel/hotelbooking/hotelbooking.service';
+import { TourScheduleService } from '../../../services/product/tour/tour-schedule/tour-schedule.service';
+import { forkJoin, Observable } from 'rxjs';
 
 
 @Component({
@@ -33,10 +38,13 @@ import { HotelbookingService } from '../../../services/product/hotel/hotelbookin
 export class CartComponent implements OnInit {
 
   getBookingDetailResponse: GetBookingDetailResponse[] = [];
-
   getHotelBookingResponse: GetHotelBookingResponse[] = [];
   getTicketResponse: GetTicketResponse[] = [];
   getTourScheduleResposne: GetTourScheduleResponse[] = [];
+
+  getHotelResponse: GetHotelResponse[]=[];
+  getTourResponse: GetTourResponse[] =[];
+  getTourismResponse: GetTourismResponse[]=[]; 
   
 
   products: any[] = [];
@@ -44,7 +52,7 @@ export class CartComponent implements OnInit {
 
   constructor(private bookingService: BookingService,
     private tourService: TourService,
-    private tourScheduleService: TourScheduleStatusService,
+    private tourScheduleService: TourScheduleService,
     private ticketService: TicketService,
     private hotelService: HotelService,
     private hotelBookingService: HotelbookingService,
@@ -115,21 +123,55 @@ export class CartComponent implements OnInit {
   getBookingDetail(id: number) {
     this.bookingService.getDetailBooking(id).subscribe({
       next: (response) => {
+        console.log(response);
         if (response) {
-          this.getBookingDetailResponse = response;
-          this.products = this.getBookingDetailResponse.map(detail => ({
-            idBookingDetail: detail.id,
-            id: detail.idTour || detail.idHotel || detail.idTicket,
-            name: detail.idTour ? 'Tour' : detail.idHotel ? 'Khách sạn' : 'Vé',
-            price: detail.totalPrice,
-            originalPrice: detail.totalPrice / detail.quantity,
-            quantity: detail.quantity,
-            image: 'https://via.placeholder.com/100',
-            type: detail.idTour ? 'tour' : detail.idHotel ? 'hotel' : 'ticket',
-          }));
-          console.log('Products:', this.products);
-          console.log('Booking Detail:', this.getBookingDetailResponse);
-        } else {
+          const tourObservables: Observable<GetTourScheduleResponse>[] = [];
+          const hotelObservables: Observable<GetHotelBookingResponse>[] = [];
+          const ticketObservables: Observable<GetTicketResponse>[] = [];
+          response.forEach((detail) => {
+            if (detail.idTour != null) {
+              tourObservables.push(this.tourScheduleService.getSchedule(detail.idTour));
+            }
+            if (detail.idHotel != null) {
+              hotelObservables.push(this.hotelBookingService.getBooking(detail.idHotel));
+            }
+            if (detail.idTicket != null) {
+              ticketObservables.push(this.ticketService.getTicket(detail.idTicket));
+            }
+          });
+          forkJoin([...tourObservables, ...hotelObservables, ...ticketObservables]).subscribe(
+            (results) => {
+              const tourResults = results.slice(0, tourObservables.length);
+              const hotelResults = results.slice(tourObservables.length, tourObservables.length + hotelObservables.length);
+              const ticketResults = results.slice(tourObservables.length + hotelObservables.length);
+              this.getTourScheduleResposne.push(...tourResults);
+              this.getHotelBookingResponse.push(...hotelResults);
+              this.getTicketResponse.push(...ticketResults);
+              if (this.getTourScheduleResposne.length > 0) {
+                this.getTourScheduleResposne.forEach((tour) => {
+                  if (tour && tour.idTour) {
+                    this.getTourDetail(tour.idTour);
+                  }
+                });
+              } else {
+                console.log("No tours available.");
+              }
+              this.getHotelBookingResponse.forEach((hotel) => {
+                this.getHotelDetailById(hotel.hotel);
+              });
+  
+              this.getTicketResponse.forEach((tourism) => {
+                this.getTicketDetailById(tourism.idTourism);
+              });
+  
+              console.log("Tour Schedule Response:", this.getTourScheduleResposne);
+              console.log("Hotel Booking Response:", this.getHotelBookingResponse);
+              console.log("Ticket Response:", this.getTicketResponse);
+            },
+            (error) => {
+              console.error('Error in forkJoin:', error);
+            }
+          );
         }
       },
       error: (error) => {
@@ -142,8 +184,7 @@ export class CartComponent implements OnInit {
     this.tourService.getTourDetailById(id).subscribe({
       next: (response) => {
         if (response) {
-          // this.locations = [response]; 
-        } else {
+          this.getTourResponse.push(response);
         }
       },
       error: (error) => {
@@ -156,7 +197,7 @@ export class CartComponent implements OnInit {
     this.hotelService.getHotelDetailById(id).subscribe({
       next: (response) => {
         if (response) {
-          // this.locations = [response];
+          this.getHotelResponse.push(response);
         } else {
           console.log("Thất bại");
         }
@@ -171,7 +212,7 @@ export class CartComponent implements OnInit {
     this.tourismService.getTourismDetailById(id).subscribe({
       next: (response) => {
         if (response) {
-          // this.locations = [response];
+          this.getTourismResponse.push(response);
         } else {
         }
       },
@@ -227,10 +268,7 @@ export class CartComponent implements OnInit {
   removeProduct(product: any) {
     const confirmed = window.confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');
     if (confirmed) {
-      // Remove the product from the array
       this.products = this.products.filter(p => p.idBookingDetail !== product.idBookingDetail);
-
-      // Optionally, call the API to remove the product from the server (if needed)
       this.bookingService.deleteBookingDetail(product.idBookingDetail).subscribe({
         next: (response) => {
           console.log('Sản phẩm đã được xóa thành công:', response);
