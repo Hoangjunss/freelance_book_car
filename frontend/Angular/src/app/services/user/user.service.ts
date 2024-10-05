@@ -108,6 +108,25 @@ export class UserService {
     );
   }
 
+  signInWithGoogle(formData : FormData): Observable<loginUserResponse> {
+    return this.http.post<Apiresponse<loginUserResponse>>(`${this.baseURL}google`, formData).pipe(
+      map((response) => {
+        if (response) {
+          return response.data;
+        } else {
+          throw new Error('Get current user failed');
+        }
+      }),
+      catchError((error) => {
+        if (error.status === 401) {
+          this.router.navigate(['/login']);
+          
+        }
+        return throwError(error);
+      })
+    );
+  }
+
 
 
 

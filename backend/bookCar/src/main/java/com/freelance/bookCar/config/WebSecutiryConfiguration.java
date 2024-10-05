@@ -42,7 +42,7 @@ private JwtAuthenticationFilter jwtAuthenticationFilter;
                 .csrf(AbstractHttpConfigurer::disable)
 
                 .authorizeHttpRequests((auth) ->auth
-                        .requestMatchers("/api/v1/auth/registration","/api/v1/auth/login","/api/v1/auth/refreshtoken").permitAll()
+                        .requestMatchers("/api/v1/auth/registration","/api/v1/auth/login","/api/v1/auth/refreshtoken","/api/v1/auth/google").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/v1/hotel-booking/**").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/v1/hotel/**").permitAll()
                         .requestMatchers(HttpMethod.GET,"/api/v1/ticket/**").permitAll()
