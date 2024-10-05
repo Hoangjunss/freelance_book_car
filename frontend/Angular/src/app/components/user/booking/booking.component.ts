@@ -1,7 +1,7 @@
 import { CreateUserInfoRequest } from './../../../models/request/user/user-info/create-user-info-request';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthInterceptor } from '../../../services/auth.interceptor';
 import { UserService } from '../../../services/user/user.service';
@@ -22,6 +22,7 @@ import { GetHotelResponse } from '../../../models/response/product/hotel/hotel/g
 import { TourismService } from '../../../services/product/ticket/tourism/tourism.service';
 import { HotelbookingService } from '../../../services/product/hotel/hotelbooking/hotelbooking.service';
 import { TourScheduleService } from '../../../services/product/tour/tour-schedule/tour-schedule.service';
+import { NotificationComponent } from '../../notification/notification.component';
 
 @Component({
   selector: 'app-booking',
@@ -30,7 +31,7 @@ import { TourScheduleService } from '../../../services/product/tour/tour-schedul
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     UserService
   ],
-  imports: [FormsModule, CommonModule, HttpClientModule],
+  imports: [FormsModule, CommonModule, HttpClientModule, NotificationComponent],
   templateUrl: './booking.component.html',
   styleUrl: './booking.component.css'
 })
@@ -47,7 +48,6 @@ export class BookingComponent implements OnInit {
   products: any[] = [];
   idBooking: number | null = null;
   totalPrice: number | null = null;
-
   orderRequest: OrderRequest = new OrderRequest();
   orderResponse: OrderResponse = new OrderResponse();
   createUserInfoRequest: CreateUserInfoRequest[] = [];
@@ -56,16 +56,16 @@ export class BookingComponent implements OnInit {
   createUserJoinRequest: CreateUserJoinRequest[] = [];
   createUserJoin: CreateUserJoinRequest = new CreateUserJoinRequest();
   updateUserJoin: CreateUserJoinRequest = new CreateUserJoinRequest();
-
   getTour: GetTourResponse[] = [];
   getTourism: GetTourismResponse[] = [];
   getHotel: GetHotelResponse[] = [];
-
   selectedContactIndex: number | null = null;
   selectedUserIndex: number | null = null;
   originalUserJoin: CreateUserJoinRequest;
   originalUserInfo: CreateUserInfoRequest;
   formInvalid: boolean = false;
+
+  @ViewChild(NotificationComponent) notificationComponent!: NotificationComponent;
   constructor(
     private title: Title,
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -134,7 +134,7 @@ export class BookingComponent implements OnInit {
       this.createUserJoin.phone === this.originalUserJoin.phone &&
       this.createUserJoin.email === this.originalUserJoin.email
     )) {
-      alert("Vui lòng chọn nội dung thay đổi.");
+      this.notificationComponent.showNotification('error', 'Vui lòng chọn nội dung thay đổi.');
       return;
     }
     if (this.selectedUserIndex === null) {
@@ -166,9 +166,8 @@ export class BookingComponent implements OnInit {
 
   saveContactInfo() {
     this.formInvalid = !this.isContactFormValid();
-    if(this.formInvalid && this.selectedContactIndex === null)
-    {
-      alert('Vui lòng điền đầy đủ thông tin');
+    if (this.formInvalid && this.selectedContactIndex === null) {
+      this.notificationComponent.showNotification('error', 'Vui lòng điền đầy đủ thông tin');
       return;
     }
 
@@ -177,10 +176,10 @@ export class BookingComponent implements OnInit {
       this.createUserInfo.lastName === this.originalUserInfo.lastName &&
       this.createUserInfo.phone === this.originalUserInfo.phone &&
       this.createUserInfo.email === this.originalUserInfo.email
-  )) {
-      alert("Vui lòng chọn nội dung thay đổi.");
+    )) {
+      this.notificationComponent.showNotification('error', 'Vui lòng chọn nội dung thay đổi.');
       return;
-  }
+    }
     if (this.selectedContactIndex === null) {
       this.createUserInfoRequest.push({ ...this.createUserInfo });
     } else {
@@ -338,12 +337,13 @@ export class BookingComponent implements OnInit {
     const formData = new FormData();
     const idUser = localStorage.getItem('idUser');
     const idBooking = localStorage.getItem('idBooking');
-    if (this.createUserInfoRequest == null) {
-      alert('Vui lòng điền ít nhất một thông tin liên hệ');
+    
+    if (!this.createUserInfoRequest || this.createUserInfoRequest.length === 0) {
+      this.notificationComponent.showNotification('error', 'Vui lòng điền ít nhất một thông tin người liên hệ');
       return;
     }
-    if (this.createUserJoinRequest == null) {
-      alert('Vui lòng điền ít nhất một thông tin người tham gia');
+    if (!this.createUserJoinRequest || this.createUserJoinRequest.length === 0) {
+      this.notificationComponent.showNotification('error', 'Vui lòng điền ít nhất một thông tin người tham gia');
       return;
     }
 
@@ -377,8 +377,10 @@ export class BookingComponent implements OnInit {
       next: (value) => {
         if (value) {
           console.log('successful');
-          alert("Bạn đã đặt thành công. Vui lòng kiểm tra Email và chờ phản hồi");
-          this.router.navigate(['order-history']); 
+          this.notificationComponent.showNotification('success', 'Bạn đã đặt thành công. Vui lòng kiểm tra Email và chờ phản hồi');
+          setTimeout(() => {
+            this.router.navigate(['order-history']);
+          }, 2000);
           localStorage.removeItem('idBooking');
         }
       },
