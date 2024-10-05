@@ -1,5 +1,5 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, Inject, Input, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, Input, PLATFORM_ID, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TourService } from '../../../services/product/tour/tour/tour.service';
 import { GetTourResponse } from '../../../models/response/product/tour/tour/get-tour-response';
@@ -12,6 +12,7 @@ import { GetTourScheduleResponse } from '../../../models/response/product/tour/t
 import { TourScheduleService } from '../../../services/product/tour/tour-schedule/tour-schedule.service';
 import { FormsModule } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
+import { NotificationComponent } from '../../notification/notification.component';
 
 @Component({
   selector: 'app-location-detail',
@@ -20,7 +21,7 @@ import { Title } from '@angular/platform-browser';
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     UserService
   ],
-  imports: [CommonModule, HttpClientModule, FormsModule],
+  imports: [CommonModule, HttpClientModule, FormsModule,NotificationComponent],
   templateUrl: './location-detail.component.html',
   styleUrls: ['./location-detail.component.css']
 })
@@ -33,6 +34,8 @@ export class LocationDetailComponent {
   availableTourSchedules: GetTourScheduleResponse[] = [];
   selectedTourSchedule: number | null = null;
   selectedPrice: number | null = null;
+
+  @ViewChild(NotificationComponent) notificationComponent!: NotificationComponent;
 
   constructor(
     private route: ActivatedRoute,
@@ -123,7 +126,7 @@ export class LocationDetailComponent {
   addBookingTour(locationId: string | null) {
 
     if (!this.selectedTourSchedule) {
-      alert("Please select tour itinerary")
+      this.notificationComponent.showNotification('error', 'Please select a tour schedule');
       return;
     }
 
@@ -136,11 +139,12 @@ export class LocationDetailComponent {
     addBookingTourRequest.quantity = 1;
 
     if(!idUser){
-      alert("Please login to book tour")
-      this.router.navigate(['/auth/login']);
+      this.notificationComponent.showNotification('error', 'Vui lòng đăng nhập để thêm vào giỏ hàng');
+      setTimeout(() => {
+        this.router.navigate(['/auth/login']);
+      }, 2000);
       return;
     }
-
 
     const selectedSchedule = this.availableTourSchedules.find(schedule => {
       return schedule.id === Number(this.selectedTourSchedule);
@@ -171,7 +175,7 @@ export class LocationDetailComponent {
           if (idBooking == null) {
             localStorage.setItem('idBooking', response.idBooking + "");
           }
-          alert('ThanhCong');
+          this.notificationComponent.showNotification('success', 'Thêm vào giỏ hàng thành công');
         }
       },
       error: (error) => {
