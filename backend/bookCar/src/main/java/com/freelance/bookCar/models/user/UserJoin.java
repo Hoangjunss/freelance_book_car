@@ -1,5 +1,7 @@
 package com.freelance.bookCar.models.user;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.freelance.bookCar.models.booking.Booking;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -19,8 +21,8 @@ public class UserJoin {
     private String LastName;
     private String phone;
     private String email;
-
-    @ManyToOne
-    @JoinColumn(name = "booking_id") // Chỉ định khóa ngoại
+    @ManyToOne(optional = false, targetEntity = Booking.class)
+    @JoinColumn(name = "booking_id", referencedColumnName = "id")
+    @JsonIgnore
     private Booking booking;
 }

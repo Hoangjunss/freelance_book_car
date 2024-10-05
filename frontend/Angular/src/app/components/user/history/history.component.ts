@@ -113,26 +113,28 @@ export class HistoryComponent implements OnInit {
 
           if (this.products.some(p => p.type === 'tour')) {
             this.products.filter(p => p.type === 'tour').forEach(p => {
-              this.tourService.getTourById(p.id).subscribe({
-                next: (tourResponse) => {
-                  p.startLocation = tourResponse.startLocation;
-                  p.endLocation = tourResponse.endLocation;
-                  p.image = tourResponse.image;
-                  p.name = tourResponse.name;
-                  this.tourScheduleService.getSchedule(p.id).subscribe({
-                    next: (scheduleResponse) => {
-                      p.schedule = scheduleResponse;
-                      console.log('Schedule:', p.schedule);
+              //this.getTourDetail(p.id);
+              this.tourScheduleService.getSchedule(p.id).subscribe({
+                next: (scheduleResponse) => {
+                  console.log(scheduleResponse);
+                  p.schedule = scheduleResponse;
+                  this.tourService.getTourById(scheduleResponse.idTour).subscribe({
+                    next: (tourResponse) => {
+                      p.name = tourResponse.name;
+                      p.image = tourResponse.image
+                      p.startLocation = tourResponse.startLocation;
+                      p.endLocation = tourResponse.endLocation;
                     },
-                    error: (error: any) => {
+                    error: (error) => {
                       console.log("Error:", error);
                     }
-                  });
+                  })
                 },
-                error: (error) => {
+                error: (error: any) => {
                   console.log("Error:", error);
                 }
               });
+
             });
           }
 
@@ -145,7 +147,6 @@ export class HistoryComponent implements OnInit {
                   p.location = hotelResponse.location;
                   this.hotelBookingService.getBooking(p.id).subscribe({
                     next: (hotelBookingResponse) => {
-                      console.log('Hotel list:', hotelBookingResponse);
                       p.startDate = hotelBookingResponse.startDate;
                       p.endDate = hotelBookingResponse.endDate;
                     },
@@ -163,19 +164,20 @@ export class HistoryComponent implements OnInit {
             });
           }
 
+
           if (this.products.some(p => p.type === 'ticket')) {
             this.products.filter(p => p.type === 'ticket').forEach(p => {
               console.log('Ticket ID:', p.id);
               this.ticketService.getTicket(p.id).subscribe({
                 next: (ticketResponse) => {
+                  console.log(ticketResponse);
                   p.dateEvent = ticketResponse.startDate;
-                  this.tourismService.getTour(p.id).subscribe({
+                  this.tourismService.getTour(ticketResponse.idTourism).subscribe({
                     next: (scheduleTicketResponse) => {
+                      console.log(scheduleTicketResponse);
                       p.image = scheduleTicketResponse.image;
-                      p.description = scheduleTicketResponse.description;
                       p.venue = scheduleTicketResponse.location;
                       p.name = scheduleTicketResponse.name;
-                      console.log('Ticket:', scheduleTicketResponse);
                     },
                     error: (error) => {
                       console.log("Error:", error);
@@ -188,8 +190,6 @@ export class HistoryComponent implements OnInit {
               });
             });
           }
-
-
         }
       }
     });

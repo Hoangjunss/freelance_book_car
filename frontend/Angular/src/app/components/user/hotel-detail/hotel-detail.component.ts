@@ -149,7 +149,17 @@ export class HotelDetailComponent {
   getHotelByIdBooking(id: number) {
     this.hotelBooking.getHotelByIdBooking(id).subscribe(response => {
       if (response) {
-        this.listHotel = response;
+        const currentDate = new Date();
+        this.listHotel = response
+          .filter(ticket => {
+            const startDate = new Date(ticket.startDate || '');
+            return startDate >= currentDate; 
+          })
+          .sort((a, b) => {
+            const dateA = new Date(a.startDate || '');
+            const dateB = new Date(b.startDate || '');
+            return dateA.getTime() - dateB.getTime(); 
+          });
       } 
       if (this.listHotel.length > 0) {
         this.selectedTourSchedule = this.listHotel[0].id;

@@ -1,9 +1,6 @@
 package com.freelance.bookCar.models.page;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,5 +18,6 @@ public class Page {
     private String url;
     @Enumerated(EnumType.STRING)
     private TypePage type;
+    @Lob
     private String description;
 }

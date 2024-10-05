@@ -70,15 +70,15 @@
                     <ng-container *ngFor="let user of getUserInfo">
                     <div class="form-group">
                         <label for="scheduleQuantity">Name</label>
-                        <input type="number" class="form-control" id="scheduleQuantity" [(ngModel)]="user.firstName" name="scheduleQuantity" placeholder="Enter quantity" required>
+                        <input type="text" class="form-control" id="scheduleQuantity" [(ngModel)]="user.firstName" name="scheduleQuantity" placeholder="Enter quantity" disabled>
                     </div>
                     <div class="form-group">
                         <label for="schedulePrice">Phone</label>
-                        <input type="number" class="form-control" id="schedulePrice" [(ngModel)]="user.phone" name="schedulePrice" placeholder="Enter price" required>
+                        <input type="text" class="form-control" id="schedulePrice" [(ngModel)]="user.phone" name="schedulePrice" placeholder="Enter price" disabled>
                     </div>
                     <div class="form-group">
                         <label for="timeStartTour">Email</label>
-                        <input type="datetime-local" class="form-control" id="timeStartTour" [(ngModel)]="user.email" name="timeStartTour" required>
+                        <input type="text" class="form-control" id="timeStartTour" [(ngModel)]="user.email" name="timeStartTour" disabled>
                     </div>
                   </ng-container>
             </div>
@@ -98,15 +98,15 @@
                     <ng-container *ngFor="let user of getUserInfo">
                     <div class="form-group">
                         <label for="scheduleQuantity">Name</label>
-                        <input type="number" class="form-control" id="scheduleQuantity" [(ngModel)]="user.firstName" name="scheduleQuantity" placeholder="Enter quantity" required>
+                        <input type="text" class="form-control" id="scheduleQuantity" [(ngModel)]="user.firstName" name="scheduleQuantity" placeholder="Enter quantity" disabled>
                     </div>
                     <div class="form-group">
                         <label for="schedulePrice">Phone</label>
-                        <input type="number" class="form-control" id="schedulePrice" [(ngModel)]="user.phone" name="schedulePrice" placeholder="Enter price" required>
+                        <input type="text" class="form-control" id="schedulePrice" [(ngModel)]="user.phone" name="schedulePrice" placeholder="Enter price" disabled>
                     </div>
                     <div class="form-group">
                         <label for="timeStartTour">Email</label>
-                        <input type="datetime-local" class="form-control" id="timeStartTour" [(ngModel)]="user.email" name="timeStartTour" required>
+                        <input type="text" class="form-control" id="timeStartTour" [(ngModel)]="user.email" name="timeStartTour" disabled>
                     </div>
                   </ng-container>
             </div>

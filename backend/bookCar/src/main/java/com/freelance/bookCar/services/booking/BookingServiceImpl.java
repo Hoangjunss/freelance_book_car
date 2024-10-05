@@ -600,34 +600,32 @@ public class BookingServiceImpl implements BookingService{
     public OrderResponse order(OrderRequest orderRequest) {
         GetBookingResponse getBookingResponse=findById(orderRequest.getId());
         Booking booking=modelMapper.map(getBookingResponse,Booking.class);
-        Booking bookingsave= bookingRepository.save(booking);
+
         log.info("Booking id 598: {}" , booking.getId());
         List<UserInfo> updatedUserInfo = orderRequest.getCreateUserInfoRequest().stream()
                 .map(createUserInfoResponse -> {
                      UserInfo userInfo = modelMapper.map(createUserInfoResponse, UserInfo.class);
-                     userInfo.setBooking(bookingsave);
+                     userInfo.setBooking(booking);
                     UserInfo userInfoSave=modelMapper.map( userInfoService.create(modelMapper.map(userInfo, CreateUserInfoRequest.class)),UserInfo.class);
                      return userInfoSave;
                  })
-
                 .toList();
         log.info("600: {}", updatedUserInfo.toString());
-
-
+        booking.setUserInfo(updatedUserInfo);
 
         List<UserJoin> updatedUserJoin = orderRequest.getCreateUserJoinRequest().stream()
                 .map(createUserJoinResponse -> {
                     UserJoin userJoin = modelMapper.map(createUserJoinResponse, UserJoin.class);
-                    userJoin.setBooking(bookingsave);
-                    UserJoin userInfoSave=modelMapper.map( userJoinService.create(modelMapper.map(userJoin, CreateUserJoinRequest.class)),UserJoin.class);
-                    return userInfoSave;
+                    userJoin.setBooking(booking);
+                    UserJoin userJoinSave=modelMapper.map( userJoinService.create(modelMapper.map(userJoin, CreateUserJoinRequest.class)),UserJoin.class);
+                    return userJoinSave;
                 })
                 .toList();
         log.info("609: {}", updatedUserJoin.toString());
+        booking.setUserJoin(updatedUserJoin);
+        log.info("615: {}", booking.toString());
 
-
-        log.info("615: {}", bookingsave.toString());
-
+        Booking bookingsave= bookingRepository.save(booking);
         Mail mail=mailService.getMail(updatedUserInfo.getFirst().getEmail(),"Đơn hàng số "+booking.getId()+ "của bạn đã được đặt vui lòng kiểm tra lại ","Đơn hàng số: "+booking.getId());
         mailService.sendMail(mail);
         return modelMapper.map(bookingsave,OrderResponse.class);

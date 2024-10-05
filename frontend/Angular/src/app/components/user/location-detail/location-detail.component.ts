@@ -74,7 +74,16 @@ export class LocationDetailComponent {
       next: (response) => {
         const currentDate = new Date();
         if (response) {
-          this.getTourScheduleResponse = response;
+          this.getTourScheduleResponse = response
+          .filter(ticket => {
+            const startDate = new Date(ticket.timeStartTour || '');
+            return startDate >= currentDate; 
+          })
+          .sort((a, b) => {
+            const dateA = new Date(a.timeStartTour || '');
+            const dateB = new Date(b.timeStartTour || '');
+            return dateA.getTime() - dateB.getTime(); 
+          });
           this.getTourScheduleResponse.forEach(schedule => {
             if (schedule.timeStartTour !== undefined) {
               const scheduleDate = new Date(schedule.timeStartTour);

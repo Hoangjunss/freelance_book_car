@@ -139,15 +139,28 @@ export class CartComponent implements OnInit {
 
           if (this.products.some(p => p.type === 'tour')) {
             this.products.filter(p => p.type === 'tour').forEach(p => {
-              this.getTourDetail(p.id);
+              //this.getTourDetail(p.id);
               this.tourScheduleService.getSchedule(p.id).subscribe({
                 next: (scheduleResponse) => {
+                  console.log(scheduleResponse);
                   p.schedule = scheduleResponse;
+                  this.tourService.getTourById(scheduleResponse.idTour).subscribe({
+                    next: (tourResponse) => {
+                      p.name = tourResponse.name;
+                      p.image = tourResponse.image
+                      p.startLocation = tourResponse.startLocation;
+                      p.endLocation = tourResponse.endLocation;
+                    },
+                    error: (error) => {
+                      console.log("Error:", error);
+                    }
+                  })
                 },
                 error: (error: any) => {
                   console.log("Error:", error);
                 }
               });
+
             });
           }
 
@@ -183,9 +196,11 @@ export class CartComponent implements OnInit {
               console.log('Ticket ID:', p.id);
               this.ticketService.getTicket(p.id).subscribe({
                 next: (ticketResponse) => {
+                  console.log(ticketResponse);
                   p.dateEvent = ticketResponse.startDate;
-                  this.tourismService.getTour(p.id).subscribe({
+                  this.tourismService.getTour(ticketResponse.idTourism).subscribe({
                     next: (scheduleTicketResponse) => {
+                      console.log(scheduleTicketResponse);
                       p.image = scheduleTicketResponse.image;
                       p.venue = scheduleTicketResponse.location;
                       p.name = scheduleTicketResponse.name;
@@ -201,7 +216,6 @@ export class CartComponent implements OnInit {
               });
             });
           }
-        } else {
         }
       },
       error: (error) => {

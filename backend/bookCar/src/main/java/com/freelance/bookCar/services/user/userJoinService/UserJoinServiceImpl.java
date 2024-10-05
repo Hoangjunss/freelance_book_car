@@ -49,7 +49,9 @@ public class UserJoinServiceImpl implements UserJoinService{
         userJoinBuilder.booking(createUserJoinRequest.getBooking());
 
         UserJoin userJoin = userJoinBuilder.build();
-        return modelMapper.map(userJoinRepository.save(userJoin), CreateUserJoinResponse.class);
+        UserJoin userJoin1 = userJoinRepository.save(userJoin);
+        log.info("userjoin 53: {}", userJoin1.toString());
+        return modelMapper.map(userJoin1, CreateUserJoinResponse.class);
     }
 
     @Override
@@ -74,6 +76,7 @@ public class UserJoinServiceImpl implements UserJoinService{
         if (updateUserJoinRequest.getEmail() != null) {
             userJoinBuilder.email(updateUserJoinRequest.getEmail());
         }
+
 
         userJoin = userJoinBuilder.build();
         UserJoin userJoin1=userJoinRepository.save(userJoin);
