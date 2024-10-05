@@ -23,6 +23,7 @@ import { TourismService } from '../../../services/product/ticket/tourism/tourism
 import { HotelbookingService } from '../../../services/product/hotel/hotelbooking/hotelbooking.service';
 import { TourScheduleService } from '../../../services/product/tour/tour-schedule/tour-schedule.service';
 import { NotificationComponent } from '../../notification/notification.component';
+import { VoucherService } from '../../../services/product/voucher/voucher/voucher.service';
 
 @Component({
   selector: 'app-booking',
@@ -64,6 +65,9 @@ export class BookingComponent implements OnInit {
   originalUserJoin: CreateUserJoinRequest;
   originalUserInfo: CreateUserInfoRequest;
   formInvalid: boolean = false;
+  voucherCode: string = '';
+  discountAmount: number = 5000;
+
 
   @ViewChild(NotificationComponent) notificationComponent!: NotificationComponent;
   constructor(
@@ -77,6 +81,7 @@ export class BookingComponent implements OnInit {
     private hotelService: HotelService,
     private hotelBookingService: HotelbookingService,
     private ticketService: TicketService,
+    private voucherService: VoucherService
   ) {
     this.hours = Array.from({ length: 24 }, (_, i) => i);
 
@@ -423,5 +428,29 @@ export class BookingComponent implements OnInit {
   isValidEmail(email: string): boolean {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Simple email regex
     return emailPattern.test(email);
+  }
+
+  applyVoucher() {
+    if (!this.voucherCode) {
+      this.notificationComponent.showNotification('error', 'Vui lòng nhập mã giảm giá');
+      return;
+    }
+
+    // this.voucherService.getVoucherByName(this.voucherCode).subscribe({
+    //   next: (response) => {
+    //     if (response) {
+    //       this.totalPrice -= response.discountRate;
+    //       this.notificationComponent.showNotification('success', 'Áp dụng mã giảm giá thành công');
+    //     }
+    //   },
+    //   error: (error) => {
+    //     this.notificationComponent.showNotification('error', 'Mã giảm giá không hợp lệ');
+    //   }
+    // });
+
+    if(this.voucherCode === 'ABC') {
+      this.totalPrice -= this.discountAmount;
+      this.notificationComponent.showNotification('success', 'Áp dụng mã giảm giá thành công');
+    }
   }
 }

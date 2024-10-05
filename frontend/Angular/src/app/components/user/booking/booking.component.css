@@ -320,6 +320,28 @@
     font-size: 0.9rem;
     color: #6c757d;
 }
+
+
+.voucher-input {
+    width: 70%;
+    margin-right: 15px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.btn-voucher {
+    background-color: #28a745;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.btn-voucher:hover {
+    background-color: #218838;
+}
 .text-total {
     font-size: 0.9rem;
     color: #6c757d;
