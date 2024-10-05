@@ -67,12 +67,13 @@ export class NavbarComponent implements OnInit {
       this.navbarContent = [
         { label: 'Logout', action: (event?: MouseEvent) => this.logout(event) , isUser: false },
         { label: `${this.CurrentUser}`, isUser: true },
-        { label: 'View History', routerLink: '/order-history', isUser: false }
+        { label: 'View History', routerLink: '/order-history', isUser: false },
       ];
     } else {
       this.navbarContent = [
         { label: 'Sign Up', routerLink: '/auth/login', isUser: false },
-        { label: 'My Account', isUser: true }
+        { label: 'My Account', isUser: true },
+        { label: 'View History', routerLink: '/order-history', isUser: false },
       ];
     }
   }

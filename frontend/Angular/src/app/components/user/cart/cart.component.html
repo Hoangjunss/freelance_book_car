@@ -2,6 +2,7 @@
 <div class="container mt-5 cart-container">
     <h2 class="mb-4 text-center">Giỏ hàng của bạn</h2>
 
+  
     <!-- Product list -->
     <ul class="list-group mb-4" *ngIf="products.length > 0">
         <li *ngFor="let product of products"
@@ -54,8 +55,13 @@
         <button class="btn btn-success btn-checkout" (click)="updateBookingType()">Thanh toán</button>
     </div>
 
+    <div *ngIf="!isLoggedIn" class="alert alert-warning text-center">
+        Bạn cần <a routerLink="/login">đăng nhập</a> để xem giỏ hàng của bạn.
+    </div>
+
      <!-- Empty cart message -->
-     <div *ngIf="products.length === 0" class="empty-cart-message text-center mt-4">
+     <div *ngIf="products.length === 0 && isLoggedIn" class="empty-cart-message text-center mt-4">
         <p>Giỏ hàng của bạn trống</p>
     </div>
+
 </div>

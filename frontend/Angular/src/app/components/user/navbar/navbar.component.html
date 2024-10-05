@@ -40,7 +40,7 @@
                     <!-- Mobile Menu -->
                     <div class="collapse" id="mobileMenu">
                         <!-- Mobile Logo -->
-                        <a class="navbar-brand mx-auto" >
+                        <a class="navbar-brand mx-auto">
                             <img src="../../../../assets/img/LOGO/LOGO_1.png" alt="Logo" class="logo">
                         </a>
 
@@ -49,16 +49,17 @@
                             <button class="btn w-100" routerLink="/home">Home</button>
                             <button class="btn btn-secondary mb-2 w-100" routerLink="/auth/login"
                                 *ngIf="!CurrentUser">Sign Up</button>
-                            <button class="btn btn-secondary mb-2 w-100" (click)="logout()">Logout</button>
-                            <button class="btn btn-danger w-100 mb-2"><i
+                            <button class="btn btn-secondary mb-2 w-100" *ngIf="CurrentUser"
+                                (click)="logout()">Logout</button>
+                            <button class="btn btn-danger w-100 mb-2" *ngIf="CurrentUser"><i
                                     class="fa-solid fa-user-circle me-2"></i>{{CurrentUser}}</button>
 
-                            <button class="btn btn-secondary mb-2 w-100" routerLink="/order-history" *ngIf="CurrentUser">
+                            <button class="btn btn-secondary mb-2 w-100" routerLink="/order-history">
                                 <i class="fa-solid fa-history me-2"></i>View History
                             </button>
-                            <button class="btn btn-secondary mb-2 w-100" routerLink="/cart" *ngIf="CurrentUser">
+                            <button class="btn btn-secondary mb-2 w-100" routerLink="/cart">
                                 <i class="fa-solid fa-cart-shopping me-2"></i>Giỏ hàng
-                            </button>                            
+                            </button>
                             <button class="btn btn-danger w-100" *ngIf="!CurrentUser"><i
                                     class="fa-solid fa-user-circle me-2"></i> My Account</button>
                         </div>
@@ -79,7 +80,8 @@
         <div class="header-content d-flex align-items-center justify-content-between text-white p-3">
             <img src="../../../../assets/img/LOGO/LOGO_1.png" alt="Logo" class="logo" (click)="navigateToHome()">
             <div class="search-container position-relative">
-                <input type="search" class="form-control search-box" placeholder="Tìm theo điểm đến, hoạt động" [(ngModel)]="searchQuery" (keydown.enter)="onSearch()">
+                <input type="search" class="form-control search-box" placeholder="Tìm theo điểm đến, hoạt động"
+                    [(ngModel)]="searchQuery" (keydown.enter)="onSearch()">
                 <i class="fa-solid fa-search search-icon position-absolute" (click)="onSearch()"></i>
             </div>
             <div class="extra-options d-flex align-items-center gap-5">
