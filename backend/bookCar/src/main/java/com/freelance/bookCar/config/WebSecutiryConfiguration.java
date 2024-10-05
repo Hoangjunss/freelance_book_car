@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -37,18 +38,27 @@ private JwtAuthenticationFilter jwtAuthenticationFilter;
             CorsConfigurationSource corsConfigurationSource) throws Exception {
 
         http
-                // Loại bỏ bảo vệ CSRF
+                .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .csrf(AbstractHttpConfigurer::disable)
 
-                // Configure các luồng truy cập
-                .authorizeHttpRequests((auth) -> auth.requestMatchers("/auth/registration","/auth/login","/auth/refreshtoken","/hotel","/tour","/tourism").permitAll()
-                    // Xác thực tất cả các request
+                .authorizeHttpRequests((auth) ->auth
+                        .requestMatchers("/api/v1/auth/registration","/api/v1/auth/login","/api/v1/auth/refreshtoken").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/v1/hotel-booking/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/v1/hotel/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/v1/ticket/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/v1/tourism/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/v1/tour/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/v1/tourSchedule/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/v1/tour-schedule/tour/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/v1/page/detail").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/v1/page/home").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/v1/page/footer").permitAll()
+
                         .anyRequest()
                         .authenticated()
 
                 ).httpBasic(Customizer.withDefaults())
 
-                // Add JWT vào chuỗi lọc và ưu tiên loc theo JWT
                 .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider()).addFilterBefore(
                         jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class

@@ -6,4 +6,5 @@ export class UpdateHotelResponse{
     location?: string;
     active?: boolean;
     rating?: number;
+    image?: string;
 }

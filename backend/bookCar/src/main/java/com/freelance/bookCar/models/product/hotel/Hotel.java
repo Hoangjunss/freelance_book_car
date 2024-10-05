@@ -22,5 +22,4 @@ public class Hotel {
     private boolean isActive;
     private double rating;
     private String image;
-    // Getters and Setters
 }

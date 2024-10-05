@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 public class UpdateTourScheduleRequest {
     private Integer id;
     private LocalDateTime timeStartTour;
-    private  LocalDateTime timeEndTour;
     private Integer idTour;
     private Integer quantity;
     private  Double priceTour;

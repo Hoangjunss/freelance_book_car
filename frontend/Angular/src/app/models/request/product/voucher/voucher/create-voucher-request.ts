@@ -1,5 +1,6 @@
 export class CreateVoucherRequest{
-    createDate?: Date;
-    use?: boolean;
-    idPromotion?: number;
+    endDate?: Date;
+    isUse?: boolean;
+    name?: string;
+    discountRate?: number;
 }

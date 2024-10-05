@@ -71,7 +71,7 @@
     top: 0;
     left: 0;
     bottom: 0;
-    width: 250px;
+    width: 255px;
     height: 100vh;
     overflow-y: auto;
     background: var(--light);
@@ -169,6 +169,8 @@
     font-family: "Font Awesome 5 Free";
     font-weight: 900;
     transition: .5s;
+    height: 24px;
+    width: 10px;
 }
 
 .sidebar .navbar .dropdown-toggle[aria-expanded=true]::after {
@@ -178,6 +180,10 @@
 .sidebar .navbar .dropdown-item {
     padding-left: 25px;
     border-radius: 0 30px 30px 0;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+    background: var(--primary);
 }
 
 .content .navbar .navbar-nav .nav-link {
@@ -190,6 +196,10 @@
 .content .navbar .navbar-nav .nav-link:hover,
 .content .navbar .navbar-nav .nav-link.active {
     color: var(--primary);
+}
+
+.nav-item .nav-link.active,.nav-item .nav-link:active{
+    background: #FFFFFF;
 }
 
 .content .navbar .sidebar-toggler,
@@ -211,6 +221,8 @@
     font-family: "Font Awesome 5 Free";
     font-weight: 900;
     transition: .5s;
+    width: 10px;
+    height: 24px;
 }
 
 .content .navbar .dropdown-toggle[aria-expanded=true]::after {

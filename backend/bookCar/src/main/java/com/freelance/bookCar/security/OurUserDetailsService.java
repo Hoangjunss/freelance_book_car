@@ -2,6 +2,7 @@ package com.freelance.bookCar.security;
 
 
 
+import com.freelance.bookCar.models.user.User;
 import com.freelance.bookCar.respository.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,7 +16,7 @@ public class OurUserDetailsService implements UserDetailsService {
     private UserRepository userRepository;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByEmail(username)
+        return(User) userRepository.findByEmail(username)
                              .orElseThrow(()-> new UsernameNotFoundException("User not found with email: " + username));
     }
 }

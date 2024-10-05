@@ -14,6 +14,6 @@ public class AddBookingTourRequest {
     private Integer idBooking;
     private Integer idTour;
     private Integer quantity;
-    private Integer totalPrice;
+    private String totalPrice;
     private Integer idUser;
 }

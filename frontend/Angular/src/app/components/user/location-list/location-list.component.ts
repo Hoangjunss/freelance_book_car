@@ -3,18 +3,26 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { trigger, transition, style, animate, query, stagger } from '@angular/animations';
 import { TourService } from '../../../services/product/tour/tour/tour.service';
+import { GetTourResponse } from '../../../models/response/product/tour/tour/get-tour-response';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { AuthInterceptor } from '../../../services/auth.interceptor';
+import { UserService } from '../../../services/user/user.service';
 
 @Component({
   selector: 'app-location-list',
-  imports:[CommonModule,RouterLink],
+  imports:[CommonModule,RouterLink,HttpClientModule],
   standalone: true,
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    UserService
+  ],
   templateUrl: './location-list.component.html',
   styleUrls: ['./location-list.component.css']
 
 })
 export class LocationListComponent implements OnInit {
   location: string | null = null;
-  locations: { name: string, imageUrl: string }[] = [];
+  locations: GetTourResponse [] = [];
 
   constructor(private route: ActivatedRoute, private router:Router,private tourService : TourService) { }
 
@@ -28,21 +36,22 @@ export class LocationListComponent implements OnInit {
   }
 
   getLocationsForSelectedLocation(location: string) {
-    this.tourService.getAllTour().subscribe(response => {
-      console.log(response);
-      console.log("Địa điểm " + location);
-      if (response) {
-        
-        console.log("Thành công");
-      } else {
-        console.log("Thất bại");
-      }
-    }, error => {
-      console.log("Error:", error);
+    this.tourService.getTourByCategory(location).subscribe({
+      next: (response) => {
+        if (response) {
+          this.locations = response;
+        } else {
+        }
+      },
+      error(err) {
+        console.log('Error fetching locations:',err);
+      },
     });
   }
 
-  goToLocationDetail(locationId: String) {
-    this.router.navigate(['/location-details']);
+  goToLocationDetail(locationId?: number) {
+    const path = `/location-details/${locationId}`;
+    this.router.navigate([path]);
   }
+  
 }

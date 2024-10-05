@@ -16,10 +16,8 @@ import java.time.LocalDateTime;
 public class HotelBooking {
     @Id
     private Integer id;
-
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private double totalPrice;
     private Integer hotel;
-    // Getters and Setters
 }

@@ -5,6 +5,7 @@ import com.freelance.bookCar.dto.request.product.hotelDTO.hotelBooking.UpdateHot
 import com.freelance.bookCar.dto.response.product.hotelDTO.hotelBooking.CreateHotelBookingResponse;
 import com.freelance.bookCar.dto.response.product.hotelDTO.hotelBooking.GetHotelBookingResponse;
 import com.freelance.bookCar.dto.response.product.hotelDTO.hotelBooking.UpdateHotelBookingResponse;
+import com.freelance.bookCar.dto.response.product.ticketDTO.ticket.GetTicketResponse;
 import com.freelance.bookCar.exception.CustomException;
 import com.freelance.bookCar.exception.Error;
 import com.freelance.bookCar.models.product.hotel.Hotel;
@@ -16,7 +17,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -31,10 +34,6 @@ public class HotelBookingServiceImpl implements HotelBookingService {
     public CreateHotelBookingResponse createHotelBooking(CreateHotelBookingRequest createHotelBookingRequest) {
         log.info("Creating hotel booking for hotel ID: {}", createHotelBookingRequest.getHotel());
 
-        // Validation
-        if (createHotelBookingRequest.getEndDate() == null) {
-            throw new CustomException(Error.HOTEL_BOOKING_INVALID_END_DATE);
-        }
         if (createHotelBookingRequest.getStartDate() == null) {
             throw new CustomException(Error.HOTEL_BOOKING_INVALID_START_DATE);
         }
@@ -48,7 +47,6 @@ public class HotelBookingServiceImpl implements HotelBookingService {
         HotelBooking hotelBooking = HotelBooking.builder()
                 .id(getGenerationId())
                 .hotel(createHotelBookingRequest.getHotel())
-                .endDate(createHotelBookingRequest.getEndDate())
                 .startDate(createHotelBookingRequest.getStartDate())
                 .totalPrice(createHotelBookingRequest.getTotalPrice())
                 .build();
@@ -101,6 +99,19 @@ public class HotelBookingServiceImpl implements HotelBookingService {
                 .orElseThrow(() -> new CustomException(Error.HOTEL_BOOKING_NOT_FOUND));
 
         return modelMapper.map(hotelBooking, GetHotelBookingResponse.class);
+    }
+
+    @Override
+    public List<GetHotelBookingResponse> findAllByIdHotel(Integer idHotel) {
+        return hotelBookingRepository.findAllByHotel(idHotel)
+                .stream()
+                .map(hotelBooking -> modelMapper.map(hotelBooking, GetHotelBookingResponse.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<GetHotelBookingResponse> getAll() {
+        return hotelBookingRepository.findAll().stream()
+                .map(hotelBooking -> modelMapper.map(hotelBooking, GetHotelBookingResponse.class)).collect(Collectors.toList());
     }
 
     private Integer getGenerationId() {

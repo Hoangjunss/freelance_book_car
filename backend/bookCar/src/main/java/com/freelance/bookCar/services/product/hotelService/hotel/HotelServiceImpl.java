@@ -3,11 +3,14 @@ package com.freelance.bookCar.services.product.hotelService.hotel;
 import com.freelance.bookCar.dto.request.product.hotelDTO.hotel.CreateHotelRequest;
 import com.freelance.bookCar.dto.request.product.hotelDTO.hotel.UpdateHotelRequest;
 import com.freelance.bookCar.dto.response.product.hotelDTO.hotel.CreateHotelResponse;
+import com.freelance.bookCar.dto.response.product.hotelDTO.hotel.GetHotelDetailResponse;
 import com.freelance.bookCar.dto.response.product.hotelDTO.hotel.GetHotelResponse;
 import com.freelance.bookCar.dto.response.product.hotelDTO.hotel.UpdateHotelResponse;
 import com.freelance.bookCar.exception.CustomException;
 import com.freelance.bookCar.exception.Error;
 import com.freelance.bookCar.models.product.hotel.Hotel;
+import com.freelance.bookCar.models.product.hotel.HotelBooking;
+import com.freelance.bookCar.respository.product.hotel.HotelBookingRepository;
 import com.freelance.bookCar.respository.product.hotel.HotelRepository;
 import com.freelance.bookCar.services.CloudinaryService;
 import com.freelance.bookCar.services.image.ImageService;
@@ -16,6 +19,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -29,6 +33,8 @@ public class HotelServiceImpl implements HotelService {
     private ModelMapper modelMapper;
     @Autowired
     private ImageService imageService;
+    @Autowired
+    private HotelBookingRepository hotelBookingRepository;
     @Override
     public CreateHotelResponse createHotel(CreateHotelRequest createHotelRequest) {
         log.info("Creating hotel with name: {}", createHotelRequest.getName());
@@ -71,7 +77,7 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
     public UpdateHotelResponse updateHotel(UpdateHotelRequest updateHotelRequest) {
-        log.info("Updating hotel with id: {}", updateHotelRequest.getId());
+        log.info("Updating hotel with id: {}", updateHotelRequest.toString());
 
         if (updateHotelRequest.getId() == null) {
             throw new CustomException(Error.HOTEL_NOT_FOUND);
@@ -123,6 +129,17 @@ public class HotelServiceImpl implements HotelService {
     public List<GetHotelResponse> getAll() {
         return hotelRepository.findAll().stream().map(hotel -> modelMapper.map(hotel, GetHotelResponse.class)).collect(Collectors.toList());
     }
+
+    @Override
+    public List<GetHotelResponse> findByLocation(String location) {
+        return hotelRepository.findAllByLocation(location).stream().map(hotel -> modelMapper.map(hotel, GetHotelResponse.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<GetHotelResponse> findByName(String name) {
+        return hotelRepository.searchAllByLocation(name).stream().map(hotel -> modelMapper.map(hotel,GetHotelResponse.class)).collect(Collectors.toList());
+    }
+
 
     private Integer getGenerationId() {
         UUID uuid = UUID.randomUUID();

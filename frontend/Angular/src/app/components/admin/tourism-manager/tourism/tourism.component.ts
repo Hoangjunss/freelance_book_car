@@ -21,6 +21,7 @@ export class TourismComponent {
   updateTourismRequest: UpdateTourismRequest = new UpdateTourismRequest();
   updateTourismResponse: CreateTourismResponse = new CreateTourismResponse();
   getTourismResponse: GetTourismResponse[] = [];
+  filterTourism: GetTourismResponse[] = [];
 
   isDisplayCreate = false;
   isDisplayUpdate = false;
@@ -29,6 +30,8 @@ export class TourismComponent {
   selectedImage: string = 'assets/img/DEFAULT/tour-default.png';
 
   imageFile?: File;
+  imageUri?: string;
+  searchQuery: string='';
 
   tour?: GetTourismResponse;
   currentPage: number = 1;
@@ -50,11 +53,11 @@ export class TourismComponent {
   updatePagedData() {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
-    this.pagedData = this.getTourismResponse.slice(startIndex, endIndex);
+    this.pagedData = this.filterTourism.slice(startIndex, endIndex);
   }
 
   get totalPages(): number {
-    return Math.ceil(this.getTourismResponse.length / this.pageSize);
+    return Math.ceil(this.filterTourism.length / this.pageSize);
   }
 
   get pages(): number[] {
@@ -66,43 +69,65 @@ export class TourismComponent {
   }
 
   closeFormCreate(){
-    this.isDisplayCreate = true;
+    this.isDisplayCreate = false;
+  }
+
+  searchTour() {
+    console.log('Search Query:', this.searchQuery);
+    if (this.searchQuery.trim() != '') {
+      this.filterTourism = this.getTourismResponse.filter(hotel =>
+        hotel.name?.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+  
+      console.log(this.filterTourism);
+      
+      this.currentPage = 1;
+      
+      this.updatePagedData();
+    }
+  }
+
+  reset(){
+    this.filterTourism = this.getTourismResponse;
+    this.updatePagedData();
   }
 
   displayFormUpdate(tourism: GetTourismResponse){
     this.updateTourismRequest = {
       id: tourism.id,
-      
+      name: tourism.name,
+      location: tourism.location,
+      description: tourism.description,
+      rating: tourism.rating,
     };
+    this.imageUri = tourism.image;
     this.isDisplayUpdate = true;
   }
 
   closeFormUpdate(){
+    this.imageUri='assets/img/DEFAULT/tour-default.png';
     this.isDisplayUpdate = false;
   }
 
   onImageSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
-      this.createTourismRequest.image = file; // Gán tệp ảnh đã chọn vào thuộc tính image của createTourRequest
+      this.imageFile = file; // Gán tệp ảnh đã chọn vào thuộc tính image của createTourRequest
       const reader = new FileReader();
       reader.onload = () => {
-        this.imageUrl = reader.result as string; // Hiển thị ảnh vừa chọn trong form
+        this.imageUri = reader.result as string; // Hiển thị ảnh vừa chọn trong form
       };
       reader.readAsDataURL(file);
     }
   }
 
-  onSubmit() {
-    console.log('Tour data:', this.createTourismRequest);
+  onCreate() {
   
-    // Kiểm tra các trường bắt buộc
     if (!this.createTourismRequest?.name || !this.createTourismRequest?.location || !this.createTourismRequest?.description) {
       alert('Please fill in all required fields: Name, Location, Description');
       return;
     }
 
-    // Tạo đối tượng FormData
     const formData = new FormData();
     formData.append('name', this.createTourismRequest.name || '');
     formData.append('description', this.createTourismRequest.description || '');
@@ -110,23 +135,21 @@ export class TourismComponent {
     formData.append('rating', this.createTourismRequest.rating?.toString() || '');
   
     // Kiểm tra và thêm hình ảnh vào FormData nếu có
-    if (this.createTourismRequest.image) {
-      formData.append('image', this.createTourismRequest.image);
+    if (this.imageFile != undefined) {
+      formData.append('image', this.imageFile);
     }else{
-
+      alert('Please select image');
+      return;
     }
 
-    formData.forEach((value, key) => {
-      console.log(`${key}: ${value}`);
-    });
 
     // Gọi service để tạo tour
     this.tourismService.createTour(formData).subscribe({
       next: (data) => {
         this.createTourismResponse = data;
         if (this.createTourismResponse) {
-          console.log('Tour created successfully:', data);
           alert('Tour created successfully');
+          window.location.reload();
         }
       },
       error: (err) => {
@@ -136,15 +159,53 @@ export class TourismComponent {
     });
   }
 
+  onUpdate(){
+    if(!this.updateTourismRequest?.id){
+      alert('Tourism Update Not Found');
+      return;
+    }
+    // Kiểm tra các trường bắt buộc
+    if (!this.updateTourismRequest?.name || !this.updateTourismRequest?.location || !this.updateTourismRequest?.description) {
+      alert('Please fill in all required fields: Name, Location, Description');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('id', this.updateTourismRequest.id.toString() || '')
+    formData.append('name', this.updateTourismRequest.name || '');
+    formData.append('description', this.updateTourismRequest.description || '');
+    formData.append('location', this.updateTourismRequest.location || '');
+    formData.append('rating', this.updateTourismRequest.rating?.toString() || '');
+  
+    if (this.imageFile != undefined) {
+      formData.append('image', this.imageFile);
+    }else{
+
+    }
+
+    this.tourismService.updateTour(formData).subscribe({
+      next: (data) => {
+        this.createTourismResponse = data;
+        if (this.createTourismResponse) {
+          alert('Tour created successfully');
+          window.location.reload();
+        }
+      },
+      error: (err) => {
+        console.error('Error creating tour:', err.message);
+      }
+    });
+  }
+
   getAllTourisms(){
     this.tourismService.getAllTourism().subscribe({
       next: (data) =>{
         this.getTourismResponse = data;
+        this.filterTourism = this.getTourismResponse;
         this.updatePagedData();
       },
       error: (err) => {
         console.error('Error get all tourism:', err.message);
-        alert(`Error creating tourism: ${err.message}`);
       }
     })
   }

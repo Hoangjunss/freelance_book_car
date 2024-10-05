@@ -7,9 +7,12 @@ import com.freelance.bookCar.dto.response.product.voucherDTO.promotion.GetPromot
 import com.freelance.bookCar.dto.response.product.voucherDTO.promotion.UpdatePromotionResponse;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public interface PromotionService {
     CreatePromotionResponse create(CreatePromotionRequest createPromotionRequest);
     UpdatePromotionResponse update(UpdatePromotionRequest updatePromotionRequest);
     GetPromotionResponse findById(Integer id);
+    List<GetPromotionResponse> getAll();
 }

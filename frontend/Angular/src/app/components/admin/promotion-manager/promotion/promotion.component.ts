@@ -1,34 +1,60 @@
+import { GetPromotionResponse } from './../../../../models/response/product/voucher/promotion/get-promotion-response';
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { GetHotelResponse } from '../../../../models/response/product/hotel/hotel/get-hotel-response';
+import { NoDataFoundComponent } from "../../no-data-found/no-data-found.component"; // Giả sử có component này
+import { CreatePromotionRequest } from '../../../../models/request/product/voucher/promotion/create-promotion-request';
+import { UpdatePromotionRequest } from '../../../../models/request/product/voucher/promotion/update-promotion-request';
+import { UpdatePromotionResponse } from '../../../../models/response/product/voucher/promotion/update-promotion-response';
+import { CreatePromotionResponse } from '../../../../models/response/product/voucher/promotion/create-promotion-response';
+import { PromotionService } from '../../../../services/product/voucher/promotion/promotion.service';
 
 @Component({
   selector: 'app-promotion',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NoDataFoundComponent],
   templateUrl: './promotion.component.html',
-  styleUrl: './promotion.component.css'
+  styleUrls: ['./promotion.component.css']
 })
 export class PromotionComponent {
+  createPromotionRequest: CreatePromotionRequest = new CreatePromotionRequest();
+  createPromotionResponse: CreatePromotionResponse = new CreatePromotionResponse();
+  updatePromotionRequest: UpdatePromotionRequest = new UpdatePromotionRequest();
+  updatePromotionResponse: UpdatePromotionResponse = new UpdatePromotionResponse();
+  
   selectedImage: string = 'assets/img/DEFAULT/hotel-default.png';
-  isDisplayDetails: boolean = false;
-  hotel?: GetHotelResponse;
-  data: GetHotelResponse[] = [];
+  isDisplayCreate = false;
+  isDisplayUpdate = false;
+  getPromotionResponse: GetPromotionResponse[] = [];
   currentPage: number = 1;
   pageSize: number = 5;
-  pagedData: GetHotelResponse[] = [];
+  filterPromotion: GetPromotionResponse[] = [];
+  pagedData: GetPromotionResponse[] = [];
+  searchQuery: string='';
+
+  constructor(private promotionService: PromotionService) {}
 
   ngOnInit(): void {
-    this.data = this.getData();
+    this.getAllPromotions();
     this.updatePagedData();
     console.log(this.selectedImage);
   }
 
-  updatePagedData() {
-    const startIndex = (this.currentPage - 1) * this.pageSize;
-    const endIndex = startIndex + this.pageSize;
-    this.pagedData = this.data.slice(startIndex, endIndex);
+  searchTour() {
+    console.log('Search Query:', this.searchQuery);
+    if (this.searchQuery.trim() != '') {
+      this.filterPromotion = this.getPromotionResponse.filter(tour =>
+        tour.name?.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+      console.log(this.filterPromotion);
+      this.updatePagedData();
+    }
+  }
+
+  reset(){
+    this.filterPromotion = this.getPromotionResponse;
+    this.updatePagedData();
   }
 
   goToPage(page: number) {
@@ -36,56 +62,136 @@ export class PromotionComponent {
     this.updatePagedData();
   }
 
+  updatePagedData() {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    this.pagedData = this.filterPromotion.slice(startIndex, endIndex);
+  }
+
   get totalPages(): number {
-    return Math.ceil(this.data.length / this.pageSize);
+    return Math.ceil(this.filterPromotion.length / this.pageSize);
   }
 
   get pages(): number[] {
     return Array(this.totalPages).fill(0).map((x, i) => i + 1);
   }
 
-  getData(): GetHotelResponse[] {
-    return [
-      { id: 1, name: 'Hotel California', contacInfo: '123-456-789', pricePerNight: 150, location: 'USA', active: true, rating: 4.5 },
-      { id: 2, name: 'Grand Hotel', contacInfo: '987-654-321', pricePerNight: 200, location: 'France', active: true, rating: 4.2 },
-      { id: 3, name: 'Royal Suite', contacInfo: '555-123-456', pricePerNight: 300, location: 'UK', active: false, rating: 4.8 },
-      { id: 4, name: 'Beach Resort', contacInfo: '444-321-654', pricePerNight: 250, location: 'Australia', active: true, rating: 4.7 },
-      { id: 5, name: 'Mountain Lodge', contacInfo: '222-789-123', pricePerNight: 180, location: 'Canada', active: false, rating: 4.1 },
-      { id: 6, name: 'City Center Hotel', contacInfo: '111-222-333', pricePerNight: 220, location: 'Germany', active: true, rating: 4.3 },
-    ];
+  displayFormCreate() {
+    this.isDisplayCreate = true;
   }
 
-  displayDetailsHotel() {
-    this.isDisplayDetails = true;
+  closeFormCreate() {
+    this.isDisplayCreate = false;
   }
 
-  save() {
-    if (this.hotel) {
-      console.log('Saved:', {
-        id: this.hotel.id,
-        name: this.hotel.name,
-        contacInfo: this.hotel.contacInfo,
-        pricePerNight: this.hotel.pricePerNight,
-        location: this.hotel.location,
-        active: this.hotel.active,
-        rating: this.hotel.rating
-      });
+  displayFormUpdate(promotion: GetPromotionResponse) {
+    this.updatePromotionRequest = {
+      id: promotion.id,
+      name: promotion.name,
+      discountRate: promotion.discountRate,
+      startDate: promotion.startDate,
+      endDate: promotion.endDate,
+      description: promotion.description,
+    };
+    this.isDisplayUpdate = true;
+  }
+
+  closeFormUpdate() {
+    this.isDisplayUpdate = false;
+  }
+
+  getAllPromotions() {
+    this.promotionService.getAll().subscribe({
+      next: (data) => {
+        this.getPromotionResponse = data;
+        this.filterPromotion = this.getPromotionResponse;
+        this.updatePagedData();
+        console.log('All promotions:', this.getPromotionResponse);
+      },
+      error: (err) => {
+        console.error('Error getting promotions:', err.message);
+      }
+    });
+  }
+
+  onCreatePromotion() {
+    // Kiểm tra nếu các trường bắt buộc không được điền
+    if (!this.createPromotionRequest?.name || 
+        !this.createPromotionRequest?.discountRate || 
+        !this.createPromotionRequest?.startDate || 
+        !this.createPromotionRequest?.endDate) {
+      alert('Please fill in all required fields: Name, Discount Rate, Start Date, End Date');
+      return;
     }
-  }
-
-  onImageSelected(event: any): void {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => {
-        this.selectedImage = e.target.result;
-      };
-      reader.readAsDataURL(file);
+  
+    const formData = new FormData();
+    
+    formData.append('name', this.createPromotionRequest.name ?? '');
+    formData.append('discountRate', this.createPromotionRequest.discountRate?.toString() ?? '');
+    formData.append('description', this.createPromotionRequest.description ?? ''); 
+    if(this.createPromotionRequest.startDate!=undefined && this.createPromotionRequest.endDate!=undefined ){
+      const startDate = new Date(this.createPromotionRequest.startDate);  
+      const startDateWithoutTimezone = startDate.toISOString().slice(0, 19);
+      const endDate = new Date(this.createPromotionRequest.endDate);  
+      const endDateWithoutTimezone = endDate.toISOString().slice(0, 19);
+      formData.append('startDate', startDateWithoutTimezone); 
+      formData.append('endDate', endDateWithoutTimezone);
     }
+  
+    this.promotionService.createPromotion(formData).subscribe({
+      next: (data) => {
+        this.createPromotionResponse = data;
+        if (this.createPromotionResponse) {
+          console.log('Promotion created successfully:', this.createPromotionResponse);
+          alert('Promotion created successfully');
+          this.getAllPromotions(); // Làm mới danh sách
+          this.closeFormCreate(); // Đóng form sau khi tạo thành công
+        }
+      },
+      error: (err) => {
+        console.error('Error creating promotion:', err.message);
+        alert(`Error creating promotion: ${err.message}`);
+      }
+    });
   }
+  
 
-  cancel() {
-    this.isDisplayDetails = false;
-    console.log('Cancelled');
+  onUpdatePromotion() {
+    if (!this.updatePromotionRequest?.id) {
+      alert('Promotion Not Found. Please Create!');
+      return;
+    }
+
+    const formData = new FormData();
+    
+    formData.append('id', this.updatePromotionRequest.id.toString());
+    formData.append('name', this.updatePromotionRequest.name ?? '');
+    formData.append('discountRate', this.updatePromotionRequest.discountRate?.toString() ?? '');
+    formData.append('description', this.updatePromotionRequest.description ?? ''); 
+
+    if(this.updatePromotionRequest.startDate!=undefined && this.updatePromotionRequest.endDate!=undefined ){
+      const startDate = new Date(this.updatePromotionRequest.startDate);  
+      const startDateWithoutTimezone = startDate.toISOString().slice(0, 19);
+      const endDate = new Date(this.updatePromotionRequest.endDate);  
+      const endDateWithoutTimezone = endDate.toISOString().slice(0, 19);
+      formData.append('startDate', startDateWithoutTimezone); 
+      formData.append('endDate', endDateWithoutTimezone);
+    }
+
+    this.promotionService.updatePromotion(formData).subscribe({
+      next: (data) => {
+        this.updatePromotionResponse = data;
+        if (this.updatePromotionResponse) {
+          console.log('Promotion updated successfully:', this.updatePromotionResponse);
+          alert('Promotion updated successfully');
+          this.getAllPromotions(); // Refresh danh sách
+          this.closeFormUpdate();
+        }
+      },
+      error: (err) => {
+        console.error('Error updating promotion:', err.message);
+        alert(`Error updating promotion: ${err.message}`);
+      }
+    });
   }
 }

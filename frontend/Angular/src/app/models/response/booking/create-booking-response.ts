@@ -5,4 +5,5 @@ export class CreateBookingResponse{
     idUser?: number;
     paymentMethod?: number;
     invoice?: number;
+    type?: string;
 }

@@ -16,7 +16,9 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -103,6 +105,11 @@ public class PromotionServiceImpl implements PromotionService {
     public GetPromotionResponse findById(Integer id) {
         return modelMapper.map(promotionRepository.findById(id).orElseThrow(() ->
                 new CustomException(Error.PROMOTION_NOT_FOUND)), GetPromotionResponse.class);
+    }
+
+    @Override
+    public List<GetPromotionResponse> getAll() {
+        return promotionRepository.findAll().stream().map(promotion -> modelMapper.map(promotion, GetPromotionResponse.class)).collect(Collectors.toList());
     }
 
     private Integer generateId() {

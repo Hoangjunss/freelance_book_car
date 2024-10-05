@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class CreateTourScheduleRequest {
     private LocalDateTime timeStartTour;
-    private LocalDateTime timeEndTour;
     private Integer idTour;
     private Integer quantity;
     private Double priceTour;

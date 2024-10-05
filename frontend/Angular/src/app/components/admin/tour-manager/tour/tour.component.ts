@@ -25,6 +25,7 @@ export class TourComponent implements OnInit{
 
   imageUrl: string = 'assets/img/DEFAULT/tour-default.png';
   getALlTour: GetTourResponse[] = [];
+  filterTour: GetTourResponse[] = [];
 
   selectedImage: string = 'assets/img/DEFAULT/tour-default.png';
   isDisplayUpdate: boolean = false;
@@ -35,6 +36,9 @@ export class TourComponent implements OnInit{
   pagedData: any[] = [];
   imageId?: string;
   imageFile!: File;
+  imageUri?: string = 'assets/img/DEFAULT/tour-default.png';
+
+  searchQuery: string='';
 
   constructor(private tourService:TourService){}
 
@@ -52,11 +56,12 @@ export class TourComponent implements OnInit{
   updatePagedData() {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
-    this.pagedData = this.getALlTour.slice(startIndex, endIndex);
+    this.pagedData = this.filterTour.slice(startIndex, endIndex);
   }
+  
 
   get totalPages(): number {
-    return Math.ceil(this.getALlTour.length / this.pageSize);
+    return Math.ceil(this.filterTour.length / this.pageSize);
   }
 
   get pages(): number[] {
@@ -80,20 +85,22 @@ export class TourComponent implements OnInit{
       endLocation: tour.endLocation,
       isActive: tour.isActive,
     };
+    this.imageUri = tour.image;
     this.isDisplayUpdate = true;
   }
 
   closeFormUpdate(){
-    this.isDisplayUpdate = true;
+    this.imageUri = 'assets/img/DEFAULT/tour-default.png';
+    this.isDisplayUpdate = false;
   }
 
   onImageSelected(event: any) {
     const file: File = event.target.files[0];
     if (file) {
-      this.imageFile = file; // Gán tệp ảnh đã chọn vào thuộc tính image của createTourRequest
+      this.imageFile = file;
       const reader = new FileReader();
       reader.onload = () => {
-        this.imageUrl = reader.result as string; // Hiển thị ảnh vừa chọn trong form
+        this.imageUri = reader.result as string;
       };
       reader.readAsDataURL(file);
     }
@@ -110,12 +117,34 @@ export class TourComponent implements OnInit{
         .then(blob => {
             return new File([blob], fileName, { type: blob.type }); // Tạo đối tượng File từ blob
         });
-}
+  }
+
+  searchTour() {
+    console.log('Search Query:', this.searchQuery);
+    if (this.searchQuery.trim() != '') {
+      this.filterTour = this.getALlTour.filter(hotel =>
+        hotel.name?.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+  
+      console.log(this.filterTour);
+      
+      this.currentPage = 1;
+      
+      this.updatePagedData();
+    }
+  }
+
+  reset(){
+    this.filterTour = this.getALlTour;
+    this.updatePagedData();
+  }
+
+
 
   //On Submit
   onCreate() {
     console.log(this.createTourRequest);
-    if (!this.createTourRequest?.name || !this.createTourRequest?.startLocation || !this.createTourRequest?.endLocation || !this.createTourRequest?.description) {
+    if (!this.createTourRequest?.name || !this.createTourRequest?.startLocation || !this.createTourRequest?.description) {
       alert('Please fill in all required fields: Name, Location, Description');
       return;
     }
@@ -128,7 +157,6 @@ export class TourComponent implements OnInit{
     formData.append('name', this.createTourRequest.name || '');
     formData.append('description', this.createTourRequest.description || '');
     formData.append('startLocation', this.createTourRequest.startLocation || '');
-    formData.append('endLocation', this.createTourRequest.endLocation || '');
     formData.append('isActive', this.createTourRequest.isActive ? 'true' : 'false');
   
     if (this.imageFile != undefined) {
@@ -153,6 +181,7 @@ export class TourComponent implements OnInit{
         if (this.createTourResponse) {
           console.log('Tour created successfully:', this.createTourResponse);
           alert('Tour created successfully');
+          window.location.reload();
         }
       },
       error: (err) => {
@@ -167,7 +196,7 @@ export class TourComponent implements OnInit{
       alert('Not Found Tour Update');
       return;
     }
-    if (!this.updateTourRequest?.name || !this.updateTourRequest?.startLocation || !this.updateTourRequest?.endLocation || !this.updateTourRequest?.description) {
+    if (!this.updateTourRequest?.name || !this.updateTourRequest?.startLocation || !this.updateTourRequest?.description) {
       alert('Please fill in all required fields: Name, Location, Description');
       return;
     }
@@ -181,18 +210,10 @@ export class TourComponent implements OnInit{
     formData.append('name', this.updateTourRequest.name || '');
     formData.append('description', this.updateTourRequest.description || '');
     formData.append('startLocation', this.updateTourRequest.startLocation || '');
-    formData.append('endLocation', this.updateTourRequest.endLocation || '');
     formData.append('isActive', this.updateTourRequest.isActive ? 'true' : 'false');
   
     if (this.imageFile != undefined) {
       formData.append('image', this.imageFile);
-    }else{
-      this.createFileFromUrl(this.selectedImage, 'tour-default.png').then(file => {
-        this.imageFile = file; 
-        formData.append('image', this.imageFile);
-      }).catch(error => {
-        console.error('Error creating file from URL:', error);
-      });
     }
 
     console.log(this.updateTourRequest);
@@ -206,6 +227,7 @@ export class TourComponent implements OnInit{
         if (this.updateTourRequest) {
           console.log('Tour created successfully:', this.updateTourRequest);
           alert('Tour created successfully');
+          window.location.reload();
         }
       },
       error: (err) => {
@@ -219,6 +241,7 @@ export class TourComponent implements OnInit{
     this.tourService.getAllTour().subscribe({
       next: (data) => {
         this.getALlTour = data;
+        this.filterTour = this.getALlTour;
         this.updatePagedData();
       },
       error: (err) => {

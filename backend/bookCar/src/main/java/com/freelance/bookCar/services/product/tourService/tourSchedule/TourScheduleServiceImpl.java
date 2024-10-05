@@ -16,6 +16,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -35,9 +36,6 @@ public class TourScheduleServiceImpl implements TourScheduleService  {
         if (createTourScheduleRequest.getTimeStartTour() == null) {
             throw new CustomException(Error.TOUR_SCHEDULE_INVALID_START_TIME);
         }
-        if (createTourScheduleRequest.getTimeEndTour() == null) {
-            throw new CustomException(Error.TOUR_SCHEDULE_INVALID_END_TIME);
-        }
         if (createTourScheduleRequest.getIdTour() == null) {
             throw new CustomException(Error.TOUR_SCHEDULE_MISSING_TOUR_ID);
         }
@@ -47,16 +45,11 @@ public class TourScheduleServiceImpl implements TourScheduleService  {
         if (createTourScheduleRequest.getPriceTour() == null || createTourScheduleRequest.getPriceTour() <= 0) {
             throw new CustomException(Error.TOUR_SCHEDULE_INVALID_PRICE);
         }
-        if(createTourScheduleRequest.getIdTourScheduleStatus()==null){
-            throw new CustomException(Error.TOUR_SCHEDULE_INVALID_STATUS);
-        }
         TourSchedule tourSchedule = TourSchedule.builder()
                 .id(getGenerationId())
                 .timeStartTour(createTourScheduleRequest.getTimeStartTour())
-                .timeStartTour(createTourScheduleRequest.getTimeEndTour())
                 .idTour(createTourScheduleRequest.getIdTour())
                 .priceTour(createTourScheduleRequest.getPriceTour())
-                .idTourScheduleStatus(createTourScheduleRequest.getIdTourScheduleStatus())
                 .build();
 
         try {
@@ -88,9 +81,6 @@ public class TourScheduleServiceImpl implements TourScheduleService  {
         if (updateTourScheduleRequest.getPriceTour() != null) {
             tourSchedule.setPriceTour(updateTourScheduleRequest.getPriceTour());
         }
-        if (updateTourScheduleRequest.getIdTourScheduleStatus()!= null) {
-            tourSchedule.setIdTourScheduleStatus(updateTourScheduleRequest.getIdTourScheduleStatus());
-        }
 
         try {
             return modelMapper.map(tourScheduleRepository.save(tourSchedule), UpdateTourScheduleResponse.class);
@@ -113,6 +103,16 @@ public class TourScheduleServiceImpl implements TourScheduleService  {
     @Override
     public List<GetTourScheduleResponse> getAll() {
         return tourScheduleRepository.findAll().stream().map(tourSchedule -> modelMapper.map(tourSchedule, GetTourScheduleResponse.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<GetTourScheduleResponse> findAllByIdTour(Integer idTour) {
+        return tourScheduleRepository.findAllByIdTourOrderByTimeStartTourAsc(idTour).stream().map(tourSchedule -> modelMapper.map(tourSchedule, GetTourScheduleResponse.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public TourSchedule findByIdAndByStartDate(Integer id, LocalDateTime date) {
+        return tourScheduleRepository.findByIdAndTimeStartTour(id,date);
     }
 
     private Integer getGenerationId() {

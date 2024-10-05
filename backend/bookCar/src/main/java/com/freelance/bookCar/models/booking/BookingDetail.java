@@ -16,10 +16,9 @@ public class BookingDetail {
     @Id
     private Integer id;
     private Integer idTour;
-    private Integer idTourism;
+    private Integer idTicket;
     private Integer idHotel;
     private Integer idBooking;
     private Integer quantity;
     private double totalPrice;
-
 }

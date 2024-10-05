@@ -2,19 +2,24 @@ package com.freelance.bookCar.services.product.ticketService.tourism;
 
 import com.freelance.bookCar.dto.request.product.ticketDTO.tourism.CreateTourismRequest;
 import com.freelance.bookCar.dto.request.product.ticketDTO.tourism.UpdateTourismRequest;
+import com.freelance.bookCar.dto.response.product.hotelDTO.hotel.GetHotelResponse;
 import com.freelance.bookCar.dto.response.product.ticketDTO.tourism.CreateTourismResponse;
+import com.freelance.bookCar.dto.response.product.ticketDTO.tourism.GetTourismDetailResponse;
 import com.freelance.bookCar.dto.response.product.ticketDTO.tourism.GetTourismResponse;
 import com.freelance.bookCar.dto.response.product.ticketDTO.tourism.UpdateTourismResponse;
 import com.freelance.bookCar.exception.CustomException;
 import com.freelance.bookCar.exception.Error;
+import com.freelance.bookCar.models.product.ticket.Ticket;
 import com.freelance.bookCar.models.product.ticket.Tourism;
 import com.freelance.bookCar.respository.product.ticket.TourismRepository;
 import com.freelance.bookCar.services.image.ImageService;
+import com.freelance.bookCar.services.product.ticketService.ticket.TicketService;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -28,6 +33,8 @@ public class TourismServiceImpl implements TourismService {
     private ModelMapper modelMapper;
     @Autowired
     private ImageService imageService;
+    @Autowired
+    private TicketService ticketService;
     @Override
     public CreateTourismResponse createTourism(CreateTourismRequest createTourismRequest) {
         log.info("Creating tourism with name: {}", createTourismRequest.getName());
@@ -109,6 +116,23 @@ public class TourismServiceImpl implements TourismService {
     @Override
     public List<GetTourismResponse> getAll() {
         return tourismRepository.findAll().stream().map(tourism -> modelMapper.map(tourism, GetTourismResponse.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<GetTourismResponse> findLocation(String location) {
+        return tourismRepository.findAllByLocation(location).stream().map(tourism -> modelMapper.map(tourism, GetTourismResponse.class)).collect(Collectors.toList());
+    }
+
+    @Override
+    public GetTourismDetailResponse getDetail(Integer id, LocalDateTime date) {
+        GetTourismDetailResponse getTourismDetailResponse=modelMapper.map(findById(id), GetTourismDetailResponse.class);
+        Ticket ticket=ticketService.findByIdAndByStartDate(id,date);
+        //getTourismDetailResponse.setPrice(ticket.getTourPrice());
+        return getTourismDetailResponse;
+    }
+    @Override
+    public List<GetTourismResponse> findById(String name) {
+        return tourismRepository.searchAllByLocation(name).stream().map(hotel -> modelMapper.map(hotel,GetTourismResponse.class)).collect(Collectors.toList());
     }
 
     private Integer getGenerationId() {

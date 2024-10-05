@@ -18,5 +18,6 @@ public class UpdateBookingResponse {
         private Integer idUser;
         private Integer paymentMethod;
         private Integer invoice;
+        private String type;
         // Getters and Setters
 }

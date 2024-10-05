@@ -22,6 +22,7 @@ export class HotelComponent {
   updateHotelRequest: UpdateHotelRequest = new UpdateHotelRequest();
   updateHotelResponse: UpdateHotelResponse = new UpdateHotelResponse();
   getAllHotelReponse: GetHotelResponse[] = [];
+  filterHotelResponse: GetHotelResponse[] = [];
 
   imageUrl: string = 'assets/img/DEFAULT/hotel-default.png';
   selectedImage: string = 'assets/img/DEFAULT/hotel-default.png';
@@ -30,11 +31,14 @@ export class HotelComponent {
   isDisplayUpdate = false;
 
   imageFile?: File;
+  imageUri?: string;
 
   hotel?: GetHotelResponse;
   currentPage: number = 1;
   pageSize: number = 5;
   pagedData: any[] = [];
+
+  searchQuery: string='';
 
   constructor(private hotelService: HotelService){}
 
@@ -53,16 +57,38 @@ export class HotelComponent {
   updatePagedData() {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
-    this.pagedData = this.getAllHotelReponse.slice(startIndex, endIndex);
+    this.pagedData = this.filterHotelResponse.slice(startIndex, endIndex);
   }
 
   get totalPages(): number {
-    return Math.ceil(this.getAllHotelReponse.length / this.pageSize);
+    return Math.ceil(this.filterHotelResponse.length / this.pageSize);
   }
 
   get pages(): number[] {
     return Array(this.totalPages).fill(0).map((x, i) => i + 1);
   }
+
+  searchTour() {
+    console.log('Search Query:', this.searchQuery);
+    if (this.searchQuery.trim() != '') {
+      this.filterHotelResponse = this.getAllHotelReponse.filter(hotel =>
+        hotel.name?.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+  
+      console.log(this.filterHotelResponse);
+      
+      this.currentPage = 1;
+      
+      this.updatePagedData();
+    }
+  }
+  
+  reset(){
+    this.filterHotelResponse = this.getAllHotelReponse;
+    this.currentPage = 1;  // Đặt lại trang hiện tại về trang đầu tiên
+    this.updatePagedData();
+  }
+  
 
   displayFormCreate(){
     this.isDisplayCreate = true;
@@ -82,6 +108,7 @@ export class HotelComponent {
       isActive: hotel.active,
       rating: hotel.rating, 
     };
+    this.imageUri = hotel.image;
     this.isDisplayUpdate = true;
   }
 
@@ -95,7 +122,7 @@ export class HotelComponent {
       this.imageFile = file;
       const reader = new FileReader();
       reader.onload = () => {
-        this.imageUrl = reader.result as string;
+        this.imageUri = reader.result as string;
       };
       reader.readAsDataURL(file);
     }
@@ -106,6 +133,7 @@ export class HotelComponent {
     this.hotelService.getAllHotel().subscribe({
         next: (data) =>{
           this.getAllHotelReponse = data;
+          this.filterHotelResponse = this.getAllHotelReponse;
           this.updatePagedData();
           console.log('All tours:', this.getAllHotelReponse);
       },
@@ -143,6 +171,7 @@ export class HotelComponent {
         if(this.createHotelResponse){
           console.log('Tour created successfully:', this.createHotelResponse);
           alert('Hotel created successfully');
+          window.location.reload();
         }
       },
       error: (err) => {
@@ -178,12 +207,19 @@ export class HotelComponent {
       formData.append('image', this.imageFile);
     }
 
-    this.hotelService.createHotel(formData).subscribe({
+    console.log(this.updateHotelRequest);
+    formData.forEach((value, key) => {
+      console.log(`${key}: ${value}`);
+    });
+
+
+    this.hotelService.updateHotel(formData).subscribe({
       next: (data) => {
         this.updateHotelResponse = data;
         if(this.updateHotelResponse){
           console.log('Tour created successfully:', this.updateHotelResponse);
           alert('Hotel created successfully');
+          window.location.reload();
         }
       },
       error: (err) => {

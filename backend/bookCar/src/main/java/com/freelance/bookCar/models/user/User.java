@@ -37,6 +37,9 @@ public class User implements UserDetails {
     public String getUsername() {
         return email;
     }
+    public Integer getId() {
+        return id;
+    }
 
 
     // Getters and Setters
