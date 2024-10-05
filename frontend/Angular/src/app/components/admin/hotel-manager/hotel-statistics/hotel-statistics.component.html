@@ -90,21 +90,30 @@
 
 <h3 class="m-2">Total revenue</h3>
 <div class="container">
-    <div class="form-group d-flex align-items-center">
-        <label for="monthFilter" class="mr-2">Filter by Month</label>
-        <select class="form-control mr-3" id="monthFilter" name="monthFilter" [(ngModel)]="selectedMonth" style="width: auto;">
-            <option value="0">-- Select Month --</option>
-            <option *ngFor="let month of months" [value]="month.value">{{ month.name }}</option>
-        </select>
+    <div class="form-group form-inline row">
+        <!-- Filter by Month -->
+        <div class="col-md-4 col-12 d-flex align-items-center mb-2">
+            <label for="monthFilter" class="m-2">Filter by Month</label>
+            <select class="form-control mr-md-3" id="monthFilter" name="monthFilter" [(ngModel)]="selectedMonth" style="width: auto;">
+                <option value="0">-- Select Month --</option>
+                <option *ngFor="let month of months" [value]="month.value">{{ month.name }}</option>
+            </select>
+        </div>
     
-        <label for="yearFilter" class="mr-2">Year</label>
-        <select class="form-control mr-3" id="yearFilter" name="yearFilter" [(ngModel)]="selectedYear" style="width: auto;">
-            <option value="0">-- Select Year --</option>
-            <option *ngFor="let year of years" [value]="year">{{ year }}</option>
-        </select>
-        
-        <button class="btn btn-primary" (click)="filterMonth()">Filter</button>
-    </div>  
+        <!-- Year -->
+        <div class="col-md-4 col-12 d-flex align-items-center mb-2">
+            <label for="yearFilter" class="mr-2">Year</label>
+            <select class="form-control mr-md-3" id="yearFilter" name="yearFilter" [(ngModel)]="selectedYear" style="width: auto;">
+                <option value="0">-- Select Year --</option>
+                <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+            </select>
+        </div>
+    
+        <!-- Filter Button -->
+        <div class="col-md-4 col-12 d-flex justify-content-md-start justify-content-center align-items-center mb-2">
+            <button class="btn btn-primary" (click)="filterMonth()">Filter</button>
+        </div>
+    </div>   
 </div>
 <!-- Sale & Revenue Start -->
 <div class="container-fluid pt-4 px-4">

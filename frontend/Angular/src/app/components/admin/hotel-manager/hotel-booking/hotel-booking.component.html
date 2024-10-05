@@ -2,7 +2,7 @@
 
 <nav class="d-flex navbar navbar-expand-lg navbar-light bg-light navbackground">
     <div class="form-inline my-2 my-lg-0 mr-auto">
-        <input [(ngModel)]="searchQuery" name="searchQuery" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
+        <input [(ngModel)]="searchQuery" style="margin-left: 10px;" name="searchQuery" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
           (keyup.enter)="searchHotel()">
         <button class="btn btn-outline-success my-2 my-sm-0" (click)="searchHotel()">Search</button>
         <button class="btn btn-outline-success my-2 my-sm-0" (click)="reset()">Show all</button>

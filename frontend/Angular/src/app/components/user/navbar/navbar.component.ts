@@ -37,8 +37,8 @@ export class NavbarComponent implements OnInit {
     if (isPlatformBrowser(this.platformId)) {
       const user = localStorage.getItem('currentUser');
       if (user) {
-        this.CurrentUser = JSON.parse(user).name; 
-      } else {
+        this.CurrentUser = JSON.parse(user).name;
+      } else { 
         this.CurrentUser = null; 
       }
     }

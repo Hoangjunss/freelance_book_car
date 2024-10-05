@@ -72,7 +72,7 @@
                     <ng-container *ngFor="let user of getUserInfo">
                     <div class="form-group">
                         <label for="scheduleQuantity">Name</label>
-                        <input type="text" class="form-control" id="scheduleQuantity" [(ngModel)]="user.firstName" name="scheduleQuantity" placeholder="Enter quantity" disabled>
+                        <input type="text" class="form-control" id="scheduleQuantity" [value]="user.firstName + ' ' + user.lastName" name="scheduleQuantity" placeholder="Enter quantity" disabled>
                     </div>
                     <div class="form-group">
                         <label for="schedulePrice">Phone</label>
@@ -82,6 +82,7 @@
                         <label for="timeStartTour">Email</label>
                         <input type="text" class="form-control" id="timeStartTour" [(ngModel)]="user.email" name="timeStartTour" disabled>
                     </div>
+                    <hr>
                   </ng-container>
             </div>
         </div>
@@ -100,7 +101,7 @@
                     <ng-container *ngFor="let user of getUserJoin">
                     <div class="form-group">
                         <label for="scheduleQuantity">Name</label>
-                        <input type="text" class="form-control" id="scheduleQuantity" [(ngModel)]="user.firstName" name="scheduleQuantity" placeholder="Enter quantity" disabled>
+                        <input type="text" class="form-control" id="scheduleQuantity" [value]="user.firstName + ' ' + user.lastName" name="scheduleQuantity" placeholder="Enter quantity" disabled>
                     </div>
                     <div class="form-group">
                         <label for="schedulePrice">Phone</label>
@@ -110,7 +111,7 @@
                         <label for="timeStartTour">Email</label>
                         <input type="text" class="form-control" id="timeStartTour" [(ngModel)]="user.email" name="timeStartTour" disabled>
                     </div>
-                    <br>
+                    <hr>
                   </ng-container>
             </div>
         </div>
