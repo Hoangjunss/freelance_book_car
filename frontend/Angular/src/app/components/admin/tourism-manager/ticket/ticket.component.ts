@@ -229,10 +229,6 @@ export class TicketComponent implements OnInit {
       });
     }
   }
-  addNewTicket(){
-    
-  }
-  
 
   viewDetails(tourism: GetTourismResponse) {
     if (tourism && tourism.id) {
@@ -244,10 +240,6 @@ export class TicketComponent implements OnInit {
 
   cancel() {
     this.isDisplayDetails = false;
-  }
-
-  viewTicket(id: number) {
-    console.log(`Viewing ticket with ID: ${id}`);
   }
 
   filterTickets(): void {
@@ -267,17 +259,18 @@ export class TicketComponent implements OnInit {
   
   
   updatePagedTicketFilter(): void {
-    const start = (this.currentPage - 1) * this.pageSize;
+    const start = (this.currentPageTicket - 1) * this.pageSize;
     const end = start + this.pageSize;
     this.pagedTickets = this.filterTicket.slice(start, end);
     this.totalPages = Math.ceil(this.filterTicket.length / this.pageSize);
     this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+    this.updateDisplayedPages();
   }
 
   
   goToPageFilter(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
+      this.currentPageTicket = page;
       this.updatePagedTicketFilter();
       this.updateDisplayedPages();
     }

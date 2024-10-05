@@ -58,6 +58,7 @@ export class TourComponent implements OnInit{
     const endIndex = startIndex + this.pageSize;
     this.pagedData = this.filterTour.slice(startIndex, endIndex);
   }
+  
 
   get totalPages(): number {
     return Math.ceil(this.filterTour.length / this.pageSize);
@@ -121,10 +122,14 @@ export class TourComponent implements OnInit{
   searchTour() {
     console.log('Search Query:', this.searchQuery);
     if (this.searchQuery.trim() != '') {
-      this.filterTour = this.getALlTour.filter(tour =>
-        tour.name?.toLowerCase().includes(this.searchQuery.toLowerCase())
+      this.filterTour = this.getALlTour.filter(hotel =>
+        hotel.name?.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
+  
       console.log(this.filterTour);
+      
+      this.currentPage = 1;
+      
       this.updatePagedData();
     }
   }

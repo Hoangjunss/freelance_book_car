@@ -71,18 +71,24 @@ export class HotelComponent {
   searchTour() {
     console.log('Search Query:', this.searchQuery);
     if (this.searchQuery.trim() != '') {
-      this.filterHotelResponse = this.getAllHotelReponse.filter(tour =>
-        tour.name?.toLowerCase().includes(this.searchQuery.toLowerCase())
+      this.filterHotelResponse = this.getAllHotelReponse.filter(hotel =>
+        hotel.name?.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
+  
       console.log(this.filterHotelResponse);
+      
+      this.currentPage = 1;
+      
       this.updatePagedData();
     }
   }
+  
   reset(){
     this.filterHotelResponse = this.getAllHotelReponse;
+    this.currentPage = 1;  // Đặt lại trang hiện tại về trang đầu tiên
     this.updatePagedData();
   }
-
+  
 
   displayFormCreate(){
     this.isDisplayCreate = true;

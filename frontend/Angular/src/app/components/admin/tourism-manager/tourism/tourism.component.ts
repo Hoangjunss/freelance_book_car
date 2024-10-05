@@ -72,11 +72,17 @@ export class TourismComponent {
     this.isDisplayCreate = false;
   }
 
-  searchTour(){
+  searchTour() {
+    console.log('Search Query:', this.searchQuery);
     if (this.searchQuery.trim() != '') {
-      this.filterTourism = this.getTourismResponse.filter(tour =>
-        tour.name?.toLowerCase().includes(this.searchQuery.toLowerCase())
+      this.filterTourism = this.getTourismResponse.filter(hotel =>
+        hotel.name?.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
+  
+      console.log(this.filterTourism);
+      
+      this.currentPage = 1;
+      
       this.updatePagedData();
     }
   }
