@@ -40,9 +40,9 @@
                     </div>
                 </div>
                 <div class="card-body fadeInRight">
-                    <button *ngIf="data.name == 'Tour'" (click)="navigateTo('location-list')" class="btn btn-info">Thông tin</button>
-                    <button *ngIf="data.name == 'Tourism'" (click)="navigateTo('ticket-list')" class="btn btn-info">Thông tin</button>
-                    <button *ngIf="data.name == 'Hotel'" (click)="navigateTo('hotel-list')" class="btn btn-info">Thông tin</button>
+                    <button *ngIf="i== 0" (click)="navigateTo('location-list')" class="btn btn-info">Thông tin</button>
+                    <button *ngIf="i == 1" (click)="navigateTo('ticket-list')" class="btn btn-info">Thông tin</button>
+                    <button *ngIf="i == 2" (click)="navigateTo('hotel-list')" class="btn btn-info">Thông tin</button>
                     <div class="tags mt-3">
                         <span class="badge bg-light text-dark">#photography</span>
                         <span class="badge bg-light text-dark">#travel</span>

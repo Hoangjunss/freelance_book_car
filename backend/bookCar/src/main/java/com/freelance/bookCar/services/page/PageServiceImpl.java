@@ -38,7 +38,9 @@ public class PageServiceImpl implements PageService {
         }
         Page page=pageRepository.findById(createPageRequest.getId()).orElseThrow();
         page.setName(createPageRequest.getName());
-        page.setUrl(imageService.saveImage(createPageRequest.getFile()));
+        if(createPageRequest.getFile() != null){
+            page.setUrl(imageService.saveImage(createPageRequest.getFile()));
+        }
         return modelMapper.map(pageRepository.save(page), CreatePageReponse.class);
     }
 

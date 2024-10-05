@@ -52,4 +52,10 @@ export class HotelListComponent {
     const path = `/hotel-details/${locationId}`;
     this.router.navigate([path]);
   }
+
+  getStars(rating: number): { full: number, half: boolean } {
+    const fullStars = Math.floor(rating);
+    const halfStar = rating % 1 !== 0; 
+    return { full: fullStars, half: halfStar };
+}
 }

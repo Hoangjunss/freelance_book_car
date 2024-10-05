@@ -21,7 +21,7 @@
 
                     <div *ngIf="product.type === 'hotel'">
                         <p><strong>Thời gian check-in:</strong> {{ product.startDate | date:'dd/MM/yyyy' }}</p>
-                        <p><strong>Thời gian check-out:</strong> {{ product.endDate | date:'dd/MM/yyyy' }}</p>
+                        <p><strong>Số ngày:</strong> {{ product.quantity}}</p>
                         <p><strong>Vị trí:</strong> {{ product.location }}</p>
                     </div>
 

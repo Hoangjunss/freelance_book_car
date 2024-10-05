@@ -83,8 +83,19 @@ export class TicketDetailComponent {
     this.ticketService.getTicketByIdTourism(id).subscribe({
       next: (response) => {
         if (response) {
-          this.getTicketResponse = response;
-          this.availableTourSchedules = response; // Đảm bảo điều này khớp với template của bạn
+          const currentDate = new Date();
+          this.getTicketResponse = response
+          .filter(ticket => {
+            const startDate = new Date(ticket.startDate || '');
+            return startDate >= currentDate; 
+          })
+          .sort((a, b) => {
+            const dateA = new Date(a.startDate || '');
+            const dateB = new Date(b.startDate || '');
+            return dateA.getTime() - dateB.getTime(); 
+          });
+          console.log(this.getTicketResponse);
+          this.availableTourSchedules = this.getTicketResponse;
         }
         if (this.availableTourSchedules.length > 0) {
           this.selectedTourSchedule = this.availableTourSchedules[0].id;

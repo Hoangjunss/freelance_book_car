@@ -19,6 +19,8 @@ import { OrderResponse } from '../../models/response/booking/order-response';
 import { isPlatformBrowser } from '@angular/common';
 import { UpdateBookingHotelResponse } from '../../models/response/booking/update-hotel-booking-response';
 import { environment } from '../environment';
+import { GetUserInfoResponse } from '../../models/response/user/user-info/get-user-info-response';
+import { GetUserJoinResponse } from '../../models/response/user/user-join/get-user-join-response';
 
 @Injectable({
   providedIn: 'root'
@@ -291,5 +293,30 @@ export class BookingService {
     );
   }
   
+  getUserInfo(idBooking: number): Observable<GetUserInfoResponse[]>{
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<GetUserInfoResponse[]>>(`${this.baseUrl}/userinfo?idBooking=${idBooking}`, { headers }).pipe(
+      map((response: Apiresponse<GetUserInfoResponse[]>) => {
+        if (response.success) {
+          return response.data; 
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    );
+  }
+
+  getUserJoin(idBooking: number):  Observable<GetUserJoinResponse[]>{
+    const headers = this.createAuthorizationHeader();
+    return this.httpClient.get<Apiresponse<GetUserJoinResponse[]>>(`${this.baseUrl}/userjoin?idBooking=${idBooking}`, { headers }).pipe(
+      map((response: Apiresponse<GetUserJoinResponse[]>) => {
+        if (response.success) {
+          return response.data; 
+        } else {
+          throw new Error(response.message);
+        }
+      })
+    );
+  }
   
 }

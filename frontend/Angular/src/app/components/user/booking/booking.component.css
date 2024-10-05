@@ -535,3 +535,9 @@ p.form-control {
 .btn-close {
     cursor: pointer;
 }
+
+@media screen and (max-width: 768px) {
+    .container {
+        margin-top: 120px !important;
+    }
+}

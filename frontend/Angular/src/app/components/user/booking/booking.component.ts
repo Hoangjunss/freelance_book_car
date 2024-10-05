@@ -249,29 +249,47 @@ export class BookingComponent implements OnInit {
 
           if (this.products.some(p => p.type === 'tour')) {
             this.products.filter(p => p.type === 'tour').forEach(p => {
-              this.tourService.getTourById(p.id).subscribe({
-                next: (response) => {
-                  console.log('Tour:', response);
-                  p.startLocation = response.startLocation;
-                  p.endLocation = response.endLocation;
-                  p.image = response.image;
-                  p.name = response.name;
+              //this.getTourDetail(p.id);
+              this.tourScheduleService.getSchedule(p.id).subscribe({
+                next: (scheduleResponse) => {
+                  console.log(scheduleResponse);
+                  p.schedule = scheduleResponse;
+                  this.tourService.getTourById(scheduleResponse.idTour).subscribe({
+                    next: (tourResponse) => {
+                      p.name = tourResponse.name;
+                      p.image = tourResponse.image
+                      p.startLocation = tourResponse.startLocation;
+                      p.endLocation = tourResponse.endLocation;
+                    },
+                    error: (error) => {
+                      console.log("Error:", error);
+                    }
+                  })
                 },
-                error: (error) => {
+                error: (error: any) => {
                   console.log("Error:", error);
                 }
               });
+
             });
           }
 
           if (this.products.some(p => p.type === 'hotel')) {
             this.products.filter(p => p.type === 'hotel').forEach(p => {
               this.hotelService.getHotelDetailById(p.id).subscribe({
-                next: (response) => {
-                  console.log('Hotel:', response);
-                  p.name = response.name;
-                  p.image = response.image;
-                  p.location = response.location;
+                next: (hotelResponse) => {
+                  p.name = hotelResponse.name;
+                  p.image = hotelResponse.image;
+                  p.location = hotelResponse.location;
+                  this.hotelBookingService.getBooking(p.id).subscribe({
+                    next: (hotelBookingResponse) => {
+                      p.startDate = hotelBookingResponse.startDate;
+                      p.endDate = hotelBookingResponse.endDate;
+                    },
+                    error: (error) => {
+                      console.log("Error:", error);
+                    }
+                  });
 
 
                 },
@@ -281,13 +299,26 @@ export class BookingComponent implements OnInit {
               });
             });
           }
+
 
           if (this.products.some(p => p.type === 'ticket')) {
             this.products.filter(p => p.type === 'ticket').forEach(p => {
+              console.log('Ticket ID:', p.id);
               this.ticketService.getTicket(p.id).subscribe({
-                next: (response) => {
-                  console.log('Ticket:', response);
-                  p.name = response.startDate;
+                next: (ticketResponse) => {
+                  console.log(ticketResponse);
+                  p.dateEvent = ticketResponse.startDate;
+                  this.tourismService.getTour(ticketResponse.idTourism).subscribe({
+                    next: (scheduleTicketResponse) => {
+                      console.log(scheduleTicketResponse);
+                      p.image = scheduleTicketResponse.image;
+                      p.venue = scheduleTicketResponse.location;
+                      p.name = scheduleTicketResponse.name;
+                    },
+                    error: (error) => {
+                      console.log("Error:", error);
+                    }
+                  });
                 },
                 error: (error) => {
                   console.log("Error:", error);
@@ -295,7 +326,6 @@ export class BookingComponent implements OnInit {
               });
             });
           }
-        } else {
         }
       },
       error: (error) => {
