@@ -342,7 +342,7 @@ export class BookingComponent implements OnInit {
     const formData = new FormData();
     const idUser = localStorage.getItem('idUser');
     const idBooking = localStorage.getItem('idBooking');
-    
+
     if (!this.createUserInfoRequest || this.createUserInfoRequest.length === 0) {
       this.notificationComponent.showNotification('error', 'Vui lòng điền ít nhất một thông tin người liên hệ');
       return;
@@ -448,9 +448,20 @@ export class BookingComponent implements OnInit {
     //   }
     // });
 
-    if(this.voucherCode === 'ABC') {
-      this.totalPrice -= this.discountAmount;
-      this.notificationComponent.showNotification('success', 'Áp dụng mã giảm giá thành công');
+    if (this.voucherCode === 'ABC') {
+      const discountedPrice = this.totalPrice - this.discountAmount;
+
+      if (this.voucherCode === 'ABC') {
+        if (this.discountAmount >= this.totalPrice) {
+          this.totalPrice = 0; 
+          this.notificationComponent.showNotification('success', 'Áp dụng mã giảm giá thành công');
+        } else {
+          this.totalPrice -= this.discountAmount;
+          this.notificationComponent.showNotification('success', 'Áp dụng mã giảm giá thành công');
+        }
+      } else {
+        this.notificationComponent.showNotification('error', 'Mã giảm giá không hợp lệ');
+      }
     }
   }
 }

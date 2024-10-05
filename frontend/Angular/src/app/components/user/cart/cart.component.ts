@@ -137,8 +137,9 @@ export class CartComponent implements OnInit {
             quantity: detail.quantity,
             image: 'https://via.placeholder.com/100',
             type: detail.idTour ? 'tour' : detail.idHotel ? 'hotel' : 'ticket',
-
+            
           }));
+          console.log("p"+this.products);
 
           if (this.products.some(p => p.type === 'tour')) {
             this.products.filter(p => p.type === 'tour').forEach(p => {
