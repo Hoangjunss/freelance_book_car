@@ -22,6 +22,7 @@ export class HotelComponent {
   updateHotelRequest: UpdateHotelRequest = new UpdateHotelRequest();
   updateHotelResponse: UpdateHotelResponse = new UpdateHotelResponse();
   getAllHotelReponse: GetHotelResponse[] = [];
+  filterHotelResponse: GetHotelResponse[] = [];
 
   imageUrl: string = 'assets/img/DEFAULT/hotel-default.png';
   selectedImage: string = 'assets/img/DEFAULT/hotel-default.png';
@@ -36,6 +37,8 @@ export class HotelComponent {
   currentPage: number = 1;
   pageSize: number = 5;
   pagedData: any[] = [];
+
+  searchQuery: string='';
 
   constructor(private hotelService: HotelService){}
 
@@ -54,16 +57,32 @@ export class HotelComponent {
   updatePagedData() {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
-    this.pagedData = this.getAllHotelReponse.slice(startIndex, endIndex);
+    this.pagedData = this.filterHotelResponse.slice(startIndex, endIndex);
   }
 
   get totalPages(): number {
-    return Math.ceil(this.getAllHotelReponse.length / this.pageSize);
+    return Math.ceil(this.filterHotelResponse.length / this.pageSize);
   }
 
   get pages(): number[] {
     return Array(this.totalPages).fill(0).map((x, i) => i + 1);
   }
+
+  searchTour() {
+    console.log('Search Query:', this.searchQuery);
+    if (this.searchQuery.trim() != '') {
+      this.filterHotelResponse = this.getAllHotelReponse.filter(tour =>
+        tour.name?.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+      console.log(this.filterHotelResponse);
+      this.updatePagedData();
+    }
+  }
+  reset(){
+    this.filterHotelResponse = this.getAllHotelReponse;
+    this.updatePagedData();
+  }
+
 
   displayFormCreate(){
     this.isDisplayCreate = true;
@@ -108,6 +127,7 @@ export class HotelComponent {
     this.hotelService.getAllHotel().subscribe({
         next: (data) =>{
           this.getAllHotelReponse = data;
+          this.filterHotelResponse = this.getAllHotelReponse;
           this.updatePagedData();
           console.log('All tours:', this.getAllHotelReponse);
       },

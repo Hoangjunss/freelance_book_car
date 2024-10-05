@@ -97,7 +97,7 @@
                     <button type="button" class="close" aria-label="Close" (click)="closeJoin()">
                         <span aria-hidden="true">&times;</span>
                     </button>
-                    <ng-container *ngFor="let user of getUserInfo">
+                    <ng-container *ngFor="let user of getUserJoin">
                     <div class="form-group">
                         <label for="scheduleQuantity">Name</label>
                         <input type="text" class="form-control" id="scheduleQuantity" [(ngModel)]="user.firstName" name="scheduleQuantity" placeholder="Enter quantity" disabled>

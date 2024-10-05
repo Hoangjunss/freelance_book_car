@@ -31,10 +31,8 @@ public class Booking {
     private TypeBooking typeBooking;
 
     @OneToMany(mappedBy = "booking",fetch = FetchType.EAGER, targetEntity = UserJoin.class, cascade = CascadeType.ALL)
-    @JsonIgnore
     private List<UserJoin> userJoin = new ArrayList<>();
 
     @OneToMany(mappedBy = "booking",fetch = FetchType.EAGER, targetEntity = UserInfo.class, cascade = CascadeType.ALL)
-    @JsonIgnore
     private List<UserInfo> userInfo = new ArrayList<>();
 }

@@ -23,6 +23,7 @@ import com.freelance.bookCar.dto.response.booking.bookingTourism.AddBookingTouri
 import com.freelance.bookCar.dto.response.booking.bookingTourism.UpdateBookingTourismResponse;
 import com.freelance.bookCar.dto.response.bookingDetail.GetBookingDetailResponse;
 import com.freelance.bookCar.dto.response.user.userInfoDTO.CreateUserInfoResponse;
+import com.freelance.bookCar.dto.response.user.userInfoDTO.GetUserInfoResponse;
 import com.freelance.bookCar.dto.response.user.userJoinDTO.CreateUserJoinResponse;
 import com.freelance.bookCar.exception.CustomException;
 import com.freelance.bookCar.exception.Error;
@@ -591,8 +592,10 @@ public class BookingServiceImpl implements BookingService{
         Booking booking=modelMapper.map(getBookingResponse,Booking.class);
         booking.setTypeBooking(TypeBooking.valueOf(type));
         Booking bookingsave=bookingRepository.save(booking);
-        //Mail mail=mailService.getMail(booking.getUserInfo().getFirst().getEmail(),"Đơn hàng số "+booking.getId()+ "của bạn đã được "+type+"vui long kiểm tra lại ","Đơn hàng số"+booking.getId());
-        //mailService.sendMail(mail);
+        List<GetUserInfoResponse> userInfo = userInfoService.getUserInfoByBookingId(booking.getId());
+        log.info("594: {}", userInfo.toString());
+        Mail mail=mailService.getMail(userInfo.getFirst().getEmail(),"Đơn hàng số "+booking.getId()+ "của bạn đã được "+type+"vui long kiểm tra lại ","Đơn hàng số"+booking.getId());
+        mailService.sendMail(mail);
         return modelMapper.map(bookingsave, GetBookingResponse.class);
     }
 

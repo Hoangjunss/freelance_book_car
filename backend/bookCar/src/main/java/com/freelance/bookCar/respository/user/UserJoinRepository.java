@@ -8,6 +8,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface UserJoinRepository extends JpaRepository<UserJoin,Integer> {
-    @Query("SELECT ui FROM UserInfo ui WHERE ui.booking.id = :bookingId")
+    @Query("SELECT ui FROM UserJoin ui WHERE ui.booking.id = :bookingId")
     List<UserJoin> findUserJoinByBookingId(@Param("bookingId") Integer bookingId);
 }
