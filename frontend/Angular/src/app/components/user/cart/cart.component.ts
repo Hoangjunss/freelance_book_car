@@ -6,7 +6,7 @@ import { GetHotelBookingResponse } from './../../../models/response/product/hote
 import { Router } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthInterceptor } from '../../../services/auth.interceptor';
 import { UserService } from '../../../services/user/user.service';
@@ -22,6 +22,7 @@ import { TourScheduleStatusService } from '../../../services/product/tour/tour-s
 import { HotelbookingService } from '../../../services/product/hotel/hotelbooking/hotelbooking.service';
 import { TourScheduleService } from '../../../services/product/tour/tour-schedule/tour-schedule.service';
 import { forkJoin, Observable } from 'rxjs';
+import { NotificationComponent } from '../../notification/notification.component';
 
 
 @Component({
@@ -31,7 +32,7 @@ import { forkJoin, Observable } from 'rxjs';
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     UserService
   ],
-  imports: [FormsModule, CommonModule, HttpClientModule],
+  imports: [FormsModule, CommonModule, HttpClientModule,NotificationComponent],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css'
 })
@@ -49,6 +50,8 @@ export class CartComponent implements OnInit {
 
   products: any[] = [];
   idBooking: number | null = null;
+
+  @ViewChild(NotificationComponent) notificationComponent!: NotificationComponent;
 
   constructor(private bookingService: BookingService,
     private tourService: TourService,
@@ -106,7 +109,7 @@ export class CartComponent implements OnInit {
             this.idBooking = response.id;
             this.getBookingDetail(response.id);
           } else {
-            this.products = []; // Đặt sản phẩm thành mảng rỗng nếu không phải loại CART
+            this.products = []; 
           }
 
         } else {
@@ -256,7 +259,7 @@ export class CartComponent implements OnInit {
   updateBookingType() {
     const type = 'CART';
     if (this.products.length === 0) {
-        alert("Giỏ hàng của bạn hiện đang trống. Vui lòng thêm sản phẩm trước khi tiến hành thanh toán.");
+        this.notificationComponent.showNotification('error', 'Giỏ hàng của bạn đang trống. Vui lòng thêm sản phẩm vào giỏ hàng trước khi tiến hành thanh toán');
         return; 
     }
 
@@ -274,7 +277,7 @@ export class CartComponent implements OnInit {
     if (pastProducts.length > 0) {
         const pastProductNames = pastProducts.map(p => `${p.name}`).join(', ');
         // alert(`Một hoặc nhiều sản phẩm trong giỏ hàng của bạn đã quá thời gian. Vui lòng xóa chúng trước khi tiến hành thanh toán: ${pastProductNames}`);
-        alert(`Có một số sản phẩm trong giỏ hàng của bạn đã hết hạn. Vui lòng kiểm tra lại các sản phẩm sau: ${pastProductNames}`);
+        this.notificationComponent.showNotification('error', `Một hoặc nhiều sản phẩm trong giỏ hàng của bạn đã quá thời gian. Vui lòng xóa chúng trước khi tiến hành thanh toán: ${pastProductNames}`);
         return;
     }
 

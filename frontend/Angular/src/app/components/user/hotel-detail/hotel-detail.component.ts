@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { GetHotelDetailResponse } from '../../../models/response/product/hotel/hotel/get-hotel-detail-response';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HotelService } from '../../../services/product/hotel/hotel/hotel.service';
@@ -14,6 +14,7 @@ import { GetHotelBookingResponse } from '../../../models/response/product/hotel/
 import { FormsModule } from '@angular/forms';
 import { UpdateBookingResponse } from '../../../models/response/booking/update-booking-response';
 import { UpdateBookingHotelResponse } from '../../../models/response/booking/update-hotel-booking-response';
+import { NotificationComponent } from '../../notification/notification.component';
 
 @Component({
   selector: 'app-hotel-detail',
@@ -22,7 +23,7 @@ import { UpdateBookingHotelResponse } from '../../../models/response/booking/upd
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     UserService
   ],
-  imports: [HttpClientModule, CommonModule, FormsModule],
+  imports: [HttpClientModule, CommonModule, FormsModule,NotificationComponent],
   templateUrl: './hotel-detail.component.html',
   styleUrl: './hotel-detail.component.css'
 })
@@ -40,6 +41,8 @@ export class HotelDetailComponent {
   selectedPrice?: number | null = null;
 
   updateBookingResponse: UpdateBookingHotelResponse = new UpdateBookingHotelResponse();
+
+  @ViewChild(NotificationComponent) notificationComponent!: NotificationComponent;
 
   toggleContent(event: Event) {
     event.preventDefault();
@@ -89,7 +92,7 @@ export class HotelDetailComponent {
 
     // Kiểm tra nếu ngày bắt đầu nhỏ hơn ngày hiện tại
     if (selectedStartDate < currentDate) {
-      alert('Ngày bắt đầu không được nhỏ hơn ngày hiện tại.');
+      this.notificationComponent.showNotification('error', 'Ngày bắt đầu không được nhỏ hơn ngày hiện tại');
       target.value = ''; // Xóa giá trị
       this.startDate = null;
       return;
@@ -112,7 +115,7 @@ export class HotelDetailComponent {
     this.endDate = new Date(target.value);
 
     if (this.endDate && this.startDate && this.endDate < this.startDate) {
-      alert('Ngày kết thúc không được nhỏ hơn ngày bắt đầu.');
+      this.notificationComponent.showNotification('error', 'Ngày kết thúc không được nhỏ hơn ngày bắt đầu');
       target.value = ''; // Xóa giá trị
       this.endDate = null;
     }
@@ -160,7 +163,7 @@ export class HotelDetailComponent {
 
   addBookingHotel(locationId: string | null) {
     if (!this.selectedTourSchedule) {
-      alert("Please select hotel itinerary")
+      this.notificationComponent.showNotification('error', 'Please select a hotel');
       return;
     }
 
@@ -176,9 +179,11 @@ export class HotelDetailComponent {
     addBookingHotelRequest.totalPrice = 100;
 
 
-    if (!idUser) {
-      alert("Please login to book hotel")
-      this.router.navigate(['/auth/login']);
+    if(!idUser){
+      this.notificationComponent.showNotification('error', 'Vui lòng đăng nhập để thêm vào giỏ hàng');
+      setTimeout(() => {
+        this.router.navigate(['/auth/login']);
+      }, 2000);
       return;
     }
 
@@ -212,7 +217,7 @@ export class HotelDetailComponent {
           if (idBooking == null) {
             localStorage.setItem('idBooking', response.idBooking + "");
           }
-          alert("Đặt phòng thành công");
+          this.notificationComponent.showNotification('success', 'Thêm vào giỏ hàng thành công');
         }
       }
     })
