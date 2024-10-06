@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { GetHotelResponse } from '../../../models/response/product/hotel/hotel/get-hotel-response';
 import { GetTourismResponse } from '../../../models/response/product/ticket/tourism/get-tourism-response';
 import { GetTourResponse } from '../../../models/response/product/tour/tour/get-tour-response';
-import { Observable, combineLatest, switchMap } from 'rxjs';
+import { Observable, combineLatest, of, switchMap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HotelService } from '../../../services/product/hotel/hotel/hotel.service';
 import { TourService } from '../../../services/product/tour/tour/tour.service';
 import { TourismService } from '../../../services/product/ticket/tourism/tourism.service';
 import { CommonModule } from '@angular/common';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-search',
@@ -35,17 +36,26 @@ export class SearchComponent implements OnInit {
     private router: Router,
     private hotelService: HotelService,
     private tourService: TourService,
-    private tourismService: TourismService
-  ) {}
+    private tourismService: TourismService,
+    private title:Title
+  ) {this.title.setTitle("Tìm kiếm");}
 
   ngOnInit() {
     this.route.queryParams.pipe(
       switchMap(params => {
         this.location = params['query'];
         const query = params['query'];
-        this.hotels$ = this.hotelService.getHotelByLocation(query);
+        this.hotels$ = this.hotelService.getHotelByLocation(query).pipe(
+          switchMap(hotels => {
+            return of(hotels.filter(hotel => hotel.active));
+          })
+        );
         this.tourism$ = this.tourismService.getTourismByCategory(query);
-        this.tours$ = this.tourService.getTourByCategory(query);
+        this.tours$ = this.tourService.getTourByCategory(query).pipe(
+          switchMap(tours => {
+            return of(tours.filter(tour => tour.isActive));
+          })
+        );
         return combineLatest([this.hotels$, this.tourism$, this.tours$]);
       })
     ).subscribe(([hotels, tourism, tours]) => {
