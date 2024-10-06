@@ -1,0 +1,22 @@
+#google-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; 
+    max-width: 400px; 
+  }
+  
+  /* Đặt lại với media queries cho mobile */
+  @media (max-width: 767px) {
+    #google-btn {
+      width: 100%; 
+    }
+  }
+  
+  /* Kích thước cho iPad */
+  @media (min-width: 768px) and (max-width: 991px) {
+    #google-btn {
+      width: 100%; 
+    }
+  }
+  

@@ -2,46 +2,43 @@
 <div class="container mt-5 cart-container">
     <h2 class="mb-4 text-center">Giỏ hàng của bạn</h2>
 
-  
     <!-- Product list -->
     <ul class="list-group mb-4" *ngIf="products.length > 0">
-        <li *ngFor="let product of products"
-            class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
-            <div class="d-flex align-items-center flex-column flex-md-row">
-                <img [src]="product.image" alt="{{ product.name }}" class="img-thumbnail mr-3 mb-3 mb-md-0"
-                    style="width: 100px;">
-                <div class="product-info ml-md-3 text-center text-md-left">
+        <li *ngFor="let product of products" class="list-group-item d-flex flex-column flex-md-row align-items-start">
+            <div class="d-flex align-items-center w-100">
+                <img [src]="product.image" alt="{{ product.name }}" class="img-thumbnail mr-3" style="width: 100px;">
+                <div class="product-info text-center text-md-left">
                     <h5>{{ product.name }}</h5>
+                    <p class="price mb-0">Giá: {{ product.price | number }} đ</p>
 
-                    <div *ngIf="product.type === 'tour' && product.schedule">
+                    <ng-container *ngIf="product.type === 'tour'">
                         <p><strong>Ngày bắt đầu:</strong> {{ product.schedule.timeStartTour | date:'dd/MM/yyyy HH:mm' }}
                         </p>
                         <p><strong>Điểm bắt đầu:</strong> {{ product.startLocation }}</p>
                         <p><strong>Điểm kết thúc:</strong> {{ product.endLocation }}</p>
-                    </div>
+                    </ng-container>
 
-                    <div *ngIf="product.type === 'hotel'">
+                    <ng-container *ngIf="product.type === 'hotel'">
                         <p><strong>Thời gian check-in:</strong> {{ product.startDate | date:'dd/MM/yyyy' }}</p>
-                        <p><strong>Số ngày:</strong> {{ product.quantity}}</p>
+                        <p><strong>Số ngày:</strong> {{ product.quantity }}</p>
                         <p><strong>Vị trí:</strong> {{ product.location }}</p>
-                    </div>
+                    </ng-container>
 
-                    <div *ngIf="product.type === 'ticket'">
+                    <ng-container *ngIf="product.type === 'ticket'">
                         <p><strong>Địa điểm:</strong> {{ product.venue }}</p>
                         <p><strong>Ngày diễn ra:</strong> {{ product.dateEvent | date:'dd/MM/yyyy' }}</p>
-                        <p><strong>Sự kiện:</strong> {{ product.name }}</p>
-                    </div>
-
-                    <p class="price mb-0">Giá: {{ product.price | number }} đ</p>
+                    </ng-container>
                 </div>
             </div>
-            <div class="quantity-controls d-flex align-items-center">
-                <button class="btn btn-sm btn-light" (click)="decreaseQuantity(product)">-</button>
-                <input type="text" [(ngModel)]="product.quantity" class="form-control text-center quantity-input"
-                    readonly>
-                <button class="btn btn-sm btn-light" (click)="increaseQuantity(product)">+</button>
+            <div class="d-flex flex-column align-items-center quantity">
+                <div class="quantity-controls d-flex justify-content-center align-items-center mt-2 mb-2 mb-md-0">
+                    <button class="btn btn-sm btn-light" (click)="decreaseQuantity(product)">-</button>
+                    <input type="text" [(ngModel)]="product.quantity" class="form-control text-center quantity-input" readonly>
+                    <button class="btn btn-sm btn-light" (click)="increaseQuantity(product)">+</button>
+                </div>
+                <button class="btn btn-sm btn-danger mt-2" (click)="removeProduct(product)">Xóa</button>
             </div>
-            <button class="btn btn-sm btn-danger ml-3" (click)="removeProduct(product)">Xóa</button>
+                      
         </li>
     </ul>
 
@@ -59,16 +56,12 @@
         Bạn cần <a routerLink="/login">đăng nhập</a> để xem giỏ hàng của bạn.
     </div>
 
-     <!-- Empty cart message -->
-     <div *ngIf="products.length === 0 && isLoggedIn" class="empty-cart-message text-center mt-4">
+    <!-- Empty cart message -->
+    <div *ngIf="products.length === 0 && isLoggedIn" class="empty-cart-message text-center mt-4">
         <p>Giỏ hàng của bạn trống</p>
     </div>
-
 </div>
-<app-custom-modal 
-  [isVisible]="isModalVisible" 
-  title="Xác nhận thanh toán"
-  message="Bạn có chắc chắn muốn thanh toán không?" 
-  (confirmed)="onConfirmed()" 
-  (closed)="onClosed()">
+
+<app-custom-modal [isVisible]="isModalVisible" title="Xác nhận thanh toán"
+    message="Bạn có chắc chắn muốn thanh toán không?" (confirmed)="onConfirmed()" (closed)="onClosed()">
 </app-custom-modal>

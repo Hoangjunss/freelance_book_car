@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit, Type } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { LocationDetailComponent } from '../location-detail/location-detail.component';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { CommonModule } from '@angular/common';
@@ -18,7 +18,7 @@ import { GetPageResponse } from '../../../models/response/home/get-page-response
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     UserService
   ],
-  imports: [CarouselModule, CommonModule, LocationListComponent, LocationDetailComponent,HttpClientModule],
+  imports: [CarouselModule, CommonModule, LocationListComponent, LocationDetailComponent,HttpClientModule,RouterLink],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -159,5 +159,14 @@ export class HomeComponent implements OnInit, AfterViewInit {
       }
     });
   }
+
+  navigateToLocationList(location: string): void {
+    this.router.navigate(['location-list', encodeURIComponent(location)]);
+  }
+
+  navigateToTicketList(location: string): void {
+    this.router.navigate(['ticket-list', encodeURIComponent(location)]);
+  }
+
 
 }
