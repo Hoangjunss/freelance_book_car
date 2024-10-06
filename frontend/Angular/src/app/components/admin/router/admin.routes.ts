@@ -17,11 +17,13 @@ import { PageHomeComponent } from "../page/page-home/page-home.component";
 import { BookingPendingComponent } from "../booking/booking-pending/booking-pending.component";
 import { BookingAcceptComponent } from "../booking/booking-accept/booking-accept.component";
 import { BookingCancelComponent } from "../booking/booking-cancel/booking-cancel.component";
+import { AuthGuard } from "./auth.guard";
 
 export const adminRoutes: Routes = [
     {
         path: '',
         component: LayoutComponent,
+        canActivate: [AuthGuard],
         children:[
             {
                 path: 'tour-manager',

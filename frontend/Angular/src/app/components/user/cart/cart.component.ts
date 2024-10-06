@@ -176,27 +176,31 @@ export class CartComponent implements OnInit {
 
           if (this.products.some(p => p.type === 'hotel')) {
             this.products.filter(p => p.type === 'hotel').forEach(p => {
-              this.hotelService.getHotelDetailById(p.id).subscribe({
-                next: (hotelResponse) => {
-                  p.name = hotelResponse.name;
-                  p.image = hotelResponse.image;
-                  p.location = hotelResponse.location;
-                  this.hotelBookingService.getBooking(p.id).subscribe({
-                    next: (hotelBookingResponse) => {
-                      p.startDate = hotelBookingResponse.startDate;
-                      p.endDate = hotelBookingResponse.endDate;
+
+              this.hotelBookingService.getBooking(p.id).subscribe({
+                next: (hotelBookingResponse) => {
+                  p.startDate = hotelBookingResponse.startDate;
+                  p.endDate = hotelBookingResponse.endDate;
+                  console.log("182 "+JSON.stringify(hotelBookingResponse));
+                  this.hotelService.getHotelDetailById(hotelBookingResponse.hotel).subscribe({
+                    next: (hotelResponse) => {
+                      console.log("185 "+JSON.stringify(hotelResponse));
+                      p.name = hotelResponse.name;
+                      p.image = hotelResponse.image;
+                      p.location = hotelResponse.location;
+                      console.log(hotelResponse);
                     },
                     error: (error) => {
                       console.log("Error:", error);
                     }
                   });
-
-
                 },
                 error: (error) => {
                   console.log("Error:", error);
                 }
               });
+
+
             });
           }
 
@@ -297,12 +301,10 @@ export class CartComponent implements OnInit {
 
     if (pastProducts.length > 0) {
       const pastProductNames = pastProducts.map(p => `${p.name}`).join(', ');
-      // alert(`Một hoặc nhiều sản phẩm trong giỏ hàng của bạn đã quá thời gian. Vui lòng xóa chúng trước khi tiến hành thanh toán: ${pastProductNames}`);
       this.notificationComponent.showNotification('error', `Một hoặc nhiều sản phẩm trong giỏ hàng của bạn đã quá thời gian. Vui lòng xóa chúng trước khi tiến hành thanh toán: ${pastProductNames}`);
       return;
     }
     this.isModalVisible = true;
-    console.log(this.isModalVisible); 
   }
 
   onConfirmed() {
@@ -312,6 +314,7 @@ export class CartComponent implements OnInit {
 
   onClosed() {
     this.isModalVisible = false; 
+
   }
 
 
@@ -324,6 +327,7 @@ export class CartComponent implements OnInit {
     if (product.type === 'tour') {
       this.bookingService.updateQuantityTour(formData).subscribe({
         next: (response) => {
+
         },
         error: (error) => {
           console.log('Lỗi khi cập nhật số lượng tour', error);

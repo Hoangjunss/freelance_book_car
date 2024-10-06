@@ -166,6 +166,7 @@ export class HotelDetailComponent {
       } 
       if (this.listHotel.length > 0) {
         this.selectedTourSchedule = this.listHotel[0].id;
+
         this.onTourScheduleChange();
       }
     });
@@ -203,7 +204,8 @@ export class HotelDetailComponent {
     formData.append('idBooking', idBooking || '');
     formData.append('idUser', addBookingHotelRequest.idUser.toString());
     formData.append('quantity', addBookingHotelRequest.quantity.toString());
-    formData.append('totalPrice', this.totalPrice.toString());
+    formData.append('totalPrice', this.selectedPrice.toString());
+
     // if (this.startDate && this.endDate) {
     //   formData.append('startDate', this.startDate.toString());
     //   formData.append('endDate', this.endDate.toString());

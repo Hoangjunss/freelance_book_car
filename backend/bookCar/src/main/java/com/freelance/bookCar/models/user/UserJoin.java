@@ -23,6 +23,5 @@ public class UserJoin {
     private String email;
     @ManyToOne(optional = false, targetEntity = Booking.class)
     @JoinColumn(name = "booking_id", referencedColumnName = "id")
-    @JsonIgnore
     private Booking booking;
 }
