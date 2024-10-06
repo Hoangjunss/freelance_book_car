@@ -24,36 +24,37 @@ export class HistoryComponent implements OnInit {
   products: any[] = [];
   getBookingDetailResponse: GetBookingDetailResponse[] = [];
   selectedOrder: any;
+  isLoggedIn: boolean = false;
 
-  orders = [
-    {
-      id: 1,
-      date: '25/09/2024',
-      type: 'Đặt Khách Sạn',
-      hotelName: 'Khách sạn Grand Palace',
-      checkIn: '01/10/2024',
-      checkOut: '05/10/2024',
-      total: 5000000
-    },
-    {
-      id: 2,
-      date: '20/09/2024',
-      type: 'Đặt Xe',
-      carType: 'Xe hơi',
-      pickupLocation: 'Sân bay Nội Bài',
-      dropOffLocation: 'Khách sạn Grand Palace',
-      total: 1500000
-    },
-    {
-      id: 3,
-      date: '15/09/2024',
-      type: 'Đặt Vé',
-      event: 'Hòa nhạc BTS',
-      venue: 'SVĐ Mỹ Đình',
-      dateEvent: '10/10/2024',
-      total: 3000000
-    }
-  ];
+  // orders = [
+  //   {
+  //     id: 1,
+  //     date: '25/09/2024',
+  //     type: 'Đặt Khách Sạn',
+  //     hotelName: 'Khách sạn Grand Palace',
+  //     checkIn: '01/10/2024',
+  //     checkOut: '05/10/2024',
+  //     total: 5000000
+  //   },
+  //   {
+  //     id: 2,
+  //     date: '20/09/2024',
+  //     type: 'Đặt Xe',
+  //     carType: 'Xe hơi',
+  //     pickupLocation: 'Sân bay Nội Bài',
+  //     dropOffLocation: 'Khách sạn Grand Palace',
+  //     total: 1500000
+  //   },
+  //   {
+  //     id: 3,
+  //     date: '15/09/2024',
+  //     type: 'Đặt Vé',
+  //     event: 'Hòa nhạc BTS',
+  //     venue: 'SVĐ Mỹ Đình',
+  //     dateEvent: '10/10/2024',
+  //     total: 3000000
+  //   }
+  // ];
 
   constructor(private bookingService: BookingService,
     private tourService: TourService,
@@ -76,6 +77,8 @@ export class HistoryComponent implements OnInit {
 
   getBookingByUser() {
     const idUser = localStorage.getItem('idUser');
+    const user = localStorage.getItem('currentUser');
+    this.isLoggedIn = !!user;
 
     this.bookingService.getHistoryBooking(parseInt(idUser)).subscribe({
       next: (data) => {

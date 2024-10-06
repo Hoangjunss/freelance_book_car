@@ -91,6 +91,12 @@ export class UserService {
         } else {
           throw new Error(response.message);
         }
+      }),
+      catchError((error) => {
+        if (error.status === 401) {
+          this.router.navigate(['/login']);
+        }
+        return throwError(error);
       })
     );
   }

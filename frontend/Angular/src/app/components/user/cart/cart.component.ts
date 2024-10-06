@@ -3,7 +3,7 @@ import { GetTourResponse } from './../../../models/response/product/tour/tour/ge
 import { GetHotelResponse } from './../../../models/response/product/hotel/hotel/get-hotel-response';
 import { TicketService } from './../../../services/product/ticket/ticket/ticket.service';
 import { GetHotelBookingResponse } from './../../../models/response/product/hotel/hotel-booking/get-hotelbooking-response';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { Component, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
@@ -32,7 +32,7 @@ import { NotificationComponent } from '../../notification/notification.component
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     UserService
   ],
-  imports: [FormsModule, CommonModule, HttpClientModule,NotificationComponent],
+  imports: [FormsModule, CommonModule, HttpClientModule,NotificationComponent,RouterLink],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css'
 })
@@ -50,6 +50,7 @@ export class CartComponent implements OnInit {
 
   products: any[] = [];
   idBooking: number | null = null;
+  isLoggedIn: boolean = false;
 
   @ViewChild(NotificationComponent) notificationComponent!: NotificationComponent;
 
@@ -68,9 +69,12 @@ export class CartComponent implements OnInit {
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       const id = localStorage.getItem('idUser');
-      if (id) {
+      const user = localStorage.getItem('currentUser');
+      this.isLoggedIn = !!user;
+      if (id && this.isLoggedIn) {
         this.getBookingByUser(parseInt(id));
       }
+      
     }
   }
 
