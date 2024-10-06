@@ -114,7 +114,8 @@
                         <p class="text-dark" style="font-weight: 600;">Vui lòng chọn ngày & gói dịch vụ</p>
                     </div>
                     <p class="text-muted">Vui lòng chọn ngày du lịch</p>
-                    <select class="form-select mb-2" [(ngModel)]="selectedTourSchedule" (change)="onTourScheduleChange()">                        
+                    <select class="form-select mb-2" [(ngModel)]="selectedTourSchedule" (change)="onTourScheduleChange()"> 
+                        <option [value] = null selected disabled>-- SELECT TOUR SCHEDULE  --</option>                       
                         <option *ngFor="let schedule of availableTourSchedules" [ngValue]="schedule.id">
                           {{ schedule.timeStartTour | date: 'dd/MM/yyyy' }} - Giá: {{ schedule.priceTour | currency }}
                         </option>

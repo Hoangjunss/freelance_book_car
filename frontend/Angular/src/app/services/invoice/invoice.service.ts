@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { CreateInvoiceRequest } from '../../models/request/invoice/create-invoice-request';
 import { map, Observable } from 'rxjs';
 import { CreateInvoiceResponse } from '../../models/response/invoice/create-invoice-response';
@@ -8,13 +8,14 @@ import { GetInvoiceResponse } from '../../models/response/invoice/get-invoice-re
 import { UpdateInvoiceRequest } from '../../models/request/invoice/update-invoice-request';
 import { UpdateInvoiceResponse } from '../../models/response/invoice/update-invoice-response';
 import { environment } from '../environment';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class InvoiceService {
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) { }
 
   private baseUrl = `${environment.apiBaseUrl}/api/v1/invoice`;
 
@@ -58,7 +59,11 @@ export class InvoiceService {
   }
 
   private createAuthorizationHeader(): HttpHeaders {
-    const token = localStorage.getItem('token');
+    let token = null;
+
+    if (isPlatformBrowser(this.platformId)) {
+      token = localStorage.getItem('token');
+    }
     if (token) {
       return new HttpHeaders().set('Authorization', `Bearer ${token}`);
     }

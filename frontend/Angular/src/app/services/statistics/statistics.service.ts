@@ -1,10 +1,11 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { StatisticYear } from '../../models/response/statistics/StatisticYear';
 import { map, Observable } from 'rxjs';
 import { Apiresponse } from '../../models/response/apiresponse';
 import { StatisticMonthYear } from '../../models/response/statistics/StatisticMonthYear';
 import { environment } from '../environment';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ import { environment } from '../environment';
 export class StatisticsService {
   private baseUrl = `${environment.apiBaseUrl}/api/v1/statistic`;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) { }
 
   getStatisticYear(year: number): Observable<StatisticYear> {
     const headers = this.createAuthorizationHeader();
@@ -159,12 +160,13 @@ export class StatisticsService {
   }
 
   private createAuthorizationHeader(): HttpHeaders {
-    const token = localStorage.getItem('token');
+    let token = null;
+
+    if (isPlatformBrowser(this.platformId)) {
+      token = localStorage.getItem('token');
+    }
     if (token) {
       return new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    }
-    else {
-      console.log('Token not found in local store');
     }
     return new HttpHeaders();
   }

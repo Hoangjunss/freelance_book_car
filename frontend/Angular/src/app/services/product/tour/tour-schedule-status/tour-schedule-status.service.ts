@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Apiresponse } from '../../../../models/response/apiresponse';
 import { CreateTourScheduleStatusRequest } from '../../../../models/request/product/tour/tour-schedule-status/create-tour-schedule-status-request';
@@ -8,6 +8,7 @@ import { UpdateTourScheduleStatusRequest } from '../../../../models/request/prod
 import { UpdateTourScheduleStatusResponse } from '../../../../models/response/product/tour/tour-schedule-status/update-tour-schedule-status-request';
 import { GetTourScheduleStatusResponse } from '../../../../models/response/product/tour/tour-schedule-status/get-tour-schedule-status-response';
 import { environment } from '../../../environment';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class TourScheduleStatusService {
 
   private baseUrl = `${environment.apiBaseUrl}/api/v1/tour-schedule-status`;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient,@Inject(PLATFORM_ID) private platformId: Object) { }
 
   createScheduleStatus(createScheduleStatusRequest: CreateTourScheduleStatusRequest): Observable<CreateTourScheduleStatusResponse> {
     const headers =this.createAuthorizationHeader();
@@ -58,7 +59,11 @@ export class TourScheduleStatusService {
   }
 
   private createAuthorizationHeader(): HttpHeaders {
-    const token = localStorage.getItem('token');
+    let token = null;
+
+    if (isPlatformBrowser(this.platformId)) {
+      token = localStorage.getItem('token');
+    }
     if (token) {
       return new HttpHeaders().set('Authorization', `Bearer ${token}`);
     }
