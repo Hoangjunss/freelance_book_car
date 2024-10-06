@@ -41,10 +41,12 @@
           <div *ngFor="let detail of detailData; let i = index" class="mb-4 border p-3 d-flex">
             <div class="flex-grow-1">
               <h6>Detail #{{ i + 1 }}</h6>
+              <ng-container *ngIf="detail.name != null && detail.name.trim() !== ''">
               <div class="form-group">
                 <label for="detailName{{i}}">Name</label>
                 <input [(ngModel)]="detail.name" id="detailName{{i}}" type="text" class="form-control">
               </div>
+            </ng-container>
               <div class="form-group">
                 <label for="detailUrl{{i}}">URL</label>
                 <input [(ngModel)]="detail.url" id="detailUrl{{i}}" type="text" class="form-control" disabled>
@@ -53,10 +55,12 @@
                 <label for="detailFile{{i}}">Upload Image</label>
                 <input type="file" id="detailFile{{i}}" class="form-control" (change)="onDetailFileSelected($event, i)">
               </div>
+              <ng-container *ngIf="detail.name != null && detail.name.trim() !== ''">
               <div class="form-group">
                 <label for="detailDescription{{i}}">Description</label>
                 <textarea [(ngModel)]="detail.description" id="detailDescription{{i}}" class="form-control"></textarea>
               </div>
+              </ng-container>
               <div class="d-flex justify-content-between">
                 <button class="btn btn-warning" (click)="savePage(detail)">Save Detail</button>
               </div>

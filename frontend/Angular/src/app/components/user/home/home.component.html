@@ -68,8 +68,8 @@
                     <div class="cas-memory cas-v1 owl-carousel owl-loaded owl-drag">
                         <div class="slider-container">
                             <div class="owl-carousel owl-theme">
-                                <div class="item" *ngFor="let img of images">
-                                    <img [src]="footerData?.url" alt="Slide" />
+                                <div class="item" *ngFor="let img of imageDetail">
+                                    <img [src]="img.url" alt="Slide" />
                                     <div class="flash"></div>
                                 </div>
                             </div>
