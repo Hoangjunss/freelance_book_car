@@ -286,27 +286,31 @@ export class BookingComponent implements OnInit {
 
           if (this.products.some(p => p.type === 'hotel')) {
             this.products.filter(p => p.type === 'hotel').forEach(p => {
-              this.hotelService.getHotelDetailById(p.id).subscribe({
-                next: (hotelResponse) => {
-                  p.name = hotelResponse.name;
-                  p.image = hotelResponse.image;
-                  p.location = hotelResponse.location;
-                  this.hotelBookingService.getBooking(p.id).subscribe({
-                    next: (hotelBookingResponse) => {
-                      p.startDate = hotelBookingResponse.startDate;
-                      p.endDate = hotelBookingResponse.endDate;
+
+              this.hotelBookingService.getBooking(p.id).subscribe({
+                next: (hotelBookingResponse) => {
+                  p.startDate = hotelBookingResponse.startDate;
+                  p.endDate = hotelBookingResponse.endDate;
+                  console.log("182 "+JSON.stringify(hotelBookingResponse));
+                  this.hotelService.getHotelDetailById(hotelBookingResponse.hotel).subscribe({
+                    next: (hotelResponse) => {
+                      console.log("185 "+JSON.stringify(hotelResponse));
+                      p.name = hotelResponse.name;
+                      p.image = hotelResponse.image;
+                      p.location = hotelResponse.location;
+                      console.log(hotelResponse);
                     },
                     error: (error) => {
                       console.log("Error:", error);
                     }
                   });
-
-
                 },
                 error: (error) => {
                   console.log("Error:", error);
                 }
               });
+
+
             });
           }
 
@@ -368,15 +372,14 @@ export class BookingComponent implements OnInit {
     formData.append('createUserInfoRequest', JSON.stringify(this.createUserInfoRequest));
     formData.append('createUserJoinRequest', JSON.stringify(this.createUserJoinRequest));
     formData.append('paymentMethod', 1 + "");
-    if(this.voucherId!=0){
-      console.log(this.voucherId);
-      formData.append('idVoucher', this.voucherId.toString() || '');
-    }
+    formData.append('idVoucher', this.voucherId.toString() || 0+'');
+
 
     formData.forEach((value, key) => {
       console.log(`${key}: ${value}`);
     });
 
+    debugger;
     this.bookingService.order(formData).subscribe({
       next: (response) => {
         if (response) {
@@ -463,6 +466,9 @@ export class BookingComponent implements OnInit {
             this.notificationComponent.showNotification('success', 'Áp dụng mã giảm giá thành công');
           }else{
             this.notificationComponent.showNotification('error', 'Mã giảm giá không hợp lệ');
+            this.getVoucher = new GetVoucherResponse();
+            this.newTotalPrice = this.totalPrice;
+            this.discountAmount = 0;
           }
         }
       },

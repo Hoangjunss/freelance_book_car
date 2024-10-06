@@ -143,27 +143,31 @@ export class HistoryComponent implements OnInit {
 
           if (this.products.some(p => p.type === 'hotel')) {
             this.products.filter(p => p.type === 'hotel').forEach(p => {
-              this.hotelService.getHotelDetailById(p.id).subscribe({
-                next: (hotelResponse) => {
-                  p.name = hotelResponse.name;
-                  p.image = hotelResponse.image;
-                  p.location = hotelResponse.location;
-                  this.hotelBookingService.getBooking(p.id).subscribe({
-                    next: (hotelBookingResponse) => {
-                      p.startDate = hotelBookingResponse.startDate;
-                      p.endDate = hotelBookingResponse.endDate;
+
+              this.hotelBookingService.getBooking(p.id).subscribe({
+                next: (hotelBookingResponse) => {
+                  p.startDate = hotelBookingResponse.startDate;
+                  p.endDate = hotelBookingResponse.endDate;
+                  console.log("182 "+JSON.stringify(hotelBookingResponse));
+                  this.hotelService.getHotelDetailById(hotelBookingResponse.hotel).subscribe({
+                    next: (hotelResponse) => {
+                      console.log("185 "+JSON.stringify(hotelResponse));
+                      p.name = hotelResponse.name;
+                      p.image = hotelResponse.image;
+                      p.location = hotelResponse.location;
+                      console.log(hotelResponse);
                     },
                     error: (error) => {
                       console.log("Error:", error);
                     }
                   });
-
-
                 },
                 error: (error) => {
                   console.log("Error:", error);
                 }
               });
+
+
             });
           }
 

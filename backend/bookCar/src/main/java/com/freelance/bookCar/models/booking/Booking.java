@@ -2,6 +2,7 @@ package com.freelance.bookCar.models.booking;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.freelance.bookCar.models.product.voucher.Voucher;
 import com.freelance.bookCar.models.user.UserInfo;
 import com.freelance.bookCar.models.user.UserJoin;
 import jakarta.persistence.*;
@@ -26,13 +27,9 @@ public class Booking {
     private double totalPrice;
     private Integer idUser;
     private Integer idPayment;
-    private Integer idVoucher;
+    @JoinColumn()
+    @ManyToOne()
+    private Voucher idVoucher;
     @Enumerated(EnumType.STRING)
     private TypeBooking typeBooking;
-
-    @OneToMany(mappedBy = "booking",fetch = FetchType.EAGER, targetEntity = UserJoin.class, cascade = CascadeType.ALL)
-    private List<UserJoin> userJoin = new ArrayList<>();
-
-    @OneToMany(mappedBy = "booking",fetch = FetchType.EAGER, targetEntity = UserInfo.class, cascade = CascadeType.ALL)
-    private List<UserInfo> userInfo = new ArrayList<>();
 }

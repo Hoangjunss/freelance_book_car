@@ -32,7 +32,7 @@ import { NotificationComponent } from '../../notification/notification.component
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     UserService
   ],
-  imports: [FormsModule, CommonModule, HttpClientModule,NotificationComponent,RouterLink],
+  imports: [FormsModule, CommonModule, HttpClientModule, NotificationComponent, RouterLink],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css'
 })
@@ -43,10 +43,10 @@ export class CartComponent implements OnInit {
   getTicketResponse: GetTicketResponse[] = [];
   getTourScheduleResposne: GetTourScheduleResponse[] = [];
 
-  getHotelResponse: GetHotelResponse[]=[];
-  getTourResponse: GetTourResponse[] =[];
-  getTourismResponse: GetTourismResponse[]=[]; 
-  
+  getHotelResponse: GetHotelResponse[] = [];
+  getTourResponse: GetTourResponse[] = [];
+  getTourismResponse: GetTourismResponse[] = [];
+
 
   products: any[] = [];
   idBooking: number | null = null;
@@ -74,7 +74,7 @@ export class CartComponent implements OnInit {
       if (id && this.isLoggedIn) {
         this.getBookingByUser(parseInt(id));
       }
-      
+
     }
   }
 
@@ -113,7 +113,7 @@ export class CartComponent implements OnInit {
             this.idBooking = response.id;
             this.getBookingDetail(response.id);
           } else {
-            this.products = []; 
+            this.products = [];
           }
 
         } else {
@@ -141,9 +141,9 @@ export class CartComponent implements OnInit {
             quantity: detail.quantity,
             image: 'https://via.placeholder.com/100',
             type: detail.idTour ? 'tour' : detail.idHotel ? 'hotel' : 'ticket',
-            
+
           }));
-          console.log("p"+this.products);
+          console.log("p" + this.products);
 
           if (this.products.some(p => p.type === 'tour')) {
             this.products.filter(p => p.type === 'tour').forEach(p => {
@@ -174,27 +174,31 @@ export class CartComponent implements OnInit {
 
           if (this.products.some(p => p.type === 'hotel')) {
             this.products.filter(p => p.type === 'hotel').forEach(p => {
-              this.hotelService.getHotelDetailById(p.id).subscribe({
-                next: (hotelResponse) => {
-                  p.name = hotelResponse.name;
-                  p.image = hotelResponse.image;
-                  p.location = hotelResponse.location;
-                  this.hotelBookingService.getBooking(p.id).subscribe({
-                    next: (hotelBookingResponse) => {
-                      p.startDate = hotelBookingResponse.startDate;
-                      p.endDate = hotelBookingResponse.endDate;
+
+              this.hotelBookingService.getBooking(p.id).subscribe({
+                next: (hotelBookingResponse) => {
+                  p.startDate = hotelBookingResponse.startDate;
+                  p.endDate = hotelBookingResponse.endDate;
+                  console.log("182 "+JSON.stringify(hotelBookingResponse));
+                  this.hotelService.getHotelDetailById(hotelBookingResponse.hotel).subscribe({
+                    next: (hotelResponse) => {
+                      console.log("185 "+JSON.stringify(hotelResponse));
+                      p.name = hotelResponse.name;
+                      p.image = hotelResponse.image;
+                      p.location = hotelResponse.location;
+                      console.log(hotelResponse);
                     },
                     error: (error) => {
                       console.log("Error:", error);
                     }
                   });
-
-
                 },
                 error: (error) => {
                   console.log("Error:", error);
                 }
               });
+
+
             });
           }
 
@@ -278,35 +282,35 @@ export class CartComponent implements OnInit {
   updateBookingType() {
     const type = 'CART';
     if (this.products.length === 0) {
-        this.notificationComponent.showNotification('error', 'Giỏ hàng của bạn đang trống. Vui lòng thêm sản phẩm vào giỏ hàng trước khi tiến hành thanh toán');
-        return; 
+      this.notificationComponent.showNotification('error', 'Giỏ hàng của bạn đang trống. Vui lòng thêm sản phẩm vào giỏ hàng trước khi tiến hành thanh toán');
+      return;
     }
 
     const pastProducts = this.products.filter(product => {
-        if (product.type === 'tour') {
-            return this.isPastStartDate(product.schedule?.timeStartTour);
-        } else if (product.type === 'hotel') {
-            return this.isPastStartDate(product.startDate);
-        } else if (product.type === 'ticket') {
-            return this.isPastStartDate(product.dateEvent);
-        }
-        return false;
+      if (product.type === 'tour') {
+        return this.isPastStartDate(product.schedule?.timeStartTour);
+      } else if (product.type === 'hotel') {
+        return this.isPastStartDate(product.startDate);
+      } else if (product.type === 'ticket') {
+        return this.isPastStartDate(product.dateEvent);
+      }
+      return false;
     });
 
     if (pastProducts.length > 0) {
-        const pastProductNames = pastProducts.map(p => `${p.name}`).join(', ');
-        // alert(`Một hoặc nhiều sản phẩm trong giỏ hàng của bạn đã quá thời gian. Vui lòng xóa chúng trước khi tiến hành thanh toán: ${pastProductNames}`);
-        this.notificationComponent.showNotification('error', `Một hoặc nhiều sản phẩm trong giỏ hàng của bạn đã quá thời gian. Vui lòng xóa chúng trước khi tiến hành thanh toán: ${pastProductNames}`);
-        return;
+      const pastProductNames = pastProducts.map(p => `${p.name}`).join(', ');
+      // alert(`Một hoặc nhiều sản phẩm trong giỏ hàng của bạn đã quá thời gian. Vui lòng xóa chúng trước khi tiến hành thanh toán: ${pastProductNames}`);
+      this.notificationComponent.showNotification('error', `Một hoặc nhiều sản phẩm trong giỏ hàng của bạn đã quá thời gian. Vui lòng xóa chúng trước khi tiến hành thanh toán: ${pastProductNames}`);
+      return;
     }
 
     if (this.idBooking) {
-        const confirmed = window.confirm("Bạn có chắc chắn muốn thanh toán không?");
-        if (confirmed) {
-            this.router.navigate(['/booking']);
-        }
+      const confirmed = window.confirm("Bạn có chắc chắn muốn thanh toán không?");
+      if (confirmed) {
+        this.router.navigate(['/booking']);
+      }
     }
-}
+  }
 
 
 

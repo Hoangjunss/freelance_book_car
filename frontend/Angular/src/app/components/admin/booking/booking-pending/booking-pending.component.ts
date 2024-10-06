@@ -212,8 +212,6 @@ export class BookingPendingComponent {
                       console.log("Error:", error);
                     }
                   });
-
-
                 },
                 error: (error) => {
                   console.log("Error:", error);

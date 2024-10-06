@@ -37,6 +37,7 @@ import com.freelance.bookCar.models.product.ticket.Ticket;
 import com.freelance.bookCar.models.product.ticket.Tourism;
 import com.freelance.bookCar.models.product.tour.Tour;
 import com.freelance.bookCar.models.product.tour.TourSchedule;
+import com.freelance.bookCar.models.product.voucher.Voucher;
 import com.freelance.bookCar.models.user.UserInfo;
 import com.freelance.bookCar.models.user.UserJoin;
 import com.freelance.bookCar.respository.booking.BookingDetailRepository;
@@ -48,6 +49,7 @@ import com.freelance.bookCar.services.product.ticketService.ticket.TicketService
 import com.freelance.bookCar.services.product.ticketService.tourism.TourismService;
 import com.freelance.bookCar.services.product.tourService.tour.TourService;
 import com.freelance.bookCar.services.product.tourService.tourSchedule.TourScheduleService;
+import com.freelance.bookCar.services.product.voucherService.voucherService.VoucherService;
 import com.freelance.bookCar.services.user.userInfoService.UserInfoService;
 import com.freelance.bookCar.services.user.userJoinService.UserJoinService;
 import lombok.extern.slf4j.Slf4j;
@@ -86,6 +88,8 @@ public class BookingServiceImpl implements BookingService{
     private UserInfoService userInfoService;
     @Autowired
     private UserJoinService userJoinService;
+    @Autowired
+    private VoucherService voucherService;
 
     @Override
     public CreateBookingResponse create(CreateBookingRequest createBookingRequest) {
@@ -240,8 +244,6 @@ public class BookingServiceImpl implements BookingService{
             booking.setTotalPrice(booking.getTotalPrice() + Double.parseDouble(addBookingTourRequest.getTotalPrice()));
             booking.setIdUser(booking.getIdUser());
             booking.setTypeBooking(TypeBooking.CART);
-            booking.setUserInfo(new ArrayList<>());
-            booking.setUserJoin(new ArrayList<>());
             // Save the updated booking
             try {
                 bookingRepository.save(booking);
@@ -341,8 +343,6 @@ public class BookingServiceImpl implements BookingService{
                     .idPayment(1)
                     .build();
             booking.setTypeBooking(TypeBooking.CART);
-            booking.setUserInfo(new ArrayList<>());
-            booking.setUserJoin(new ArrayList<>());
 
             // Save the updated booking
             bookingRepository.save(booking);
@@ -434,8 +434,6 @@ public class BookingServiceImpl implements BookingService{
                     .build();
 
             booking.setTypeBooking(TypeBooking.CART);
-            booking.setUserInfo(new ArrayList<>());
-            booking.setUserJoin(new ArrayList<>());
             // Save the updated booking
             bookingRepository.save(booking);
         }
@@ -458,6 +456,8 @@ public class BookingServiceImpl implements BookingService{
                     .totalPrice(hotel.getTotalPrice() * addBookingHotelRequest.getQuantity())
                     .build();
         }else{
+            log.info("addBookingHotelRequest 461: {}", addBookingHotelRequest.toString());
+            log.info("bookingDetail 462: {}", bookingDetail.toString());
             bookingDetail.setQuantity(addBookingHotelRequest.getQuantity()+bookingDetail.getQuantity());
             bookingDetail.setTotalPrice(bookingDetail.getTotalPrice()+(addBookingHotelRequest.getQuantity()*addBookingHotelRequest.getTotalPrice()));
         }
@@ -623,7 +623,6 @@ public class BookingServiceImpl implements BookingService{
                  })
                 .toList();
         log.info("600: {}", updatedUserInfo.toString());
-        booking.setUserInfo(updatedUserInfo);
 
         List<UserJoin> updatedUserJoin = orderRequest.getCreateUserJoinRequest().stream()
                 .map(createUserJoinResponse -> {
@@ -634,12 +633,14 @@ public class BookingServiceImpl implements BookingService{
                 })
                 .toList();
         log.info("609: {}", updatedUserJoin.toString());
-        booking.setUserJoin(updatedUserJoin);
 
-        booking.setIdVoucher(orderRequest.getIdVoucher());
-        booking.setIdPayment(orderRequest.getPaymentMethod());
+        if(orderRequest.getIdVoucher() != null){
+            Voucher voucher = modelMapper.map(voucherService.findById(orderRequest.getIdVoucher()), Voucher.class);
+            booking.setIdVoucher(voucher);
+        }
 
         log.info("632: {}", booking.toString());
+        booking.setTotalPrice(Double.parseDouble(orderRequest.getTotalPrice()));
         Booking bookingsave= bookingRepository.save(booking);
         log.info("634: {}", bookingsave.toString());
         Mail mail=mailService.getMail(updatedUserInfo.getFirst().getEmail(),"Đơn hàng số "+booking.getId()+ "của bạn đã được đặt vui lòng kiểm tra lại ","Đơn hàng số: "+booking.getId());
