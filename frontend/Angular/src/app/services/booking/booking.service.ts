@@ -84,10 +84,10 @@ export class BookingService {
     );
   } 
   
-  getByType(type: string): Observable<GetHotelBookingResponse[]> {
+  getByType(type: string): Observable<GetBookingResponse[]> {
     const headers = this.createAuthorizationHeader();
-    return this.httpClient.get<Apiresponse<GetHotelBookingResponse[]>>(`${this.baseUrl}/type?type=${type}`, {headers}).pipe(
-      map((response: Apiresponse<GetHotelBookingResponse[]>) => {
+    return this.httpClient.get<Apiresponse<GetBookingResponse[]>>(`${this.baseUrl}/type?type=${type}`, {headers}).pipe(
+      map((response: Apiresponse<GetBookingResponse[]>) => {
         if (response.success) {
           return response.data;
         } else {

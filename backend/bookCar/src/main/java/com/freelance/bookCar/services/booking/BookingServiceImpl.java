@@ -636,7 +636,7 @@ public class BookingServiceImpl implements BookingService{
 
         if(orderRequest.getIdVoucher() != null){
             Voucher voucher = modelMapper.map(voucherService.findById(orderRequest.getIdVoucher()), Voucher.class);
-            booking.setIdVoucher(voucher);
+            booking.setVoucher(voucher);
         }
 
         log.info("632: {}", booking.toString());

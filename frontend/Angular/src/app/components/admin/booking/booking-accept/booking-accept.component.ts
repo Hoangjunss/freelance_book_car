@@ -13,6 +13,8 @@ import { TourScheduleService } from '../../../../services/product/tour/tour-sche
 import { TourismService } from '../../../../services/product/ticket/tourism/tourism.service';
 import { HotelbookingService } from '../../../../services/product/hotel/hotelbooking/hotelbooking.service';
 import { GetBookingDetailResponse } from '../../../../models/response/booking/get-booking-detail-response';
+import { GetVoucherResponse } from '../../../../models/response/product/voucher/voucher/get-voucher-response';
+import { VoucherService } from '../../../../services/product/voucher/voucher/voucher.service';
 
 @Component({
   selector: 'app-booking-accept',
@@ -26,6 +28,8 @@ export class BookingAcceptComponent implements OnInit {
   type: string = 'ACCEPT';
 
   getBookingResponse: GetBookingResponse[] = [];
+
+  getVoucher: GetVoucherResponse[] = [];
 
   getUserInfo: GetUserInfoResponse[] = [];
   getUserJoin: GetUserJoinResponse[] = [];
@@ -48,17 +52,30 @@ export class BookingAcceptComponent implements OnInit {
     private tourScheduleService: TourScheduleService,
     private tourismService: TourismService,
     private hotelBookingService: HotelbookingService,
+    private voucherService: VoucherService
   ){}
 
   ngOnInit(): void {
     this.getByType(this.type);
     this.updatePagedData();
+    this.getAllVoucher();
   }
 
   goToPage(page: number) {
     this.currentPage = page;
     this.updatePagedData();
   }
+
+  getAllVoucher(){
+    this.voucherService.getAll().subscribe({
+      next: (data)=>{
+        if(data){
+          this.getVoucher = data;
+        }
+      }
+    })
+  }
+
 
   updatePagedData() {
     const startIndex = (this.currentPage - 1) * this.pageSize;
@@ -90,6 +107,8 @@ export class BookingAcceptComponent implements OnInit {
       }
     })
   }
+
+
 
   getUserInfoBooking(idBooking: number){
     this.bookingService.getUserInfo(idBooking).subscribe({

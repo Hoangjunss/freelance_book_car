@@ -13,6 +13,8 @@ import { TicketService } from '../../../../services/product/ticket/ticket/ticket
 import { TourScheduleService } from '../../../../services/product/tour/tour-schedule/tour-schedule.service';
 import { TourismService } from '../../../../services/product/ticket/tourism/tourism.service';
 import { HotelbookingService } from '../../../../services/product/hotel/hotelbooking/hotelbooking.service';
+import { GetVoucherResponse } from '../../../../models/response/product/voucher/voucher/get-voucher-response';
+import { VoucherService } from '../../../../services/product/voucher/voucher/voucher.service';
 
 @Component({
   selector: 'app-booking-cancel',
@@ -33,6 +35,7 @@ export class BookingCancelComponent {
   isUserInfo = false;
   isUserJoin = false;
 
+  getVoucher: GetVoucherResponse[] = [];
 
   currentPage: number = 1;
   pageSize: number = 5;
@@ -49,11 +52,23 @@ export class BookingCancelComponent {
     private tourScheduleService: TourScheduleService,
     private tourismService: TourismService,
     private hotelBookingService: HotelbookingService,
+    private voucherService: VoucherService
   ){}
 
   ngOnInit(): void {
     this.getByType(this.type);
     this.updatePagedData();
+    this.getAllVoucher();
+  }
+
+  getAllVoucher(){
+    this.voucherService.getAll().subscribe({
+      next: (data)=>{
+        if(data){
+          this.getVoucher = data;
+        }
+      }
+    })
   }
 
   goToPage(page: number) {

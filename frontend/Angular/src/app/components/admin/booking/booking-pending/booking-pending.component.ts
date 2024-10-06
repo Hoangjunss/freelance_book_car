@@ -14,6 +14,8 @@ import { TicketService } from '../../../../services/product/ticket/ticket/ticket
 import { TourScheduleService } from '../../../../services/product/tour/tour-schedule/tour-schedule.service';
 import { TourismService } from '../../../../services/product/ticket/tourism/tourism.service';
 import { HotelbookingService } from '../../../../services/product/hotel/hotelbooking/hotelbooking.service';
+import { VoucherService } from '../../../../services/product/voucher/voucher/voucher.service';
+import { GetVoucherResponse } from '../../../../models/response/product/voucher/voucher/get-voucher-response';
 
 @Component({
   selector: 'app-booking-pending',
@@ -34,6 +36,8 @@ export class BookingPendingComponent {
   isUserInfo = false;
   isUserJoin = false;
 
+  getVoucher: GetVoucherResponse[] = [];
+
   currentPage: number = 1;
   pageSize: number = 5;
   pagedData: any[] = [];
@@ -50,16 +54,28 @@ export class BookingPendingComponent {
     private tourScheduleService: TourScheduleService,
     private tourismService: TourismService,
     private hotelBookingService: HotelbookingService,
+    private voucherService: VoucherService
   ){}
 
   ngOnInit(): void {
     this.getByType(this.type);
     this.updatePagedData();
+    this.getAllVoucher();
   }
 
   goToPage(page: number) {
     this.currentPage = page;
     this.updatePagedData();
+  }
+
+  getAllVoucher(){
+    this.voucherService.getAll().subscribe({
+      next: (data)=>{
+        if(data){
+          this.getVoucher = data;
+        }
+      }
+    })
   }
 
   updatePagedData() {
@@ -79,6 +95,7 @@ export class BookingPendingComponent {
   getAll(){
     this.bookingService.getAll().subscribe({
       next: (data) => {
+        
         this.getBookingResponse = data;
         this.updatePagedData();
       }
@@ -88,6 +105,7 @@ export class BookingPendingComponent {
   getByType(type: string){
     this.bookingService.getByType(type).subscribe({
       next: (data) => {
+        console.log(data);
         this.getBookingResponse = data;
         this.updatePagedData();
       }

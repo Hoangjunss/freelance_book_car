@@ -17,6 +17,7 @@
                 <th>Status</th>
                 <th>Time Start Tour</th>
                 <th>Price</th>
+                <th>Voucher</th>
                 <th>User Info</th>
                 <th>User Join</th>
                 <th>Action</th>
@@ -28,6 +29,18 @@
                 <td>{{booking.type}}</td>
                 <td>{{booking.dateBook | date:'short'}}</td>
                 <td>{{booking.totalPrice}}</td>
+                <td>
+                  <ng-container *ngIf="booking.voucher; else noVoucher">
+                    <ng-container *ngFor="let voucher of getVoucher">
+                      <ng-container *ngIf="voucher.id == booking.voucher.id">
+                        {{voucher.name}}
+                      </ng-container>
+                    </ng-container>
+                  </ng-container>
+                  <ng-template #noVoucher>
+                    No voucher
+                  </ng-template>
+                </td>
                 <td>
                   <button class="btn btn-primary m-2" (click)="openInfo(booking.id)">View</button>
               </td>

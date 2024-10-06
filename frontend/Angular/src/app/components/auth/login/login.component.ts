@@ -52,9 +52,6 @@ export class LoginComponent implements OnInit {
               localStorage.setItem('token', token);
               this.getCurrentUser();
             }
-            this.router.navigate(['/home']).then(() => {
-              window.location.reload();
-            });
           },
           error: (error) => {
             console.error('Sign-in error', error);

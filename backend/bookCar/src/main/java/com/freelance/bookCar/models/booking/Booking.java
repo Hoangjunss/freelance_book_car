@@ -27,9 +27,9 @@ public class Booking {
     private double totalPrice;
     private Integer idUser;
     private Integer idPayment;
-    @JoinColumn()
-    @ManyToOne()
-    private Voucher idVoucher;
+    @ManyToOne(optional = true, targetEntity = Voucher.class)
+    @JoinColumn(name = "voucher_id", nullable = true)
+    private Voucher voucher;
     @Enumerated(EnumType.STRING)
     private TypeBooking typeBooking;
 }

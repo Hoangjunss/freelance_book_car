@@ -379,7 +379,6 @@ export class BookingComponent implements OnInit {
       console.log(`${key}: ${value}`);
     });
 
-    debugger;
     this.bookingService.order(formData).subscribe({
       next: (response) => {
         if (response) {

@@ -1,5 +1,6 @@
 package com.freelance.bookCar.dto.response.booking;
 
+import com.freelance.bookCar.models.product.voucher.Voucher;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +19,7 @@ public class GetBookingResponse {
     private Integer idUser;
     private Integer paymentMethod;
     private Integer invoice;
+    private Voucher voucher;
     private String type;
     private Integer idTour;
 }
