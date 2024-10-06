@@ -184,15 +184,13 @@ export class TourismComponent {
   
     if (this.imageFile != undefined) {
       formData.append('image', this.imageFile);
-    }else{
-
     }
 
     this.tourismService.updateTour(formData).subscribe({
       next: (data) => {
         this.createTourismResponse = data;
         if (this.createTourismResponse) {
-          this.notificationComponent.showNotification('success', 'Tạo tour thành công');
+          this.notificationComponent.showNotification('success', 'Cập nhật tour thành công');
           window.location.reload();
         }
       },

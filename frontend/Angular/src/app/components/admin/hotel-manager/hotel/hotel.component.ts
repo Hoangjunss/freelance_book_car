@@ -155,6 +155,12 @@ export class HotelComponent {
       this.notificationComponent.showNotification('error', 'Vui lòng điền đầy đủ thông tin');
       return;
     }
+
+    if(this.createHotelRequest?.pricePerNight<=0){
+      this.notificationComponent.showNotification('error', 'Vui lòng điền giá hợp lệ');
+      return;
+    }
+
     if(this.createHotelRequest.isActive == undefined){
       this.createHotelRequest.isActive = false;
     }
@@ -165,10 +171,13 @@ export class HotelComponent {
     formData.append('pricePerNight', this.createHotelRequest.pricePerNight?.toString() || '');
     formData.append('location', this.createHotelRequest.location || '');
     formData.append('isActive', this.createHotelRequest.isActive ? 'true' : 'false');
-    formData.append('rating', this.createHotelRequest.rating?.toString() || '');
+    formData.append('rating', this.createHotelRequest.rating?.toString() || 0+'');
 
     if (this.imageFile != undefined) {
       formData.append('image', this.imageFile);
+    }else{
+      this.notificationComponent.showNotification('error', 'Vui lòng chọn ảnh thay thế');
+      return;
     }
 
     this.hotelService.createHotel(formData).subscribe({
@@ -194,10 +203,16 @@ export class HotelComponent {
       this.notificationComponent.showNotification('error', 'Vui lòng điền đầy đủ thông tin');
       return;
     }
+
+    if(this.updateHotelRequest?.pricePerNight <=0){
+      this.notificationComponent.showNotification('error', 'Vui lòng điền giá hợp lệ');
+      return;
+    }
+
     if(this.updateHotelRequest.isActive == undefined){
       this.updateHotelRequest.isActive = false;
     }
-
+    console.log(this.updateHotelRequest.isActive);
     const formData = new FormData();
     formData.append('id', this.updateHotelRequest.id.toString() || '');
     formData.append('name', this.updateHotelRequest.name || '');
@@ -216,6 +231,7 @@ export class HotelComponent {
       console.log(`${key}: ${value}`);
     });
 
+    debugger;
 
     this.hotelService.updateHotel(formData).subscribe({
       next: (data) => {

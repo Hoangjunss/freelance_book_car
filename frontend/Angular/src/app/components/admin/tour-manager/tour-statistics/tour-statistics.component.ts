@@ -5,6 +5,7 @@ import { GetBookingResponse } from '../../../../models/response/booking/get-book
 import { StatisticMonthYear } from '../../../../models/response/statistics/StatisticMonthYear';
 import { StatisticsService } from '../../../../services/statistics/statistics.service';
 import { Title } from '@angular/platform-browser';
+import { NotificationComponent } from "../../../notification/notification.component";
 
 interface Invoice {
     date: string;
@@ -17,7 +18,7 @@ interface Invoice {
 @Component({
   selector: 'app-tour-statistics',
   standalone: true,
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule, NotificationComponent],
   templateUrl: './tour-statistics.component.html',
   styleUrls: ['./tour-statistics.component.css']
 })

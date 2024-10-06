@@ -1,5 +1,5 @@
 <h2 class="text-center m-2">Hotel Manager</h2>
-
+<app-notification></app-notification>
 <nav class="d-flex navbar navbar-expand-lg navbar-light bg-light navbackground">
   <div class="form-inline my-2 my-lg-0 mr-auto">
     <input [(ngModel)]="searchQuery" style="margin-left: 10px;" name="searchQuery" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
@@ -19,10 +19,9 @@
           <th>#</th>
           <th>Name</th>
           <th>Contact Info</th>
-          <th>Price per Night</th>
+          <th>Price per Night (VND)</th>
           <th>Location</th>
           <th>Active</th>
-          <th>Rating</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -34,7 +33,6 @@
           <td>{{ item.pricePerNight }}</td>
           <td>{{ item.location }}</td>
           <td>{{ item.active ? 'Active' : 'Stop' }}</td>
-          <td>{{ item.rating }}</td>
           <td>
             <button class="btn btn-warning m-2" (click)="displayFormUpdate(item)">Edit</button>
           </td>
@@ -59,8 +57,6 @@
   </nav>
 </div>
 
-
-
 <div *ngIf="isDisplayCreate" class="modal fade show" tabindex="-1" role="dialog"
   style="display: block; background: rgba(0, 0, 0, 0.5);">
   <div class="modal-dialog modal-lg" role="document">
@@ -73,7 +69,6 @@
               <button type="button" class="close" aria-label="Close" (click)="closeFormCreate()">
                 <span aria-hidden="true">&times;</span>
               </button>
-
               <div class="form-group">
                 <label for="name">Name</label>
                 <input type="text" class="form-control" id="name" [(ngModel)]="createHotelRequest.name" name="name"
@@ -82,15 +77,13 @@
                   Hotel name is required.
                 </div>
               </div>
-
               <div class="form-group">
                 <label for="contacInfo">Contact Info</label>
                 <input type="text" class="form-control" id="contacInfo" [(ngModel)]="createHotelRequest.contactInfo"
                   name="contacInfo" placeholder="Enter contact info" />
               </div>
-
               <div class="form-group">
-                <label for="pricePerNight">Price Per Night</label>
+                <label for="pricePerNight">Price Per Night (VND)</label>
                 <input type="number" class="form-control" id="pricePerNight"
                   [(ngModel)]="createHotelRequest.pricePerNight" name="pricePerNight"
                   placeholder="Enter price per night" required min="0" #priceInput="ngModel" />
@@ -108,20 +101,16 @@
                 </div>
               </div>
 
-              <div class="form-group">
-                <label for="active">Active</label>
-                <input type="checkbox" class="form-check-input" id="active" [(ngModel)]="createHotelRequest.isActive"
-                  name="active" />
-              </div>
-              <div class="form-group">
-                <label for="rating">Rating</label>
-                <input type="number" class="form-control" id="rating" [(ngModel)]="createHotelRequest.rating"
-                  name="rating" step="0.1" placeholder="Enter rating" min="0" max="5" #ratingInput="ngModel" />
-                <div *ngIf="ratingInput.invalid && ratingInput.touched" class="text-danger">
-                  Rating must be between 0 and 5.
-                </div>
-              </div>
+              <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="isActive"  [(ngModel)]="createHotelRequest.isActive"name="isActive">
+              <label class="form-check-label" for="flexCheckIndeterminate">
+                Is Active
+              </label>
             </div>
+            </div>
+            
+            
+
             <div class="col-md-6 col-sm-12">
               <div class="form-group">
                 <label for="tourImage">Upload Tour Image</label>
@@ -175,7 +164,7 @@
               </div>
 
               <div class="form-group">
-                <label for="pricePerNight">Price Per Night</label>
+                <label for="pricePerNight">Price Per Night (VND)</label>
                 <input type="number" class="form-control" id="pricePerNight"
                   [(ngModel)]="updateHotelRequest.pricePerNight" name="pricePerNight"
                   placeholder="Enter price per night" required min="0" #priceInput="ngModel" />
@@ -192,21 +181,14 @@
                   Location is required.
                 </div>
               </div>
-
-              <div class="form-group">
-                <label for="active">Active</label>
-                <input type="checkbox" class="form-check-input" id="active" [(ngModel)]="updateHotelRequest.isActive"
-                  name="active" />
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="isActive"  [(ngModel)]="updateHotelRequest.isActive" name="isActive">
+                <label class="form-check-label" for="flexCheckIndeterminate">
+                  Is Active
+                </label>
               </div>
+              
 
-              <div class="form-group">
-                <label for="rating">Rating</label>
-                <input type="number" class="form-control" id="rating" [(ngModel)]="updateHotelRequest.rating"
-                  name="rating" step="0.1" placeholder="Enter rating" min="0" max="5" #ratingInput="ngModel" />
-                <div *ngIf="ratingInput.invalid && ratingInput.touched" class="text-danger">
-                  Rating must be between 0 and 5.
-                </div>
-              </div>
             </div>
             <div class="col-md-6 col-sm-12">
               <div class="form-group">

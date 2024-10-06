@@ -148,6 +148,16 @@ export class TicketComponent implements OnInit {
     let formattedEndDate = endDate.toISOString().slice(0, 19);
     let isSuccess = false;
 
+    if(this.createTicketRequest.idTourism==null){
+      this.notificationComponent.showNotification('error', 'Vui lòng chọn khu du lịch');
+      return;
+    }
+
+    if(this.createTicketRequest.tourPrice==null ||this.createTicketRequest.tourPrice<=0){
+      this.notificationComponent.showNotification('error', 'Vui lòng chọn giá hợp lệ');
+      return;
+    }
+
     if (startDate < new Date()) {
       this.notificationComponent.showNotification('error', 'Ngày bắt đầu không được nhỏ hơn hoặc bằng ngày hiện tại');
       return;
@@ -165,6 +175,7 @@ export class TicketComponent implements OnInit {
             if (data) {
               this.createTicketResponse = data;
               isSuccess = true;
+              this.notificationComponent.showNotification('success', 'Tạo vé thành công');
             }
           },
           error: (error) => {
@@ -174,10 +185,6 @@ export class TicketComponent implements OnInit {
 
         startDate.setDate(startDate.getDate() + 1);
         formattedStartDate = startDate.toISOString().slice(0, 19);
-      }
-
-      if (isSuccess) {
-        this.notificationComponent.showNotification('success', 'Tạo vé thành công');
       }
     } else {
       console.error('Start date must be less than or equal to end date.');
@@ -211,6 +218,15 @@ export class TicketComponent implements OnInit {
   saveUpdate() {
     if (this.updateTicketRequest) {
       console.log(this.updateTicketRequest);
+      if(this.updateTicketRequest.idTourism==null){
+        this.notificationComponent.showNotification('error', 'Vui lòng chọn khu du lịch');
+        return;
+      }
+  
+      if(this.updateTicketRequest.tourPrice<=0){
+        this.notificationComponent.showNotification('error', 'Vui lòng chọn giá hợp lệ');
+        return;
+      }
   
       const formData = new FormData();
       formData.append('id', this.updateTicketRequest.id?.toString() ?? '');
@@ -219,6 +235,10 @@ export class TicketComponent implements OnInit {
   
       if(this.updateTicketRequest.startDate!=undefined){
         const startDate = new Date(this.updateTicketRequest.startDate);  
+        if(startDate <= new Date()){
+          this.notificationComponent.showNotification('error', 'Vé đã hết hạn');
+        return;
+        }
         const startDateWithoutTimezone = startDate.toISOString().slice(0, 19);
         formData.append('startDate', startDateWithoutTimezone);           
       }

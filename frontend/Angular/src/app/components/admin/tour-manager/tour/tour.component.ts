@@ -169,12 +169,8 @@ export class TourComponent implements OnInit{
     if (this.imageFile != undefined) {
       formData.append('image', this.imageFile);
     }else{
-      this.createFileFromUrl(this.selectedImage, 'tour-default.png').then(file => {
-        this.imageFile = file; 
-        formData.append('image', this.imageFile);
-      }).catch(error => {
-        console.error('Error creating file from URL:', error);
-      });
+      this.notificationComponent.showNotification('error', 'Vui lòng chọn ảnh thay thế ảnh minh họa');
+      return;
     }
 
     console.log(this.createTourRequest);

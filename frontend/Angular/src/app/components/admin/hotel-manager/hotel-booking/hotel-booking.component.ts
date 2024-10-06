@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CreateHotelBookingRequest } from '../../../../models/request/product/hotel/hotel-booking/create-hotelbooking-request';
 import { CreateHotelBookingResponse } from '../../../../models/response/product/hotel/hotel-booking/create-hotelbooking-response';
@@ -10,11 +10,12 @@ import { GetHotelBookingResponse } from '../../../../models/response/product/hot
 import { HotelService } from '../../../../services/product/hotel/hotel/hotel.service';
 import { HotelbookingService } from '../../../../services/product/hotel/hotelbooking/hotelbooking.service';
 import { Title } from '@angular/platform-browser';
+import { NotificationComponent } from "../../../notification/notification.component";
 
 @Component({
   selector: 'app-hotel-booking',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NotificationComponent],
   templateUrl: './hotel-booking.component.html',
   styleUrl: './hotel-booking.component.css'
 })
@@ -43,6 +44,8 @@ export class HotelBookingComponent implements OnInit {
   searchQuery = '';
 
   hotelSelected: GetHotelResponse = new GetHotelResponse();
+
+  @ViewChild(NotificationComponent) notificationComponent!: NotificationComponent;
 
   constructor(private hotelService: HotelService, private hotelBookingService: HotelbookingService, private title: Title) {
     this.title.setTitle('Danh sách lịch khách sạn')
@@ -146,17 +149,17 @@ export class HotelBookingComponent implements OnInit {
     let formattedStartDate = startDate.toISOString().slice(0, 19);
 
     if (this.createHotelBookingRequest.hotel == 0) {
-      alert('Vui lòng chọn khách sạn để thêm.');
+      this.notificationComponent.showNotification('error', 'Vui lòng chọn khách sạn để thêm.');
       return;
     }
 
     if (this.createHotelBookingRequest.totalPrice! < 0 || this.createHotelBookingRequest.totalPrice == null) {
-      alert('Vui lòng điền đầy đủ thông tin.');
+      this.notificationComponent.showNotification('error', 'Vui lòng điền đầy đủ thông tin.');
       return;
     }
 
     if (startDate < new Date()) {
-      alert('Ngày bắt đầu không được nhỏ hơn ngày hiện tại.');
+      this.notificationComponent.showNotification('error', 'Ngày bắt đầu không được nhỏ hơn ngày hiện tại.');
       return;
     }
 
@@ -187,7 +190,7 @@ export class HotelBookingComponent implements OnInit {
         startDate.setDate(startDate.getDate() + 1);
         formattedStartDate = startDate.toISOString().slice(0, 19);
       }
-      alert('Create HotelBooking is success');
+      this.notificationComponent.showNotification('success', 'Create HotelBooking is success');
     } else {
       console.error('Start date must be less than or equal to end date.');
     }
@@ -198,8 +201,12 @@ export class HotelBookingComponent implements OnInit {
   }
 
   updateBooking(booking?: GetHotelBookingResponse, hotelDetail?: GetHotelResponse) {
+    console.log(booking);
     if (booking != undefined && hotelDetail != undefined) {
       this.updateHotelBookingRequest = booking;
+      console.log(this.updateHotelBookingRequest)
+      if (this.updateHotelBookingRequest.startDate) {
+      }
       this.hotelSelected = hotelDetail;
     } else {
       this.selectedHotelId = undefined;
@@ -208,23 +215,53 @@ export class HotelBookingComponent implements OnInit {
     this.isEditMode = true;
   }
 
+  formatDateToInput(date: Date): string {
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2); // Tháng từ 0-11 nên cần cộng 1
+    const day = ('0' + date.getDate()).slice(-2);
+    const hours = ('0' + date.getHours()).slice(-2);
+    const minutes = ('0' + date.getMinutes()).slice(-2);
+    
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  }
+
   cancelUpdate() {
     this.isUpdateBooking = false;
   }
 
   saveUpdate() {
     this.updateHotelBookingRequest;
+    if(this.updateHotelBookingRequest.hotel == null){
+      this.notificationComponent.showNotification('error', 'Hotel không tồn tại');
+      return;
+    }
+    if(this.updateHotelBookingRequest.totalPrice==null ){
+      this.notificationComponent.showNotification('error', 'Vui lòng nhập giá');
+      return;
+    }
+    if(this.updateHotelBookingRequest.totalPrice<=0){
+      this.notificationComponent.showNotification('error', 'Vui lòng nhập giá hợp lệ');
+      return;
+    }
+    const currentDate = new Date(); // Ngày hiện tại
+    const timeStartTour = new Date(this.updateHotelBookingRequest.startDate);
+
+    // Kiểm tra nếu `timeStartTour` nhỏ hơn ngày hiện tại
+    if (timeStartTour < currentDate) {
+      this.notificationComponent.showNotification('error', 'Thời gian bắt đầu không được nhỏ hơn ngày hiện tại.');
+      return; // Dừng lại và không gửi form data
+    }
     if (this.updateHotelBookingRequest) {
       const formData = new FormData();
       formData.append('id', this.updateHotelBookingRequest.id?.toString() ?? '');
       formData.append('hotel', this.updateHotelBookingRequest.hotel?.toString() ?? '');
       formData.append('totalPrice', this.updateHotelBookingRequest.totalPrice?.toString() ?? '');
-      formData.append('startTime', this.updateHotelBookingRequest.startTime?.toString() ?? '');
+      formData.append('startTime', this.updateHotelBookingRequest.startDate?.toString() ?? '');
       this.hotelBookingService.updateBooking(formData).subscribe({
         next: (data) => {
           if (data) {
             this.updateHotelBookingResponse = data;
-            alert('Update Hotel Booking successfully!');
+            this.notificationComponent.showNotification('success', 'Update Hotel Booking successfully!');
           }
         },
       });

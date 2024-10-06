@@ -157,8 +157,8 @@ export class TourScheduleComponent implements OnInit {
         return;
     }
 
-    if(this.createTourScheduleRequest.priceTour <0 || this.createTourScheduleRequest.quantity == null){
-      this.notificationComponent.showNotification('error', 'Vui lòng điền đầy đủ thông tin.');
+    if(this.createTourScheduleRequest.priceTour <0 ){
+      this.notificationComponent.showNotification('error', 'Vui lòng điền giá hợp lệ.');
         return;
     }
     let isSuccess = false;
@@ -224,6 +224,12 @@ export class TourScheduleComponent implements OnInit {
 
   saveUpdate() {
     this.updateTourScheduleRequest;
+    const currentDate = new Date(); // Ngày hiện tại
+    const timeStartTour = new Date(this.updateTourScheduleRequest.timeStartTour);
+    if (timeStartTour < currentDate) {
+      this.notificationComponent.showNotification('error', 'Thời gian bắt đầu tour không được nhỏ hơn ngày hiện tại.');
+      return;
+    }
     if(this.updateTourScheduleRequest){
       const formData = new FormData();
       formData.append('id', this.updateTourScheduleRequest.id?.toString() ?? '');
