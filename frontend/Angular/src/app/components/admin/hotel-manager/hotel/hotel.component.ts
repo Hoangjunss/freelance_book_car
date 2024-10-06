@@ -141,10 +141,9 @@ export class HotelComponent {
           this.getAllHotelReponse = data;
           this.filterHotelResponse = this.getAllHotelReponse;
           this.updatePagedData();
-          console.log('All tours:', this.getAllHotelReponse);
       },
       error: (err) => {
-        console.error('Error getting tours:', err.message);
+        console.error('Error getting hotel:', err.message);
       }
     }
     )
@@ -184,8 +183,7 @@ export class HotelComponent {
       next: (data) => {
         this.createHotelResponse = data;
         if(this.createHotelResponse){
-          console.log('Tour created successfully:', this.createHotelResponse);
-          this.notificationComponent.showNotification('success', 'Tạo tour thành công');
+          this.notificationComponent.showNotification('success', 'Tạo hotel thành công');
           window.location.reload();
         }
       },
@@ -194,57 +192,61 @@ export class HotelComponent {
     });
   }
 
-  onUpdate(){
-    if(!this.updateHotelRequest?.id){
-      this.notificationComponent.showNotification('error', 'Không tìm thấy tour cần cập nhật');
+  onUpdate() {
+    if (!this.updateHotelRequest?.id) {
+      this.notificationComponent.showNotification('error', 'Không tìm thấy hotel cần cập nhật');
       return;
     }
-    if(!this.updateHotelRequest?.name || !this.updateHotelRequest?.contactInfo || !this.updateHotelRequest?.pricePerNight || !this.updateHotelRequest?.location){
+    if (!this.updateHotelRequest?.name || !this.updateHotelRequest?.contactInfo || !this.updateHotelRequest?.pricePerNight || !this.updateHotelRequest?.location) {
       this.notificationComponent.showNotification('error', 'Vui lòng điền đầy đủ thông tin');
       return;
     }
-
-    if(this.updateHotelRequest?.pricePerNight <=0){
+  
+    if (this.updateHotelRequest?.pricePerNight <= 0) {
       this.notificationComponent.showNotification('error', 'Vui lòng điền giá hợp lệ');
       return;
     }
-
-    if(this.updateHotelRequest.isActive == undefined){
+  
+    // Ensure isActive is either true or false explicitly
+    if (typeof this.updateHotelRequest.isActive !== 'boolean') {
       this.updateHotelRequest.isActive = false;
     }
-    console.log(this.updateHotelRequest.isActive);
+  
+    console.log(this.updateHotelRequest.isActive);  // Debugging
+  
     const formData = new FormData();
     formData.append('id', this.updateHotelRequest.id.toString() || '');
     formData.append('name', this.updateHotelRequest.name || '');
     formData.append('contactInfo', this.updateHotelRequest.contactInfo || '');
     formData.append('pricePerNight', this.updateHotelRequest.pricePerNight?.toString() || '');
     formData.append('location', this.updateHotelRequest.location || '');
+  
+    // Ensure boolean is sent as a string ("true"/"false")
     formData.append('isActive', this.updateHotelRequest.isActive ? 'true' : 'false');
     formData.append('rating', this.updateHotelRequest.rating?.toString() || '');
-
+  
     if (this.imageFile != undefined) {
       formData.append('image', this.imageFile);
     }
-
-    console.log(this.updateHotelRequest);
+  
+    // Logging the formData for debugging
     formData.forEach((value, key) => {
       console.log(`${key}: ${value}`);
     });
-
-    debugger;
-
+  
     this.hotelService.updateHotel(formData).subscribe({
       next: (data) => {
         this.updateHotelResponse = data;
-        if(this.updateHotelResponse){
-          this.notificationComponent.showNotification('success', 'Cập nhật tour thành công');
+        if (this.updateHotelResponse) {
+          this.notificationComponent.showNotification('success', 'Cập nhật hotel thành công');
           window.location.reload();
         }
       },
       error: (err) => {
-      
+        console.error('Error updating hotel:', err);
       }
     });
   }
+  
 
 }

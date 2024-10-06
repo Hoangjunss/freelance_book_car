@@ -18,7 +18,7 @@ public class UpdateHotelRequest {
     private String contactInfo;
     private double pricePerNight;
     private String location;
-    private boolean isActive;
+    private String isActive;
     private double rating;
     private MultipartFile image;
 

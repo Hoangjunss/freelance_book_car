@@ -18,7 +18,7 @@
                 <i class="fa fa-chart-bar fa-3x text-primary"></i>
                 <div class="ms-3">
                     <p class="mb-2">Avg Price</p>
-                    <h6 class="mb-0">{{todayStatistic?.avgPrice}}</h6>
+                    <h6 class="mb-0">{{todayStatistic?.avgPrice  | number:'1.0-3'}}</h6>
                 </div>
             </div>
         </div>
@@ -36,7 +36,7 @@
                 <i class="fa fa-chart-pie fa-3x text-primary"></i>
                 <div class="ms-3">
                     <p class="mb-2">Avg Ticket</p>
-                    <h6 class="mb-0">{{todayStatistic?.avgTicket}}</h6>
+                    <h6 class="mb-0">{{todayStatistic?.avgTicket | number:'1.0-3'}}</h6>
                 </div>
             </div>
         </div>

@@ -121,7 +121,7 @@
               <div class="form-group">
                 <label for="code">Code</label>
                 <input type="text" class="form-control" id="code" [(ngModel)]="updateVoucherRequest.name" name="code"
-                  placeholder="Enter voucher code" required #codeInput="ngModel" />
+                  placeholder="Enter voucher code" required #codeInput="ngModel"  disabled/>
                 <div *ngIf="codeInput.invalid && codeInput.touched" class="text-danger">
                   Voucher code is required.
                 </div>
@@ -137,7 +137,7 @@
               </div>
 
               <div class="form-group">
-                <label for="endDate">End Date</label>
+                <label for="endDate">End Date: {{updateVoucherRequest.endDate | date}}</label>
                 <input type="date" class="form-control" id="endDate"  [(ngModel)]="updateVoucherRequest.endDate"
                   name="endDate" required />
               </div>

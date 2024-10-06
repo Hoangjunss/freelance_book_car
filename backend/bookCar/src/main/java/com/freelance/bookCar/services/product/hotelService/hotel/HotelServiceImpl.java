@@ -98,7 +98,14 @@ public class HotelServiceImpl implements HotelService {
         if (updateHotelRequest.getPricePerNight() >= 0D) {
             existingHotel.setPricePerNight(updateHotelRequest.getPricePerNight());
         }
-            existingHotel.setActive(updateHotelRequest.isActive());
+
+        if(updateHotelRequest.getIsActive().equals("true")){
+            existingHotel.setActive(true);
+        }
+        if(updateHotelRequest.getIsActive().equals("false")){
+            existingHotel.setActive(false);
+        }
+
 
         if(updateHotelRequest.getRating() >= 0D) {
             existingHotel.setRating(updateHotelRequest.getRating());

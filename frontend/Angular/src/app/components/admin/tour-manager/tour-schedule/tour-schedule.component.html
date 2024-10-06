@@ -22,7 +22,7 @@
             <div class="card mb-4">
                 <div class="card-body">
                     <h5 class="card-title">Tour ID: {{ tour.id }}</h5>
-                    <p class="card-text">Start Time: {{ tour.name}}</p>
+                    <p class="card-text">Name:  {{ tour.name}}</p>
                     <p class="card-text">Quantity: {{ tour.startLocation }}</p>
                     <p class="card-text">Status: {{ tour.isActive ? 'Avtive' : 'Stop Operation' }}</p>
                     <button class="btn btn-primary" (click)="viewDetails(tour)">Details</button>
@@ -72,7 +72,6 @@
                 <th>Time Start Tour</th>
                 <th>Tour ID</th>
                 <th>Price</th>
-                <th>Schedule Status</th>
               </tr>
             </thead>
             <tbody>
@@ -81,7 +80,6 @@
                 <td>{{ tour.timeStartTour | date: 'short' }}</td>
                 <td>{{ tour.idTour }}</td>
                 <td>{{ tour.priceTour }} VNĐ</td>
-                <td>{{ tour.idTourScheduleStatus }}</td>
               </tr>
             </tbody>
           </table>

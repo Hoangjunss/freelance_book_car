@@ -137,7 +137,7 @@ export class VoucherComponent implements OnInit {
 
     // Kiểm tra nếu `timeStartTour` nhỏ hơn ngày hiện tại
     if (timeStartTour < currentDate) {
-      this.notificationComponent.showNotification('error', 'Thời gian bắt đầu tour không được nhỏ hơn ngày hiện tại.');
+      this.notificationComponent.showNotification('error', 'Thời gian khuyến mãi không được nhỏ hơn ngày hiện tại.');
       return; // Dừng lại và không gửi form data
     }
 
@@ -184,7 +184,7 @@ export class VoucherComponent implements OnInit {
 
     // Kiểm tra nếu `timeStartTour` nhỏ hơn ngày hiện tại
     if (timeStartTour < currentDate) {
-      this.notificationComponent.showNotification('error', 'Thời gian bắt đầu tour không được nhỏ hơn ngày hiện tại.');
+      this.notificationComponent.showNotification('error', 'Thời gian khuyến mãi không được nhỏ hơn ngày hiện tại.');
       return; // Dừng lại và không gửi form data
     }
 

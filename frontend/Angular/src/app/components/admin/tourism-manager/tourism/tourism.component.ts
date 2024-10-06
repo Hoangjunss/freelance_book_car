@@ -154,7 +154,7 @@ export class TourismComponent {
       next: (data) => {
         this.createTourismResponse = data;
         if (this.createTourismResponse) {
-          this.notificationComponent.showNotification('success', 'Tạo tour thành công');
+          this.notificationComponent.showNotification('success', 'Tạo khu du lịch thành công');
           window.location.reload();
         }
       },
@@ -190,7 +190,7 @@ export class TourismComponent {
       next: (data) => {
         this.createTourismResponse = data;
         if (this.createTourismResponse) {
-          this.notificationComponent.showNotification('success', 'Cập nhật tour thành công');
+          this.notificationComponent.showNotification('success', 'Cập nhật khu du lịch thành công');
           window.location.reload();
         }
       },

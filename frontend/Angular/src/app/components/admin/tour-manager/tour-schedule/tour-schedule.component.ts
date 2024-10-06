@@ -55,7 +55,6 @@ export class TourScheduleComponent implements OnInit {
   ngOnInit(): void {
     this.getAllTour();
     this.getAllTourSchedule();
-    this.updateDisplayedPages();
   }
 
   getAllTour(){
@@ -63,7 +62,8 @@ export class TourScheduleComponent implements OnInit {
       next: (data)=> {
           if(data){
             this.getTourResponse = data;
-            this.filterTour = data;
+            this.filterTour = this.getTourResponse ;
+            console.log(this.filterTour);
           }
       },
     })
@@ -107,6 +107,7 @@ export class TourScheduleComponent implements OnInit {
 
   currentPage = 1;
   itemsPerPage = 4;
+
 
 
   get paginatedTours() {
@@ -317,7 +318,7 @@ updatePagedTours(): void {
   this.pagedTours = this.getTourScheduleResponse.slice(start, end);
   this.totalPages = Math.ceil(this.getTourScheduleResponse.length / this.pageSize);
   this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
-} 
+}
 
 
   updateDisplayedPages(): void {
