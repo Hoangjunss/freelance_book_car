@@ -65,3 +65,10 @@
     </div>
 
 </div>
+<app-custom-modal 
+  [isVisible]="isModalVisible" 
+  title="Xác nhận thanh toán"
+  message="Bạn có chắc chắn muốn thanh toán không?" 
+  (confirmed)="onConfirmed()" 
+  (closed)="onClosed()">
+</app-custom-modal>

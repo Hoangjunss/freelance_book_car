@@ -23,6 +23,7 @@ import { HotelbookingService } from '../../../services/product/hotel/hotelbookin
 import { TourScheduleService } from '../../../services/product/tour/tour-schedule/tour-schedule.service';
 import { forkJoin, Observable } from 'rxjs';
 import { NotificationComponent } from '../../notification/notification.component';
+import { CustomModalComponent } from '../../custom-modal/custom-modal.component';
 
 
 @Component({
@@ -32,7 +33,7 @@ import { NotificationComponent } from '../../notification/notification.component
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     UserService
   ],
-  imports: [FormsModule, CommonModule, HttpClientModule,NotificationComponent,RouterLink],
+  imports: [FormsModule, CommonModule, HttpClientModule, NotificationComponent, RouterLink, CustomModalComponent],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css'
 })
@@ -43,14 +44,15 @@ export class CartComponent implements OnInit {
   getTicketResponse: GetTicketResponse[] = [];
   getTourScheduleResposne: GetTourScheduleResponse[] = [];
 
-  getHotelResponse: GetHotelResponse[]=[];
-  getTourResponse: GetTourResponse[] =[];
-  getTourismResponse: GetTourismResponse[]=[]; 
-  
+  getHotelResponse: GetHotelResponse[] = [];
+  getTourResponse: GetTourResponse[] = [];
+  getTourismResponse: GetTourismResponse[] = [];
+
 
   products: any[] = [];
   idBooking: number | null = null;
   isLoggedIn: boolean = false;
+  isModalVisible = false;
 
   @ViewChild(NotificationComponent) notificationComponent!: NotificationComponent;
 
@@ -74,7 +76,7 @@ export class CartComponent implements OnInit {
       if (id && this.isLoggedIn) {
         this.getBookingByUser(parseInt(id));
       }
-      
+
     }
   }
 
@@ -113,7 +115,7 @@ export class CartComponent implements OnInit {
             this.idBooking = response.id;
             this.getBookingDetail(response.id);
           } else {
-            this.products = []; 
+            this.products = [];
           }
 
         } else {
@@ -141,9 +143,9 @@ export class CartComponent implements OnInit {
             quantity: detail.quantity,
             image: 'https://via.placeholder.com/100',
             type: detail.idTour ? 'tour' : detail.idHotel ? 'hotel' : 'ticket',
-            
+
           }));
-          console.log("p"+this.products);
+          console.log("p" + this.products);
 
           if (this.products.some(p => p.type === 'tour')) {
             this.products.filter(p => p.type === 'tour').forEach(p => {
@@ -278,35 +280,39 @@ export class CartComponent implements OnInit {
   updateBookingType() {
     const type = 'CART';
     if (this.products.length === 0) {
-        this.notificationComponent.showNotification('error', 'Giỏ hàng của bạn đang trống. Vui lòng thêm sản phẩm vào giỏ hàng trước khi tiến hành thanh toán');
-        return; 
+      this.notificationComponent.showNotification('error', 'Giỏ hàng của bạn đang trống. Vui lòng thêm sản phẩm vào giỏ hàng trước khi tiến hành thanh toán');
+      return;
     }
 
     const pastProducts = this.products.filter(product => {
-        if (product.type === 'tour') {
-            return this.isPastStartDate(product.schedule?.timeStartTour);
-        } else if (product.type === 'hotel') {
-            return this.isPastStartDate(product.startDate);
-        } else if (product.type === 'ticket') {
-            return this.isPastStartDate(product.dateEvent);
-        }
-        return false;
+      if (product.type === 'tour') {
+        return this.isPastStartDate(product.schedule?.timeStartTour);
+      } else if (product.type === 'hotel') {
+        return this.isPastStartDate(product.startDate);
+      } else if (product.type === 'ticket') {
+        return this.isPastStartDate(product.dateEvent);
+      }
+      return false;
     });
 
     if (pastProducts.length > 0) {
-        const pastProductNames = pastProducts.map(p => `${p.name}`).join(', ');
-        // alert(`Một hoặc nhiều sản phẩm trong giỏ hàng của bạn đã quá thời gian. Vui lòng xóa chúng trước khi tiến hành thanh toán: ${pastProductNames}`);
-        this.notificationComponent.showNotification('error', `Một hoặc nhiều sản phẩm trong giỏ hàng của bạn đã quá thời gian. Vui lòng xóa chúng trước khi tiến hành thanh toán: ${pastProductNames}`);
-        return;
+      const pastProductNames = pastProducts.map(p => `${p.name}`).join(', ');
+      // alert(`Một hoặc nhiều sản phẩm trong giỏ hàng của bạn đã quá thời gian. Vui lòng xóa chúng trước khi tiến hành thanh toán: ${pastProductNames}`);
+      this.notificationComponent.showNotification('error', `Một hoặc nhiều sản phẩm trong giỏ hàng của bạn đã quá thời gian. Vui lòng xóa chúng trước khi tiến hành thanh toán: ${pastProductNames}`);
+      return;
     }
+    this.isModalVisible = true;
+    console.log(this.isModalVisible); 
+  }
 
-    if (this.idBooking) {
-        const confirmed = window.confirm("Bạn có chắc chắn muốn thanh toán không?");
-        if (confirmed) {
-            this.router.navigate(['/booking']);
-        }
-    }
-}
+  onConfirmed() {
+    this.isModalVisible = false; 
+    this.router.navigate(['/booking']);
+  }
+
+  onClosed() {
+    this.isModalVisible = false; 
+  }
 
 
 
