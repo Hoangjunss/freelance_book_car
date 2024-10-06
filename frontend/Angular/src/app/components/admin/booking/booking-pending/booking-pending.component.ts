@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { GetBookingResponse } from '../../../../models/response/booking/get-booking-response';
 import { BookingService } from '../../../../services/booking/booking.service';
 import { NoDataFoundComponent } from "../../no-data-found/no-data-found.component";
@@ -16,11 +16,12 @@ import { TourismService } from '../../../../services/product/ticket/tourism/tour
 import { HotelbookingService } from '../../../../services/product/hotel/hotelbooking/hotelbooking.service';
 import { VoucherService } from '../../../../services/product/voucher/voucher/voucher.service';
 import { GetVoucherResponse } from '../../../../models/response/product/voucher/voucher/get-voucher-response';
+import { NotificationComponent } from '../../../notification/notification.component';
 
 @Component({
   selector: 'app-booking-pending',
   standalone: true,
-  imports: [CommonModule, FormsModule, NoDataFoundComponent],
+  imports: [CommonModule, FormsModule, NoDataFoundComponent,NotificationComponent],
   templateUrl: './booking-pending.component.html',
   styleUrl: './booking-pending.component.css'
 })
@@ -46,6 +47,8 @@ export class BookingPendingComponent {
   products: any[] = [];
   getBookingDetailResponse: GetBookingDetailResponse[] = [];
   selectedOrder: any;
+
+  @ViewChild(NotificationComponent) notificationComponent!: NotificationComponent;
 
   constructor(private bookingService: BookingService,
     private tourService: TourService,
@@ -118,7 +121,7 @@ export class BookingPendingComponent {
     if(id && type){
       this.bookingService.setBookingType(type, id).subscribe({
       next: (data) => {
-        alert('Thành công');
+        this.notificationComponent.showNotification('success', 'Cập nhật trạng thái thành công');
         this.updateBookingResponse = data;
         window.location.reload();
         }

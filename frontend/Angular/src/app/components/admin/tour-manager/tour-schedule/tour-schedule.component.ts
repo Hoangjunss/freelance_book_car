@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { GetTourScheduleResponse } from '../../../../models/response/product/tour/tour-schedule/get-tour-schedule-response';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -9,11 +9,12 @@ import { CreateTourScheduleRequest } from '../../../../models/request/product/to
 import { UpdateTourScheduleRequest } from '../../../../models/request/product/tour/tour-schedule/update-tour-schedule-request';
 import { CreateTourScheduleResponse } from '../../../../models/response/product/tour/tour-schedule/create-tour-schedule-response';
 import { UpdateTourScheduleResponse } from '../../../../models/response/product/tour/tour-schedule/update-tour-schedule-response';
+import { NotificationComponent } from '../../../notification/notification.component';
 
 @Component({
   selector: 'app-tour-schedule',
   standalone: true,
-  imports: [CommonModule, FormsModule], // Chỉ cần import FormsModule
+  imports: [CommonModule, FormsModule,NotificationComponent],
   templateUrl: './tour-schedule.component.html',
   styleUrls: ['./tour-schedule.component.css']
 })
@@ -42,6 +43,8 @@ export class TourScheduleComponent implements OnInit {
   searchQuery='';
 
   tourSelected: GetTourResponse = new GetTourResponse();
+
+  @ViewChild(NotificationComponent) notificationComponent!: NotificationComponent;
 
   constructor(private tourService:TourService, private tourScheduleService: TourScheduleService){}
 
@@ -147,18 +150,18 @@ export class TourScheduleComponent implements OnInit {
     let formattedStartDate = startDate.toISOString().slice(0, 19);
 
     if(this.createTourScheduleRequest.idTour == 0){
-      alert("Vui lòng chọn Tour để thêm.");
+      this.notificationComponent.showNotification('error', 'Vui lòng chọn tour để thêm lịch trình.');
         return;
     }
 
     if(this.createTourScheduleRequest.priceTour <0 || this.createTourScheduleRequest.quantity == null){
-      alert("Vui lòng điền đầy đủ thông tin.");
+      this.notificationComponent.showNotification('error', 'Vui lòng điền đầy đủ thông tin.');
         return;
     }
     let isSuccess = false;
 
     if (startDate < new Date()) {
-        alert("Ngày bắt đầu không được nhỏ hơn ngày hiện tại.");
+        this.notificationComponent.showNotification('error', 'Ngày bắt đầu không thể nhỏ hơn hoặc bằng ngày hiện tại.');
         return;
     }
 
@@ -186,7 +189,7 @@ export class TourScheduleComponent implements OnInit {
             startDate.setDate(startDate.getDate() + 1);
             formattedStartDate = startDate.toISOString().slice(0, 19);
         }
-        alert('Create TourSchedule is success');
+        this.notificationComponent.showNotification('success', 'Tạo lịch trình thành công.');
     } else {
         console.error('Start date must be less than or equal to end date.');
     }
@@ -229,7 +232,7 @@ export class TourScheduleComponent implements OnInit {
         next: (data) =>{
           if(data){
             this.updateTourScheduleResponse = data;
-            alert("Update Tour Schedule successfully!")
+            this.notificationComponent.showNotification('success', 'Cập nhật lịch trình thành công.');
           }
         }
       })

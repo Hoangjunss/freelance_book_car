@@ -1,18 +1,19 @@
 import { TourService } from './../../../../services/product/tour/tour/tour.service';
 import { CreateTourRequest } from './../../../../models/request/product/tour/tour/create-tour-request';
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { GetTourResponse } from '../../../../models/response/product/tour/tour/get-tour-response';
 import { CreateTourResponse } from '../../../../models/response/product/tour/tour/create-tour-response';
 import { NoDataFoundComponent } from "../../no-data-found/no-data-found.component";
 import { UpdateTourRequest } from '../../../../models/request/product/tour/tour/update-tour-request';
 import { UpdateTourResponse } from '../../../../models/response/product/tour/tour/update-tour-response';
+import { NotificationComponent } from '../../../notification/notification.component';
 
 @Component({
   selector: 'app-tour',
   standalone: true,
-  imports: [CommonModule, FormsModule, NoDataFoundComponent],
+  imports: [CommonModule, FormsModule, NoDataFoundComponent,NotificationComponent],
   templateUrl: './tour.component.html',
   styleUrl: './tour.component.css'
 })
@@ -39,6 +40,8 @@ export class TourComponent implements OnInit{
   imageUri?: string = 'assets/img/DEFAULT/tour-default.png';
 
   searchQuery: string='';
+
+  @ViewChild(NotificationComponent) notificationComponent!: NotificationComponent;
 
   constructor(private tourService:TourService){}
 
@@ -145,7 +148,7 @@ export class TourComponent implements OnInit{
   onCreate() {
     console.log(this.createTourRequest);
     if (!this.createTourRequest?.name || !this.createTourRequest?.startLocation || !this.createTourRequest?.description) {
-      alert('Please fill in all required fields: Name, Location, Description');
+      this.notificationComponent.showNotification('error', 'Vui lòng điền đầy đủ thông tin');
       return;
     }
 
@@ -181,7 +184,7 @@ export class TourComponent implements OnInit{
         this.createTourResponse = data;
         if (this.createTourResponse) {
           console.log('Tour created successfully:', this.createTourResponse);
-          alert('Tour created successfully');
+          this.notificationComponent.showNotification('success', 'tạo tour thành công');
           window.location.reload();
         }
       },
@@ -194,11 +197,11 @@ export class TourComponent implements OnInit{
   onUpdate(){
     console.log(this.updateTourRequest);
     if(!this.updateTourRequest?.id){
-      alert('Not Found Tour Update');
+      this.notificationComponent.showNotification('error', 'Không tìm thấy tour cần cập nhật');
       return;
     }
     if (!this.updateTourRequest?.name || !this.updateTourRequest?.startLocation || !this.updateTourRequest?.description) {
-      alert('Please fill in all required fields: Name, Location, Description');
+      this.notificationComponent.showNotification('error', 'Vui lòng điền đầy đủ thông tin');
       return;
     }
 
@@ -228,7 +231,7 @@ export class TourComponent implements OnInit{
         this.updateTourRequest = data;
         if (this.updateTourRequest) {
           console.log('Tour created successfully:', this.updateTourRequest);
-          alert('Tour created successfully');
+          this.notificationComponent.showNotification('success', 'Cập nhật tour thành công');
           window.location.reload();
         }
       },

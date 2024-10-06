@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { GetTourismResponse } from '../../../../models/response/product/ticket/tourism/get-tourism-response';
 import { CreateTourismRequest } from '../../../../models/request/product/ticket/tourism/create-tourism-request';
@@ -7,11 +7,12 @@ import { CreateTourismResponse } from '../../../../models/response/product/ticke
 import { TourismService } from '../../../../services/product/ticket/tourism/tourism.service';
 import { NoDataFoundComponent } from "../../no-data-found/no-data-found.component";
 import { UpdateTourismRequest } from '../../../../models/request/product/ticket/tourism/update-tourism-request';
+import { NotificationComponent } from '../../../notification/notification.component';
 
 @Component({
   selector: 'app-tourism',
   standalone: true,
-  imports: [CommonModule, FormsModule, NoDataFoundComponent],
+  imports: [CommonModule, FormsModule, NoDataFoundComponent,NotificationComponent],
   templateUrl: './tourism.component.html',
   styleUrls: ['./tourism.component.css']
 })
@@ -37,6 +38,8 @@ export class TourismComponent {
   currentPage: number = 1;
   pageSize: number = 5;
   pagedData: any[] = [];
+
+  @ViewChild(NotificationComponent) notificationComponent!: NotificationComponent;
 
   constructor(private tourismService: TourismService){}
 
@@ -124,7 +127,7 @@ export class TourismComponent {
   onCreate() {
   
     if (!this.createTourismRequest?.name || !this.createTourismRequest?.location || !this.createTourismRequest?.description) {
-      alert('Please fill in all required fields: Name, Location, Description');
+      this.notificationComponent.showNotification('error', 'Vui lòng điền đầy đủ thông tin');
       return;
     }
 
@@ -138,7 +141,7 @@ export class TourismComponent {
     if (this.imageFile != undefined) {
       formData.append('image', this.imageFile);
     }else{
-      alert('Please select image');
+      this.notificationComponent.showNotification('error', 'Vui lòng chọn ảnh');
       return;
     }
 
@@ -148,25 +151,24 @@ export class TourismComponent {
       next: (data) => {
         this.createTourismResponse = data;
         if (this.createTourismResponse) {
-          alert('Tour created successfully');
+          this.notificationComponent.showNotification('success', 'Tạo tour thành công');
           window.location.reload();
         }
       },
       error: (err) => {
         console.error('Error creating tour:', err.message);
-        alert(`Error creating tour: ${err.message}`);
       }
     });
   }
 
   onUpdate(){
     if(!this.updateTourismRequest?.id){
-      alert('Tourism Update Not Found');
+      this.notificationComponent.showNotification('error', 'Tourism Update Not Found');
       return;
     }
     // Kiểm tra các trường bắt buộc
     if (!this.updateTourismRequest?.name || !this.updateTourismRequest?.location || !this.updateTourismRequest?.description) {
-      alert('Please fill in all required fields: Name, Location, Description');
+      this.notificationComponent.showNotification('error', 'Vui lòng điền đầy đủ thông tin');
       return;
     }
 
@@ -187,7 +189,7 @@ export class TourismComponent {
       next: (data) => {
         this.createTourismResponse = data;
         if (this.createTourismResponse) {
-          alert('Tour created successfully');
+          this.notificationComponent.showNotification('success', 'Tạo tour thành công');
           window.location.reload();
         }
       },

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { GetTourismResponse } from '../../../../models/response/product/ticket/tourism/get-tourism-response';
@@ -9,11 +9,12 @@ import { CreateTicketRequest } from '../../../../models/request/product/ticket/t
 import { UpdateTicketRequest } from '../../../../models/request/product/ticket/ticket/update-ticket-request';
 import { CreateTicketResponse } from '../../../../models/response/product/ticket/ticket/create-ticket-response';
 import { UpdateTicketResponse } from '../../../../models/response/product/ticket/ticket/update-ticket-response';
+import { NotificationComponent } from '../../../notification/notification.component';
 
 @Component({
   selector: 'app-ticket',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,NotificationComponent],
   templateUrl: './ticket.component.html',
   styleUrls: ['./ticket.component.css']
 })
@@ -39,6 +40,7 @@ export class TicketComponent implements OnInit {
 
   selectedTourismId: number = 0;
   selectedTourism: GetTourismResponse = new GetTourismResponse();
+  @ViewChild(NotificationComponent) notificationComponent!: NotificationComponent;
 
   constructor(private ticketService: TicketService, private tourismService: TourismService) {}
 
@@ -144,7 +146,7 @@ export class TicketComponent implements OnInit {
     let isSuccess = false;
 
     if (startDate < new Date()) {
-      alert('Start date cannot be in the past.');
+      this.notificationComponent.showNotification('error', 'Ngày bắt đầu không được nhỏ hơn hoặc bằng ngày hiện tại');
       return;
     }
 
@@ -172,9 +174,7 @@ export class TicketComponent implements OnInit {
       }
 
       if (isSuccess) {
-        alert('Ticket created successfully.');
-      } else {
-        alert('Failed to create ticket.');
+        this.notificationComponent.showNotification('success', 'Tạo vé thành công');
       }
     } else {
       console.error('Start date must be less than or equal to end date.');
@@ -223,7 +223,7 @@ export class TicketComponent implements OnInit {
         next: (data) => {
           if (data) {
             this.updateTicketResponse = data;
-            alert('Ticket updated successfully!');
+            this.notificationComponent.showNotification('success', 'Cập nhật vé thành công');
           }
         },
       });

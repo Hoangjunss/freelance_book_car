@@ -1,18 +1,19 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Chart, registerables } from 'chart.js';
 import { StatisticMonthYear } from '../../../models/response/statistics/StatisticMonthYear';
 import { StatisticsService } from '../../../services/statistics/statistics.service';
 import { StatisticYear } from '../../../models/response/statistics/StatisticYear';
 import { StatisticMonths } from '../../../models/response/statistics/StatisticMonth';
+import { NotificationComponent } from '../../notification/notification.component';
 
 Chart.register(...registerables);
 
 @Component({
   selector: 'app-statistics',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,NotificationComponent],
   templateUrl: './statistics.component.html',
   styleUrl: './statistics.component.css'
 })
@@ -47,6 +48,8 @@ export class StatisticsComponent implements OnInit{
   selectedMonth: number = 0;
   selectedYear: number = 0;
   selectedYears: number = 0;
+
+  @ViewChild(NotificationComponent) notificationComponent!: NotificationComponent;
 
 
   constructor(private statisticService: StatisticsService){}
@@ -98,7 +101,7 @@ export class StatisticsComponent implements OnInit{
 
   filterTours() {
     if(this.selectedMonth == 0 || this.selectedYear == 0) {
-      alert("Please select month and year");
+      this.notificationComponent.showNotification('error', 'Vui lòng chọn tháng và năm');
       return;
     }
     this.getStatisticMonthYear(this.selectedMonth, this.selectedYear);
@@ -106,7 +109,7 @@ export class StatisticsComponent implements OnInit{
 
   filterYears(){
     if(this.selectedYears==0){
-      alert("Please select year");
+      this.notificationComponent.showNotification('error', 'Vui lòng chọn năm');
       return;
     }
     console.log(this.selectedYears);

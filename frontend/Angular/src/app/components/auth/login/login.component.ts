@@ -34,51 +34,47 @@ export class LoginComponent implements OnInit {
     this.titleService.setTitle("Login");
   }
   ngOnInit(): void {
-    google.accounts.id.initialize({
-      client_id: '494801971610-gt2049qjqcv9tf9me3a52sjbdc665fqj.apps.googleusercontent.com',
-      callback: (response: any) => {
-        console.log(response);
-        console.log(response.credential);
-        
-        const formData = new FormData();
-        formData.append('toknen', response.credential);
-        
-        // Call the signInWithGoogle method and pass the formData
-        this.userService.signInWithGoogle(formData).subscribe({
-          next: (response) => {
-            console.log(response);
-            const token = response.accessToken;
-            if (token) {
-              localStorage.setItem('token', token);
-              this.getCurrentUser();
+    if (typeof window !== 'undefined') {
+      google.accounts.id.initialize({
+        client_id: '494801971610-gt2049qjqcv9tf9me3a52sjbdc665fqj.apps.googleusercontent.com',
+        callback: (response: any) => {
+          console.log(response);
+          console.log(response.credential);
+          
+          const formData = new FormData();
+          formData.append('toknen', response.credential);
+          
+          // Gọi phương thức signInWithGoogle
+          this.userService.signInWithGoogle(formData).subscribe({
+            next: (response) => {
+              console.log(response);
+              const token = response.accessToken;
+              if (token) {
+                localStorage.setItem('token', token);
+                this.getCurrentUser();
+              }
+            },
+            error: (error) => {
+              console.error('Sign-in error', error);
+              if (error.status === 401) {
+                this.router.navigate(['/login']);
+              }
             }
-          },
-          error: (error) => {
-            console.error('Sign-in error', error);
-            if (error.status === 401) {
-              this.router.navigate(['/login']);
-            }
-          }
-        });
-      }
-    });
-    
-
-    google.accounts.id.renderButton(document.getElementById("google-btn"), {
-      theme: "filled_blue",
-      size: "large",
-      text: "sign in with Google",
-      shape: "rectangular",
-      width: "350",
-      height: "50",
-    });
-    
-    // this.authService.authState.subscribe((user) => {
-    //   this.user = user; 
-    //   this.loggerIn = (user != null);
-
-    // });
+          });
+        }
+      });
+      
+      google.accounts.id.renderButton(document.getElementById("google-btn"), {
+        theme: "filled_blue",
+        size: "large",
+        text: "sign in with Google",
+        shape: "rectangular",
+        width: "350",
+        height: "50",
+      });
+    }
   }
+  
 
   loginUser() {
     if (this.userForm.valid) {

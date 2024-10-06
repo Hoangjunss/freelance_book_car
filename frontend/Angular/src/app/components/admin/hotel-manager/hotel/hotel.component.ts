@@ -1,5 +1,5 @@
 import { HotelService } from './../../../../services/product/hotel/hotel/hotel.service';
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { GetHotelResponse } from '../../../../models/response/product/hotel/hotel/get-hotel-response';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -8,11 +8,12 @@ import { CreateHotelResponse } from '../../../../models/response/product/hotel/h
 import { NoDataFoundComponent } from "../../no-data-found/no-data-found.component";
 import { UpdateHotelRequest } from '../../../../models/request/product/hotel/hotel/update-hotel-request';
 import { UpdateHotelResponse } from '../../../../models/response/product/hotel/hotel/update-hotel-response';
+import { NotificationComponent } from '../../../notification/notification.component';
 
 @Component({
   selector: 'app-hotel',
   standalone: true,
-  imports: [CommonModule, FormsModule, NoDataFoundComponent],
+  imports: [CommonModule, FormsModule, NoDataFoundComponent,NotificationComponent],
   templateUrl: './hotel.component.html',
   styleUrl: './hotel.component.css'
 })
@@ -39,6 +40,8 @@ export class HotelComponent {
   pagedData: any[] = [];
 
   searchQuery: string='';
+
+  @ViewChild(NotificationComponent) notificationComponent!: NotificationComponent;
 
   constructor(private hotelService: HotelService){}
 
@@ -146,7 +149,7 @@ export class HotelComponent {
 
   onCreate(){
     if(!this.createHotelRequest?.name || !this.createHotelRequest?.contactInfo || !this.createHotelRequest?.pricePerNight || !this.createHotelRequest?.location){
-      alert('Please fill in all required fields: Name, ContacInfo, PricePerNight, Location');
+      this.notificationComponent.showNotification('error', 'Vui lòng điền đầy đủ thông tin');
       return;
     }
     if(this.createHotelRequest.isActive == undefined){
@@ -170,24 +173,22 @@ export class HotelComponent {
         this.createHotelResponse = data;
         if(this.createHotelResponse){
           console.log('Tour created successfully:', this.createHotelResponse);
-          alert('Hotel created successfully');
+          this.notificationComponent.showNotification('success', 'Tạo tour thành công');
           window.location.reload();
         }
       },
       error: (err) => {
-        console.error('Error creating tour:', err.message);
-        alert(`Error creating tour: ${err.message}`);
       }
     });
   }
 
   onUpdate(){
     if(!this.updateHotelRequest?.id){
-      alert('Hotel Not Found Update. Please Create!');
+      this.notificationComponent.showNotification('error', 'Không tìm thấy tour cần cập nhật');
       return;
     }
     if(!this.updateHotelRequest?.name || !this.updateHotelRequest?.contactInfo || !this.updateHotelRequest?.pricePerNight || !this.updateHotelRequest?.location){
-      alert('Please fill in all required fields: Name, ContacInfo, PricePerNight, Location');
+      this.notificationComponent.showNotification('error', 'Vui lòng điền đầy đủ thông tin');
       return;
     }
     if(this.updateHotelRequest.isActive == undefined){
@@ -217,14 +218,12 @@ export class HotelComponent {
       next: (data) => {
         this.updateHotelResponse = data;
         if(this.updateHotelResponse){
-          console.log('Tour created successfully:', this.updateHotelResponse);
-          alert('Hotel created successfully');
+          this.notificationComponent.showNotification('success', 'Cập nhật tour thành công');
           window.location.reload();
         }
       },
       error: (err) => {
-        console.error('Error creating tour:', err.message);
-        alert(`Error creating tour: ${err.message}`);
+      
       }
     });
   }

@@ -1,16 +1,17 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from "../../../user/navbar/navbar.component";
 import { HomeComponent } from "../../../user/home/home.component";
 import { GetPageResponse } from '../../../../models/response/home/get-page-response';
 import { HomeService } from '../../../../services/home/home.service';
 import { CreatePageRequest } from '../../../../models/request/home/create-page-request';
+import { NotificationComponent } from '../../../notification/notification.component';
 
 @Component({
   selector: 'app-page-home',
   standalone: true,
-  imports: [CommonModule, FormsModule, NavbarComponent, HomeComponent],
+  imports: [CommonModule, FormsModule, NavbarComponent, HomeComponent,NotificationComponent],
   templateUrl: './page-home.component.html',
   styleUrl: './page-home.component.css'
 })
@@ -35,6 +36,7 @@ export class PageHomeComponent implements OnInit {
   homeImagePreview: string | null = null;
   detailImagePreviews: string[] = [];
 
+  @ViewChild(NotificationComponent) notificationComponent!: NotificationComponent;
   constructor(private homeService: HomeService) {}
 
   ngOnInit(): void {
@@ -118,7 +120,7 @@ export class PageHomeComponent implements OnInit {
 
     this.homeService.editPage(formData).subscribe({
       next: (response) => {
-        alert('Saved successfully');
+        this.notificationComponent.showNotification('success', 'Saved successfully');
         console.log('Detail saved successfully');
         
         // Reset các biến file sau khi lưu thành công
@@ -141,7 +143,7 @@ export class PageHomeComponent implements OnInit {
 
       // Check if the file is a video
       if (!fileType.startsWith('video/')) {
-        alert('Please select a video file.');
+        this.notificationComponent.showNotification('error', 'Vui lòng chọn file video');
         this.selectedFile = null; // Clear the selected file
         this.mediaPreviewUrl = this.homeData.url; // Clear the preview
         this.isVideo = true;

@@ -1,6 +1,6 @@
 import { GetVoucherResponse } from './../../../../models/response/product/voucher/voucher/get-voucher-response';
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NoDataFoundComponent } from "../../no-data-found/no-data-found.component";
 import { CreateVoucherRequest } from '../../../../models/request/product/voucher/voucher/create-voucher-request';
@@ -8,6 +8,7 @@ import { CreateVoucherResponse } from '../../../../models/response/product/vouch
 import { UpdateVoucherRequest } from '../../../../models/request/product/voucher/voucher/update-voucher-request';
 import { UpdateVoucherResponse } from '../../../../models/response/product/voucher/voucher/update-voucher-response';
 import { VoucherService } from '../../../../services/product/voucher/voucher/voucher.service';
+import { NotificationComponent } from '../../../notification/notification.component';
 
 @Component({
   selector: 'app-voucher',
@@ -37,6 +38,7 @@ export class VoucherComponent implements OnInit {
   filterVoucher: GetVoucherResponse[] = []; 
 
   searchQuery: string='';
+  @ViewChild(NotificationComponent) notificationComponent!: NotificationComponent;
   constructor(private voucherService: VoucherService) {}
 
   ngOnInit(): void {
@@ -104,7 +106,7 @@ export class VoucherComponent implements OnInit {
 
   onCreateVoucher() {
     if (!this.createVoucherRequest?.name || !this.createVoucherRequest?.discountRate || !this.createVoucherRequest?.endDate) {
-      alert('Please fill in all required fields: Name, Discount Rate, End Date');
+      this.notificationComponent.showNotification('error', 'Vui lòng điền đầy đủ thông tin bắt buộc: Tên, Tỷ lệ giảm giá, Ngày kết thúc');
       return;
     }
     const formData = new FormData();
@@ -122,22 +124,20 @@ export class VoucherComponent implements OnInit {
       next: (data) => {
         this.createVoucherResponse = data;
         if (this.createVoucherResponse) {
-          console.log('Voucher created successfully:', this.createVoucherResponse);
-          alert('Voucher created successfully');
+          this.notificationComponent.showNotification('success', 'Tạo vouder thành công');
           this.getAllVouchers(); // Làm mới danh sách
           this.closeFormCreate();
         }
       },
       error: (err) => {
-        console.error('Error creating voucher:', err.message);
-        alert(`Error creating voucher: ${err.message}`);
+        
       }
     });
   }
 
   onUpdateVoucher() {
     if (!this.updateVoucherRequest?.id) {
-      alert('Voucher Not Found. Please Create!');
+      this.notificationComponent.showNotification('error', 'Không tìm thấy voucher cần cập nhật');
       return;
     }
     const formData = new FormData();
@@ -157,14 +157,13 @@ export class VoucherComponent implements OnInit {
         this.updateVoucherResponse = data;
         if (this.updateVoucherResponse) {
           console.log('Voucher updated successfully:', this.updateVoucherResponse);
-          alert('Voucher updated successfully');
+          this.notificationComponent.showNotification('success', 'Cập nhật voucher thành công');
           this.getAllVouchers(); // Làm mới danh sách
           this.closeFormUpdate();
         }
       },
       error: (err) => {
         console.error('Error updating voucher:', err.message);
-        alert(`Error updating voucher: ${err.message}`);
       }
     });
   }
