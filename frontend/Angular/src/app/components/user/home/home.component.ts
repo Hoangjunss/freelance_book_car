@@ -31,6 +31,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
   isDropdownVisible: { [key: string]: boolean } = {};
   homeData: GetPageResponse = new GetPageResponse();
   detailData: GetPageResponse [] = [];
+  imageDetail: GetPageResponse[] = [];
   footerData: GetPageResponse = new GetPageResponse();
   images: any = [];
 
@@ -129,19 +130,24 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   fetchDetailData(): void {
     this.homeService.getDetail().subscribe({
-      next: (data) => {
-        this.detailData = data;
-        this.detailData.forEach((item) => {
-          if (item.url ) {
-            this.images = this.images.concat(item.url);
-          }
-        });
-      },
-      error: (error) => {
-        console.error('Error fetching detail data:', error);
-      }
+        next: (data) => {
+            data.forEach((detail) => {
+                // Sửa điều kiện kiểm tra
+                if (detail.name != null && detail.name.trim() !== '') {
+                    this.detailData.push(detail);
+                } else {
+                    this.imageDetail.push(detail);
+                    this.images.push(this.imageDetail);
+                }
+            });
+            console.log(this.imageDetail);
+        },
+        error: (error) => {
+            console.error('Error fetching detail data:', error);
+        }
     });
-  }
+}
+
 
   fetchFooterData(): void {
     this.homeService.getFooter().subscribe({
