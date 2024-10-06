@@ -363,7 +363,6 @@ nav {
     .header-content .navbar-toggler {
         display: block;
     }
-
     .header-content .logo {
         height: 30px;
     }
@@ -458,6 +457,23 @@ nav {
         display: block;
         /* Đảm bảo biểu tượng hiển thị */
     }
+
+    .search-container-mobile {
+        width: 100%;
+      }
+      
+      .search-container-mobile .search-box {
+        width: 100%;
+        padding: 0.5rem 2rem;
+      }
+      
+      .search-container-mobile .search-icon {
+        position: absolute;
+        left: 6%;
+        top: 93%;
+        transform: translateY(-50%);
+        cursor: pointer;
+      }
 }
 
 body {
@@ -676,4 +692,9 @@ body {
         transform: translateX(0);
         opacity: 1;
     }
+}
+
+
+button:focus:not(:focus-visible){
+    outline: none;
 }

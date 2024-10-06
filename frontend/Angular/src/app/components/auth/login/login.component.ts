@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     if (typeof window !== 'undefined') {
       google.accounts.id.initialize({
-        client_id: '494801971610-gt2049qjqcv9tf9me3a52sjbdc665fqj.apps.googleusercontent.com',
+        client_id: '700464741871-8g7locki7e2uts8b61l2sfk9t63891db.apps.googleusercontent.com',
         callback: (response: any) => {
           console.log(response);
           console.log(response.credential);
@@ -69,8 +69,8 @@ export class LoginComponent implements OnInit {
         size: "large",
         text: "sign in with Google",
         shape: "rectangular",
-        width: "350",
-        height: "50",
+        width: "auto",
+        height: "auto",
       });
     }
   }

@@ -35,3 +35,15 @@ button {
     font-size: 16px;
     cursor: pointer;
 }
+
+@media (max-width: 600px) {
+    .notification-container {
+        width: 90%;
+        right: 5%; 
+    }
+
+    .notification {
+        padding: 8px; 
+        font-size: 12px;
+    }
+}

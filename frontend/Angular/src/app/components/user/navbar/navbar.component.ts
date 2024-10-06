@@ -1,5 +1,5 @@
-import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { CommonModule, DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { Component, Inject, OnInit, PLATFORM_ID, Renderer2 } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { UserService } from '../../../services/user/user.service';
 import { FormsModule } from '@angular/forms';
@@ -7,7 +7,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule, RouterLink,FormsModule],
+  imports: [CommonModule, RouterLink, FormsModule],
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
@@ -21,16 +21,33 @@ export class NavbarComponent implements OnInit {
     { icon: 'fa-brands fa-tiktok', url: '#' },
     { icon: 'fa-brands fa-instagram', url: '#' },
   ];
-  
-  navbarContent: { label: string, routerLink?: string,action?: (event?: MouseEvent) => void, isUser?: boolean }[] = [];
+
+  navbarContent: { label: string, routerLink?: string, action?: (event?: MouseEvent) => void, isUser?: boolean }[] = [];
   dataLoaded: boolean = false;
 
   searchQuery: string = '';
+  
 
-  constructor(private userService: UserService, private router: Router, @Inject(PLATFORM_ID) private platformId: Object) { }
+  isMobileMenuOpen: boolean = false;
+  constructor(private userService: UserService, private router: Router, @Inject(PLATFORM_ID) private platformId: Object,
+    @Inject(DOCUMENT) private document: Document,
+    private renderer: Renderer2
+  ) { }
 
   ngOnInit(): void {
     this.loadCurrentUser();
+
+    if (isPlatformBrowser(this.platformId)) {
+      this.renderer.listen(this.document, 'click', (event: Event) => {
+        const target = event.target as HTMLElement;
+        const isClickInsideMenu = target.closest('#mobileMenu') || target.closest('.navbar-toggler');
+
+        // Nếu không click bên trong menu, đóng menu
+        if (!isClickInsideMenu && this.isMobileMenuOpen) {
+          this.closeMobileMenu();
+        }
+      });
+    }
   }
 
   loadCurrentUser(): void {
@@ -38,13 +55,13 @@ export class NavbarComponent implements OnInit {
       const user = localStorage.getItem('currentUser');
       if (user) {
         this.CurrentUser = JSON.parse(user).name;
-      } else { 
-        this.CurrentUser = null; 
+      } else {
+        this.CurrentUser = null;
       }
     }
-    
+
     this.updateNavbarContent();
-    this.dataLoaded = true; 
+    this.dataLoaded = true;
   }
 
   logout(event?: MouseEvent) {
@@ -56,7 +73,7 @@ export class NavbarComponent implements OnInit {
     localStorage.removeItem('idBooking');
     localStorage.removeItem('authToken');
     localStorage.removeItem('token');
-    this.CurrentUser = null; 
+    this.CurrentUser = null;
     this.updateNavbarContent();
 
     // Navigate to login page
@@ -65,7 +82,7 @@ export class NavbarComponent implements OnInit {
   updateNavbarContent(): void {
     if (this.CurrentUser) {
       this.navbarContent = [
-        { label: 'Logout', action: (event?: MouseEvent) => this.logout(event) , isUser: false },
+        { label: 'Logout', action: (event?: MouseEvent) => this.logout(event), isUser: false },
         { label: `${this.CurrentUser}`, isUser: true },
         { label: 'View History', routerLink: '/order-history', isUser: false },
       ];
@@ -89,5 +106,13 @@ export class NavbarComponent implements OnInit {
       window.location.reload();
     });
   }
-  
+
+  toggleMobileMenu() {
+    this.isMobileMenuOpen = !this.isMobileMenuOpen;
+  }
+
+  closeMobileMenu() {
+    this.isMobileMenuOpen = false;
+  }
+
 }

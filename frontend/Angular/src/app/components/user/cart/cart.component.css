@@ -22,9 +22,12 @@ h2 {
 /* Product List Styling */
 .list-group-item {
     transition: background-color 0.3s;
-    padding: 20px;
+    padding: 15px;
+    /* Giảm padding cho phù hợp với di động */
     margin-bottom: 15px;
     border-radius: 8px;
+    flex-direction: column;
+    /* Đảm bảo các phần tử sắp xếp theo chiều dọc trên di động */
 }
 
 .list-group-item:hover {
@@ -33,6 +36,8 @@ h2 {
 
 .product-info {
     flex-grow: 1;
+    text-align: left;
+    /* Căn chỉnh thông tin sản phẩm sang trái */
 }
 
 .price {
@@ -40,6 +45,7 @@ h2 {
     font-weight: bold;
 }
 
+/* Responsive Adjustments */
 .img-thumbnail {
     border: none;
     border-radius: 8px;
@@ -48,7 +54,8 @@ h2 {
 
 /* Quantity Controls */
 .quantity-controls {
-    margin-right: 20px;
+    margin: 10px 0;
+    /* Tạo khoảng cách giữa nút điều chỉnh và thông tin sản phẩm */
 }
 
 .quantity-input {
@@ -99,8 +106,32 @@ h2 {
     background-color: #218838;
 }
 
+/* Quantity Controls */
+.quantity-controls {
+    flex: 1; /* Đảm bảo phần điều khiển chiếm không gian linh hoạt */
+    justify-content: space-between; /* Giữa các nút một khoảng cách hợp lý */
+}
+
+.quantity-input {
+    width: 50px; 
+    background-color: transparent;
+    text-align: center;
+    font-size: 16px; 
+}
+.quantity{
+    height: 160px;
+}
 /* Responsive Adjustments */
 @media screen and (max-width: 768px) {
+    .quantity-controls {
+        width: 100%; 
+        flex-direction: row;
+        justify-content: space-between; 
+    }
+
+    .btn-danger {
+        margin-top: 10px; 
+    }
     .cart-container {
         margin-top: 80px !important;
         padding: 10px;
@@ -109,4 +140,37 @@ h2 {
     .total-price {
         font-size: 1.25rem;
     }
+
+    .quantity-controls {
+        flex-direction: row;
+        justify-content: center;
+    }
+
+    .quantity-input {
+        width: 40px;
+    }
+
+    h2 {
+        font-size: 1.75rem;
+    }
+
+    .total-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .btn-checkout {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .quantity{
+        display: flex !important;
+        justify-content: space-between;
+        align-items: center;
+        flex-direction: row !important;
+        width: 100%;
+        height: auto;
+    }
+
 }
