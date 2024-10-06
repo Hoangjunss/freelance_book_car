@@ -9,6 +9,7 @@ import { NoDataFoundComponent } from "../../no-data-found/no-data-found.componen
 import { UpdateTourRequest } from '../../../../models/request/product/tour/tour/update-tour-request';
 import { UpdateTourResponse } from '../../../../models/response/product/tour/tour/update-tour-response';
 import { NotificationComponent } from '../../../notification/notification.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-tour',
@@ -43,7 +44,9 @@ export class TourComponent implements OnInit{
 
   @ViewChild(NotificationComponent) notificationComponent!: NotificationComponent;
 
-  constructor(private tourService:TourService){}
+  constructor(private tourService:TourService, private title:Title){
+    this.title.setTitle('Quản lý chuyến đi')
+  }
 
   ngOnInit(): void {
     this.getAllTour();

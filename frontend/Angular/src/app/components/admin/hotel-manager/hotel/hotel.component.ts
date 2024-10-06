@@ -9,6 +9,7 @@ import { NoDataFoundComponent } from "../../no-data-found/no-data-found.componen
 import { UpdateHotelRequest } from '../../../../models/request/product/hotel/hotel/update-hotel-request';
 import { UpdateHotelResponse } from '../../../../models/response/product/hotel/hotel/update-hotel-response';
 import { NotificationComponent } from '../../../notification/notification.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-hotel',
@@ -43,7 +44,9 @@ export class HotelComponent {
 
   @ViewChild(NotificationComponent) notificationComponent!: NotificationComponent;
 
-  constructor(private hotelService: HotelService){}
+  constructor(private hotelService: HotelService, private title:Title){
+    this.title.setTitle('Danh sách khách sạn')
+  }
 
   ngOnInit(): void {
     this.getAllHotel();

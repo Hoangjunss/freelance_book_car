@@ -4,6 +4,7 @@ import { FormsModule, NgModel } from '@angular/forms';
 import { GetBookingResponse } from '../../../../models/response/booking/get-booking-response';
 import { StatisticMonthYear } from '../../../../models/response/statistics/StatisticMonthYear';
 import { StatisticsService } from '../../../../services/statistics/statistics.service';
+import { Title } from '@angular/platform-browser';
 
 interface Invoice {
     date: string;
@@ -44,7 +45,9 @@ export class TourStatisticsComponent implements OnInit {
   ];
   years: number[] = [];
 
-  constructor(private statisticService: StatisticsService){}
+  constructor(private statisticService: StatisticsService, private title: Title){
+    this.title.setTitle('Thống kê ')
+  }
 
   ngOnInit() {
     this.years = this.generateYears(2020, new Date().getFullYear());

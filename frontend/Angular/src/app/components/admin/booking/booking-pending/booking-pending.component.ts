@@ -17,6 +17,7 @@ import { HotelbookingService } from '../../../../services/product/hotel/hotelboo
 import { VoucherService } from '../../../../services/product/voucher/voucher/voucher.service';
 import { GetVoucherResponse } from '../../../../models/response/product/voucher/voucher/get-voucher-response';
 import { NotificationComponent } from '../../../notification/notification.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-booking-pending',
@@ -57,8 +58,11 @@ export class BookingPendingComponent {
     private tourScheduleService: TourScheduleService,
     private tourismService: TourismService,
     private hotelBookingService: HotelbookingService,
-    private voucherService: VoucherService
-  ){}
+    private voucherService: VoucherService,
+    private title: Title
+  ){
+    this.title.setTitle('Danh sách đang chờ')
+  }
 
   ngOnInit(): void {
     this.getByType(this.type);

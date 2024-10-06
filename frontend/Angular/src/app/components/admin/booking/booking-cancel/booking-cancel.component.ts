@@ -15,6 +15,7 @@ import { TourismService } from '../../../../services/product/ticket/tourism/tour
 import { HotelbookingService } from '../../../../services/product/hotel/hotelbooking/hotelbooking.service';
 import { GetVoucherResponse } from '../../../../models/response/product/voucher/voucher/get-voucher-response';
 import { VoucherService } from '../../../../services/product/voucher/voucher/voucher.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-booking-cancel',
@@ -52,8 +53,10 @@ export class BookingCancelComponent {
     private tourScheduleService: TourScheduleService,
     private tourismService: TourismService,
     private hotelBookingService: HotelbookingService,
-    private voucherService: VoucherService
-  ){}
+    private voucherService: VoucherService, private title: Title
+  ){
+    this.title.setTitle('Danh sách đã từ chối')
+  }
 
   ngOnInit(): void {
     this.getByType(this.type);

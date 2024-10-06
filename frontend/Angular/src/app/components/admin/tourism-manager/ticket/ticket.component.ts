@@ -10,6 +10,7 @@ import { UpdateTicketRequest } from '../../../../models/request/product/ticket/t
 import { CreateTicketResponse } from '../../../../models/response/product/ticket/ticket/create-ticket-response';
 import { UpdateTicketResponse } from '../../../../models/response/product/ticket/ticket/update-ticket-response';
 import { NotificationComponent } from '../../../notification/notification.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-ticket',
@@ -42,7 +43,9 @@ export class TicketComponent implements OnInit {
   selectedTourism: GetTourismResponse = new GetTourismResponse();
   @ViewChild(NotificationComponent) notificationComponent!: NotificationComponent;
 
-  constructor(private ticketService: TicketService, private tourismService: TourismService) {}
+  constructor(private ticketService: TicketService, private tourismService: TourismService, private title: Title) {
+    this.title.setTitle('Quản lý vé')
+  }
 
   ngOnInit(): void {
     this.getAllTourism();

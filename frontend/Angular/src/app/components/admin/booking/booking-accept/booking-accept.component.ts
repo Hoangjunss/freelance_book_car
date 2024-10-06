@@ -15,6 +15,7 @@ import { HotelbookingService } from '../../../../services/product/hotel/hotelboo
 import { GetBookingDetailResponse } from '../../../../models/response/booking/get-booking-detail-response';
 import { GetVoucherResponse } from '../../../../models/response/product/voucher/voucher/get-voucher-response';
 import { VoucherService } from '../../../../services/product/voucher/voucher/voucher.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-booking-accept',
@@ -52,8 +53,11 @@ export class BookingAcceptComponent implements OnInit {
     private tourScheduleService: TourScheduleService,
     private tourismService: TourismService,
     private hotelBookingService: HotelbookingService,
-    private voucherService: VoucherService
-  ){}
+    private voucherService: VoucherService,
+    private title: Title
+  ){
+    this.title.setTitle('Danh sách đã chấp nhận')
+  }
 
   ngOnInit(): void {
     this.getByType(this.type);

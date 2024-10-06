@@ -9,6 +9,7 @@ import { GetHotelResponse } from '../../../../models/response/product/hotel/hote
 import { GetHotelBookingResponse } from '../../../../models/response/product/hotel/hotel-booking/get-hotelbooking-response';
 import { HotelService } from '../../../../services/product/hotel/hotel/hotel.service';
 import { HotelbookingService } from '../../../../services/product/hotel/hotelbooking/hotelbooking.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-hotel-booking',
@@ -43,7 +44,9 @@ export class HotelBookingComponent implements OnInit {
 
   hotelSelected: GetHotelResponse = new GetHotelResponse();
 
-  constructor(private hotelService: HotelService, private hotelBookingService: HotelbookingService) {}
+  constructor(private hotelService: HotelService, private hotelBookingService: HotelbookingService, private title: Title) {
+    this.title.setTitle('Danh sách lịch khách sạn')
+  }
 
   ngOnInit(): void {
     this.getAllHotels();

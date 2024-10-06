@@ -9,6 +9,7 @@ import { UpdateVoucherRequest } from '../../../../models/request/product/voucher
 import { UpdateVoucherResponse } from '../../../../models/response/product/voucher/voucher/update-voucher-response';
 import { VoucherService } from '../../../../services/product/voucher/voucher/voucher.service';
 import { NotificationComponent } from '../../../notification/notification.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-voucher',
@@ -39,7 +40,9 @@ export class VoucherComponent implements OnInit {
 
   searchQuery: string='';
   @ViewChild(NotificationComponent) notificationComponent!: NotificationComponent;
-  constructor(private voucherService: VoucherService) {}
+  constructor(private voucherService: VoucherService, private title:Title) {
+    this.title.setTitle('Quản lý voucher')
+  }
 
   ngOnInit(): void {
     this.getAllVouchers();
