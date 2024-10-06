@@ -31,6 +31,7 @@ import com.freelance.bookCar.models.Mail;
 import com.freelance.bookCar.models.booking.Booking;
 import com.freelance.bookCar.models.booking.BookingDetail;
 import com.freelance.bookCar.models.booking.TypeBooking;
+import com.freelance.bookCar.models.invoice.Invoice;
 import com.freelance.bookCar.models.product.hotel.Hotel;
 import com.freelance.bookCar.models.product.hotel.HotelBooking;
 import com.freelance.bookCar.models.product.ticket.Ticket;
@@ -43,6 +44,7 @@ import com.freelance.bookCar.models.user.UserJoin;
 import com.freelance.bookCar.respository.booking.BookingDetailRepository;
 import com.freelance.bookCar.respository.booking.BookingRepository;
 import com.freelance.bookCar.services.MailService;
+import com.freelance.bookCar.services.invoiceService.InvoiceService;
 import com.freelance.bookCar.services.product.hotelService.hotel.HotelService;
 import com.freelance.bookCar.services.product.hotelService.hotelBooking.HotelBookingService;
 import com.freelance.bookCar.services.product.ticketService.ticket.TicketService;
@@ -76,6 +78,8 @@ public class BookingServiceImpl implements BookingService{
     private ModelMapper modelMapper;
     @Autowired
     private BookingDetailRepository bookingDetailRepository;
+    @Autowired
+    private InvoiceService invoiceService;
     @Autowired
     private TourScheduleService tourScheduleService;
     @Autowired
@@ -601,6 +605,10 @@ public class BookingServiceImpl implements BookingService{
         booking.setTypeBooking(TypeBooking.valueOf(type));
         Booking bookingsave=bookingRepository.save(booking);
         List<GetUserInfoResponse> userInfo = userInfoService.getUserInfoByBookingId(booking.getId());
+        if(type.equals("ACCEPT")) {
+            List<BookingDetail> bookingDetails = findByIdBooking(bookingsave.getId()).stream().map(book -> modelMapper.map(book, BookingDetail.class)).collect(Collectors.toList());
+            Invoice invoice = invoiceService.convertBookingToInvoice(bookingsave, bookingDetails);
+        }
         log.info("594: {}", userInfo.toString());
         Mail mail=mailService.getMail(userInfo.getFirst().getEmail(),"Đơn hàng số "+booking.getId()+ "của bạn đã được "+type+"vui long kiểm tra lại ","Đơn hàng số"+booking.getId());
         mailService.sendMail(mail);

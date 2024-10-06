@@ -92,7 +92,7 @@ public class InvoiceServiceImpl implements InvoiceService{
             throw new CustomException(Error.DATABASE_ACCESS_ERROR);
         }
     }
-
+@Override
     public   Invoice convertBookingToInvoice(Booking booking, List<BookingDetail> bookingDetails) {
 
         if(booking.getTotalPrice() < 0){
