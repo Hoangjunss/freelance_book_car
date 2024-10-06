@@ -257,6 +257,7 @@ public class BookingServiceImpl implements BookingService{
 
         TourSchedule tour=modelMapper.map(tourScheduleService.findById(addBookingTourRequest.getIdTour()),TourSchedule.class);
         BookingDetail bookingDetail=bookingDetaiTourlList(booking.getId(), tour.getId());
+
         if(bookingDetail==null) {
             // Create a BookingDetail object using Builder pattern
              bookingDetail = BookingDetail.builder()
@@ -267,14 +268,17 @@ public class BookingServiceImpl implements BookingService{
                     .totalPrice(tour.getPriceTour() * addBookingTourRequest.getQuantity())
                     .build();
         }else{
+            log.info("271: {}, {}", addBookingTourRequest.getQuantity(), bookingDetail.getQuantity());
             bookingDetail.setQuantity(addBookingTourRequest.getQuantity()+bookingDetail.getQuantity());
-            bookingDetail.setTotalPrice(booking.getTotalPrice()*bookingDetail.getQuantity());
+            log.info("273: {}, {}", bookingDetail.getTotalPrice(), bookingDetail.getQuantity());
+            bookingDetail.setTotalPrice(bookingDetail.getTotalPrice()+(addBookingTourRequest.getQuantity()*Double.parseDouble(addBookingTourRequest.getTotalPrice())));
         }
         log.info("bookingDetail: {}", bookingDetail.toString());
 
         try {
             // Save the booking detail
             bookingDetailRepository.save(bookingDetail);
+            updateTotalPrice(bookingDetail.getIdBooking());
         } catch (DataIntegrityViolationException e) {
             log.error("Error occurred while updating booking details: {}", e.getMessage(), e);
             throw new CustomException(Error.BOOKING_DETAIL_UNABLE_TO_SAVE);
@@ -357,14 +361,17 @@ public class BookingServiceImpl implements BookingService{
                     .totalPrice(tourism.getTourPrice() * addBookingTourismRequest.getQuantity())
                     .build();
         }else{
+            log.info("364: {}", addBookingTourismRequest.toString());
+            log.info("365: {}", bookingDetail.toString());
             bookingDetail.setQuantity(addBookingTourismRequest.getQuantity()+bookingDetail.getQuantity());
-            bookingDetail.setTotalPrice(booking.getTotalPrice()*bookingDetail.getQuantity());
+            bookingDetail.setTotalPrice(bookingDetail.getTotalPrice()+(addBookingTourismRequest.getQuantity()*addBookingTourismRequest.getTotalPrice()));
         }
         // Create a BookingDetail for tourism using Builder pattern
 
         try {
             // Save the booking detail for tourism
             bookingDetailRepository.save(bookingDetail);
+            updateTotalPrice(bookingDetail.getIdBooking());
         } catch (DataIntegrityViolationException e) {
             log.error("Error occurred while saving tourism booking detail: {}", e.getMessage(), e);
             throw new CustomException(Error.BOOKING_DETAIL_UNABLE_TO_SAVE);
@@ -452,13 +459,14 @@ public class BookingServiceImpl implements BookingService{
                     .build();
         }else{
             bookingDetail.setQuantity(addBookingHotelRequest.getQuantity()+bookingDetail.getQuantity());
-            bookingDetail.setTotalPrice(booking.getTotalPrice()*bookingDetail.getQuantity());
+            bookingDetail.setTotalPrice(bookingDetail.getTotalPrice()+(addBookingHotelRequest.getQuantity()*addBookingHotelRequest.getTotalPrice()));
         }
 
         try {
             // Save the booking detail for hotel
             booking.setTypeBooking(TypeBooking.CART);
             bookingDetailRepository.save(bookingDetail);
+            updateTotalPrice(bookingDetail.getIdBooking());
         } catch (DataIntegrityViolationException e) {
             log.error("Error occurred while saving hotel booking detail : {}", e.getMessage(), e);
             throw new CustomException(Error.BOOKING_DETAIL_UNABLE_TO_SAVE);
@@ -601,6 +609,7 @@ public class BookingServiceImpl implements BookingService{
 
     @Override
     public OrderResponse order(OrderRequest orderRequest) {
+        log.info("604: {}", orderRequest.toString());
         GetBookingResponse getBookingResponse=findById(orderRequest.getId());
         Booking booking=modelMapper.map(getBookingResponse,Booking.class);
 
@@ -626,9 +635,13 @@ public class BookingServiceImpl implements BookingService{
                 .toList();
         log.info("609: {}", updatedUserJoin.toString());
         booking.setUserJoin(updatedUserJoin);
-        log.info("615: {}", booking.toString());
 
+        booking.setIdVoucher(orderRequest.getIdVoucher());
+        booking.setIdPayment(orderRequest.getPaymentMethod());
+
+        log.info("632: {}", booking.toString());
         Booking bookingsave= bookingRepository.save(booking);
+        log.info("634: {}", bookingsave.toString());
         Mail mail=mailService.getMail(updatedUserInfo.getFirst().getEmail(),"Đơn hàng số "+booking.getId()+ "của bạn đã được đặt vui lòng kiểm tra lại ","Đơn hàng số: "+booking.getId());
         mailService.sendMail(mail);
         return modelMapper.map(bookingsave,OrderResponse.class);
@@ -655,6 +668,11 @@ public class BookingServiceImpl implements BookingService{
         return bookingRepository.findAllByTypeBookingNotAndIdUser(TypeBooking.CART, idUser).stream()
                 .map(booking -> modelMapper.map(booking, GetBookingResponse.class)) // Chuyển đổi Booking thành GetBookingResponse
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void updateTotalPrice(Integer idBooking) {
+        bookingRepository.updateTotalPrice(idBooking);
     }
 
 

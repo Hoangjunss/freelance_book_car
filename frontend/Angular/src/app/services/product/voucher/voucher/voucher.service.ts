@@ -72,7 +72,7 @@ export class VoucherService {
 
   getVoucherByName(name: string): Observable<GetVoucherResponse> {
     const headers= this.createAuthorizationHeader();
-    return this.httpClient.get<Apiresponse<GetVoucherResponse>>(`${this.baseUrl}?name=${name}`, {headers}).pipe(
+    return this.httpClient.get<Apiresponse<GetVoucherResponse>>(`${this.baseUrl}/name?name=${name}`, {headers}).pipe(
       map((response: Apiresponse<GetVoucherResponse>) => {
         if (response.success) {
           return response.data;

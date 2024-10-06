@@ -18,6 +18,7 @@ public class Tour {
     private String name;
     private String description;
     private String startLocation;
+    private String endLocation;
     private Boolean isActive;
     private String image;
 }

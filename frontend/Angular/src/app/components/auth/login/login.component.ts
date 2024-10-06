@@ -95,9 +95,6 @@ export class LoginComponent implements OnInit {
             localStorage.setItem('token', token);
             this.getCurrentUser();
           }
-          this.router.navigate(['/home']).then(() => {
-            window.location.reload();
-          });
         },
         error: (error) => {
           if(error.status === 404){
@@ -117,6 +114,16 @@ export class LoginComponent implements OnInit {
       next: (user) => {
         localStorage.setItem('currentUser', JSON.stringify(user));
         localStorage.setItem('idUser', JSON.stringify(user.id));
+        if(user.role == 'USER'){
+          this.router.navigate(['/home']).then(() => {
+            window.location.reload();
+          });
+        }
+        if(user.role == 'ADMIN'){
+          this.router.navigate(['/admin/statistics']).then(() => {
+            window.location.reload();
+          });
+        }
         if (user.id != undefined) {
           this.getBooking(user.id);
         }

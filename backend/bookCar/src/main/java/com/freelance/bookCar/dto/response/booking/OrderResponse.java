@@ -18,4 +18,5 @@ public class OrderResponse {
     private double totalPrice;
     private Integer idUser;
     private Integer paymentMethod;
+    private Integer idVoucher;
 }

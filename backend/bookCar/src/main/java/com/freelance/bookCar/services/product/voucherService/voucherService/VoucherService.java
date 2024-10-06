@@ -15,4 +15,5 @@ public interface VoucherService {
     UpdateVoucherResponse update(UpdateVoucherRequest updateVoucherRequest);
     GetVoucherResponse findById(Integer id);
     List<GetVoucherResponse> getAll();
+    GetVoucherResponse findByName(String name);
 }

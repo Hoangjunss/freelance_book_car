@@ -157,6 +157,7 @@ export class TourComponent implements OnInit{
     formData.append('name', this.createTourRequest.name || '');
     formData.append('description', this.createTourRequest.description || '');
     formData.append('startLocation', this.createTourRequest.startLocation || '');
+    formData.append('endLocation', this.createTourRequest.endLocation || '');
     formData.append('isActive', this.createTourRequest.isActive ? 'true' : 'false');
   
     if (this.imageFile != undefined) {
@@ -210,6 +211,7 @@ export class TourComponent implements OnInit{
     formData.append('name', this.updateTourRequest.name || '');
     formData.append('description', this.updateTourRequest.description || '');
     formData.append('startLocation', this.updateTourRequest.startLocation || '');
+    formData.append('endLocation', this.updateTourRequest.endLocation || '');
     formData.append('isActive', this.updateTourRequest.isActive ? 'true' : 'false');
   
     if (this.imageFile != undefined) {

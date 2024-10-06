@@ -44,4 +44,11 @@ public class VoucherController {
         List<GetVoucherResponse> getVoucherResponse = voucherService.getAll();
         return ResponseEntity.ok(new ApiResponse<>(true, "Get all vouchers successfully", getVoucherResponse));
     }
+
+    @PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+    @GetMapping("/name")
+    public ResponseEntity<ApiResponse<GetVoucherResponse>> getVoucherByName(@RequestParam String name) {
+        GetVoucherResponse getVoucherResponse = voucherService.findByName(name);
+        return ResponseEntity.ok(new ApiResponse<>(true, "Get Voucher by name successfully", getVoucherResponse));
+    }
 }

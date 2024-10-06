@@ -157,7 +157,8 @@ public class BookingController {
                                                             @RequestParam("totalPrice") String totalPrice,
                                                             @RequestParam("createUserInfoRequest") String createUserInfoRequestJson,
                                                             @RequestParam("createUserJoinRequest") String createUserJoinRequestJson,
-                                                            @RequestParam("paymentMethod") Integer paymentMethod){
+                                                            @RequestParam("paymentMethod") Integer paymentMethod,
+                                                            @RequestParam("idVoucher") Integer idVoucher){
         try{
             ObjectMapper objectMapper = new ObjectMapper();
 
@@ -173,7 +174,8 @@ public class BookingController {
                     idUser,
                     createUserInfoRequest,
                     createUserJoinRequest,
-                    paymentMethod
+                    paymentMethod,
+                    idVoucher
             );
             log.info("Order request: {}", orderRequest.toString());
             OrderResponse addBookingTourResponse=bookingService.order(orderRequest);

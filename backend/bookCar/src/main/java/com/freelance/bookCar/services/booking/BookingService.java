@@ -46,4 +46,5 @@ public interface BookingService {
     List<GetBookingResponse> findId(Integer IdUser);
     void deleteBookingDetail(Integer id);
     List<GetBookingResponse> findAllByTypeBookingNotAndIdUser(Integer idUser);
+    void updateTotalPrice(Integer idBooking);
 }

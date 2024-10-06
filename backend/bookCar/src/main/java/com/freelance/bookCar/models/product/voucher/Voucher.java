@@ -21,8 +21,5 @@ public class Voucher {
     private LocalDateTime endDate;
     private boolean isUse;
     private String name;
-     private Float discountRate;
-     @ManyToMany
-     @JoinTable
-     private List<Booking> booking;
+    private Float discountRate;
 }

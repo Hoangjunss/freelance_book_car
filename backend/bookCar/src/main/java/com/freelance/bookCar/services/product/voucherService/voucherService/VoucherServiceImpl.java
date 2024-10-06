@@ -99,6 +99,17 @@ public class VoucherServiceImpl implements VoucherService{
         return voucherRepository.findAll().stream().map(voucher -> modelMapper.map(voucher, GetVoucherResponse.class)).collect(Collectors.toList());
     }
 
+    @Override
+    public GetVoucherResponse findByName(String name) {
+        log.info("FindByName: {}", name);
+        Voucher voucher = voucherRepository.findByName(name);
+        if (voucher != null) {
+            return modelMapper.map(voucher, GetVoucherResponse.class);
+        }else{
+            return new GetVoucherResponse();
+        }
+    }
+
     private Integer generateId() {
         UUID uuid = UUID.randomUUID();
         return (int) (uuid.getMostSignificantBits() & 0xFFFFFFFFL);

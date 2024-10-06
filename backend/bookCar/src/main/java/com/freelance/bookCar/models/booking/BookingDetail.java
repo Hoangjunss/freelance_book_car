@@ -18,6 +18,7 @@ public class BookingDetail {
     private Integer idTour;
     private Integer idTicket;
     private Integer idHotel;
+    private Integer idVoucher;
     private Integer idBooking;
     private Integer quantity;
     private double totalPrice;

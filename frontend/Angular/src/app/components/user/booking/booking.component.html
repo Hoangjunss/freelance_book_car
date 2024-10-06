@@ -536,7 +536,7 @@
                         <hr style="border: 1px solid #ddd;">
                         <div class="d-flex justify-content-between">
                             <span class="text-total">Tổng cộng</span>
-                            <span class="total-amount">{{product.price | currency: '₫'}} ₫</span>
+                            <span class="total-amount">{{product.price | number : '1.0-0' }} ₫</span>
                         </div>
                     </div>
                 </div>
@@ -546,13 +546,19 @@
                     <div class="card-custom">
                         <div class="d-flex justify-content-between mb-2">
                             <span class="text-total">Tổng cộng</span>
-                            <span class="total-amount">{{totalPrice | currency: '₫'}} ₫</span>
+                            <span class="total-amount">{{ totalPrice | number : '1.0-0' }} ₫</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-total">Ưu đãi giảm giá</span>
+                            <span class="total-amount">- {{ discountAmount | number : '1.0-0' }} ₫</span>
                         </div>
                         <div class="d-flex justify-content-between">
                             <span class="card-content">Số tiền thanh toán</span>
-                            <span class="total-amount" style="color: #f89c1c;font-size: 1.2rem;font-weight: 600;">
-                                {{totalPrice | currency: '₫'}} ₫</span>
+                            <span class="total-amount" style="color: #f89c1c; font-size: 1.2rem; font-weight: 600;">
+                                {{ newTotalPrice | number : '1.0-0' }} ₫
+                            </span>
                         </div>
+                        
                     </div>
                 </div>
 

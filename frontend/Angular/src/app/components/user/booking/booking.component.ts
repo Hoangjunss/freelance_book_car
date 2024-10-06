@@ -1,7 +1,7 @@
 import { CreateUserInfoRequest } from './../../../models/request/user/user-info/create-user-info-request';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { Component, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthInterceptor } from '../../../services/auth.interceptor';
 import { UserService } from '../../../services/user/user.service';
@@ -24,6 +24,7 @@ import { HotelbookingService } from '../../../services/product/hotel/hotelbookin
 import { TourScheduleService } from '../../../services/product/tour/tour-schedule/tour-schedule.service';
 import { NotificationComponent } from '../../notification/notification.component';
 import { VoucherService } from '../../../services/product/voucher/voucher/voucher.service';
+import { GetVoucherResponse } from '../../../models/response/product/voucher/voucher/get-voucher-response';
 
 @Component({
   selector: 'app-booking',
@@ -65,8 +66,12 @@ export class BookingComponent implements OnInit {
   originalUserJoin: CreateUserJoinRequest;
   originalUserInfo: CreateUserInfoRequest;
   formInvalid: boolean = false;
+
+  getVoucher: GetVoucherResponse = new GetVoucherResponse();
   voucherCode: string = '';
-  discountAmount: number = 5000;
+  voucherId: number=0;
+  discountAmount: number = 0;
+  newTotalPrice: number =0;
 
 
   @ViewChild(NotificationComponent) notificationComponent!: NotificationComponent;
@@ -81,7 +86,8 @@ export class BookingComponent implements OnInit {
     private hotelService: HotelService,
     private hotelBookingService: HotelbookingService,
     private ticketService: TicketService,
-    private voucherService: VoucherService
+    private voucherService: VoucherService,
+    private cdr: ChangeDetectorRef
   ) {
     this.hours = Array.from({ length: 24 }, (_, i) => i);
 
@@ -220,8 +226,9 @@ export class BookingComponent implements OnInit {
         if (response && response.id) {
           if (response.type === 'CART') {
             this.idBooking = response.id;
-            this.getBookingDetail(response.id);
             this.totalPrice = response.totalPrice;
+            this.newTotalPrice = this.totalPrice;
+            this.getBookingDetail(response.id);
           } else {
             this.products = [];
           }
@@ -250,7 +257,6 @@ export class BookingComponent implements OnInit {
             image: 'https://via.placeholder.com/100',
             type: detail.idTour ? 'tour' : detail.idHotel ? 'hotel' : 'ticket'
           }));
-
           if (this.products.some(p => p.type === 'tour')) {
             this.products.filter(p => p.type === 'tour').forEach(p => {
               //this.getTourDetail(p.id);
@@ -352,14 +358,20 @@ export class BookingComponent implements OnInit {
       return;
     }
 
+    console.log(this.newTotalPrice);
+
 
     formData.append('id', idBooking);
     formData.append('idUser', idUser);
     formData.append('dateBook', new Date().toISOString().slice(0, 19));
-    formData.append('totalPrice', this.totalPrice.toString());
+    formData.append('totalPrice', this.newTotalPrice.toString() || '');
     formData.append('createUserInfoRequest', JSON.stringify(this.createUserInfoRequest));
     formData.append('createUserJoinRequest', JSON.stringify(this.createUserJoinRequest));
     formData.append('paymentMethod', 1 + "");
+    if(this.voucherId!=0){
+      console.log(this.voucherId);
+      formData.append('idVoucher', this.voucherId.toString() || '');
+    }
 
     formData.forEach((value, key) => {
       console.log(`${key}: ${value}`);
@@ -436,32 +448,27 @@ export class BookingComponent implements OnInit {
       return;
     }
 
-    // this.voucherService.getVoucherByName(this.voucherCode).subscribe({
-    //   next: (response) => {
-    //     if (response) {
-    //       this.totalPrice -= response.discountRate;
-    //       this.notificationComponent.showNotification('success', 'Áp dụng mã giảm giá thành công');
-    //     }
-    //   },
-    //   error: (error) => {
-    //     this.notificationComponent.showNotification('error', 'Mã giảm giá không hợp lệ');
-    //   }
-    // });
-
-    if (this.voucherCode === 'ABC') {
-      const discountedPrice = this.totalPrice - this.discountAmount;
-
-      if (this.voucherCode === 'ABC') {
-        if (this.discountAmount >= this.totalPrice) {
-          this.totalPrice = 0; 
-          this.notificationComponent.showNotification('success', 'Áp dụng mã giảm giá thành công');
-        } else {
-          this.totalPrice -= this.discountAmount;
-          this.notificationComponent.showNotification('success', 'Áp dụng mã giảm giá thành công');
+    this.voucherService.getVoucherByName(this.voucherCode).subscribe({
+      next: (data) => {
+        console.log('Voucher Data:', data);
+        if (data) {
+          if (data.discountRate != null) {
+            // Tính discountAmount: discountRate * totalPrice
+            this.discountAmount = (data.discountRate / 100) * this.totalPrice;
+            this.newTotalPrice = this.totalPrice - this.discountAmount;
+            this.voucherId = data.id;
+            this.cdr.detectChanges();
+            console.log('Discount Amount:', this.discountAmount);
+            console.log('New Total Price:', this.totalPrice);
+            this.notificationComponent.showNotification('success', 'Áp dụng mã giảm giá thành công');
+          }else{
+            this.notificationComponent.showNotification('error', 'Mã giảm giá không hợp lệ');
+          }
         }
-      } else {
-        this.notificationComponent.showNotification('error', 'Mã giảm giá không hợp lệ');
+      },
+      error: (err) => {
+        console.error('Error fetching voucher:', err);
       }
-    }
+    });
   }
 }
