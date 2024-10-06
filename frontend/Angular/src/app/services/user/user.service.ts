@@ -145,9 +145,6 @@ export class UserService {
     if (token) {
       return new HttpHeaders().set('Authorization', `Bearer ${token}`);
     }
-    else {
-      console.log('Token not found in local store');
-    }
     return new HttpHeaders();
   }
 

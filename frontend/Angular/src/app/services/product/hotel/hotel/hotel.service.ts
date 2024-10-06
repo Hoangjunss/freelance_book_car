@@ -16,15 +16,16 @@ export class HotelService {
 
   private baseUrl = `${environment.apiBaseUrl}/api/v1/hotel`;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient,@Inject(PLATFORM_ID) private platformId: Object) { }
 
   private createAuthorizationHeader(): HttpHeaders {
-    const token = localStorage.getItem('token');
+    let token = null;
+
+    if (isPlatformBrowser(this.platformId)) {
+      token = localStorage.getItem('token');
+    }
     if (token) {
       return new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    }
-    else {
-      console.log('Token not found in local store');
     }
     return new HttpHeaders();
   }
@@ -108,6 +109,8 @@ export class HotelService {
       })
     );
   }
+
+  
 
   
 

@@ -46,6 +46,7 @@ export class LocationDetailComponent {
     private titleService: Title,
   ) { this.titleService.setTitle("Location-detail"); }
 
+
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       this.locationId = params.get('id');
@@ -75,6 +76,7 @@ export class LocationDetailComponent {
   getTourScheduleByidTour(id: number) {
     this.tourScheduleService.getTourScheduleByidTour(id).subscribe({
       next: (response) => {
+        console.log(response);
         const currentDate = new Date();
         if (response) {
           this.getTourScheduleResponse = response
@@ -87,6 +89,7 @@ export class LocationDetailComponent {
             const dateB = new Date(b.timeStartTour || '');
             return dateA.getTime() - dateB.getTime(); 
           });
+          console.log(this.getTourScheduleResponse);
           this.getTourScheduleResponse.forEach(schedule => {
             if (schedule.timeStartTour !== undefined) {
               const scheduleDate = new Date(schedule.timeStartTour);

@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Apiresponse } from '../../../../models/response/apiresponse';
 import { CreateTourScheduleRequest } from '../../../../models/request/product/tour/tour-schedule/create-tour-schedule-request';
@@ -8,6 +8,7 @@ import { UpdateTourScheduleRequest } from '../../../../models/request/product/to
 import { UpdateTourScheduleResponse } from '../../../../models/response/product/tour/tour-schedule/update-tour-schedule-response';
 import { GetTourScheduleResponse } from '../../../../models/response/product/tour/tour-schedule/get-tour-schedule-response';
 import { environment } from '../../../environment';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class TourScheduleService {
 
   private baseUrl = `${environment.apiBaseUrl}/api/v1/tour-schedule`;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient,@Inject(PLATFORM_ID) private platformId: Object) { }
 
   createSchedule(formData: FormData): Observable<CreateTourScheduleResponse> {
     const headers = this.createAuthorizationHeader();
@@ -85,12 +86,13 @@ export class TourScheduleService {
   }
 
   private createAuthorizationHeader(): HttpHeaders {
-    const token = localStorage.getItem('token');
+    let token = null;
+
+    if (isPlatformBrowser(this.platformId)) {
+      token = localStorage.getItem('token');
+    }
     if (token) {
       return new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    }
-    else {
-      console.log('Token not found in local store');
     }
     return new HttpHeaders();
   }

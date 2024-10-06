@@ -26,9 +26,9 @@ public class CloudinaryService {
     // contructor
     public CloudinaryService() {
         Map<String, String> valuesMap = new HashMap<>();
-        valuesMap.put("cloud_name", "dgts7tmnb");
-        valuesMap.put("api_key", "397588242457691");
-        valuesMap.put("api_secret", "oWxqnyZyL43qKZx93bYgQpGfNfI");
+        valuesMap.put("cloud_name", "dswwzexhq");
+        valuesMap.put("api_key", "962968498882681");
+        valuesMap.put("api_secret", "xbW1T2RbBhKK-qLOi8Ov4yF274o");
         cloudinary = new Cloudinary(valuesMap);
     }
 

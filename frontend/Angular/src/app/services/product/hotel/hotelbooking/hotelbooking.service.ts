@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { CreateHotelBookingRequest } from '../../../../models/request/product/hotel/hotel-booking/create-hotelbooking-request';
 import { map, Observable } from 'rxjs';
 import { Apiresponse } from '../../../../models/response/apiresponse';
@@ -8,6 +8,7 @@ import { UpdateHotelBookingRequest } from '../../../../models/request/product/ho
 import { UpdateHotelBookingResponse } from '../../../../models/response/product/hotel/hotel-booking/update-hotelbooking-response';
 import { GetHotelBookingResponse } from '../../../../models/response/product/hotel/hotel-booking/get-hotelbooking-response';
 import { environment } from '../../../environment';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class HotelbookingService {
 
   private baseUrl = `${environment.apiBaseUrl}/api/v1/hotel-booking`;
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient,@Inject(PLATFORM_ID) private platformId: Object) { }
 
   createBooking(formData: FormData): Observable<CreateHotelBookingResponse> {
     const headers = this.createAuthorizationHeader();
@@ -59,12 +60,13 @@ export class HotelbookingService {
 
 
   private createAuthorizationHeader(): HttpHeaders {
-    const token = localStorage.getItem('token');
+    let token = null;
+
+    if (isPlatformBrowser(this.platformId)) {
+      token = localStorage.getItem('token');
+    }
     if (token) {
       return new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    }
-    else {
-      console.log('Token not found in local store');
     }
     return new HttpHeaders();
   }
