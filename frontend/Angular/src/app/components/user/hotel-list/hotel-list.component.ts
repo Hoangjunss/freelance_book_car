@@ -39,9 +39,8 @@ export class HotelListComponent {
   getHotelByLocation(location: string) {
     this.hotelService.getHotelByLocation(location).subscribe(response => {
       
-      if (response) {
+      if (response && response.length > 0 && response.some(hotel => hotel.active)) {
         this.locations = response;
-      } else {
       }
     }, error => {
       console.log("Error:", error);

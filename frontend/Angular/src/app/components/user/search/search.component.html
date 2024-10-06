@@ -50,22 +50,6 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ hotel.name }}</h5>
                     <p class="card-text">Giá mỗi đêm: {{ hotel.pricePerNight }}đ</p>
-                    <div class="d-flex align-items-center">
-                        <p class="card-text me-2" style="margin-bottom: 0;">Đánh giá: {{ hotel.rating }}</p>
-                        <div>
-                            <ng-container
-                                *ngFor="let star of [].constructor(getStars(hotel.rating || 0).full); let i = index">
-                                <i class="bi bi-star-fill text-warning"></i>
-                            </ng-container>
-                            <ng-container *ngIf="getStars(hotel.rating || 0).half">
-                                <i class="bi bi-star-half text-warning"></i>
-                            </ng-container>
-                            <ng-container
-                                *ngFor="let star of [].constructor(5 - getStars(hotel.rating || 0).full - (getStars(hotel.rating || 0).half ? 1 : 0)); let i = index">
-                                <i class="bi bi-star text-secondary"></i>
-                            </ng-container>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -101,22 +85,6 @@
                 <div class="card-body">
                     <h5 class="card-title">{{ activity.name }}</h5>
                     <p class="card-text">{{ activity.description }}</p>
-                    <div class="d-flex align-items-center">
-                        <p class="card-text me-2" style="margin-bottom: 0;">Đánh giá: {{ activity.rating }}</p>
-                        <div>
-                            <ng-container
-                                *ngFor="let star of [].constructor(getStars(activity.rating || 0).full); let i = index">
-                                <i class="bi bi-star-fill text-warning"></i>
-                            </ng-container>
-                            <ng-container *ngIf="getStars(activity.rating || 0).half">
-                                <i class="bi bi-star-half text-warning"></i>
-                            </ng-container>
-                            <ng-container
-                                *ngFor="let star of [].constructor(5 - getStars(activity.rating || 0).full - (getStars(activity.rating || 0).half ? 1 : 0)); let i = index">
-                                <i class="bi bi-star text-secondary"></i>
-                            </ng-container>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

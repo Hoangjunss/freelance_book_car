@@ -7,6 +7,7 @@ import { GetTourResponse } from '../../../models/response/product/tour/tour/get-
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from '../../../services/auth.interceptor';
 import { UserService } from '../../../services/user/user.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-location-list',
@@ -24,7 +25,9 @@ export class LocationListComponent implements OnInit {
   location: string | null = null;
   locations: GetTourResponse [] = [];
 
-  constructor(private route: ActivatedRoute, private router:Router,private tourService : TourService) { }
+  constructor(private route: ActivatedRoute, private router:Router,private tourService : TourService,private title:Title) { 
+    this.title.setTitle("Danh sách địa điểm");
+  }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
@@ -38,7 +41,7 @@ export class LocationListComponent implements OnInit {
   getLocationsForSelectedLocation(location: string) {
     this.tourService.getTourByCategory(location).subscribe({
       next: (response) => {
-        if (response) {
+        if (response && response.length > 0 && response.some(location => location.isActive)) {
           this.locations = response;
         } else {
         }
