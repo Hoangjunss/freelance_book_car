@@ -11,6 +11,7 @@ import com.freelance.bookCar.models.booking.Booking;
 import com.freelance.bookCar.models.booking.BookingDetail;
 import com.freelance.bookCar.models.invoice.Invoice;
 import com.freelance.bookCar.models.invoice.InvoiceDetail;
+import com.freelance.bookCar.respository.invoice.InvoiceDetailRepository;
 import com.freelance.bookCar.respository.invoice.InvoiceResponsitory;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -29,6 +30,8 @@ import java.util.stream.Collectors;
 public class InvoiceServiceImpl implements InvoiceService{
     @Autowired
     private InvoiceResponsitory invoiceRepository;
+    @Autowired
+    private InvoiceDetailRepository invoiceDetailRepository;
     @Autowired
     private ModelMapper modelMapper;
     @Override
@@ -105,9 +108,6 @@ public class InvoiceServiceImpl implements InvoiceService{
         if(booking.getIdUser() == null){
             throw new CustomException(Error.BOOKING_INVALID_ID_USER);
         }
-        if(booking.getIdPayment() == null){
-            throw new CustomException(Error.BOOKING_INVALID_ID_PAYMENT);
-        }
 
         Invoice invoice = Invoice.builder()
                 .id(booking.getId()) // Có thể tạo ID mới nếu cần
@@ -124,8 +124,8 @@ public class InvoiceServiceImpl implements InvoiceService{
                 .collect(Collectors.toList());
 
         // Thêm logic lưu invoice và invoiceDetails vào DB nếu cần
-        // invoiceRepository.save(invoice);
-        // invoiceDetailRepository.saveAll(invoiceDetails);
+        invoiceRepository.save(invoice);
+        invoiceDetailRepository.saveAll(invoiceDetails);
 
         return invoice; // Trả về invoice (hoặc invoice và danh sách invoiceDetails nếu cần)
     }

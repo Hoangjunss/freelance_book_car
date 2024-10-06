@@ -60,7 +60,7 @@ export class StatisticsComponent implements OnInit{
   ngOnInit(): void {
     this.years = this.generateYears(2020, new Date().getFullYear());
     this.getStatisticMonthYear(this.currentMonth, this.currentYear);
-    this.getStatisticYear(2023);
+    this.getStatisticYear(2024);
     
   }
 
