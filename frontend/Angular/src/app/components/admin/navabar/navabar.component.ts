@@ -18,7 +18,9 @@ export class NavabarComponent {
     this.isSidebarOpen = !this.isSidebarOpen;
   }
 
-  constructor( @Inject(PLATFORM_ID) private platformId: Object, private router: Router){}
+  constructor( @Inject(PLATFORM_ID) private platformId: Object, private router: Router){
+    this.localstore();
+  }
 
   localstore(){
     if (isPlatformBrowser(this.platformId)) {
