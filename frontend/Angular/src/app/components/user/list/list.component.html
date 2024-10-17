@@ -1,0 +1,50 @@
+<div class="header-img">
+    <div class="container">
+        <h1 class="pt-5 title">
+            <span class="title-part">{{ titleParts[0] }}</span>
+            <span class="title-highlight">{{ titleParts[1] }}</span>
+        </h1>
+    </div>
+</div>
+
+<div class="nav-buttons text-center">
+    <div class="row">
+        <div *ngFor="let button of navButtons" class="col-6 col-md-3">
+            <div class="nav-button" (click)="navigateToLocation(button)">{{ button }}</div>
+        </div>
+    </div>
+</div>
+
+<!-- Hiển thị danh sách các tour từ location hiện tại -->
+<div class="container" *ngIf="groupedTours[location]">
+    <div class="category-section">
+        <div class="category-title">{{ location }}</div>
+        <div class="row">
+            <div *ngFor="let tour of groupedTours[location]" class="col-md-4 col-lg-3">
+                <div class="card">
+                    <img [src]="tour.image" class="card-img-top" alt="{{ tour.name }}">
+                    <div class="card-body">
+                        <p class="card-text"><strong>{{ tour.startLocation }}</strong>  - <strong>{{ tour.endLocation }}</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Hiển thị tất cả các startLocation còn lại -->
+<div class="container" *ngFor="let startLocation of getAllTourKeys()">
+    <div *ngIf="startLocation !== location" class="category-section">
+        <div class="category-title">{{ startLocation }}</div>
+        <div class="row">
+            <div *ngFor="let tour of groupedTours[startLocation]" class="col-md-4 col-lg-3">
+                <div class="card">
+                    <img [src]="tour.image" class="card-img-top" alt="{{ tour.name }}">
+                    <div class="card-body">
+                        <p class="card-text"><strong>{{ tour.startLocation }}</strong>  - <strong>{{ tour.endLocation }}</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
