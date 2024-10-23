@@ -15,6 +15,7 @@ import { FormsModule } from '@angular/forms';
 import { UpdateBookingResponse } from '../../../models/response/booking/update-booking-response';
 import { UpdateBookingHotelResponse } from '../../../models/response/booking/update-hotel-booking-response';
 import { NotificationComponent } from '../../notification/notification.component';
+import { GetHotelResponse } from '../../../models/response/product/hotel/hotel/get-hotel-response';
 
 @Component({
   selector: 'app-hotel-detail',
@@ -32,6 +33,7 @@ export class HotelDetailComponent {
   isExpanded = false;
   locationId: string | null = null;
   locations?: GetHotelDetailResponse;
+  suggestedTours: GetHotelResponse[];
   startDate: Date | null = null;
   endDate: Date | null = null;
   totalPrice: number = 0;
@@ -39,6 +41,7 @@ export class HotelDetailComponent {
   listHotel: GetHotelBookingResponse[] = [];
   selectedTourSchedule?: number | null = null;
   selectedPrice?: number | null = null;
+  showFullText: boolean = false;
 
   updateBookingResponse: UpdateBookingHotelResponse = new UpdateBookingHotelResponse();
 
@@ -248,6 +251,22 @@ export class HotelDetailComponent {
       this.selectedPrice = null;
     }
 
+  }
+
+  getHotelByCategory(location:string){
+    this.hotelService.getHotelByLocation(location).subscribe({
+      next: (response) =>{
+        if(response &&  response.length > 0 && response.some(location => location)){
+          this.suggestedTours[0]= response[0];
+          this.suggestedTours[1]= response[1];
+          this.suggestedTours[2]= response[2];
+        }
+      }
+    })
+  }
+
+  showTooltip() {
+    this.showFullText = true;
   }
 
 }

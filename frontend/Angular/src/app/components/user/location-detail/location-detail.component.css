@@ -723,6 +723,10 @@ p{
         margin-top: 80px !important;
     }
 
+    .carousel-inner{
+        display: none !important;
+    }
+
     .info{
         display: flex !important;
         flex-direction: column !important;

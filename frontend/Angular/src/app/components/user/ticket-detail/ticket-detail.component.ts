@@ -1,3 +1,4 @@
+import { TourComponent } from './../../admin/tour-manager/tour/tour.component';
 import { CommonModule } from '@angular/common';
 import { Component, Input, ViewChild } from '@angular/core';
 import { GetTourismDetailResponse } from '../../../models/response/product/ticket/tourism/get-tourism-detail-response';
@@ -13,6 +14,7 @@ import { BookingService } from '../../../services/booking/booking.service';
 import { AddBookingTourismRequest } from '../../../models/request/booking/add-booking-tourism-request';
 import { Title } from '@angular/platform-browser';
 import { NotificationComponent } from '../../notification/notification.component';
+import { GetTourismResponse } from '../../../models/response/product/ticket/tourism/get-tourism-response';
 
 @Component({
   selector: 'app-ticket-detail',
@@ -30,11 +32,15 @@ export class TicketDetailComponent {
   @Input() location: string | null = null;
   isExpanded = false;
   locationId: string | null = null;
-  locations?: GetTourismDetailResponse;
+  locations: GetTourismDetailResponse = new GetTourismDetailResponse();
+  suggestedTours: GetTourismResponse[] = [];
   getTicketResponse?: GetTicketResponse[] = [];
   availableTourSchedules: GetTicketResponse[] = [];
   selectedTourSchedule: number | null = null;
   selectedPrice: number | null = null;
+  showFullText = false;
+
+
 
   @ViewChild(NotificationComponent) notificationComponent!: NotificationComponent;
 
@@ -79,6 +85,20 @@ export class TicketDetailComponent {
     // Logic để kiểm tra trạng thái dịch vụ với selectedTourSchedule
   }
 
+  getTourismByLocation(location: string){
+    this.tourismService.getTourismByCategory(location).subscribe({
+      next: (data) => {
+        if(data){
+          this.suggestedTours[0] = data[0]
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching tourism data:', err);
+      }
+    })
+  }
+  
+
   getTicketByIdTourism(id: number) {
     this.ticketService.getTicketByIdTourism(id).subscribe({
       next: (response) => {
@@ -110,6 +130,7 @@ export class TicketDetailComponent {
     this.tourismService.getTourismDetailById(id).subscribe(response => {
       if (response) {
         this.locations = response;
+        this.getTourismByLocation(this.locations.location);
       } else {
         console.log("Thất bại");
       }
@@ -172,6 +193,10 @@ export class TicketDetailComponent {
         console.log("Error:", error);
       }
     });
+  }
+
+  showTooltip() {
+    this.showFullText = true;
   }
 
 }
