@@ -63,7 +63,10 @@ public class TourServiceImpl implements TourService {
                 .endLocation(createTourRequest.getEndLocation())
                 .name(createTourRequest.getName())
                 .isActive(createTourRequest.getIsActive())
-                .image(imageService.saveImage(createTourRequest.getImage()))
+                .imageFirst(imageService.saveImage(createTourRequest.getImageFirst()))
+                .imageSecond(imageService.saveImage(createTourRequest.getImageSecond()))
+                .imageThird(imageService.saveImage(createTourRequest.getImageThird()))
+                .imageMap(imageService.saveImage(createTourRequest.getImageMap()))
                 .build();
 
         try {
@@ -101,8 +104,17 @@ public class TourServiceImpl implements TourService {
         if(updateTourRequest.getIsActive()!=null){
             tour.setIsActive(updateTourRequest.getIsActive());
         }
-        if(updateTourRequest.getImage()!=null){
-            tour.setImage(imageService.saveImage(updateTourRequest.getImage()));
+        if(updateTourRequest.getImageFirst()!=null){
+            tour.setImageFirst(imageService.saveImage(updateTourRequest.getImageFirst()));
+        }
+        if(updateTourRequest.getImageSecond()!=null){
+            tour.setImageSecond(imageService.saveImage(updateTourRequest.getImageSecond()));
+        }
+        if(updateTourRequest.getImageThird()!=null){
+            tour.setImageThird(imageService.saveImage(updateTourRequest.getImageThird()));
+        }
+        if(updateTourRequest.getImageMap()!=null){
+            tour.setImageMap(imageService.saveImage(updateTourRequest.getImageMap()));
         }
 
         try {

@@ -17,5 +17,8 @@ public class CreateTourRequest {
     private String startLocation;
     private String endLocation;
     private Boolean isActive;
-    private MultipartFile image;
+    private MultipartFile imageFirst;
+    private MultipartFile imageSecond;
+    private MultipartFile imageThird;
+    private MultipartFile imageMap;
 }

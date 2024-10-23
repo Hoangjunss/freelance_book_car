@@ -16,5 +16,9 @@ public class GetTourResponse {
     private String startLocation;
     private String endLocation;
     private Boolean isActive;
-    private String image;
+
+    private String imageFirst;
+    private String imageSecond;
+    private String imageThird;
+    private String imageMap;
 }
