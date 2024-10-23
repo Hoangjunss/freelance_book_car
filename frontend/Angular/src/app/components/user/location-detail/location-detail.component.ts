@@ -30,10 +30,12 @@ export class LocationDetailComponent {
   isExpanded = false;
   locationId: string | null = null;
   locations?: GetTourResponse;
+  suggestedTours: any[] = [];
   getTourScheduleResponse: GetTourScheduleResponse[] = [];
   availableTourSchedules: GetTourScheduleResponse[] = [];
   selectedTourSchedule: number | null = null;
   selectedPrice: number | null = null;
+  showFullText: boolean = false;
 
   @ViewChild(NotificationComponent) notificationComponent!: NotificationComponent;
 
@@ -123,7 +125,19 @@ export class LocationDetailComponent {
     }
   }
 
-
+  getLocationsForSelectedLocation(location: string) {
+    this.tourService.getTourByCategory(location).subscribe({
+      next: (response) => {
+        if (response && response.length > 0 && response.some(location => location.isActive)) {
+          this.suggestedTours = response;
+        } else {
+        }
+      },
+      error(err) {
+        console.log('Error fetching locations:',err);
+      },
+    });
+  }
 
 
   addBookingTour(locationId: string | null) {
@@ -190,5 +204,8 @@ export class LocationDetailComponent {
   toggleContent(event: Event) {
     event.preventDefault();
     this.isExpanded = !this.isExpanded;
+  }
+  showTooltip() {
+    this.showFullText = true;
   }
 }

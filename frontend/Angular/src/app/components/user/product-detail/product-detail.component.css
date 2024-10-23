@@ -1,0 +1,176 @@
+/* General Styling */
+.hero-section {
+    background-image: url('http://res.cloudinary.com/dgts7tmnb/image/upload/v1727963818/csdch7mi171qddwizcxq.png');
+    background-size: cover;
+    background-position: center;
+    height: 400px;
+    display: flex;
+    padding: 20px;
+    align-items: center;
+    color: #fff;
+}
+
+.description-box {
+    max-width: 500px;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-left: 20px;
+    color: #fff;
+}
+
+.description-box p i {
+    color: #fff;
+    margin-right: 8px;
+    font-size: 1.2em;
+    vertical-align: middle;
+}
+
+.description-box a {
+    color: #fff;
+    cursor: pointer;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+/* Tooltip styling */
+.tooltip-box {
+    position: relative;
+    display: inline-block;
+    margin-left: 100px;
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    width: 100%;
+    z-index: 1000;
+    color: #000;
+    margin-top: -80px;
+}
+
+/* Tooltip Pointer (Triangle) */
+.tooltip-box::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -15px;
+    margin-top: -5px;
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent rgba(255, 255, 255, 0.95) transparent transparent;
+    margin-top: -28px;
+}
+
+.tooltip-content {
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.carousel {
+    margin-right: 5%;
+    width: 43%;
+}
+
+.carousel-indicators button {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.6);
+    border: none;
+}
+
+.carousel-indicators .active {
+    background-color: #fff;
+}
+
+.carousel-item img {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+}
+
+.card img {
+    height: 200px;
+    object-fit: cover;
+}
+
+.faq-section .accordion-button {
+    font-size: 18px;
+}
+
+/* Filter Section */
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.375rem 1.25rem;
+    font-size: 16px;
+    border: 1px solid #ced4da;
+    text-align: center;
+    color: #000;
+}
+
+.btn i {
+    margin-left: 5px;
+}
+
+.rounded-pill {
+    border-radius: 50px;
+}
+
+
+/* Cards Section */
+.card {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border: none;
+    border-radius: 10px;
+}
+
+.card-body {
+    text-align: center;
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.card-text {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.badge {
+    font-size: 14px;
+}
+
+/* Reviews Section */
+.card.p-3 {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.map-section {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.map-section img {
+    width: 100%;
+    max-height: 500px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* Journey Image Gallery Section */
+.journey-image {
+    margin-bottom: 20px;
+}
+
+.journey-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    object-fit: cover;
+}

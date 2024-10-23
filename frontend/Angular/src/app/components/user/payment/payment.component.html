@@ -27,11 +27,11 @@
         <div class="row">
             <!-- Order Details Form -->
             <div class="col-lg-8 order-left">
-                <div class="alert alert-success"
+                <!-- <div class="alert alert-success"
                     style="display: flex;justify-content: space-between;padding: 15px 15px 0 15px;">
                     <h5 class="mb-3">Điền thông tin</h5>
                     <span>Xem chi tiết <i class="bi bi-chevron-down"></i></span>
-                </div>
+                </div> -->
 
                 <div class="d-flex justify-content-between align-items-center info-check">
                     <h5 style="color: #f89c1c;">Xác nhận để thanh toán</h5>
@@ -45,21 +45,12 @@
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="paymentMethod" id="momo" checked>
                         <label class="form-check-label" for="momo">
-                            <strong>MoMo E-Wallet</strong>
+                            <strong>VNPAY</strong>
                             <img src="https://upload.wikimedia.org/wikipedia/vi/f/fe/MoMo_Logo.png" alt="MoMo Icon">
                         </label>
                     </div>
                     <hr style="border: 2px solid #ddd;">
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="paymentMethod" id="atm">
-                        <label class="form-check-label" for="atm">
-                            <span><strong>ATM by MoMo</strong></span>
-                            <img src="https://upload.wikimedia.org/wikipedia/vi/f/fe/MoMo_Logo.png" alt="MoMo Icon">
-                        </label>
-                        <span class="d-block">Hoàn tiền không áp dụng cho lựa chọn thanh toán của bạn</span>
-                    </div>
-                    <hr style="border: 2px solid #ddd;">
-                    <div class="form-check">
+                    <!-- <div class="form-check">
                         <input class="form-check-input" type="radio" name="paymentMethod" id="paypal">
                         <label class="form-check-label" for="paypal">
                             <span><strong>PayPal</strong></span>
@@ -67,12 +58,12 @@
                         </label>
                         <span class="d-block">Có thể phát sinh thêm phí nếu thanh toán bằng
                             PayPal.</span>
-                    </div>
-                    <hr style="border: 2px solid #ddd;">
+                    </div> 
+                    <hr style="border: 2px solid #ddd;"> -->
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="paymentMethod" id="creditCard">
                         <label class="form-check-label" for="creditCard">
-                            <strong>Thẻ Credit/Debit</strong>
+                            <strong>PayPal</strong>
                             <span class="card-icons">
                                 <img src="https://img.icons8.com/color/48/000000/visa.png" alt="Visa">
                                 <img src="https://img.icons8.com/color/48/000000/mastercard.png" alt="MasterCard">
@@ -130,7 +121,7 @@
                                 <button class="btn submit-btn">Thanh toán ngay</button>
                             </div>
                             <div class="price-wrapper">
-                                <p class="price-text">₫ 631,516</p>
+                                <p class="price-text">{{ totalPrice | number : '1.0-0' }} ₫</p>
                             </div>
                             
                         </div>
@@ -145,24 +136,18 @@
 
             <!-- Order Summary -->
             <div class="col-lg-4 order-right">
-                <div class="col-md-10">
+                <div class="col-md-10" *ngFor="let product of products">
                     <div class="card-custom">
-                        <h5 class="card-title">Thuê Xe Đi Hội An hoặc Vinwonders Nam Hội An từ Đà Nẵng</h5>
-                        <div class="card-content mb-3 mt-4">Khứ hồi: Đà Nẵng - Hội An</div>
+                        <h5 class="card-title">{{product.name}}</h5>
                         <hr style="border: 1px solid #ddd;">
-
-                        <div class="d-flex justify-content-between mb-2">
-                            <span class="card-content">Ngày</span>
-                            <span>30/6/2024</span>
-                        </div>
                         <div class="d-flex justify-content-between mb-2">
                             <span class="card-content">Đơn vị</span>
-                            <span>Per Sedan (Group of 3) x 1</span>
+                            <span>{{product.quantity}}</span>
                         </div>
                         <hr style="border: 1px solid #ddd;">
                         <div class="d-flex justify-content-between">
                             <span class="text-total">Tổng cộng</span>
-                            <span class="total-amount">₫ 631,516</span>
+                            <span class="total-amount">{{product.totalPrice | number : '1.0-0' }} ₫</span>
                         </div>
                     </div>
                 </div>
@@ -172,17 +157,18 @@
                     <div class="card-custom">
                         <div class="d-flex justify-content-between mb-2">
                             <span class="text-total">Tổng cộng</span>
-                            <span class="total-amount">₫ 631,516</span>
+                            <span class="total-amount">{{ totalPrice | number : '1.0-0' }} ₫</span>
                         </div>
                         <div class="d-flex justify-content-between">
                             <span class="card-content">Số tiền thanh toán</span>
-                            <span class="total-amount" style="color: #f89c1c;font-size: 1.2rem;font-weight: 600;">₫
-                                631,516</span>
+                            <span class="total-amount" style="color: #f89c1c; font-size: 1.2rem; font-weight: 600;">
+                                {{ newTotalPrice | number : '1.0-0' }} ₫
+                            </span>
                         </div>
                     </div>
 
                     <!-- Hộp Credit -->
-                    <div class="credit-box mt-3">
+                    <!-- <div class="credit-box mt-3">
                         <div class="d-flex justify-content-between mb-2">
                             <span class="font-weight-bold">Credit</span>
                         </div>
@@ -193,7 +179,7 @@
                         <div class="card-content">
                             Sử dụng credit để tiết kiệm cho đơn hàng tiếp theo!
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

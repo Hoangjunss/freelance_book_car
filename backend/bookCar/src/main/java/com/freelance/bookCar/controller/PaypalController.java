@@ -8,15 +8,15 @@ import org.springframework.web.bind.annotation.*;
 import com.paypal.api.payments.Links;
 import com.paypal.api.payments.Payment;
 import com.paypal.base.rest.PayPalRESTException;
-@RequestMapping("/pay")
+@RequestMapping("api/v1/paypal")
 @Controller
 public class PaypalController {
 
     @Autowired
     PaypalService service;
 
-    public static final String SUCCESS_URL = "pay/success";
-    public static final String CANCEL_URL = "pay/cancel";
+    public static final String SUCCESS_URL = "/pay/success";
+    public static final String CANCEL_URL = "/pay/cancel";
 
     @GetMapping("/")
     public String home() {

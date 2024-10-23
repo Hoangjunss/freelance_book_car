@@ -248,7 +248,9 @@ export class BookingComponent implements OnInit {
         if (response) {
           console.log(response);
           this.getBookingDetailResponse = response;
+          console.log(this.getBookingDetailResponse);
           this.products = this.getBookingDetailResponse.map(detail => ({
+            
             idBookingDetail: detail.id,
             id: detail.idTour || detail.idHotel || detail.idTicket,
             name: detail.idTour ? 'Tour' : detail.idHotel ? 'Khách sạn' : 'Vé',
@@ -256,7 +258,9 @@ export class BookingComponent implements OnInit {
             quantity: detail.quantity,
             image: 'https://via.placeholder.com/100',
             type: detail.idTour ? 'tour' : detail.idHotel ? 'hotel' : 'ticket'
-          }));
+          }
+        ));
+        console.log(this.products)
           if (this.products.some(p => p.type === 'tour')) {
             this.products.filter(p => p.type === 'tour').forEach(p => {
               //this.getTourDetail(p.id);
@@ -382,7 +386,10 @@ export class BookingComponent implements OnInit {
     this.bookingService.order(formData).subscribe({
       next: (response) => {
         if (response) {
-          this.updateTypeBooking(parseInt(idBooking));
+          this.notificationComponent.showNotification('info', 'Thông tin của bạn đã được lưu. Bạn sẽ được chuyển đến trang thanh toán để hoàn tất giao dịch.');
+          setTimeout(() => {
+            this.router.navigate(['/payment']);
+          }, 3500);
         }
       },
       error: (error) => {

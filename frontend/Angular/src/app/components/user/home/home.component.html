@@ -13,7 +13,7 @@
                 <i [class]="tab.icon"></i>
               </a>
       
-              <!-- menu địa điểm cho cả hai tab -->
+              <!-- menu địa điểm cho cả hai tab  -->
               <div class="dropdown-menu" *ngIf="isDropdownVisible[tab.label] && (tab.label === 'Thuê Xe' || tab.label === 'Đặt Vé' || tab.label === 'Thuê Khách Sạn')">
                 <ul class="location-list">
                   <li *ngFor="let location of locations" (click)="selectLocation(location)">

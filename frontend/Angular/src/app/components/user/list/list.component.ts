@@ -61,11 +61,14 @@ export class ListComponent implements OnInit {
   }
 
   getAllTourKeys(): string[] {
-    console.log(Object.keys(this.groupedTours));
     return Object.keys(this.groupedTours);
   }
 
   navigateToLocation(location: string) {
     this.router.navigate(['/list', location]);
+  }
+  goToLocationDetails(locationId?: number) {
+    const path = `/product-details/${locationId}`;
+    this.router.navigate([path]);
   }
 }
