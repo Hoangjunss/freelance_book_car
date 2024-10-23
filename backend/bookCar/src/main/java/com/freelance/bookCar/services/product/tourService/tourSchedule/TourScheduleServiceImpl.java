@@ -39,9 +39,6 @@ public class TourScheduleServiceImpl implements TourScheduleService  {
         if (createTourScheduleRequest.getIdTour() == null) {
             throw new CustomException(Error.TOUR_SCHEDULE_MISSING_TOUR_ID);
         }
-        if (createTourScheduleRequest.getQuantity() == null || createTourScheduleRequest.getQuantity() <= 0) {
-            throw new CustomException(Error.TOUR_SCHEDULE_INVALID_QUANTITY);
-        }
         if (createTourScheduleRequest.getPriceTour() == null || createTourScheduleRequest.getPriceTour() <= 0) {
             throw new CustomException(Error.TOUR_SCHEDULE_INVALID_PRICE);
         }

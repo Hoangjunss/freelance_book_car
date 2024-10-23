@@ -10,6 +10,7 @@ import { UpdateTourScheduleRequest } from '../../../../models/request/product/to
 import { CreateTourScheduleResponse } from '../../../../models/response/product/tour/tour-schedule/create-tour-schedule-response';
 import { UpdateTourScheduleResponse } from '../../../../models/response/product/tour/tour-schedule/update-tour-schedule-response';
 import { NotificationComponent } from '../../../notification/notification.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-tour-schedule',
@@ -46,13 +47,14 @@ export class TourScheduleComponent implements OnInit {
 
   @ViewChild(NotificationComponent) notificationComponent!: NotificationComponent;
 
-  constructor(private tourService:TourService, private tourScheduleService: TourScheduleService){}
+  constructor(private tourService:TourService, private tourScheduleService: TourScheduleService, private title: Title){
+    this.title.setTitle('Quản lý lịch tour')
+  }
 
 
   ngOnInit(): void {
     this.getAllTour();
     this.getAllTourSchedule();
-    this.updateDisplayedPages();
   }
 
   getAllTour(){
@@ -60,7 +62,8 @@ export class TourScheduleComponent implements OnInit {
       next: (data)=> {
           if(data){
             this.getTourResponse = data;
-            this.filterTour = data;
+            this.filterTour = this.getTourResponse ;
+            console.log(this.filterTour);
           }
       },
     })
@@ -104,6 +107,7 @@ export class TourScheduleComponent implements OnInit {
 
   currentPage = 1;
   itemsPerPage = 4;
+
 
 
   get paginatedTours() {
@@ -154,8 +158,8 @@ export class TourScheduleComponent implements OnInit {
         return;
     }
 
-    if(this.createTourScheduleRequest.priceTour <0 || this.createTourScheduleRequest.quantity == null){
-      this.notificationComponent.showNotification('error', 'Vui lòng điền đầy đủ thông tin.');
+    if(this.createTourScheduleRequest.priceTour <0 ){
+      this.notificationComponent.showNotification('error', 'Vui lòng điền giá hợp lệ.');
         return;
     }
     let isSuccess = false;
@@ -221,6 +225,12 @@ export class TourScheduleComponent implements OnInit {
 
   saveUpdate() {
     this.updateTourScheduleRequest;
+    const currentDate = new Date(); // Ngày hiện tại
+    const timeStartTour = new Date(this.updateTourScheduleRequest.timeStartTour);
+    if (timeStartTour < currentDate) {
+      this.notificationComponent.showNotification('error', 'Thời gian bắt đầu tour không được nhỏ hơn ngày hiện tại.');
+      return;
+    }
     if(this.updateTourScheduleRequest){
       const formData = new FormData();
       formData.append('id', this.updateTourScheduleRequest.id?.toString() ?? '');
@@ -308,7 +318,7 @@ updatePagedTours(): void {
   this.pagedTours = this.getTourScheduleResponse.slice(start, end);
   this.totalPages = Math.ceil(this.getTourScheduleResponse.length / this.pageSize);
   this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
-} 
+}
 
 
   updateDisplayedPages(): void {

@@ -7,6 +7,7 @@ import { GetPageResponse } from '../../../../models/response/home/get-page-respo
 import { HomeService } from '../../../../services/home/home.service';
 import { CreatePageRequest } from '../../../../models/request/home/create-page-request';
 import { NotificationComponent } from '../../../notification/notification.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-page-home',
@@ -37,7 +38,9 @@ export class PageHomeComponent implements OnInit {
   detailImagePreviews: string[] = [];
 
   @ViewChild(NotificationComponent) notificationComponent!: NotificationComponent;
-  constructor(private homeService: HomeService) {}
+  constructor(private homeService: HomeService, private title:Title) {
+    this.title.setTitle('Quản lý trang web')
+  }
 
   ngOnInit(): void {
     this.fetchHomeData();

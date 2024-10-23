@@ -1,5 +1,5 @@
 <h2 class="text-center m-2">Voucher Manager</h2>
-
+<app-notification></app-notification>
 <nav class="d-flex navbar navbar-expand-lg navbar-light bg-light navbackground">
   <div class="form-inline my-2 my-lg-0 mr-auto">
     <input [(ngModel)]="searchQuery" name="searchQuery" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
@@ -19,7 +19,7 @@
           <th>#</th>
           <th>Name</th>
           <th>End Date</th>
-          <th>DiscountRate</th>
+          <th>DiscountRate(%)</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -121,7 +121,7 @@
               <div class="form-group">
                 <label for="code">Code</label>
                 <input type="text" class="form-control" id="code" [(ngModel)]="updateVoucherRequest.name" name="code"
-                  placeholder="Enter voucher code" required #codeInput="ngModel" />
+                  placeholder="Enter voucher code" required #codeInput="ngModel"  disabled/>
                 <div *ngIf="codeInput.invalid && codeInput.touched" class="text-danger">
                   Voucher code is required.
                 </div>
@@ -137,12 +137,9 @@
               </div>
 
               <div class="form-group">
-                <label for="expiryDate">Expiry Date</label>
-                <input type="date" class="form-control" id="expiryDate" [(ngModel)]="updateVoucherRequest.endDate"
-                  name="expiryDate" required #expiryDateInput="ngModel" />
-                <div *ngIf="expiryDateInput.invalid && expiryDateInput.touched" class="text-danger">
-                  Expiry date is required.
-                </div>
+                <label for="endDate">End Date: {{updateVoucherRequest.endDate | date}}</label>
+                <input type="date" class="form-control" id="endDate"  [(ngModel)]="updateVoucherRequest.endDate"
+                  name="endDate" required />
               </div>
             </div>
           </div>

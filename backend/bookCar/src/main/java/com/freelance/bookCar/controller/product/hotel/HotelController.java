@@ -34,6 +34,7 @@ public class HotelController {
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping()
     public ResponseEntity<ApiResponse<UpdateHotelResponse>> update(@ModelAttribute @Valid UpdateHotelRequest updateHotelRequest) {
+        log.info("37: {}", updateHotelRequest.toString());
             UpdateHotelResponse response = hotelService.updateHotel(updateHotelRequest);
             return ResponseEntity.ok(new ApiResponse<>(true, "Hotel updated successfully", response));
     }

@@ -454,7 +454,7 @@ export class BookingComponent implements OnInit {
       next: (data) => {
         console.log('Voucher Data:', data);
         if (data) {
-          if (data.discountRate != null) {
+          if (data.discountRate != null && data.endDate >= new Date()) {
             // Tính discountAmount: discountRate * totalPrice
             this.discountAmount = (data.discountRate / 100) * this.totalPrice;
             this.newTotalPrice = this.totalPrice - this.discountAmount;
@@ -464,7 +464,7 @@ export class BookingComponent implements OnInit {
             console.log('New Total Price:', this.totalPrice);
             this.notificationComponent.showNotification('success', 'Áp dụng mã giảm giá thành công');
           }else{
-            this.notificationComponent.showNotification('error', 'Mã giảm giá không hợp lệ');
+            this.notificationComponent.showNotification('error', 'Mã giảm giá không hợp lệ hoặc đã quá hạn');
             this.getVoucher = new GetVoucherResponse();
             this.newTotalPrice = this.totalPrice;
             this.discountAmount = 0;

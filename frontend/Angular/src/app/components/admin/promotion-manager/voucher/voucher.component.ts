@@ -9,11 +9,12 @@ import { UpdateVoucherRequest } from '../../../../models/request/product/voucher
 import { UpdateVoucherResponse } from '../../../../models/response/product/voucher/voucher/update-voucher-response';
 import { VoucherService } from '../../../../services/product/voucher/voucher/voucher.service';
 import { NotificationComponent } from '../../../notification/notification.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-voucher',
   standalone: true,
-  imports: [CommonModule, FormsModule, NoDataFoundComponent],
+  imports: [CommonModule, FormsModule, NoDataFoundComponent, NotificationComponent],
   templateUrl: './voucher.component.html',
   styleUrls: ['./voucher.component.css']
 })
@@ -39,7 +40,9 @@ export class VoucherComponent implements OnInit {
 
   searchQuery: string='';
   @ViewChild(NotificationComponent) notificationComponent!: NotificationComponent;
-  constructor(private voucherService: VoucherService) {}
+  constructor(private voucherService: VoucherService, private title:Title) {
+    this.title.setTitle('Quản lý voucher')
+  }
 
   ngOnInit(): void {
     this.getAllVouchers();
@@ -88,6 +91,7 @@ export class VoucherComponent implements OnInit {
   }
 
   displayFormUpdate(voucher: GetVoucherResponse) {
+    console.log(voucher);
     this.updateVoucherRequest = {
       id: voucher.id,
       name: voucher.name, // Giả sử có trường name trong voucher
@@ -95,10 +99,18 @@ export class VoucherComponent implements OnInit {
       endDate: voucher.endDate, // Giả sử có trường endDate
       isUse: voucher.isUse // Giả sử có trường isUse
     };
+    console.log(this.updateVoucherRequest);
     this.isEditMode = true;
     this.isDisplayUpdate = true;
   }
 
+  convertToDateOnly(dateString: string): Date {
+    if (dateString) {
+      return new Date(dateString.split('T')[0]); // Tạo đối tượng Date từ chuỗi ngày
+    }
+    return new Date(); // Trả về ngày hiện tại nếu không có dateString
+  }
+  
   closeFormUpdate() {
     this.isEditMode = false;
     this.isDisplayUpdate = false;
@@ -109,10 +121,25 @@ export class VoucherComponent implements OnInit {
       this.notificationComponent.showNotification('error', 'Vui lòng điền đầy đủ thông tin bắt buộc: Tên, Tỷ lệ giảm giá, Ngày kết thúc');
       return;
     }
+
+    if(this.createVoucherRequest?.discountRate<0 || this.createVoucherRequest?.discountRate>100){
+      this.notificationComponent.showNotification('error', 'Tỉ lệ giảm giá không dưới 0 và không trên 100');
+      return;
+    }
+
     const formData = new FormData();
     formData.append('isUse', this.createVoucherRequest.isUse?.toString() ?? '');
     formData.append('name', this.createVoucherRequest.name ?? '');
     formData.append('discountRate', this.createVoucherRequest.discountRate?.toString() ?? '');
+
+    const currentDate = new Date(); // Ngày hiện tại
+    const timeStartTour = new Date(this.createVoucherRequest.endDate);
+
+    // Kiểm tra nếu `timeStartTour` nhỏ hơn ngày hiện tại
+    if (timeStartTour < currentDate) {
+      this.notificationComponent.showNotification('error', 'Thời gian khuyến mãi không được nhỏ hơn ngày hiện tại.');
+      return; // Dừng lại và không gửi form data
+    }
 
     if(this.createVoucherRequest.endDate!=undefined ){
       const endDate = new Date(this.createVoucherRequest.endDate);  
@@ -136,10 +163,31 @@ export class VoucherComponent implements OnInit {
   }
 
   onUpdateVoucher() {
+    console.log(this.updateVoucherRequest);
     if (!this.updateVoucherRequest?.id) {
       this.notificationComponent.showNotification('error', 'Không tìm thấy voucher cần cập nhật');
       return;
     }
+
+    if (!this.updateVoucherRequest?.name || !this.updateVoucherRequest?.discountRate || !this.updateVoucherRequest?.endDate) {
+      this.notificationComponent.showNotification('error', 'Vui lòng điền đầy đủ thông tin bắt buộc: Tên, Tỷ lệ giảm giá, Ngày kết thúc');
+      return;
+    }
+
+    if(this.updateVoucherRequest?.discountRate<0 || this.updateVoucherRequest?.discountRate>100){
+      this.notificationComponent.showNotification('error', 'Tỉ lệ giảm giá không dưới 0 và không trên 100');
+      return;
+    }
+
+    const currentDate = new Date(); // Ngày hiện tại
+    const timeStartTour = new Date(this.updateVoucherRequest.endDate);
+
+    // Kiểm tra nếu `timeStartTour` nhỏ hơn ngày hiện tại
+    if (timeStartTour < currentDate) {
+      this.notificationComponent.showNotification('error', 'Thời gian khuyến mãi không được nhỏ hơn ngày hiện tại.');
+      return; // Dừng lại và không gửi form data
+    }
+
     const formData = new FormData();
     formData.append('id', this.updateVoucherRequest.id?.toString() ?? '');
     formData.append('isUse', this.updateVoucherRequest.isUse?.toString() ?? '');

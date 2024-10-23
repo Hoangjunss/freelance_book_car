@@ -9,6 +9,7 @@ import { NoDataFoundComponent } from "../../no-data-found/no-data-found.componen
 import { UpdateHotelRequest } from '../../../../models/request/product/hotel/hotel/update-hotel-request';
 import { UpdateHotelResponse } from '../../../../models/response/product/hotel/hotel/update-hotel-response';
 import { NotificationComponent } from '../../../notification/notification.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-hotel',
@@ -43,7 +44,9 @@ export class HotelComponent {
 
   @ViewChild(NotificationComponent) notificationComponent!: NotificationComponent;
 
-  constructor(private hotelService: HotelService){}
+  constructor(private hotelService: HotelService, private title:Title){
+    this.title.setTitle('Danh sách khách sạn')
+  }
 
   ngOnInit(): void {
     this.getAllHotel();
@@ -138,10 +141,9 @@ export class HotelComponent {
           this.getAllHotelReponse = data;
           this.filterHotelResponse = this.getAllHotelReponse;
           this.updatePagedData();
-          console.log('All tours:', this.getAllHotelReponse);
       },
       error: (err) => {
-        console.error('Error getting tours:', err.message);
+        console.error('Error getting hotel:', err.message);
       }
     }
     )
@@ -152,6 +154,12 @@ export class HotelComponent {
       this.notificationComponent.showNotification('error', 'Vui lòng điền đầy đủ thông tin');
       return;
     }
+
+    if(this.createHotelRequest?.pricePerNight<=0){
+      this.notificationComponent.showNotification('error', 'Vui lòng điền giá hợp lệ');
+      return;
+    }
+
     if(this.createHotelRequest.isActive == undefined){
       this.createHotelRequest.isActive = false;
     }
@@ -162,18 +170,20 @@ export class HotelComponent {
     formData.append('pricePerNight', this.createHotelRequest.pricePerNight?.toString() || '');
     formData.append('location', this.createHotelRequest.location || '');
     formData.append('isActive', this.createHotelRequest.isActive ? 'true' : 'false');
-    formData.append('rating', this.createHotelRequest.rating?.toString() || '');
+    formData.append('rating', this.createHotelRequest.rating?.toString() || 0+'');
 
     if (this.imageFile != undefined) {
       formData.append('image', this.imageFile);
+    }else{
+      this.notificationComponent.showNotification('error', 'Vui lòng chọn ảnh thay thế');
+      return;
     }
 
     this.hotelService.createHotel(formData).subscribe({
       next: (data) => {
         this.createHotelResponse = data;
         if(this.createHotelResponse){
-          console.log('Tour created successfully:', this.createHotelResponse);
-          this.notificationComponent.showNotification('success', 'Tạo tour thành công');
+          this.notificationComponent.showNotification('success', 'Tạo hotel thành công');
           window.location.reload();
         }
       },
@@ -182,50 +192,61 @@ export class HotelComponent {
     });
   }
 
-  onUpdate(){
-    if(!this.updateHotelRequest?.id){
-      this.notificationComponent.showNotification('error', 'Không tìm thấy tour cần cập nhật');
+  onUpdate() {
+    if (!this.updateHotelRequest?.id) {
+      this.notificationComponent.showNotification('error', 'Không tìm thấy hotel cần cập nhật');
       return;
     }
-    if(!this.updateHotelRequest?.name || !this.updateHotelRequest?.contactInfo || !this.updateHotelRequest?.pricePerNight || !this.updateHotelRequest?.location){
+    if (!this.updateHotelRequest?.name || !this.updateHotelRequest?.contactInfo || !this.updateHotelRequest?.pricePerNight || !this.updateHotelRequest?.location) {
       this.notificationComponent.showNotification('error', 'Vui lòng điền đầy đủ thông tin');
       return;
     }
-    if(this.updateHotelRequest.isActive == undefined){
+  
+    if (this.updateHotelRequest?.pricePerNight <= 0) {
+      this.notificationComponent.showNotification('error', 'Vui lòng điền giá hợp lệ');
+      return;
+    }
+  
+    // Ensure isActive is either true or false explicitly
+    if (typeof this.updateHotelRequest.isActive !== 'boolean') {
       this.updateHotelRequest.isActive = false;
     }
-
+  
+    console.log(this.updateHotelRequest.isActive);  // Debugging
+  
     const formData = new FormData();
     formData.append('id', this.updateHotelRequest.id.toString() || '');
     formData.append('name', this.updateHotelRequest.name || '');
     formData.append('contactInfo', this.updateHotelRequest.contactInfo || '');
     formData.append('pricePerNight', this.updateHotelRequest.pricePerNight?.toString() || '');
     formData.append('location', this.updateHotelRequest.location || '');
+  
+    // Ensure boolean is sent as a string ("true"/"false")
     formData.append('isActive', this.updateHotelRequest.isActive ? 'true' : 'false');
     formData.append('rating', this.updateHotelRequest.rating?.toString() || '');
-
+  
     if (this.imageFile != undefined) {
       formData.append('image', this.imageFile);
     }
-
-    console.log(this.updateHotelRequest);
+  
+    // Logging the formData for debugging
     formData.forEach((value, key) => {
       console.log(`${key}: ${value}`);
     });
-
-
+  
     this.hotelService.updateHotel(formData).subscribe({
       next: (data) => {
         this.updateHotelResponse = data;
-        if(this.updateHotelResponse){
-          this.notificationComponent.showNotification('success', 'Cập nhật tour thành công');
+        if (this.updateHotelResponse) {
+          this.notificationComponent.showNotification('success', 'Cập nhật hotel thành công');
           window.location.reload();
         }
       },
       error: (err) => {
-      
+        console.error('Error updating hotel:', err);
       }
     });
   }
+  
 
 }

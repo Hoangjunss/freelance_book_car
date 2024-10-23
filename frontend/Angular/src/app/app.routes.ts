@@ -14,6 +14,7 @@ import { HotelDetailComponent } from './components/user/hotel-detail/hotel-detai
 import { CartComponent } from './components/user/cart/cart.component';
 import { HistoryComponent } from './components/user/history/history.component';
 import { SearchComponent } from './components/user/search/search.component';
+import { ListComponent } from './components/user/list/list.component';
 
 
 export const routes: Routes = [
@@ -97,6 +98,10 @@ export const routes: Routes = [
   {
     path: 'search',
     component: SearchComponent
+  },
+  {
+    path: 'list/:location',
+    component: ListComponent
   },
   {
     path: '**',

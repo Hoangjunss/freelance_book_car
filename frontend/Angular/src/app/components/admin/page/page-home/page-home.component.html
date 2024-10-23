@@ -1,3 +1,4 @@
+<app-notification></app-notification>
 <div class="container mt-5">
     <!-- Home Section (Header) -->
     <div class="card mb-4">
@@ -85,7 +86,7 @@
         <input [(ngModel)]="footerData.name" id="footerName" type="text" class="form-control">
   
         <label for="footerUrl" class="mt-3">URL</label>
-        <input [(ngModel)]="footerData.url" id="footerUrl" type="text" class="form-control" (input)="updateImagePreview('footer')">
+        <input [(ngModel)]="footerData.url" id="footerUrl" type="text" class="form-control" (input)="updateImagePreview('footer')" disabled>
   
         <label for="footerDescription" class="mt-3">Description</label>
         <textarea [(ngModel)]="footerData.description" id="footerDescription" class="form-control"></textarea>

@@ -1,5 +1,5 @@
 <h2 class="text-center m-2">Hotel Booking Manager</h2>
-
+<app-notification></app-notification>
 <nav class="d-flex navbar navbar-expand-lg navbar-light bg-light navbackground">
     <div class="form-inline my-2 my-lg-0 mr-auto">
         <input [(ngModel)]="searchQuery" style="margin-left: 10px;" name="searchQuery" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
@@ -24,7 +24,7 @@
                     <h5 class="card-title">Hotel ID: {{ hotel.id }}</h5>
                     <p class="card-text">Name: {{ hotel.name }}</p>
                     <p class="card-text">Location: {{ hotel.location }}</p>
-                    <p class="card-text">Price per Night: {{ hotel.pricePerNight | currency }}</p>
+                    <p class="card-text">Price per Night(VND): {{ hotel.pricePerNight}}</p>
                     <button class="btn btn-primary" (click)="viewDetails(hotel)">Details</button>
                 </div>
             </div>
@@ -66,18 +66,16 @@
               <tr>
                 <th>#</th>
                 <th>Start Date</th>
-                <th>End Date</th>
                 <th>Hotel ID</th>
-                <th>Total Price</th>
+                <th>Total Price(VND)</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let booking of pagedBookings">
                 <th scope="row">{{ booking.id }}</th>
                 <td>{{ booking.startDate | date: 'short' }}</td>
-                <td>{{ booking.endDate | date: 'short' }}</td>
                 <td>{{ booking.hotel }}</td>
-                <td>{{ booking.totalPrice | currency: 'USD' }}</td>
+                <td>{{ booking.totalPrice}}</td>
               </tr>
             </tbody>
           </table>
@@ -128,11 +126,6 @@
                             <input type="text" [disabled]="true" class="form-control" id="pricePerNight" [(ngModel)]="hotelDetail.pricePerNight"
                                 name="pricePerNight" placeholder="Enter price per night">
                         </div>
-                        <div class="form-group">
-                            <label for="rating">Rating</label>
-                            <input type="text" [disabled]="true" class="form-control" id="rating" [(ngModel)]="hotelDetail.rating"
-                                name="rating" placeholder="Enter hotel rating">
-                        </div>
                     </form>
                 </div>
 
@@ -147,7 +140,7 @@
                             <strong>Start Date:</strong> {{ booking.startDate | date: 'dd/MM/yyyy' }}
                         </div>
                         <div>
-                            <strong>Total Price:</strong> {{ booking.totalPrice | currency }}
+                            <strong>Total Price (VND):</strong> {{ booking.totalPrice }}
                         </div>
                         <button type="button" class="btn btn-info mt-1" (click)="updateBooking(booking, hotelDetail)">View</button>
                     </div>
@@ -185,7 +178,7 @@
                     </div>
                     <div class="form-group">
                         <label for="startTime">Start Date</label>
-                        <input type="datetime-local" class="form-control" id="startTime" [(ngModel)]="updateHotelBookingRequest.startTime" name="startTime" required>
+                        <input type="datetime-local" class="form-control" id="startTime" [(ngModel)]="updateHotelBookingRequest.startDate" name="startTime" required>
                     </div>
                     <button type="button" class="m-1 btn btn-secondary" (click)="cancelUpdate()">Cancel</button>
                     <button type="button" class="m-1 btn btn-primary" (click)="saveUpdate()">{{ isEditMode ? 'Update' : 'Add' }}</button>

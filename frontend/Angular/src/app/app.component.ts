@@ -16,22 +16,16 @@ import { filter } from 'rxjs';
 export class AppComponent {
   title = 'Angular';
 
-  shouldShowNavbar = false;  // Mặc định ẩn navbar
+  shouldShowNavbar = false;
 
   constructor(private router: Router) {
-    // Lắng nghe sự kiện khi điều hướng bắt đầu
-    this.router.events
-      .pipe(filter(event => event instanceof NavigationStart))
-      .subscribe(() => {
-        this.shouldShowNavbar = false; // Ẩn navbar khi bắt đầu điều hướng
-      });
-
     // Lắng nghe sự kiện khi điều hướng kết thúc
     this.router.events
       .pipe(filter(event => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
-        // Kiểm tra URL sau khi điều hướng hoàn tất
-        this.shouldShowNavbar = !(event.url.startsWith('/auth') || event.url.startsWith('/admin') );
+        // Cập nhật giá trị shouldShowNavbar dựa trên URL
+        const url = event.urlAfterRedirects || event.url;
+        this.shouldShowNavbar = !(url.startsWith('/auth') || url.startsWith('/admin'));
       });
   }
 

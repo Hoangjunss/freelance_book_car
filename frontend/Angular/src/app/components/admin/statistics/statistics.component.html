@@ -45,7 +45,7 @@
                 <i class="fa fa-chart-bar fa-3x text-primary"></i>
                 <div class="ms-3">
                     <p class="mb-2">Mean Sale</p>
-                    <h6 class="mb-0">{{statisticMonthYear?.avgPrice}}</h6>
+                    <h6 class="mb-0">{{statisticMonthYear?.avgPrice | number:'1.0-3'}}</h6>
                 </div>
             </div>
         </div>
@@ -63,7 +63,7 @@
                 <i class="fa fa-chart-pie fa-3x text-primary"></i>
                 <div class="ms-3">
                     <p class="mb-2">Mean Ticker</p>
-                    <h6 class="mb-0">{{statisticMonthYear?.avgTicket}}</h6>
+                    <h6 class="mb-0">{{statisticMonthYear?.avgTicket | number:'1.0-3'}}</h6>
                 </div>
             </div>
         </div>
@@ -87,8 +87,7 @@
         <div class="col-sm-12 col-xl-12">
             <div class="bg-light text-center rounded p-4">
                 <div class="d-flex align-items-center justify-content-between mb-4">
-                    <h6 class="mb-0">Worldwide Sales</h6>
-                    <a href="">Show All</a>
+                    <h6 class="mb-0">Statistics Sales</h6>
                 </div>
                 <canvas id="worldwide-sales"></canvas>
             </div>

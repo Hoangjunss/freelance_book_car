@@ -8,6 +8,7 @@ import { TourismService } from '../../../../services/product/ticket/tourism/tour
 import { NoDataFoundComponent } from "../../no-data-found/no-data-found.component";
 import { UpdateTourismRequest } from '../../../../models/request/product/ticket/tourism/update-tourism-request';
 import { NotificationComponent } from '../../../notification/notification.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-tourism',
@@ -41,7 +42,9 @@ export class TourismComponent {
 
   @ViewChild(NotificationComponent) notificationComponent!: NotificationComponent;
 
-  constructor(private tourismService: TourismService){}
+  constructor(private tourismService: TourismService, private title:Title){
+    this.title.setTitle('Danh sách khu du dịch')
+  }
 
   ngOnInit(): void {
     this.getAllTourisms();
@@ -151,7 +154,7 @@ export class TourismComponent {
       next: (data) => {
         this.createTourismResponse = data;
         if (this.createTourismResponse) {
-          this.notificationComponent.showNotification('success', 'Tạo tour thành công');
+          this.notificationComponent.showNotification('success', 'Tạo khu du lịch thành công');
           window.location.reload();
         }
       },
@@ -181,15 +184,13 @@ export class TourismComponent {
   
     if (this.imageFile != undefined) {
       formData.append('image', this.imageFile);
-    }else{
-
     }
 
     this.tourismService.updateTour(formData).subscribe({
       next: (data) => {
         this.createTourismResponse = data;
         if (this.createTourismResponse) {
-          this.notificationComponent.showNotification('success', 'Tạo tour thành công');
+          this.notificationComponent.showNotification('success', 'Cập nhật khu du lịch thành công');
           window.location.reload();
         }
       },

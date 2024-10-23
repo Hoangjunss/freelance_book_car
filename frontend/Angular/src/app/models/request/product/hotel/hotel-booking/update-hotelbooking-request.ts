@@ -1,6 +1,6 @@
 export class UpdateHotelBookingRequest{
     id?: number;
-    startTime?: Date;
+    startDate?: Date;
     endTime?: Date;
     totalPrice?: number;
     hotel?: number;

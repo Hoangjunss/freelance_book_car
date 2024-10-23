@@ -1,4 +1,6 @@
+
 <h2 class="text-center m-2">Tour Manager</h2>
+<app-notification></app-notification>
 
 <nav class="d-flex navbar navbar-expand-lg navbar-light bg-light navbackground">
   <div class="form-inline my-2 my-lg-0 mr-auto">
@@ -12,7 +14,7 @@
 
 
 <div *ngIf="getALlTour.length > 0; else noData" class="container">
-  <h6 class="mb-4">Responsive Table with Pagination</h6>
+  <h6 class="mb-4">Table Tour</h6>
   <div class="table-responsive">
     <table class="table">
       <thead>
@@ -20,7 +22,7 @@
           <th>#</th>
           <th>Name</th>
           <th>Start Location</th>
-          <th>Is Active</th>
+          <th>Active</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -30,7 +32,7 @@
           <td>{{ tour.name }}</td>
           <td>{{ tour.startLocation }}</td>
           <td>
-            <input type="checkbox" [checked]="tour.isActive" disabled>
+            {{tour.isActive ? "Active" : "No Active" }}
           </td>
           <td>
             <button class="btn btn-warning m-2" (click)="displayFromUpdate(tour)">Edit</button>
@@ -91,11 +93,14 @@
                   [(ngModel)]="createTourRequest!.endLocation" name="startLocation"
                   placeholder="Enter start location">
               </div>
-              <div class="form-group">
-                <label for="isActive">Is Active</label>
-                <input type="checkbox" class="form-check-input" id="isActive" [(ngModel)]="createTourRequest!.isActive"
-                  name="isActive">
-              </div>
+            
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="isActive" [(ngModel)]="createTourRequest!.isActive" name="isActive">
+              <label class="form-check-label" for="flexCheckIndeterminate">
+                Is Active
+              </label>
+            </div>
+
             </div>
             <div class="col-md-6 col-sm-12">
               <div class="form-group">
@@ -154,11 +159,13 @@
                   [(ngModel)]="updateTourRequest!.endLocation" name="startLocation"
                   placeholder="Enter start location">
               </div>
-              <div class="form-group">
-                <label for="isActive">Is Active</label>
-                <input type="checkbox" class="form-check-input" id="isActive" [(ngModel)]="updateTourRequest!.isActive"
-                  name="isActive">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="isActive" [(ngModel)]="updateTourRequest!.isActive" name="isActive">
+                <label class="form-check-label" for="flexCheckIndeterminate">
+                  Is Active
+                </label>
               </div>
+
             </div>
             <div class="col-md-6 col-sm-12">
               <div class="form-group">

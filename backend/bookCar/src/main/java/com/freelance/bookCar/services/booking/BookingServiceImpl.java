@@ -610,7 +610,28 @@ public class BookingServiceImpl implements BookingService{
             Invoice invoice = invoiceService.convertBookingToInvoice(bookingsave, bookingDetails);
         }
         log.info("594: {}", userInfo.toString());
-        Mail mail=mailService.getMail(userInfo.getFirst().getEmail(),"Đơn hàng số "+booking.getId()+ "của bạn đã được "+type+"vui long kiểm tra lại ","Đơn hàng số"+booking.getId());
+        String content =  "<html>" +
+                "<head>" +
+                "<style>" +
+                "    body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f8f9fa; }" +
+                "    .container { background-color: #ffffff; border-radius: 8px; padding: 20px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }" +
+                "    h1 { color: #333; }" +
+                "    p { color: #555; }" +
+                "    .footer { margin-top: 20px; font-size: 12px; color: #aaa; }" +
+                "</style>" +
+                "</head>" +
+                "<body>" +
+                "    <div class='container'>" +
+                "        <h1>Kính gửi quý khách</h1>" +
+                "        <p>Đơn hàng số: <strong>" + booking.getId() + "</strong> của bạn đã được duyệt. Vui lòng kiểm tra tại mục lịch sử.</p>" +
+                "        <p>Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi!</p>" +
+                "    </div>" +
+                "    <div class='footer'>" +
+                "        <p>Nếu bạn có bất kỳ câu hỏi nào, hãy liên hệ với chúng tôi.</p>" +
+                "    </div>" +
+                "</body>" +
+                "</html>";
+        Mail mail=mailService.getMail(userInfo.getFirst().getEmail(),content,"Đơn hàng số"+booking.getId());
         mailService.sendMail(mail);
         return modelMapper.map(bookingsave, GetBookingResponse.class);
     }
@@ -651,7 +672,28 @@ public class BookingServiceImpl implements BookingService{
         booking.setTotalPrice(Double.parseDouble(orderRequest.getTotalPrice()));
         Booking bookingsave= bookingRepository.save(booking);
         log.info("634: {}", bookingsave.toString());
-        Mail mail=mailService.getMail(updatedUserInfo.getFirst().getEmail(),"Đơn hàng số "+booking.getId()+ "của bạn đã được đặt vui lòng kiểm tra lại ","Đơn hàng số: "+booking.getId());
+        String content = "<html>" +
+                "<head>" +
+                "<style>" +
+                "    body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background-color: #f8f9fa; }" +
+                "    .container { background-color: #ffffff; border-radius: 8px; padding: 20px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }" +
+                "    h1 { color: #333; }" +
+                "    p { color: #555; }" +
+                "    .footer { margin-top: 20px; font-size: 12px; color: #aaa; }" +
+                "</style>" +
+                "</head>" +
+                "<body>" +
+                "    <div class='container'>" +
+                "        <h1>Kính gửi quý khách</h1>" +
+                "        <p>Đơn hàng số: <strong>" + booking.getId() + "</strong> của bạn đã được gởi đi. Vui lòng kiểm tra lại.</p>" +
+                "        <p>Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi!</p>" +
+                "    </div>" +
+                "    <div class='footer'>" +
+                "        <p>Nếu bạn có bất kỳ câu hỏi nào, hãy liên hệ với chúng tôi.</p>" +
+                "    </div>" +
+                "</body>" +
+                "</html>";
+        Mail mail=mailService.getMail(updatedUserInfo.getFirst().getEmail(),content,"Đơn hàng số: "+booking.getId());
         mailService.sendMail(mail);
         return modelMapper.map(bookingsave,OrderResponse.class);
     }

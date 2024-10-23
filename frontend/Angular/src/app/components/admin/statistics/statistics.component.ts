@@ -7,6 +7,7 @@ import { StatisticsService } from '../../../services/statistics/statistics.servi
 import { StatisticYear } from '../../../models/response/statistics/StatisticYear';
 import { StatisticMonths } from '../../../models/response/statistics/StatisticMonth';
 import { NotificationComponent } from '../../notification/notification.component';
+import { Title } from '@angular/platform-browser';
 
 Chart.register(...registerables);
 
@@ -52,12 +53,14 @@ export class StatisticsComponent implements OnInit{
   @ViewChild(NotificationComponent) notificationComponent!: NotificationComponent;
 
 
-  constructor(private statisticService: StatisticsService){}
+  constructor(private statisticService: StatisticsService, private title:Title){
+    this.title.setTitle('Doanh thu')
+  }
 
   ngOnInit(): void {
     this.years = this.generateYears(2020, new Date().getFullYear());
     this.getStatisticMonthYear(this.currentMonth, this.currentYear);
-    this.getStatisticYear(2023);
+    this.getStatisticYear(2024);
     
   }
 
