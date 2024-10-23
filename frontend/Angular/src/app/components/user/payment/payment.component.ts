@@ -1,12 +1,14 @@
 import { Component, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { BookingService } from '../../../services/booking/booking.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TourService } from '../../../services/product/tour/tour/tour.service';
 import { TourScheduleService } from '../../../services/product/tour/tour-schedule/tour-schedule.service';
 import { NotificationComponent } from '../../notification/notification.component';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { VnpayService } from '../../../services/payment/VNPAY/vnpay.service';
+import { PaypalService } from '../../../services/payment/Paypal/paypal.service';
 
 @Component({
   selector: 'app-payment',
@@ -20,6 +22,7 @@ export class PaymentComponent implements OnInit {
   idBooking: number | null = null;
   totalPrice: number | null = null;
   newTotalPrice: number | null = null;
+  vnp_ResponseCode: string | null = null;
 
   @ViewChild(NotificationComponent) notificationComponent!: NotificationComponent;
 
@@ -29,7 +32,10 @@ export class PaymentComponent implements OnInit {
     private bookingService: BookingService,
     private router: Router,
     private tourService: TourService,
-    private tourScheduleService: TourScheduleService
+    private tourScheduleService: TourScheduleService,
+    private vnpayService: VnpayService,
+    private paypalService:PaypalService,
+    private route: ActivatedRoute
   ) {
     this.title.setTitle('Thanh toán');
   }
@@ -41,6 +47,7 @@ export class PaymentComponent implements OnInit {
         this.getBookingByUser(parseInt(id));
       }
     }
+    
   }
 
   getBookingByUser(id: number) {
@@ -80,5 +87,32 @@ export class PaymentComponent implements OnInit {
       }
     });
   }
+
+  payWithVNPAY() {
+    if (this.totalPrice && this.idBooking) {
+      const convertedPrice = Math.round(this.totalPrice * 100);
+      this.vnpayService.payWithVNPAY(convertedPrice, this.idBooking);
+    } else {
+      console.error('No valid totalPrice or idBooking found');
+    }
+  }
+
+  payWithPayPal() {
+    const formData = new FormData();
+    formData.append('price', '1');
+    formData.append('currency', 'VND');
+    formData.append('method', 'paypal');
+    formData.append('intent','SALE' );
+    formData.append('description', 'abc');
+
+    this.paypalService.payWithPayPal(formData).subscribe({
+      
+    });
+
+  }
+
+
+
+  
 
 }

@@ -118,7 +118,7 @@
                         <!-- Align Price Text on the Left and Button on the Right -->
                         <div class="d-flex justify-content-between align-items-center flex-column-reverse">
                             <div class="button-wrapper">
-                                <button class="btn submit-btn">Thanh toán ngay</button>
+                                <button class="btn submit-btn" (click)="payWithPayPal()">Thanh toán ngay</button>
                             </div>
                             <div class="price-wrapper">
                                 <p class="price-text">{{ totalPrice | number : '1.0-0' }} ₫</p>
