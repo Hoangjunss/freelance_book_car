@@ -1,0 +1,36 @@
+.success-container {
+    margin-top: 50px;
+}
+
+.success-icon {
+    color: green;
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.fail-icon {
+    color: red;
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+.status-title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.status-message {
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.btn-success-custom {
+    background-color: #28a745;
+    color: white;
+    border-radius: 25px;
+    padding: 10px 20px;
+}
+
+.btn-success-custom:hover {
+    background-color: #218838;
+}

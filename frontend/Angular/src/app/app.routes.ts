@@ -16,6 +16,7 @@ import { HistoryComponent } from './components/user/history/history.component';
 import { SearchComponent } from './components/user/search/search.component';
 import { ListComponent } from './components/user/list/list.component';
 import { ProductDetailComponent } from './components/user/product-detail/product-detail.component';
+import { PaymentSuccesComponent } from './components/user/payment-succes/payment-succes.component';
 
 
 export const routes: Routes = [
@@ -75,6 +76,10 @@ export const routes: Routes = [
     path: 'product-details/:id',
     component: ProductDetailComponent
   },
+  {
+    path: 'payment-success',
+    component: PaymentSuccesComponent
+  },  
   {
     path: 'admin',
     loadChildren: () => import('./components/admin/router/admin.modules').then(m => m.AdminModule)

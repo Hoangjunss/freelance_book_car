@@ -17,14 +17,14 @@ public class VNPAYController {
     @Autowired
     private VNPAYService vnpayService;
     @GetMapping("/pay")
-    public ResponseEntity<String> getPay(@RequestParam Long price, @RequestParam Integer id)throws UnsupportedEncodingException {
+    public ResponseEntity<String> getPay(@RequestParam("price") Long price, @RequestParam("id") Integer id)throws UnsupportedEncodingException {
         String url= vnpayService.getPay(price,id);
        return  ResponseEntity.ok(url);
     }
     @GetMapping("/returnPay")
-    public ResponseEntity<String> paymentCallback(@RequestParam Map<String, String> queryParams) throws IOException {
-        String response=vnpayService.returnPay(queryParams.get("vnp_ResponseCode"),queryParams.get("contractId"));
-        return  ResponseEntity.ok(response);
+    public ResponseEntity<Boolean> paymentCallback(@RequestParam Map<String, String> queryParams) throws IOException {
+//        String response=vnpayService.returnPay(queryParams.get("vnp_ResponseCode"),queryParams.get("contractId"));
+        return  ResponseEntity.ok(false);
         }
 
     }

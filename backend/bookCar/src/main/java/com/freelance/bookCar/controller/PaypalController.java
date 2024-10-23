@@ -2,6 +2,7 @@ package com.freelance.bookCar.controller;
 
 import com.freelance.bookCar.services.PaypalService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,14 +25,14 @@ public class PaypalController {
     }
 
     @PostMapping("/pay")
-    public String payment(@ModelAttribute("order") Order order) {
+    public ResponseEntity<String> payment(@ModelAttribute("order") Order order) {
         try {
             Payment payment = service.createPayment(order.getPrice(), order.getCurrency(), order.getMethod(),
                     order.getIntent(), order.getDescription(), "http://localhost:9090/" + CANCEL_URL,
                     "http://localhost:9090/" + SUCCESS_URL);
             for(Links link:payment.getLinks()) {
                 if(link.getRel().equals("approval_url")) {
-                    return "redirect:"+link.getHref();
+                    return ResponseEntity.ok(link.getHref());
                 }
             }
 
@@ -39,7 +40,7 @@ public class PaypalController {
 
             e.printStackTrace();
         }
-        return "redirect:/";
+        return ResponseEntity.ok("ok");
     }
 
     @GetMapping(value = CANCEL_URL)
