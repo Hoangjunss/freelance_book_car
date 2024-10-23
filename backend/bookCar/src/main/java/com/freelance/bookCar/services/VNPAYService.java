@@ -2,6 +2,8 @@ package com.freelance.bookCar.services;
 
 
 import com.freelance.bookCar.config.VNPAYConfig;
+import com.freelance.bookCar.services.booking.BookingService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
@@ -12,6 +14,8 @@ import java.util.*;
 
 @Service
 public class VNPAYService {
+    @Autowired
+    private BookingService bookingService;
     public String getPay(Long price,Integer id) throws UnsupportedEncodingException {
         String vnp_Version = "2.1.0";
         String vnp_Command = "pay";
@@ -82,6 +86,7 @@ public class VNPAYService {
     public String returnPay(String responseCode,String contractId){
         //code logic
         if ("00".equals(responseCode)) {
+            bookingService.updateType(Integer.valueOf(contractId),"PENDING");
             return  "success";
         }else{
             return "false";

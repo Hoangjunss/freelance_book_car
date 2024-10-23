@@ -1,5 +1,6 @@
 package com.freelance.bookCar.services;
 
+import com.freelance.bookCar.services.booking.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,8 @@ public class PaypalService {
 
     @Autowired
     private APIContext apiContext;
+    @Autowired
+    private BookingService bookingService;
 
 
     public Payment createPayment(
@@ -59,11 +62,12 @@ public class PaypalService {
         return payment.create(apiContext);
     }
 
-    public Payment executePayment(String paymentId, String payerId) throws PayPalRESTException{
+    public Payment executePayment(String paymentId, String payerId,Integer id) throws PayPalRESTException{
         Payment payment = new Payment();
         payment.setId(paymentId);
         PaymentExecution paymentExecute = new PaymentExecution();
         paymentExecute.setPayerId(payerId);
+        bookingService.updateType(id,"PENDING");
         return payment.execute(apiContext, paymentExecute);
     }
 

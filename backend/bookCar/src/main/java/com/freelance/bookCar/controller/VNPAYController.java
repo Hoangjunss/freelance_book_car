@@ -23,7 +23,7 @@ public class VNPAYController {
     }
     @GetMapping("/returnPay")
     public ResponseEntity<Boolean> paymentCallback(@RequestParam Map<String, String> queryParams) throws IOException {
-//        String response=vnpayService.returnPay(queryParams.get("vnp_ResponseCode"),queryParams.get("contractId"));
+   String response=vnpayService.returnPay(queryParams.get("vnp_ResponseCode"),queryParams.get("contractId"));
         return  ResponseEntity.ok(false);
         }
 

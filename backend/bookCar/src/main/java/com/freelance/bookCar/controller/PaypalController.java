@@ -29,15 +29,14 @@ public class PaypalController {
         try {
             Payment payment = service.createPayment(order.getPrice(), order.getCurrency(), order.getMethod(),
                     order.getIntent(), order.getDescription(), "http://localhost:9090/" + CANCEL_URL,
-                    "http://localhost:9090/" + SUCCESS_URL);
-            for(Links link:payment.getLinks()) {
-                if(link.getRel().equals("approval_url")) {
-                    return ResponseEntity.ok(link.getHref());
+                    "http://localhost:9090/" + SUCCESS_URL + "?orderId=" + order.getId());
+            for (Links link : payment.getLinks()) {
+                if (link.getRel().equals("approval_url")) {
+                    // Trả về URL phê duyệt kèm theo orderId
+                    return ResponseEntity.ok(link.getHref() + "&orderId=" + order.getId());
                 }
             }
-
         } catch (PayPalRESTException e) {
-
             e.printStackTrace();
         }
         return ResponseEntity.ok("ok");
@@ -49,9 +48,9 @@ public class PaypalController {
     }
 
     @GetMapping(value = SUCCESS_URL)
-    public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId) {
+    public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId,@RequestParam("orderId") Integer orderId) {
         try {
-            Payment payment = service.executePayment(paymentId, payerId);
+            Payment payment = service.executePayment(paymentId, payerId,orderId);
             System.out.println(payment.toJSON());
             if (payment.getState().equals("approved")) {
                 return "success";
