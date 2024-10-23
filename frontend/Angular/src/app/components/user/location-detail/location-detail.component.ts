@@ -29,7 +29,7 @@ export class LocationDetailComponent {
   @Input() location: string | null = null;
   isExpanded = false;
   locationId: string | null = null;
-  locations?: GetTourResponse;
+  locations: GetTourResponse = new GetTourResponse();
   suggestedTours: any[] = [];
   getTourScheduleResponse: GetTourScheduleResponse[] = [];
   availableTourSchedules: GetTourScheduleResponse[] = [];
@@ -65,6 +65,10 @@ export class LocationDetailComponent {
           this.locations = response;
           if (this.locations.id !== undefined && this.locations.id !== null) {
             this.getTourScheduleByidTour(this.locations.id);
+            if (this.locations.startLocation) {
+              this.getLocationsForSelectedLocation(this.locations.startLocation);
+            }
+            console.log(this.locations);
           }
         } else {
         }
@@ -129,7 +133,9 @@ export class LocationDetailComponent {
     this.tourService.getTourByCategory(location).subscribe({
       next: (response) => {
         if (response && response.length > 0 && response.some(location => location.isActive)) {
-          this.suggestedTours = response;
+          this.suggestedTours[0] = response[0];
+          this.suggestedTours[1] = response[1];
+          this.suggestedTours[2] = response[2];
         } else {
         }
       },
