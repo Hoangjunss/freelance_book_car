@@ -31,7 +31,7 @@
     
 
 </div> -->
-<div class="hero-section d-flex justify-content-between scroll-section">
+<div [ngStyle]="{'background-image': 'url(' + backgroundImage + ')'}" class="hero-section d-flex justify-content-between scroll-section">
     <!-- Left: Text Content -->
     <div class="description-box fade-in" *ngIf="locations">
         <h1>{{ locations.name }}</h1>

@@ -36,6 +36,7 @@ export class LocationDetailComponent {
   selectedTourSchedule: number | null = null;
   selectedPrice: number | null = null;
   showFullText: boolean = false;
+  backgroundImage: string;
 
   @ViewChild(NotificationComponent) notificationComponent!: NotificationComponent;
 
@@ -56,6 +57,7 @@ export class LocationDetailComponent {
         this.getTourDetail(parseInt(this.locationId));
       }
     });
+    this.backgroundImage = 'http://res.cloudinary.com/dgts7tmnb/image/upload/v1727963818/csdch7mi171qddwizcxq.png';
   }
 
   getTourDetail(id: number) {
