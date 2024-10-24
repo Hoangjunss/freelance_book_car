@@ -39,7 +39,7 @@
     </nav>
 
     <!-- Hotel Section -->
-    <div class="row mb-5" *ngIf="(hotels$ | async)?.length > 0">
+    <!-- <div class="row mb-5" *ngIf="(hotels$ | async)?.length > 0">
         <h3>Khách Sạn Nổi Bật</h3>
         <div class="col-md-3 mb-4"
             *ngFor="let hotel of (hotels$ | async)?.slice((currentHotelPage - 1) * itemsPerPage, currentHotelPage * itemsPerPage)">
@@ -53,9 +53,9 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <!-- Hotel Pagination -->
-    <nav aria-label="Hotel navigation" *ngIf="(hotels$ | async)?.length > 0">
+    <!-- <nav aria-label="Hotel navigation" *ngIf="(hotels$ | async)?.length > 0">
         <ul class="pagination justify-content-center">
             <li class="page-item" [class.disabled]="currentHotelPage === 1">
                 <a class="page-link" (click)="changePage('hotel', currentHotelPage - 1)" aria-label="Previous">
@@ -71,10 +71,10 @@
                 </a>
             </li>
         </ul>
-    </nav>
+    </nav> -->
 
     <!-- Tourism Section -->
-    <div class="row mb-5" *ngIf="(tourism$ | async)?.length > 0">
+    <!-- <div class="row mb-5" *ngIf="(tourism$ | async)?.length > 0">
         <h3>Hoạt Động Du Lịch Đặc Sắc</h3>
         <div class="col-md-3 mb-4"
             *ngFor="let activity of (tourism$ | async)?.slice((currentTourismPage - 1) * itemsPerPage, currentTourismPage * itemsPerPage)">
@@ -88,9 +88,9 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <!-- Tourism Pagination -->
-    <nav aria-label="Tourism navigation" *ngIf="(tourism$ | async)?.length > 0">
+    <!-- <nav aria-label="Tourism navigation" *ngIf="(tourism$ | async)?.length > 0">
         <ul class="pagination justify-content-center">
             <li class="page-item" [class.disabled]="currentTourismPage === 1">
                 <a class="page-link" (click)="changePage('tourism', currentTourismPage - 1)" aria-label="Previous">
@@ -106,5 +106,5 @@
                 </a>
             </li>
         </ul>
-    </nav>
+    </nav> -->
 </div>

@@ -18,6 +18,7 @@ export class ListComponent implements OnInit {
   location: string;
   groupedTours: { [key: string]: GetTourResponse[] } = {};
   titleParts = ['Di chuyển', 'Việt Nam'];
+  backgroundImage: string;
 
   navButtons: any[] = [];
 
@@ -30,13 +31,15 @@ export class ListComponent implements OnInit {
       this.location = params.get('location') || '';
       this.getAllTour();
     });
+    this.backgroundImage = 'http://res.cloudinary.com/dgts7tmnb/image/upload/v1727963818/csdch7mi171qddwizcxq.png';
   }
 
   getAllTour() {
     this.tourService.getAllTour().subscribe({
       next: (response) => {
         if (response) {
-          this.tours = response;
+          this.tours = response.filter(tour => tour.isActive === true);  
+          console.log(this.tours);
           this.groupToursByStartLocation();
           this.navButtons = this.getAllTourKeys(); 
         } else {
