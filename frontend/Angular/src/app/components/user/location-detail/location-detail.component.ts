@@ -132,12 +132,14 @@ export class LocationDetailComponent {
   getLocationsForSelectedLocation(location: string) {
     this.tourService.getTourByCategory(location).subscribe({
       next: (response) => {
+        console.log(response);
         if (response && response.length > 0 && response.some(location => location.isActive)) {
           this.suggestedTours[0] = response[0];
           this.suggestedTours[1] = response[1];
           this.suggestedTours[2] = response[2];
         } else {
         }
+        console.log(this.suggestedTours);
       },
       error(err) {
         console.log('Error fetching locations:',err);
@@ -213,5 +215,14 @@ export class LocationDetailComponent {
   }
   showTooltip() {
     this.showFullText = true;
+  }
+
+  getShortDescription(description: string | undefined): string {
+    if (!description) {
+      return '';
+    }
+    // Lấy phần trước dấu chấm đầu tiên
+    const firstSentence = description.split('.')[0];
+    return firstSentence + '.';
   }
 }

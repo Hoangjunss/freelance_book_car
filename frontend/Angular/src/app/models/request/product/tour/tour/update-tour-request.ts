@@ -5,5 +5,7 @@ export class UpdateTourRequest{
     startLocation?: string;
     endLocation?: string;
     isActive?: boolean;
-    image?: File;
+    imageFirst?: File;
+    imageSecond?: File;
+    imageThird?: File;
 }

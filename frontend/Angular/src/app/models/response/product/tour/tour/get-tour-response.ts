@@ -5,5 +5,8 @@ export class GetTourResponse{
     startLocation?: string;
     endLocation?: string;
     isActive?: boolean;
-    image?: string;
+    imageFirst?: string;
+    imageSecond?: string;
+    imageThird?: string;
+    imageMap?: string;
 }

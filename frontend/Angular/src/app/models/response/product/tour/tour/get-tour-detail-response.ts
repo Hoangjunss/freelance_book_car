@@ -3,7 +3,9 @@ export class TourDetailResponse {
     description?: string;
     startLocation?: string;
     endLocation?: string;
-    image?: string;
+    imageFirst?: string;
+    imageSecond?: string;
+    imageThird?: string;
     price?: number;
     timeStartTour?: Date;
     timeEndTour?: Date;

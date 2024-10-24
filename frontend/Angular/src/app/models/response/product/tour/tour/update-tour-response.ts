@@ -5,4 +5,7 @@ export class UpdateTourResponse{
     startLocation?: string;
     endLocation?: string;
     idTourStatus?: number;
+    imageFirst?: string;
+    imageSecond?: string;
+    imageThird?: string;
 }

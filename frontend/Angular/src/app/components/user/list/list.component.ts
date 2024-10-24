@@ -68,7 +68,7 @@ export class ListComponent implements OnInit {
     this.router.navigate(['/list', location]);
   }
   goToLocationDetails(locationId?: number) {
-    const path = `/product-details/${locationId}`;
+    const path = `/location-details/${locationId}`;
     this.router.navigate([path]);
   }
 }

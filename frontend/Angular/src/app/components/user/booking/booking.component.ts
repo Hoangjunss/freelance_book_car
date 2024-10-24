@@ -271,7 +271,7 @@ export class BookingComponent implements OnInit {
                   this.tourService.getTourById(scheduleResponse.idTour).subscribe({
                     next: (tourResponse) => {
                       p.name = tourResponse.name;
-                      p.image = tourResponse.image
+                      p.image = tourResponse.imageFirst
                       p.startLocation = tourResponse.startLocation;
                       p.endLocation = tourResponse.endLocation;
                     },

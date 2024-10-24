@@ -22,7 +22,7 @@
         <div class="row">
             <div *ngFor="let tour of groupedTours[location]" class="col-md-4 col-lg-3">
                 <div class="card" (click)="goToLocationDetails(tour.id)">
-                    <img [src]="tour.image" class="card-img-top" alt="{{ tour.name }}">
+                    <img [src]="tour.imageFirst" class="card-img-top" alt="{{ tour.name }}">
                     <div class="card-body">
                         <p class="card-text"><strong>{{ tour.startLocation }}</strong>  - <strong>{{ tour.endLocation }}</strong></p>
                     </div>
@@ -39,7 +39,7 @@
         <div class="row">
             <div *ngFor="let tour of groupedTours[startLocation]" class="col-md-4 col-lg-3">
                 <div class="card" (click)="goToLocationDetails(tour.id)">
-                    <img [src]="tour.image" class="card-img-top" alt="{{ tour.name }}">
+                    <img [src]="tour.imageFirst" class="card-img-top" alt="{{ tour.name }}">
                     <div class="card-body">
                         <p class="card-text"><strong>{{ tour.startLocation }}</strong>  - <strong>{{ tour.endLocation }}</strong></p>
                     </div>

@@ -91,7 +91,7 @@ export class TourComponent implements OnInit{
       endLocation: tour.endLocation,
       isActive: tour.isActive,
     };
-    this.imageUri = tour.image;
+    this.imageUri = tour.imageFirst;
     this.isDisplayUpdate = true;
   }
 
@@ -227,7 +227,7 @@ export class TourComponent implements OnInit{
 
     this.tourService.updateTour(formData).subscribe({
       next: (data) => {
-        this.updateTourRequest = data;
+        // this.updateTourRequest = data; Lỗi cần sửa lại
         if (this.updateTourRequest) {
           console.log('Tour created successfully:', this.updateTourRequest);
           this.notificationComponent.showNotification('success', 'Cập nhật tour thành công');

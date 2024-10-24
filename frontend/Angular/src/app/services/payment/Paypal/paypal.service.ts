@@ -35,6 +35,7 @@ export class PaypalService {
       (response) => {
         console.log('Payment successful:', response);
         this.router.navigate(['/payment-success']);
+        return response;
       },
       (error) => {
         console.error('Payment failed:', error);

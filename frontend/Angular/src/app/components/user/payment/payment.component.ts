@@ -9,11 +9,12 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { VnpayService } from '../../../services/payment/VNPAY/vnpay.service';
 import { PaypalService } from '../../../services/payment/Paypal/paypal.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-payment',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, NotificationComponent],
+  imports: [CommonModule, HttpClientModule, NotificationComponent,FormsModule],
   templateUrl: './payment.component.html',
   styleUrl: './payment.component.css'
 })
@@ -23,6 +24,7 @@ export class PaymentComponent implements OnInit {
   totalPrice: number | null = null;
   newTotalPrice: number | null = null;
   vnp_ResponseCode: string | null = null;
+  selectedPaymentMethod: string = 'vnpay';
 
   @ViewChild(NotificationComponent) notificationComponent!: NotificationComponent;
 
@@ -75,7 +77,6 @@ export class PaymentComponent implements OnInit {
   getBookingDetail(id: number) {
     this.bookingService.getDetailBooking(id).subscribe({
       next: (response) => {
-        console.log('Response:', response);
         if (response && response.length) {
           this.products = response;
         } else {
@@ -99,16 +100,28 @@ export class PaymentComponent implements OnInit {
 
   payWithPayPal() {
     const formData = new FormData();
-    formData.append('price', '1');
-    formData.append('currency', 'VND');
+    formData.append('price', this.totalPrice.toString());
+    formData.append('currency', 'USD');
     formData.append('method', 'paypal');
     formData.append('intent','SALE' );
-    formData.append('description', 'abc');
+    formData.append('description', 'Thanh toán đơn hàng');
 
     this.paypalService.payWithPayPal(formData).subscribe({
       
     });
 
+  }
+
+  onPaymentMethodChange(method: string) {
+    this.selectedPaymentMethod = method;
+  }
+
+  confirmPayment() {
+    if (this.selectedPaymentMethod === 'vnpay') {
+      this.payWithVNPAY();
+    } else if (this.selectedPaymentMethod === 'paypal') {
+      this.payWithPayPal();
+    }
   }
 
 
