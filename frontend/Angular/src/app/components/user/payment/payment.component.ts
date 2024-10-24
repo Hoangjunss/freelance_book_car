@@ -14,7 +14,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-payment',
   standalone: true,
-  imports: [CommonModule, HttpClientModule, NotificationComponent,FormsModule],
+  imports: [CommonModule, HttpClientModule, NotificationComponent, FormsModule],
   templateUrl: './payment.component.html',
   styleUrl: './payment.component.css'
 })
@@ -36,7 +36,7 @@ export class PaymentComponent implements OnInit {
     private tourService: TourService,
     private tourScheduleService: TourScheduleService,
     private vnpayService: VnpayService,
-    private paypalService:PaypalService,
+    private paypalService: PaypalService,
     private route: ActivatedRoute
   ) {
     this.title.setTitle('Thanh toán');
@@ -49,7 +49,7 @@ export class PaymentComponent implements OnInit {
         this.getBookingByUser(parseInt(id));
       }
     }
-    
+
   }
 
   getBookingByUser(id: number) {
@@ -79,6 +79,32 @@ export class PaymentComponent implements OnInit {
       next: (response) => {
         if (response && response.length) {
           this.products = response;
+          console.log("products", this.products);
+          this.products.forEach((product) => {
+            this.tourScheduleService.getSchedule(product.idTour).subscribe({
+              next: (schedule) => {
+                if (schedule) {
+                  product.product = schedule;
+                  console.log("product", product);
+                  this.tourService.getTourById(product.idTour).subscribe({
+                    next: (tour) => {
+                      if (tour) {
+                        console.log("tour", tour);
+                        product.name = tour.name;
+                      }
+                    },
+                    error: (error) => {
+                      console.log("Error fetching schedule:", error);
+                    }
+                  });
+                }
+              },
+              error: (error) => {
+                console.log("Error fetching tour:", error);
+              }
+            });
+          });
+
         } else {
           this.products = [];
         }
@@ -103,11 +129,11 @@ export class PaymentComponent implements OnInit {
     formData.append('price', this.totalPrice.toString());
     formData.append('currency', 'USD');
     formData.append('method', 'paypal');
-    formData.append('intent','SALE' );
+    formData.append('intent', 'SALE');
     formData.append('description', 'Thanh toán đơn hàng');
 
     this.paypalService.payWithPayPal(formData).subscribe({
-      
+
     });
 
   }
@@ -126,6 +152,6 @@ export class PaymentComponent implements OnInit {
 
 
 
-  
+
 
 }

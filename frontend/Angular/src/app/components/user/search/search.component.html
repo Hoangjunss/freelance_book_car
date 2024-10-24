@@ -11,7 +11,7 @@
             *ngFor="let tour of (tours$ | async)?.slice((currentTourPage - 1) * itemsPerPage, currentTourPage * itemsPerPage)">
             <div class="card location-card" (click)="goToLocationDetail(tour.id.toString(), 'tour')"
                 style="cursor: pointer;">
-                <img [src]="tour.image || 'https://via.placeholder.com/200x150'" alt="{{ tour.name }}"
+                <img [src]="tour.imageFirst" alt="{{ tour.name }}"
                     class="card-img-top">
                 <div class="card-body">
                     <h5 class="card-title">{{ tour.startLocation }} - {{ tour.endLocation }}</h5>
