@@ -35,7 +35,7 @@
             {{tour.isActive ? "Active" : "No Active" }}
           </td>
           <td>
-            <button class="btn btn-warning m-2" (click)="displayFromUpdate(tour)">Edit</button>
+            <button class="btn btn-warning m-2" (click)="displayFormUpdate(tour)">Edit</button>
           </td>
         </tr>
       </tbody>
@@ -59,63 +59,89 @@
 </div>
 
 <!-- Create Tour Form -->
+<!-- Create Tour Form -->
 <div *ngIf="isDisplayCreate" class="modal fade show" tabindex="-1" role="dialog"
   style="display: block; background: rgba(0, 0, 0, 0.5);">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content slide-in">
       <div class="modal-body">
-          <form (ngSubmit)="onCreate()">
+          <form (ngSubmit)="onCreate()" enctype="multipart/form-data">
             <div class="row">
-            <div class="col-md-6 col-sm-12">
-              <h5 class="modal-title">Tour Information</h5>
-              <button type="button" class="close" aria-label="Close" (click)="closeFormCreate()">
-                <span aria-hidden="true">&times;</span>
-              </button>
-              <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" class="form-control" id="name" [(ngModel)]="createTourRequest!.name" name="name"
-                  placeholder="Enter tour name" required>
+              <div class="col-md-6 col-sm-12">
+                <h5 class="modal-title">Tour Information</h5>
+                <button type="button" class="close" aria-label="Close" (click)="closeFormCreate()">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="form-group">
+                  <label for="name">Name</label>
+                  <input type="text" class="form-control" id="name" [(ngModel)]="createTourRequest.name" name="name"
+                    placeholder="Enter tour name" required>
+                </div>
+                <div class="form-group">
+                  <label for="description">Description</label>
+                  <textarea class="form-control" id="description" [(ngModel)]="createTourRequest.description"
+                    name="description" placeholder="Enter description"></textarea>
+                </div>
+                <div class="form-group">
+                  <label for="startLocation">Start Location</label>
+                  <input type="text" class="form-control" id="startLocation"
+                    [(ngModel)]="createTourRequest.startLocation" name="startLocation"
+                    placeholder="Enter start location">
+                </div>
+                <div class="form-group">
+                  <label for="endLocation">End Location</label>
+                  <input type="text" class="form-control" id="endLocation"
+                    [(ngModel)]="createTourRequest.endLocation" name="endLocation"
+                    placeholder="Enter end location">
+                </div>
+              
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="isActive" [(ngModel)]="createTourRequest.isActive" name="isActive">
+                  <label class="form-check-label" for="isActive">
+                    Is Active
+                  </label>
+                </div>
               </div>
-              <div class="form-group">
-                <label for="description">Description</label>
-                <textarea class="form-control" id="description" [(ngModel)]="createTourRequest!.description"
-                  name="description" placeholder="Enter description"></textarea>
+              <div class="col-md-6 col-sm-12">
+                <!-- Ảnh First -->
+                <div class="form-group">
+                  <label for="imageFirst">Upload Image First</label>
+                  <input type="file" class="form-control-file" id="imageFirst" (change)="onImageSelected($event, 'imageFirst')">
+                  <div *ngIf="imageUriFirst" class="mt-2">
+                    <img [src]="imageUriFirst" alt="Image First" class="img-fluid rounded" style="max-height: 150px;">
+                  </div>
+                </div>
+                
+                <!-- Ảnh Second -->
+                <div class="form-group">
+                  <label for="imageSecond">Upload Image Second</label>
+                  <input type="file" class="form-control-file" id="imageSecond" (change)="onImageSelected($event, 'imageSecond')">
+                  <div *ngIf="imageUriSecond" class="mt-2">
+                    <img [src]="imageUriSecond" alt="Image Second" class="img-fluid rounded" style="max-height: 150px;">
+                  </div>
+                </div>
+                
+                <!-- Ảnh Third -->
+                <div class="form-group">
+                  <label for="imageThird">Upload Image Third</label>
+                  <input type="file" class="form-control-file" id="imageThird" (change)="onImageSelected($event, 'imageThird')">
+                  <div *ngIf="imageUriThird" class="mt-2">
+                    <img [src]="imageUriThird" alt="Image Third" class="img-fluid rounded" style="max-height: 150px;">
+                  </div>
+                </div>
+                
+                <!-- Ảnh Map -->
+                <div class="form-group">
+                  <label for="imageMap">Upload Image Map</label>
+                  <input type="file" class="form-control-file" id="imageMap" (change)="onImageSelected($event, 'imageMap')">
+                  <div *ngIf="imageUriMap" class="mt-2">
+                    <img [src]="imageUriMap" alt="Image Map" class="img-fluid rounded" style="max-height: 150px;">
+                  </div>
+                </div>
+                
+                <button type="button" class="m-1 btn btn-secondary" (click)="closeFormCreate()">Cancel</button>
+                <button type="submit" class="m-1 btn btn-primary">Save</button>
               </div>
-              <div class="form-group">
-                <label for="startLocation">Start Location</label>
-                <input type="text" class="form-control" id="startLocation"
-                  [(ngModel)]="createTourRequest!.startLocation" name="startLocation"
-                  placeholder="Enter start location">
-              </div>
-              <div class="form-group">
-                <label for="startLocation">End Location</label>
-                <input type="text" class="form-control" id="startLocation"
-                  [(ngModel)]="createTourRequest!.endLocation" name="startLocation"
-                  placeholder="Enter start location">
-              </div>
-            
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" value="" id="isActive" [(ngModel)]="createTourRequest!.isActive" name="isActive">
-              <label class="form-check-label" for="flexCheckIndeterminate">
-                Is Active
-              </label>
-            </div>
-
-            </div>
-            <div class="col-md-6 col-sm-12">
-              <div class="form-group">
-                <label for="tourImage">Upload Tour Image</label>
-                <input type="file" class="form-control-file" id="tourImage" (change)="onImageSelected($event)">
-              </div>
-              <div class="mt-3">
-                <img *ngIf="imageUri" [src]="imageUri" alt="Selected Tour Image" class="mt-3 img-fluid rounded"
-                  style="max-height: 300px;">
-                <img *ngIf="!imageUri" src="assets/img/DEFAULT/tour-default.png" alt="Default Tour Image"
-                  class="mt-3 img-fluid rounded" style="max-height: 300px;">
-              </div>
-              <button type="button" class="m-1 btn btn-secondary" (click)="closeFormCreate()">Cancel</button>
-              <button type="submit" class="m-1 btn btn-primary">Save</button>
-            </div>
             </div>
           </form>
       </div>
@@ -129,64 +155,92 @@
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content slide-in">
       <div class="modal-body">
-          <form (ngSubmit)="onUpdate()">
-            <div class="row">
+        <form (ngSubmit)="onUpdate()" enctype="multipart/form-data">
+          <div class="row">
             <div class="col-md-6 col-sm-12">
-              <h5 class="modal-title">Tour Information</h5>
+              <h5 class="modal-title">Cập Nhật Tour</h5>
               <button type="button" class="close" aria-label="Close" (click)="closeFormUpdate()">
                 <span aria-hidden="true">&times;</span>
               </button>
-              <input type="hidden" class="form-control" id="id" [(ngModel)]="updateTourRequest!.id" name="name">
+              <input type="hidden" class="form-control" id="id" [(ngModel)]="updateTourRequest.id" name="id">
+              
               <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" class="form-control" id="name" [(ngModel)]="updateTourRequest!.name" name="name"
-                  placeholder="Enter tour name" required>
+                <label for="name">Tên Tour</label>
+                <input type="text" class="form-control" id="name" [(ngModel)]="updateTourRequest.name" name="name"
+                  placeholder="Nhập tên tour" required>
               </div>
               <div class="form-group">
-                <label for="description">Description</label>
-                <textarea class="form-control" id="description" [(ngModel)]="updateTourRequest!.description"
-                  name="description" placeholder="Enter description"></textarea>
+                <label for="description">Mô Tả</label>
+                <textarea class="form-control" id="description" [(ngModel)]="updateTourRequest.description"
+                  name="description" placeholder="Nhập mô tả"></textarea>
               </div>
               <div class="form-group">
-                <label for="startLocation">Start Location</label>
+                <label for="startLocation">Điểm Xuất Phát</label>
                 <input type="text" class="form-control" id="startLocation"
-                  [(ngModel)]="updateTourRequest!.startLocation" name="startLocation"
-                  placeholder="Enter start location">
+                  [(ngModel)]="updateTourRequest.startLocation" name="startLocation"
+                  placeholder="Nhập điểm xuất phát">
               </div>
               <div class="form-group">
-                <label for="startLocation">End Location</label>
-                <input type="text" class="form-control" id="startLocation"
-                  [(ngModel)]="updateTourRequest!.endLocation" name="startLocation"
-                  placeholder="Enter start location">
+                <label for="endLocation">Điểm Kết Thúc</label>
+                <input type="text" class="form-control" id="endLocation"
+                  [(ngModel)]="updateTourRequest.endLocation" name="endLocation"
+                  placeholder="Nhập điểm kết thúc">
               </div>
+            
               <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="isActive" [(ngModel)]="updateTourRequest!.isActive" name="isActive">
-                <label class="form-check-label" for="flexCheckIndeterminate">
-                  Is Active
+                <input class="form-check-input" type="checkbox" id="isActive" [(ngModel)]="updateTourRequest.isActive" name="isActive">
+                <label class="form-check-label" for="isActive">
+                  Hoạt Động
                 </label>
               </div>
-
             </div>
             <div class="col-md-6 col-sm-12">
+              <!-- Ảnh First -->
               <div class="form-group">
-                <label for="tourImage">Upload Tour Image</label>
-                <input type="file" class="form-control-file" id="tourImage" (change)="onImageSelected($event)">
+                <label for="imageFirst">Tải Ảnh Đầu Tiên</label>
+                <input type="file" class="form-control-file" id="imageFirst" (change)="onImageSelected($event, 'imageFirst')">
+                <div *ngIf="imageUriFirst" class="mt-2">
+                  <img [src]="imageUriFirst" alt="Image First" class="img-fluid rounded" style="max-height: 150px;">
+                </div>
               </div>
-              <div class="mt-3">
-                <img *ngIf="imageUri" [src]="imageUri" alt="Selected Tour Image" class="mt-3 img-fluid rounded"
-                  style="max-height: 300px;">
-                <img *ngIf="!imageUri" src="assets/img/DEFAULT/tour-default.png" alt="Default Tour Image"
-                  class="mt-3 img-fluid rounded" style="max-height: 300px;">
+              
+              <!-- Ảnh Second -->
+              <div class="form-group">
+                <label for="imageSecond">Tải Ảnh Thứ Hai</label>
+                <input type="file" class="form-control-file" id="imageSecond" (change)="onImageSelected($event, 'imageSecond')">
+                <div *ngIf="imageUriSecond" class="mt-2">
+                  <img [src]="imageUriSecond" alt="Image Second" class="img-fluid rounded" style="max-height: 150px;">
+                </div>
               </div>
-              <button type="button" class="m-1 btn btn-secondary" (click)="closeFormUpdate()">Cancel</button>
-              <button type="submit" class="m-1 btn btn-primary">Save</button>
+              
+              <!-- Ảnh Third -->
+              <div class="form-group">
+                <label for="imageThird">Tải Ảnh Thứ Ba</label>
+                <input type="file" class="form-control-file" id="imageThird" (change)="onImageSelected($event, 'imageThird')">
+                <div *ngIf="imageUriThird" class="mt-2">
+                  <img [src]="imageUriThird" alt="Image Third" class="img-fluid rounded" style="max-height: 150px;">
+                </div>
+              </div>
+              
+              <!-- Ảnh Map -->
+              <div class="form-group">
+                <label for="imageMap">Tải Ảnh Bản Đồ</label>
+                <input type="file" class="form-control-file" id="imageMap" (change)="onImageSelected($event, 'imageMap')">
+                <div *ngIf="imageUriMap" class="mt-2">
+                  <img [src]="imageUriMap" alt="Image Map" class="img-fluid rounded" style="max-height: 150px;">
+                </div>
+              </div>
+              
+              <button type="button" class="m-1 btn btn-secondary" (click)="closeFormUpdate()">Hủy</button>
+              <button type="submit" class="m-1 btn btn-primary">Lưu</button>
             </div>
-            </div>
-          </form>
+          </div>
+        </form>
       </div>
     </div>
   </div>
 </div>
+
 
 <ng-template #noData>
   <app-no-data-found></app-no-data-found>

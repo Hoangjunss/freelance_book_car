@@ -24,6 +24,10 @@ export class TourComponent implements OnInit{
   updateTourRequest: UpdateTourRequest = new UpdateTourRequest();
   updateTourResponse: UpdateTourResponse = new UpdateTourResponse();
 
+  imageUriFirst?: string = 'assets/img/DEFAULT/tour-default.png';
+  imageUriSecond?: string = 'assets/img/DEFAULT/tour-default.png';
+  imageUriThird?: string = 'assets/img/DEFAULT/tour-default.png';
+  imageUriMap?: string = 'assets/img/DEFAULT/tour-default.png';
 
   imageUrl: string = 'assets/img/DEFAULT/tour-default.png';
   getALlTour: GetTourResponse[] = [];
@@ -39,6 +43,13 @@ export class TourComponent implements OnInit{
   imageId?: string;
   imageFile!: File;
   imageUri?: string = 'assets/img/DEFAULT/tour-default.png';
+
+  // Các tệp ảnh được chọn
+  imageFirstFile!: File;
+  imageSecondFile!: File;
+  imageThirdFile!: File;
+  imageMapFile!: File;
+
 
   searchQuery: string='';
 
@@ -78,38 +89,42 @@ export class TourComponent implements OnInit{
     this.isDisplayCreate = true;
   }
 
-  closeFormCreate(){
+  // Phương thức đóng form tạo tour
+  closeFormCreate() {
     this.isDisplayCreate = false;
+    // Reset form và ảnh
+    this.createTourRequest = new CreateTourRequest();
+    this.imageUriFirst = 'assets/img/DEFAULT/tour-default.png';
+    this.imageUriSecond = 'assets/img/DEFAULT/tour-default.png';
+    this.imageUriThird = 'assets/img/DEFAULT/tour-default.png';
+    this.imageUriMap = 'assets/img/DEFAULT/tour-default.png';
   }
 
-  displayFromUpdate(tour: GetTourResponse){
+  displayFormUpdate(tour: GetTourResponse){
     this.updateTourRequest = {
       id: tour.id,
-      name: tour.name,
-      description: tour.description,
-      startLocation: tour.startLocation,
-      endLocation: tour.endLocation,
-      isActive: tour.isActive,
+      name: tour.name || '',
+      description: tour.description || '',
+      startLocation: tour.startLocation || '',
+      endLocation: tour.endLocation || '',
+      isActive: tour.isActive || false,
+      // Các trường ảnh sẽ được xử lý thông qua FormData
     };
-    this.imageUri = tour.imageFirst;
+    this.imageUriFirst = tour.imageFirst ? tour.imageFirst : 'assets/img/DEFAULT/tour-default.png';
+    this.imageUriSecond = tour.imageSecond ? tour.imageSecond : 'assets/img/DEFAULT/tour-default.png';
+    this.imageUriThird = tour.imageThird ? tour.imageThird : 'assets/img/DEFAULT/tour-default.png';
+    this.imageUriMap = tour.imageMap ? tour.imageMap : 'assets/img/DEFAULT/tour-default.png';
     this.isDisplayUpdate = true;
   }
 
-  closeFormUpdate(){
-    this.imageUri = 'assets/img/DEFAULT/tour-default.png';
+  closeFormUpdate() {
     this.isDisplayUpdate = false;
-  }
-
-  onImageSelected(event: any) {
-    const file: File = event.target.files[0];
-    if (file) {
-      this.imageFile = file;
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.imageUri = reader.result as string;
-      };
-      reader.readAsDataURL(file);
-    }
+    // Reset form và ảnh
+    this.updateTourRequest = new UpdateTourRequest();
+    this.imageUriFirst = 'assets/img/DEFAULT/tour-default.png';
+    this.imageUriSecond = 'assets/img/DEFAULT/tour-default.png';
+    this.imageUriThird = 'assets/img/DEFAULT/tour-default.png';
+    this.imageUriMap = 'assets/img/DEFAULT/tour-default.png';
   }
 
   createFileFromUrl(url: string, fileName: string): Promise<File> {
@@ -147,10 +162,12 @@ export class TourComponent implements OnInit{
 
 
 
-  //On Submit
+  // On Submit
   onCreate() {
     console.log(this.createTourRequest);
-    if (!this.createTourRequest?.name || !this.createTourRequest?.startLocation || !this.createTourRequest?.description) {
+    if (!this.createTourRequest?.name || 
+        !this.createTourRequest?.startLocation || 
+        !this.createTourRequest?.description) {
       this.notificationComponent.showNotification('error', 'Vui lòng điền đầy đủ thông tin');
       return;
     }
@@ -158,42 +175,67 @@ export class TourComponent implements OnInit{
     if(this.createTourRequest.isActive == undefined ){
       this.createTourRequest.isActive = false;
     }
-  
+
     const formData = new FormData();
     formData.append('name', this.createTourRequest.name || '');
     formData.append('description', this.createTourRequest.description || '');
     formData.append('startLocation', this.createTourRequest.startLocation || '');
     formData.append('endLocation', this.createTourRequest.endLocation || '');
     formData.append('isActive', this.createTourRequest.isActive ? 'true' : 'false');
-  
-    if (this.imageFile != undefined) {
-      formData.append('image', this.imageFile);
-    }else{
-      this.notificationComponent.showNotification('error', 'Vui lòng chọn ảnh thay thế ảnh minh họa');
+
+    // Kiểm tra và thêm từng ảnh vào FormData
+    if (this.imageFirstFile) {
+      formData.append('imageFirst', this.imageFirstFile);
+    } else {
+      this.notificationComponent.showNotification('error', 'Vui lòng chọn ảnh đầu tiên');
       return;
     }
 
-    console.log(this.createTourRequest);
+    if (this.imageSecondFile) {
+      formData.append('imageSecond', this.imageSecondFile);
+    } else {
+      this.notificationComponent.showNotification('error', 'Vui lòng chọn ảnh thứ hai');
+      return;
+    }
+
+    if (this.imageThirdFile) {
+      formData.append('imageThird', this.imageThirdFile);
+    } else {
+      this.notificationComponent.showNotification('error', 'Vui lòng chọn ảnh thứ ba');
+      return;
+    }
+
+    if (this.imageMapFile) {
+      formData.append('imageMap', this.imageMapFile);
+    } else {
+      this.notificationComponent.showNotification('error', 'Vui lòng chọn ảnh bản đồ');
+      return;
+    }
+
+    console.log('FormData contents:');
     formData.forEach((value, key) => {
       console.log(`${key}: ${value}`);
     });
-  
+
     this.tourService.createTour(formData).subscribe({
       next: (data) => {
         this.createTourResponse = data;
         if (this.createTourResponse) {
           console.log('Tour created successfully:', this.createTourResponse);
-          this.notificationComponent.showNotification('success', 'tạo tour thành công');
+          this.notificationComponent.showNotification('success', 'Tạo tour thành công');
           window.location.reload();
         }
       },
       error: (err) => {
         console.error('Error creating tour:', err.message);
+        this.notificationComponent.showNotification('error', 'Có lỗi xảy ra khi tạo tour');
       }
     });
   }
 
-  onUpdate(){
+
+
+  onUpdate() {
     console.log(this.updateTourRequest);
     if(!this.updateTourRequest?.id){
       this.notificationComponent.showNotification('error', 'Không tìm thấy tour cần cập nhật');
@@ -215,27 +257,39 @@ export class TourComponent implements OnInit{
     formData.append('startLocation', this.updateTourRequest.startLocation || '');
     formData.append('endLocation', this.updateTourRequest.endLocation || '');
     formData.append('isActive', this.updateTourRequest.isActive ? 'true' : 'false');
-  
-    if (this.imageFile != undefined) {
-      formData.append('image', this.imageFile);
+
+    // Kiểm tra và thêm từng ảnh vào FormData nếu có thay đổi
+    if (this.imageFirstFile) {
+      formData.append('imageFirst', this.imageFirstFile);
     }
 
-    console.log(this.updateTourRequest);
+    if (this.imageSecondFile) {
+      formData.append('imageSecond', this.imageSecondFile);
+    }
+
+    if (this.imageThirdFile) {
+      formData.append('imageThird', this.imageThirdFile);
+    }
+
+    if (this.imageMapFile) {
+      formData.append('imageMap', this.imageMapFile);
+    }
+
+    console.log('FormData contents:');
     formData.forEach((value, key) => {
       console.log(`${key}: ${value}`);
     });
 
     this.tourService.updateTour(formData).subscribe({
-      next: (data) => {
-        // this.updateTourRequest = data; Lỗi cần sửa lại
-        if (this.updateTourRequest) {
-          console.log('Tour created successfully:', this.updateTourRequest);
-          this.notificationComponent.showNotification('success', 'Cập nhật tour thành công');
-          window.location.reload();
-        }
+      next: (data: UpdateTourResponse) => {
+        // Không nên gán data vào updateTourRequest vì chúng khác loại
+        console.log('Tour updated successfully:', data);
+        this.notificationComponent.showNotification('success', 'Cập nhật tour thành công');
+        window.location.reload();
       },
       error: (err) => {
-        console.error('Error creating tour:', err.message);
+        console.error('Error updating tour:', err.message);
+        this.notificationComponent.showNotification('error', 'Có lỗi xảy ra khi cập nhật tour');
       }
     });    
   }
@@ -254,6 +308,50 @@ export class TourComponent implements OnInit{
     })
   }
 
+  /**
+   * Xử lý khi người dùng chọn ảnh
+   * @param event Sự kiện chọn ảnh
+   * @param imageType Loại ảnh đang được chọn ('imageFirst', 'imageSecond', 'imageThird', 'imageMap')
+   */
+  onImageSelected(event: any, imageType: string) {
+    const file: File = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        switch(imageType) {
+          case 'imageFirst':
+            this.imageUriFirst = reader.result as string;
+            break;
+          case 'imageSecond':
+            this.imageUriSecond = reader.result as string;
+            break;
+          case 'imageThird':
+            this.imageUriThird = reader.result as string;
+            break;
+          case 'imageMap':
+            this.imageUriMap = reader.result as string;
+            break;
+        }
+      };
+      reader.readAsDataURL(file);
+
+      // Lưu trữ tệp ảnh vào biến tương ứng
+      switch(imageType) {
+        case 'imageFirst':
+          this.imageFirstFile = file;
+          break;
+        case 'imageSecond':
+          this.imageSecondFile = file;
+          break;
+        case 'imageThird':
+          this.imageThirdFile = file;
+          break;
+        case 'imageMap':
+          this.imageMapFile = file;
+          break;
+      }
+    }
+  }
 
 
 

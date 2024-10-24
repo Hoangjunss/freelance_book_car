@@ -8,4 +8,5 @@ export class CreateTourResponse{
     imageFirst?: string;
     imageSecond?: string;
     imageThird?: string;
+    imageMap?: string;
 }
