@@ -27,6 +27,7 @@ public class PaypalController {
     @PostMapping("/pay")
     public ResponseEntity<String> payment(@ModelAttribute("order") Order order) {
         try {
+            System.out.println(order.toString());
             Payment payment = service.createPayment(order.getPrice(), order.getCurrency(), order.getMethod(),
                     order.getIntent(), order.getDescription(), "http://localhost:9090/" + CANCEL_URL,
                     "http://localhost:9090/" + SUCCESS_URL + "?orderId=" + order.getId());

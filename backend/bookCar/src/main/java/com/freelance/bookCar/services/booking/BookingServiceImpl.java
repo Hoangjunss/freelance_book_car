@@ -712,6 +712,10 @@ public class BookingServiceImpl implements BookingService{
     public void deleteBookingDetail(Integer id) {
         BookingDetail bookingDetail=bookingDetailRepository.findById(id).orElseThrow();
         bookingDetailRepository.delete(bookingDetail);
+        Booking booking = modelMapper.map(findById(bookingDetail.getIdBooking()), Booking.class);
+        Double newTotalPrice = bookingDetailRepository.sumTotalPriceByBookingId(bookingDetail.getIdBooking());
+        booking.setTotalPrice(newTotalPrice);
+        bookingRepository.save(booking);
     }
 
     @Override

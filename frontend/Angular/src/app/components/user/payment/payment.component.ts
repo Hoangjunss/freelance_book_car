@@ -85,8 +85,9 @@ export class PaymentComponent implements OnInit {
               next: (schedule) => {
                 if (schedule) {
                   product.product = schedule;
-                  console.log("product", product);
-                  this.tourService.getTourById(product.idTour).subscribe({
+                  console.log("88: ", product);
+
+                  this.tourService.getTourById(product.product.idTour).subscribe({
                     next: (tour) => {
                       if (tour) {
                         console.log("tour", tour);
@@ -117,7 +118,7 @@ export class PaymentComponent implements OnInit {
 
   payWithVNPAY() {
     if (this.totalPrice && this.idBooking) {
-      const convertedPrice = Math.round(this.totalPrice * 100);
+      const convertedPrice = Math.round(this.totalPrice);
       this.vnpayService.payWithVNPAY(convertedPrice, this.idBooking);
     } else {
       console.error('No valid totalPrice or idBooking found');
@@ -126,11 +127,15 @@ export class PaymentComponent implements OnInit {
 
   payWithPayPal() {
     const formData = new FormData();
-    formData.append('price', this.totalPrice.toString());
+    formData.append('price', '1.00');
     formData.append('currency', 'USD');
     formData.append('method', 'paypal');
-    formData.append('intent', 'SALE');
+    formData.append('intent', 'sale');
     formData.append('description', 'Thanh toán đơn hàng');
+
+    formData.forEach((value, key) => {
+      console.log(`${key}: ${value}`);
+    });
 
     this.paypalService.payWithPayPal(formData).subscribe({
 

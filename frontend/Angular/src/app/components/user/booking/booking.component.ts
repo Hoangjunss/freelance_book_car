@@ -461,7 +461,11 @@ export class BookingComponent implements OnInit {
       next: (data) => {
         console.log('Voucher Data:', data);
         if (data) {
-          if (data.discountRate != null && data.endDate >= new Date()) {
+          console.log(data);
+          console.log(new Date());
+          const voucherEndDate = new Date(data.endDate);
+          const currentDate = new Date();
+          if (data.discountRate != null && voucherEndDate >= currentDate) {
             // Tính discountAmount: discountRate * totalPrice
             this.discountAmount = (data.discountRate / 100) * this.totalPrice;
             this.newTotalPrice = this.totalPrice - this.discountAmount;
