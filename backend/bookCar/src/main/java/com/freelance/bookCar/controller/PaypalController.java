@@ -31,8 +31,8 @@ public class PaypalController {
 
         try {
             Payment payment = service.createPayment(order.getPrice(), order.getCurrency(), order.getMethod(),
-                    order.getIntent(), order.getDescription(), "http://localhost:9090" + CANCEL_URL,
-                    "http://localhost:9090" + SUCCESS_URL + "?orderId=" + order.getId());
+                    order.getIntent(), order.getDescription(), "http://localhost:4200/payment-cancel" + CANCEL_URL,
+                    "http://localhost:4200/payment-success" + "?orderId=" + order.getId());
             for (Links link : payment.getLinks()) {
                 if (link.getRel().equals("approval_url")) {
                     // Trả về URL phê duyệt kèm theo orderId
