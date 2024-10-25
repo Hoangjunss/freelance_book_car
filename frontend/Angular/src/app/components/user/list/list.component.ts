@@ -39,7 +39,6 @@ export class ListComponent implements OnInit {
       next: (response) => {
         if (response) {
           this.tours = response.filter(tour => tour.isActive === true);  
-          console.log(this.tours);
           this.groupToursByStartLocation();
           this.navButtons = this.getAllTourKeys(); 
         } else {
