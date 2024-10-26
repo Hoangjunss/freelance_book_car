@@ -53,6 +53,8 @@ export class CartComponent implements OnInit {
   idBooking: number | null = null;
   isLoggedIn: boolean = false;
   isModalVisible = false;
+  isDeleteModalVisible = false;
+  productToDelete: any;
 
   @ViewChild(NotificationComponent) notificationComponent!: NotificationComponent;
 
@@ -181,10 +183,10 @@ export class CartComponent implements OnInit {
                 next: (hotelBookingResponse) => {
                   p.startDate = hotelBookingResponse.startDate;
                   p.endDate = hotelBookingResponse.endDate;
-                  console.log("182 "+JSON.stringify(hotelBookingResponse));
+                  console.log("182 " + JSON.stringify(hotelBookingResponse));
                   this.hotelService.getHotelDetailById(hotelBookingResponse.hotel).subscribe({
                     next: (hotelResponse) => {
-                      console.log("185 "+JSON.stringify(hotelResponse));
+                      console.log("185 " + JSON.stringify(hotelResponse));
                       p.name = hotelResponse.name;
                       p.image = hotelResponse.image;
                       p.location = hotelResponse.location;
@@ -308,12 +310,12 @@ export class CartComponent implements OnInit {
   }
 
   onConfirmed() {
-    this.isModalVisible = false; 
+    this.isModalVisible = false;
     this.router.navigate(['/booking']);
   }
 
   onClosed() {
-    this.isModalVisible = false; 
+    this.isModalVisible = false;
 
   }
 
@@ -354,19 +356,27 @@ export class CartComponent implements OnInit {
   }
 
   removeProduct(product: any) {
-    const confirmed = window.confirm('Bạn có chắc chắn muốn xóa sản phẩm này không?');
-    if (confirmed) {
-      this.products = this.products.filter(p => p.idBookingDetail !== product.idBookingDetail);
-      this.bookingService.deleteBookingDetail(product.idBookingDetail).subscribe({
-        next: (response) => {
-          console.log('Sản phẩm đã được xóa thành công:', response);
-        },
-        error: (error) => {
-          console.log('Lỗi khi xóa sản phẩm:', error);
-        }
-      });
-    }
+    this.productToDelete = product;
+    this.isDeleteModalVisible = true;
   }
+
+  onDeleteConfirmed() {
+    this.products = this.products.filter(p => p.idBookingDetail !== this.productToDelete.idBookingDetail);
+    this.bookingService.deleteBookingDetail(this.productToDelete.idBookingDetail).subscribe({
+      next: (response) => {
+        console.log('Sản phẩm đã được xóa thành công:', response);
+        this.isDeleteModalVisible = false;
+      },
+      error: (error) => {
+        console.log('Lỗi khi xóa sản phẩm:', error);
+        this.isDeleteModalVisible = false;
+      }
+    });
+  }
+  onDeleteClosed() {
+    this.isDeleteModalVisible = false;
+  }
+
 
   isPastStartDate(startDate: string): boolean {
     const now = new Date();

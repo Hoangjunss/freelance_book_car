@@ -65,3 +65,6 @@
 <app-custom-modal [isVisible]="isModalVisible" title="Xác nhận thanh toán"
     message="Bạn có chắc chắn muốn thanh toán không?" (confirmed)="onConfirmed()" (closed)="onClosed()">
 </app-custom-modal>
+<app-custom-modal [isVisible]="isDeleteModalVisible" title="Xác nhận xóa"
+    message="Bạn có chắc chắn muốn xóa sản phẩm này không?" (confirmed)="onDeleteConfirmed()" (closed)="onDeleteClosed()">
+</app-custom-modal>

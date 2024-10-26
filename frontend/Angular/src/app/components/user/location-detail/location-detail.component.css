@@ -832,6 +832,11 @@ p{
         margin-top: 80px !important;
     }
 
+
+    .hero-section{
+        display: grid !important;
+    }
+
     .carousel-inner{
         display: none !important;
     }

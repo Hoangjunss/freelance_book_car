@@ -1,3 +1,7 @@
+<div *ngIf="isLoading" class="loading-overlay">
+    <div class="loading-spinner"></div>
+    <div class="loading-message">Đang xử lý yêu cầu của bạn, vui lòng đợi...</div>
+  </div>
 <app-notification></app-notification>
 <div class="container">
     <div class="progress-container">
@@ -49,7 +53,7 @@
                                 <div class="col-sm-8 form-link">
                                     <a>{{user.phone}}</a>
                                 </div>
-                                <div class="col-sm-2 text-right">
+                                <div class="col-sm-2 text-right desktop-buttons">
                                     <span class="btn-edit" (click)="editUser(i)">Chỉnh sửa</span>
                                     <span class="btn-delete" (click)="deleteUser(i)"
                                         style="margin-right: 10px;">Xóa</span>
@@ -59,6 +63,10 @@
                                 <label class="col-sm-2 col-form-label">Email <span class="required">*</span></label>
                                 <div class="col-sm-8 form-link">
                                     <a>{{user.email}}</a>
+                                </div>
+                                <div class="col-sm-2 text-right mobile-buttons">
+                                    <span class="btn-edit" (click)="editUser(i)">Chỉnh sửa</span>
+                                    <span class="btn-delete" (click)="deleteUser(i)" style="margin-right: 10px;">Xóa</span>
                                 </div>
                             </div>
                         </div>

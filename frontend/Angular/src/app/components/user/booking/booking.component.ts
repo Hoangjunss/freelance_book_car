@@ -66,6 +66,7 @@ export class BookingComponent implements OnInit {
   originalUserJoin: CreateUserJoinRequest;
   originalUserInfo: CreateUserInfoRequest;
   formInvalid: boolean = false;
+  isLoading: boolean = false;
 
   getVoucher: GetVoucherResponse = new GetVoucherResponse();
   voucherCode: string = '';
@@ -368,7 +369,7 @@ export class BookingComponent implements OnInit {
 
     console.log(this.newTotalPrice);
 
-
+    this.isLoading = true; 
     formData.append('id', idBooking);
     formData.append('idUser', idUser);
     formData.append('dateBook', new Date().toISOString().slice(0, 19));
@@ -386,6 +387,7 @@ export class BookingComponent implements OnInit {
     this.bookingService.order(formData).subscribe({
       next: (response) => {
         if (response) {
+          this.isLoading = false;
           this.notificationComponent.showNotification('info', 'Thông tin của bạn đã được lưu. Bạn sẽ được chuyển đến trang thanh toán để hoàn tất giao dịch.');
           setTimeout(() => {
             this.router.navigate(['/payment']);
@@ -393,6 +395,7 @@ export class BookingComponent implements OnInit {
         }
       },
       error: (error) => {
+        this.isLoading = false;
         console.log('Payment error:', error);
       }
     })
