@@ -9,8 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+@RestController
 @RequestMapping("api/v1/paypal")
-@Controller
 public class PaypalController {
 
     @Autowired
@@ -32,7 +32,7 @@ public class PaypalController {
         try {
             Payment payment = service.createPayment(order.getPrice(), order.getCurrency(), order.getMethod(),
                     order.getIntent(), order.getDescription(), "http://localhost:4200/payment-cancel" + CANCEL_URL,
-                    "http://localhost:4200/payment-success" + "?orderId=" + order.getId());
+                    "http://localhost:4200/payment-success" + "?vnp_ResponseCode=00&orderId=" + order.getId());
             for (Links link : payment.getLinks()) {
                 if (link.getRel().equals("approval_url")) {
                     // Trả về URL phê duyệt kèm theo orderId
@@ -59,7 +59,7 @@ public class PaypalController {
             Payment payment = service.executePayment(paymentId, payerId, orderId);
             System.out.println(payment.toJSON());
             if (payment.getState().equals("approved")) {
-                return "redirect:http://localhost:4200/payment-success";
+                return "redirect:http://localhost:4200/payment-success?vnp_ResponseCode=00&paymentId"+paymentId+"&payerId"+payerId+"&orderId"+orderId;
             }
         } catch (PayPalRESTException e) {
             System.out.println(e.getMessage());

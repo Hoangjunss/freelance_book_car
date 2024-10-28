@@ -1,5 +1,6 @@
 package com.freelance.bookCar.controller;
 
+import com.freelance.bookCar.dto.ApiResponse;
 import com.freelance.bookCar.services.VNPAYService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +23,17 @@ public class VNPAYController {
        return  ResponseEntity.ok(url);
     }
     @GetMapping("/returnPay")
-    public ResponseEntity<Boolean> paymentCallback(@RequestParam Map<String, String> queryParams) throws IOException {
-   String response=vnpayService.returnPay(queryParams.get("vnp_ResponseCode"),queryParams.get("contractId"));
-        return  ResponseEntity.ok(false);
+    public ResponseEntity<ApiResponse<String>> paymentCallback(@RequestParam Map<String, String> queryParams) throws IOException {
+
+        String response=vnpayService.returnPay(queryParams.get("vnp_ResponseCode"),queryParams.get("contractId"));
+        ApiResponse<String> apiResponse;
+        if ("success".equals(response)) {
+            apiResponse = new ApiResponse<>(true, "Thanh toán thành công.", "success");
+        } else {
+            apiResponse = new ApiResponse<>(false, "Thanh toán thất bại. Vui lòng thử lại.", "failure");
         }
+
+        return ResponseEntity.ok(apiResponse);
+    }
 
     }
