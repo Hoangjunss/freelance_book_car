@@ -30,7 +30,7 @@ export class VnpayService {
       }
     );
   }
-  handleVNPAYCallback(queryParams: any): Observable<boolean> {
+  handleVNPAYCallback(queryParams: any): Observable<any> {
     const headers = this.createAuthorizationHeader();
     return this.httpClient.get<boolean>(`${this.baseUrl}/returnPay`, {
       headers: headers,

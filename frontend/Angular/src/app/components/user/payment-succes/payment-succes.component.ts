@@ -23,86 +23,105 @@ export class PaymentSuccesComponent implements OnInit {
     private title: Title,
     private paypalService: PaypalService,
     @Inject(PLATFORM_ID) private platformId: Object // Inject PLATFORM_ID
-  ) { this.title.setTitle('Thanh toán thành công'); }
+  ) { this.title.setTitle('Kết quả thanh toán'); }
 
   ngOnInit(): void {
-    // Lấy vnp_ResponseCode từ URL
+    // Lấy các tham số từ URL
     this.route.queryParams.subscribe(params => {
       const vnp_ResponseCode = params['vnp_ResponseCode'];
-      console.log(vnp_ResponseCode);
-      this.handleVNPAYCallback(vnp_ResponseCode);
+      const paymentId = params['paymentId'];
+      const payerId = params['PayerID'];
+      const contractId = params['contractId'];
+      const orderId = params['orderId'];
       
+      console.log('vnp_ResponseCode:', vnp_ResponseCode, 'paymentId:', paymentId, 'payerId:', payerId);
+      if (vnp_ResponseCode && contractId) {
+        // Xử lý callback của VNPAY
+        this.handleVNPAYCallback(vnp_ResponseCode, contractId);
+      } else if (paymentId && payerId && orderId) {
+        // Xử lý callback của PayPal
+        this.handlePayPalCallback(paymentId, payerId, orderId);
+      } else {
+        // Nếu không có tham số phù hợp
+        this.handlePaymentFailure('Không tìm thấy thông tin thanh toán.');
+      }
     });
   }
 
-  handleVNPAYCallback(vnp_ResponseCode: string | null) {
+  handleVNPAYCallback(vnp_ResponseCode: string, contractId: string) {
     if (isPlatformBrowser(this.platformId)) {
       const icon = document.querySelector('.status-icon');
       const header = document.querySelector('.status-title');
       const paragraph = document.querySelector('.status-message');
   
-      if (vnp_ResponseCode === '00') {
+      if (vnp_ResponseCode === '00' && contractId) {
         console.log('Starting VNPAY callback...');
-        this.vnpayService.handleVNPAYCallback(vnp_ResponseCode).subscribe({
+        const queryParams = { vnp_ResponseCode, contractId }; 
+        this.vnpayService.handleVNPAYCallback(queryParams).subscribe({
           next: (response: any) => {
-            const isSuccess = (response === true || response === 'true');
+            const parsedResponse = JSON.parse(response);
+            const isSuccess = parsedResponse.success === true;
             console.log('Payment response:', response, 'Type:', typeof response, 'isSuccess:', isSuccess);
   
             if (isSuccess) {
-              console.log('Payment success!');
-              if (icon && header && paragraph) {
-                this.renderer.setProperty(header, 'innerHTML', 'Thanh toán thành công!');
-                this.renderer.setProperty(paragraph, 'innerHTML', 'Cảm ơn bạn đã mua hàng. Đơn hàng của bạn đã được xử lý thành công. Chúng tôi sẽ gửi xác nhận đến email của bạn sớm nhất có thể.');
-                this.renderer.addClass(icon, 'bi-check-circle-fill');
-                this.renderer.addClass(icon, 'success-icon');
-                this.isLoading = false;
-              }
+              this.handlePaymentSuccess(icon, header, paragraph);
             } else {
-              console.log('Payment failed!');
-              // Nếu phản hồi là false (thanh toán thất bại)
-              if (icon && header && paragraph) {
-                this.renderer.setProperty(header, 'innerHTML', 'Thanh toán thất bại!');
-                this.renderer.setProperty(paragraph, 'innerHTML', 'Vui lòng thử lại sau hoặc liên hệ với bộ phận hỗ trợ của chúng tôi.');
-                this.renderer.addClass(icon, 'bi-x-circle-fill');
-                this.renderer.addClass(icon, 'fail-icon');
-                this.isLoading = false;
-              }
+              this.handlePaymentFailure('Thanh toán thất bại. Vui lòng thử lại sau.');
             }
           },
           error: (err) => {
             console.error('Payment failed:', err);
-            if (icon && header && paragraph) {
-              this.renderer.setProperty(header, 'innerHTML', 'Thanh toán thất bại!');
-              this.renderer.setProperty(paragraph, 'innerHTML', 'Vui lòng thử lại sau hoặc liên hệ với bộ phận hỗ trợ của chúng tôi.');
-              this.renderer.addClass(icon, 'bi-x-circle-fill');
-              this.renderer.addClass(icon, 'fail-icon');
-              this.isLoading = false;
-            }
+            this.handlePaymentFailure('Thanh toán thất bại. Vui lòng thử lại sau.');
           }
         });
       } else {
-        if (icon && header && paragraph) {
-          this.renderer.setProperty(header, 'innerHTML', 'Thanh toán thất bại!');
-          this.renderer.setProperty(paragraph, 'innerHTML', 'Vui lòng thử lại sau hoặc liên hệ với bộ phận hỗ trợ của chúng tôi.');
-          this.renderer.addClass(icon, 'bi-x-circle-fill');
-          this.renderer.addClass(icon, 'fail-icon');
-          this.isLoading = false;
-        }
+        this.handlePaymentFailure('Thanh toán thất bại. Vui lòng thử lại sau.');
       }
     }
   }
 
-  handlePayPalCallback() {
+  handlePayPalCallback(paymentId: string, payerId: string, orderId: string) {
     if (isPlatformBrowser(this.platformId)) {
       const icon = document.querySelector('.status-icon');
       const header = document.querySelector('.status-title');
       const paragraph = document.querySelector('.status-message');
 
       console.log('Starting PayPal callback...');
-      this.paypalService.handlePayPalSuccess('paymentId', 'payerId');
+        this.paypalService.handlePayPalSuccess(paymentId, payerId,orderId).subscribe({
+          next: (response: any) => {
+            console.log('PayPal success:', response);
+            this.handlePaymentSuccess(icon, header, paragraph);
+          },
+          error: (err) => {
+            console.error('Payment failed:', err);
+            this.handlePaymentFailure('Thanh toán thất bại. Vui lòng thử lại sau.');
+          }
+        }
+      );
     }
   }
-  
-  
-  
+
+  handlePaymentSuccess(icon: Element | null, header: Element | null, paragraph: Element | null) {
+    if (icon && header && paragraph) {
+      this.renderer.setProperty(header, 'innerHTML', 'Thanh toán thành công!');
+      this.renderer.setProperty(paragraph, 'innerHTML', 'Cảm ơn bạn đã mua hàng. Đơn hàng của bạn đã được xử lý thành công. Chúng tôi sẽ gửi xác nhận đến email của bạn sớm nhất có thể.');
+      this.renderer.addClass(icon, 'bi-check-circle-fill');
+      this.renderer.addClass(icon, 'success-icon');
+      this.isLoading = false;
+    }
+  }
+
+  handlePaymentFailure(message: string) {
+    const icon = document.querySelector('.status-icon');
+    const header = document.querySelector('.status-title');
+    const paragraph = document.querySelector('.status-message');
+
+    if (icon && header && paragraph) {
+      this.renderer.setProperty(header, 'innerHTML', 'Thanh toán thất bại!');
+      this.renderer.setProperty(paragraph, 'innerHTML', message);
+      this.renderer.addClass(icon, 'bi-x-circle-fill');
+      this.renderer.addClass(icon, 'fail-icon');
+      this.isLoading = false;
+    }
+  }
 }

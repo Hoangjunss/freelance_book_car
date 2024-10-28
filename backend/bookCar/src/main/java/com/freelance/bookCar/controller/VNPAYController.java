@@ -25,7 +25,19 @@ public class VNPAYController {
     @GetMapping("/returnPay")
     public ResponseEntity<ApiResponse<String>> paymentCallback(@RequestParam Map<String, String> queryParams) throws IOException {
 
+        System.out.println("Query Params Keys: " + queryParams.keySet());
+        queryParams.forEach((key, value) -> System.out.println("Key: " + key + ", Value: " + value));
+
+
+        String vnp_ResponseCode = queryParams.get("vnp_ResponseCode");
+        String contractId = queryParams.get("contractId");
+
+        // In ra để xác minh giá trị
+        System.out.println("vnp_ResponseCode: " + vnp_ResponseCode);
+        System.out.println("contractId: " + contractId);
+
         String response=vnpayService.returnPay(queryParams.get("vnp_ResponseCode"),queryParams.get("contractId"));
+        System.out.println("Response from VNPAY: " + response);
         ApiResponse<String> apiResponse;
         if ("success".equals(response)) {
             apiResponse = new ApiResponse<>(true, "Thanh toán thành công.", "success");

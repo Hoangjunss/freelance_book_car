@@ -127,7 +127,8 @@ export class PaymentComponent implements OnInit {
 
   payWithPayPal() {
     const formData = new FormData();
-    formData.append('price', '1.50');
+    formData.append('id', this.idBooking.toString());
+    formData.append('price', this.totalPrice.toString());
     formData.append('currency', 'USD');
     formData.append('method', 'paypal');
     formData.append('intent', 'sale');

@@ -29,20 +29,17 @@ export class PaypalService {
     );
   }
 
-  handlePayPalSuccess(paymentId: string, payerId: string) {
+  handlePayPalSuccess(paymentId: string, payerId: string,orderId: string): Observable<any> {
     const headers = this.createAuthorizationHeader();
     return this.httpClient.get(`${this.baseUrl}/pay/success`, {
-      params: { paymentId, PayerID: payerId },
+      params: { paymentId, PayerID: payerId,orderId },
       headers: headers,
-    }).subscribe(
-      (response) => {
-        console.log('Payment successful:', response);
-        this.router.navigate(['/payment-success']);
-      },
-      (error) => {
-        console.error('Payment failed:', error);
-        this.router.navigate(['/payment-failed']);
-      }
+      responseType: 'text' as 'json'
+    }).pipe(
+      map((response: any) => {
+        console.log('PayPal success:', response);
+        return response;
+      })
     );
   }
 
