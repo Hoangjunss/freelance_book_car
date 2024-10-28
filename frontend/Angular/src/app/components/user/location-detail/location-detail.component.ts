@@ -57,7 +57,7 @@ export class LocationDetailComponent {
         this.getTourDetail(parseInt(this.locationId));
       }
     });
-    this.backgroundImage = 'http://res.cloudinary.com/dgts7tmnb/image/upload/v1727963818/csdch7mi171qddwizcxq.png';
+    
   }
 
   getTourDetail(id: number) {
@@ -65,6 +65,8 @@ export class LocationDetailComponent {
       next: (response) => {
         if (response) {
           this.locations = response;
+          this.backgroundImage = this.locations.imageSecond;
+          console.log("Location",this.locations);
           if (this.locations.id !== undefined && this.locations.id !== null) {
             this.getTourScheduleByidTour(this.locations.id);
             if (this.locations.startLocation) {

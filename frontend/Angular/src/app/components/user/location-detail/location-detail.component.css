@@ -54,6 +54,7 @@
 .hero-section {
     background-size: cover;
     background-position: center;
+
     height: 400px;
     display: flex;
     padding: 20px;

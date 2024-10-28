@@ -18,7 +18,7 @@ import { GetPageResponse } from '../../../models/response/home/get-page-response
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     UserService
   ],
-  imports: [CarouselModule, CommonModule, LocationListComponent, LocationDetailComponent,HttpClientModule,RouterLink],
+  imports: [CarouselModule, CommonModule, LocationListComponent, LocationDetailComponent, HttpClientModule, RouterLink],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -30,16 +30,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
   selectedLocation: string | null = null;
   isDropdownVisible: { [key: string]: boolean } = {};
   homeData: GetPageResponse = new GetPageResponse();
-  detailData: GetPageResponse [] = [];
+  detailData: GetPageResponse[] = [];
   imageDetail: GetPageResponse[] = [];
   footerData: GetPageResponse = new GetPageResponse();
   images: any = [];
 
   tourismlink = '';
 
-  constructor(private router: Router,private title:Title,private homeService: HomeService) {
+  constructor(private router: Router, private title: Title, private homeService: HomeService) {
     this.title.setTitle("Trang chủ");
-   }
+  }
 
   ngAfterViewInit(): void {
     this.initIntersectionObserver();
@@ -50,16 +50,38 @@ export class HomeComponent implements OnInit, AfterViewInit {
       { label: 'Thuê Khách Sạn', icon: 'fa-solid fa-hotel', component: LocationListComponent },
       { label: 'Đặt Vé', icon: 'fa-solid fa-ticket', component: LocationDetailComponent }
     ];
-    this.selectedTab = this.tabs.find(tab => tab.label === 'Đặt Vé') || this.tabs[0]; // Chọn 'Đặt Vé' mặc định
+    this.selectedTab = this.tabs.find(tab => tab.label === 'Đặt Vé') || this.tabs[0];
+    const storedHomeData = sessionStorage.getItem('homeData');
+    const storedDetailData = sessionStorage.getItem('detailData');
+    const storedFooterData = sessionStorage.getItem('footerData');
+
+    // Chuyển dữ liệu từ JSON sang đối tượng TypeScript
+  if (storedHomeData) {
+    this.homeData = JSON.parse(storedHomeData);
+  }
+  if (storedDetailData) {
+    this.detailData = JSON.parse(storedDetailData);
+  }
+  if (storedFooterData) {
+    this.footerData = JSON.parse(storedFooterData);
+  }
+
+  // Gọi API chỉ khi không có dữ liệu trong sessionStorage
+  if (!storedHomeData) {
     this.fetchHomeData();
+  }
+  if (!storedDetailData) {
     this.fetchDetailData();
+  }
+  if (!storedFooterData) {
     this.fetchFooterData();
+  }
   }
 
   selectTab(tab: { label: string, icon: string, component: Type<any> }): void {
     this.selectedTab = tab;
 
-     if (this.isDropdownVisible[tab.label]) {
+    if (this.isDropdownVisible[tab.label]) {
       this.isDropdownVisible[tab.label] = !this.isDropdownVisible[tab.label];
     } else {
       this.isDropdownVisible = { [tab.label]: true };
@@ -121,6 +143,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.homeService.getHome().subscribe({
       next: (data: GetPageResponse) => {
         this.homeData = data;
+        sessionStorage.setItem('homeData', JSON.stringify(this.homeData));
       },
       error: (error) => {
         console.error('Error fetching home data:', error);
@@ -130,29 +153,31 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   fetchDetailData(): void {
     this.homeService.getDetail().subscribe({
-        next: (data) => {
-            data.forEach((detail) => {
-                // Sửa điều kiện kiểm tra
-                if (detail.name != null && detail.name.trim() !== '') {
-                    this.detailData.push(detail);
-                } else {
-                    this.imageDetail.push(detail);
-                    this.images.push(this.imageDetail);
-                }
-            });
-            console.log(this.imageDetail);
-        },
-        error: (error) => {
-            console.error('Error fetching detail data:', error);
-        }
+      next: (data) => {
+        data.forEach((detail) => {
+          // Sửa điều kiện kiểm tra
+          if (detail.name != null && detail.name.trim() !== '') {
+            this.detailData.push(detail);
+            sessionStorage.setItem('detailData', JSON.stringify(this.detailData));
+          } else {
+            this.imageDetail.push(detail);
+            this.images.push(this.imageDetail);
+          }
+        });
+        console.log(this.imageDetail);
+      },
+      error: (error) => {
+        console.error('Error fetching detail data:', error);
+      }
     });
-}
+  }
 
 
   fetchFooterData(): void {
     this.homeService.getFooter().subscribe({
       next: (data: GetPageResponse) => {
         this.footerData = data;
+        sessionStorage.setItem('footerData', JSON.stringify(this.footerData));
       },
       error: (error) => {
         console.error('Error fetching footer data:', error);
