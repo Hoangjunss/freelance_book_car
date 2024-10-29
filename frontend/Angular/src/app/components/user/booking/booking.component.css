@@ -565,23 +565,49 @@ p.form-control {
 .mobile-buttons {
     display: none;
 }
-
 @media screen and (max-width: 768px) {
     .container {
         margin-top: 120px !important;
     }
-    .contact-info .row .col-md-3{
-        width: 56% !important;
-        padding-right: 0;
+    
+    /* Điều chỉnh thứ tự hiển thị */
+    .order-left {
+        order: 2;
+        margin-top: 20px;
     }
-    .desktop-buttons {
-        display: none;
+    
+    .order-right {
+        order: 1;
     }
-    .mobile-buttons {
+
+    /* Điều chỉnh bố cục cụm giá và nút */
+    .order-right .card-custom {
+        margin-bottom: 15px;
+    }
+
+    /* Đặt phần overlay loading ở dưới cùng */
+    .loading-overlay {
+        z-index: 100; /* Giảm z-index để loading overlay nằm dưới cụm giá và mã ưu đãi */
+    }
+
+    /* Căn chỉnh cụm giá và voucher */
+    .voucher-input, .btn-voucher {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    
+    .btn-voucher {
         display: block;
+        width: 100%;
         margin-top: 10px;
     }
+
+    /* Căn chỉnh các nút thanh toán và tổng giá */
+    .order-right .card-custom .price-wrapper, .order-right .card-custom .button-wrapper {
+        text-align: center;
+    }
 }
+
 /* Fullscreen loading overlay */
 .loading-overlay {
     position: fixed;

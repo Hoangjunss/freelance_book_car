@@ -103,6 +103,7 @@ export class PaymentSuccesComponent implements OnInit {
 
   handlePaymentSuccess(icon: Element | null, header: Element | null, paragraph: Element | null) {
     if (icon && header && paragraph) {
+      localStorage.removeItem('idBooking');
       this.renderer.setProperty(header, 'innerHTML', 'Thanh toán thành công!');
       this.renderer.setProperty(paragraph, 'innerHTML', 'Cảm ơn bạn đã mua hàng. Đơn hàng của bạn đã được xử lý thành công. Chúng tôi sẽ gửi xác nhận đến email của bạn sớm nhất có thể.');
       this.renderer.addClass(icon, 'bi-check-circle-fill');

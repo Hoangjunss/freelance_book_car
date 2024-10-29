@@ -1,63 +1,176 @@
-@media (max-width: 768px) {
-    .container {
-        margin-top: 80px !important;
+.header-img {
+    width: 100%;
+    height: 300px;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.title {
+    font-size: 24px;
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    animation: fadeInDown 1s ease;
+}
+
+.title-part {
+    margin-right: 8px;
+    opacity: 0;
+    animation: fadeInRight 0.8s ease forwards;
+    animation-delay: 0.3s;
+}
+
+.title-highlight {
+    background-color: #FFFFFF;
+    color: #333333;
+    padding: 4px 8px;
+    border-radius: 5px;
+    font-weight: bold;
+    opacity: 0;
+    animation: fadeInLeft 0.8s ease forwards;
+    animation-delay: 0.5s;
+}
+.nav-buttons {
+    width: 60%;
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    margin: -20px auto;
+    position: relative;
+    transform: translateY(-30px);
+    z-index: 100;
+    animation: fadeInUpBounce 1s ease forwards;
+}
+
+.nav-button {
+    border: 1px solid #ddd;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 8px 0;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    margin: 5px 2px;
+    transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    animation: fadeInUpBounce 1s ease forwards;
+    transition: all 0.3s ease-in-out;
+}
+
+.nav-button:nth-child(1) { animation-delay: 0.2s; }
+.nav-button:nth-child(2) { animation-delay: 0.4s; }
+.nav-button:nth-child(3) { animation-delay: 0.6s; }
+.nav-button:nth-child(4) { animation-delay: 0.8s; }
+.nav-button:nth-child(5) { animation-delay: 1s; }
+.nav-button:nth-child(6) { animation-delay: 1.2s; }
+.nav-button:nth-child(7) { animation-delay: 1.4s; }
+.nav-button:nth-child(8) { animation-delay: 1.6s; }
+.nav-button:nth-child(9) { animation-delay: 1.8s; }
+.nav-button:nth-child(10) { animation-delay: 2s; }
+.nav-button:nth-child(11) { animation-delay: 2.2s; }
+.nav-button:nth-child(12) { animation-delay: 2.4s; }
+.nav-button:nth-child(13) { animation-delay: 2.6s; }
+
+.nav-button:hover {
+    background-color: #e9ecef;
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    animation: bounce 1s ease;
+    transform: translateY(-3px);
+}
+
+/* Kết hợp animation fadeInUp và bounce */
+@keyframes fadeInUpBounce {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    60% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(-5px);
     }
 }
 
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
 
-/* Tiêu đề */
-h2 {
-    font-size: 24px;
+.category-title {
+    font-size: 26px;
+    font-weight: bold;
+    margin-top: 30px;
     color: #333;
-    text-align: center;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeInUp 1s ease forwards;
+    animation-delay: 0.2s;
 }
 
-/* Card */
 .card {
-    border: 1px solid #ddd;
+    border: none;
+    margin: 10px 0;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    opacity: 0;
+    animation: fadeIn 0.7s ease forwards;
+}
+
+.card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card img {
     border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+    height: 200px;
 }
 
-.card-img-top {
-    width: 100%;
-    object-fit: cover;
+.card img:hover {
+    transform: scale(1.1);
 }
 
-.card-body {
-    padding: 15px;
-    text-align: center;
+@keyframes fadeInDown {
+    0% { opacity: 0; transform: translateY(-20px); }
+    100% { opacity: 1; transform: translateY(0); }
 }
 
-.location-card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+@keyframes fadeInRight {
+    0% { opacity: 0; transform: translateX(-20px); }
+    100% { opacity: 1; transform: translateX(0); }
 }
 
-.location-card:hover {
-    transform: translateY(-10px);
-
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+@keyframes fadeInLeft {
+    0% { opacity: 0; transform: translateX(20px); }
+    100% { opacity: 1; transform: translateX(0); }
 }
 
+@keyframes fadeInUp {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
+    0% { opacity: 0; transform: scale(0.9); }
+    100% { opacity: 1; transform: scale(1); }
 }
 
-.location-card {
-    opacity: 0;
-    /* Bắt đầu với opacity = 0 */
-    animation: fadeIn 3s ease forwards;
-}
-
-.fade-in {
-    opacity: 1;
+@keyframes fadeInButton {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
 }

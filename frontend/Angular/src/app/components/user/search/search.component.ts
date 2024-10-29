@@ -18,9 +18,11 @@ import { Title } from '@angular/platform-browser';
   styleUrls: ['./search.component.css']  // Corrected 'styleUrl' to 'styleUrls'
 })
 export class SearchComponent implements OnInit {
+  groupedTours: { [key: string]: GetTourResponse[] } = {};
   hotels$: Observable<GetHotelResponse[]>;
   tourism$: Observable<GetTourismResponse[]>;
   tours$: Observable<GetTourResponse[]>;
+  titleParts = ['Di chuyển', 'Việt Nam'];
   location: string;
 
   currentHotelPage = 1;
@@ -30,6 +32,8 @@ export class SearchComponent implements OnInit {
   totalHotels = 0;
   totalTours = 0;
   totalTourism = 0;
+  backgroundImage: string;
+  navButtons: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -41,6 +45,7 @@ export class SearchComponent implements OnInit {
   ) {this.title.setTitle("Tìm kiếm");}
 
   ngOnInit() {
+    this.backgroundImage = 'http://res.cloudinary.com/dgts7tmnb/image/upload/v1727963818/csdch7mi171qddwizcxq.png';
     this.route.queryParams.pipe(
       switchMap(params => {
         this.location = params['query'];
@@ -63,6 +68,7 @@ export class SearchComponent implements OnInit {
       this.totalTourism = tourism.length;
       this.totalTours = tours.length;
     });
+    this.navButtons = this.getAllTourKeys(); 
   }
 
   goToLocationDetail(id: string, type: 'hotel' | 'tour' | 'tourism') {
@@ -90,7 +96,19 @@ export class SearchComponent implements OnInit {
     }
   }
 
+  
+
   getTotalPages(total: number) {
     return Math.ceil(total / this.itemsPerPage);
+  }
+
+  navigateToLocation(location: string) {
+    this.router.navigate(['/list', location]);
+  }
+
+  
+
+  getAllTourKeys(): string[] {
+    return Object.keys(this.groupedTours);
   }
 }

@@ -9,10 +9,11 @@
                 <img [src]="product.image" alt="{{ product.name }}" class="img-thumbnail mr-3" style="width: 100px;">
                 <div class="product-info text-center text-md-left">
                     <h5>{{ product.name }}</h5>
-                    <p class="price mb-0">Giá: {{ product.price | number }} đ</p>
+                    <p class="price mb-0" style="color: blue;">Giá: {{ product.unitPrice | number }} đ</p>
+                    <p class="price mb-0">Thành tiền: {{ product.price | number }} đ</p>
 
                     <ng-container *ngIf="product.type === 'tour'">
-                        <p><strong>Ngày bắt đầu:</strong> {{ product.schedule.timeStartTour | date:'dd/MM/yyyy HH:mm' }}
+                        <p><strong>Ngày bắt đầu:</strong> {{ product.schedule?.timeStartTour | date:'dd/MM/yyyy HH:mm' }}
                         </p>
                         <p><strong>Điểm bắt đầu:</strong> {{ product.startLocation }}</p>
                         <p><strong>Điểm kết thúc:</strong> {{ product.endLocation }}</p>

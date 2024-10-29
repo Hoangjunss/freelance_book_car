@@ -263,7 +263,36 @@
     cursor: pointer;
 }
 @media screen and (max-width: 768px) {
-    .container{
+    .container {
         margin-top: 80px;
+    }
+
+    /* Căn chỉnh bảng thông tin giá và cụm thanh toán */
+    .order-left {
+        order: 2;
+        margin-top: 20px;
+    }
+
+    .order-right {
+        order: 1;
+    }
+
+    /* Đặt lại căn chỉnh cho phần giá và nút */
+    .confirm {
+        flex-direction: column;
+    }
+
+    .price-wrapper {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .button-wrapper {
+        text-align: center;
+        width: 100%;
+    }
+
+    .submit-btn {
+        width: 100%;
     }
 }

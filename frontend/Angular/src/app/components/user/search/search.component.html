@@ -1,5 +1,13 @@
+<div [ngStyle]="{'background-image': 'url(' + backgroundImage + ')'}" class="header-img">
+    <div class="container">
+        <h1 class="pt-5 title">
+            <span class="title-part">{{ titleParts[0] }}</span>
+            <span class="title-highlight">{{ titleParts[1] }}</span>
+        </h1>
+    </div>
+</div>
+
 <div class="container">
-    <h2 class="my-4">Khám Phá Địa Điểm Đầy Hấp Dẫn: Tour, Khách Sạn & Hoạt Động Tại {{ location }}</h2>
     <div *ngIf="!(hotels$ | async)?.length && !(tours$ | async)?.length && !(tourism$ | async)?.length" style="text-align: center; margin: 20px 0;">
         <h1 style="color: #FF5733;">Không có tour, khách sạn hoặc hoạt động du lịch nào bạn cần tìm.</h1>
     </div>

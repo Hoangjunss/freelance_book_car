@@ -786,7 +786,7 @@ p{
     display: flex; 
     justify-content: center;
     align-items: center; 
-    height: 500px; 
+    height: auto; 
 }
 
 .map-section img {
@@ -873,6 +873,8 @@ p{
     .service-detail{
         width: 100% !important;
     }
+
+
     .col-md-11{
         padding: 0 !important;
         margin-top: 15px;

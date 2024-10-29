@@ -155,6 +155,7 @@ export class CartComponent implements OnInit {
               this.tourScheduleService.getSchedule(p.id).subscribe({
                 next: (scheduleResponse) => {
                   console.log(scheduleResponse);
+                  p.unitPrice = scheduleResponse.priceTour;
                   p.schedule = scheduleResponse;
                   this.tourService.getTourById(scheduleResponse.idTour).subscribe({
                     next: (tourResponse) => {
@@ -300,6 +301,8 @@ export class CartComponent implements OnInit {
       }
       return false;
     });
+
+    console.log(pastProducts);
 
     if (pastProducts.length > 0) {
       const pastProductNames = pastProducts.map(p => `${p.name}`).join(', ');

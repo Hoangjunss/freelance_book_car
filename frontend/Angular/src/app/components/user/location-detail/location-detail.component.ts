@@ -13,6 +13,7 @@ import { TourScheduleService } from '../../../services/product/tour/tour-schedul
 import { FormsModule } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { NotificationComponent } from '../../notification/notification.component';
+import e from 'express';
 
 @Component({
   selector: 'app-location-detail',
@@ -138,9 +139,14 @@ export class LocationDetailComponent {
       next: (response) => {
         console.log(response);
         if (response && response.length > 0 && response.some(location => location.isActive)) {
-          this.suggestedTours[0] = response[0];
-          this.suggestedTours[1] = response[1];
-          this.suggestedTours[2] = response[2];
+          let index =0;
+          response.forEach(element => {
+            if(element.id && element.id != parseInt(this.locationId) && index <=2){
+              this.suggestedTours.push(element);
+              index++;
+            }
+          });
+          
         } else {
         }
         console.log(this.suggestedTours);
