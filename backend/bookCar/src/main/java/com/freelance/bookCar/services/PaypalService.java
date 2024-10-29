@@ -1,6 +1,7 @@
 package com.freelance.bookCar.services;
 
 import com.freelance.bookCar.services.booking.BookingService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Slf4j
 public class PaypalService {
 
     @Autowired
@@ -35,10 +37,12 @@ public class PaypalService {
             String description,
             String cancelUrl,
             String successUrl) throws PayPalRESTException{
+        total = Double.parseDouble(convertVNDToUSD(BigDecimal.valueOf(total)));
         Amount amount = new Amount();
         amount.setCurrency(currency);
         total = new BigDecimal(total).setScale(2, RoundingMode.HALF_UP).doubleValue();
-        amount.setTotal(String.format("%.2f", total));
+        log.info("Total: {}" , total);
+        amount.setTotal(String.format("%.3f", total));
 
         Transaction transaction = new Transaction();
         transaction.setDescription(description);
@@ -69,6 +73,13 @@ public class PaypalService {
         paymentExecute.setPayerId(payerId);
         bookingService.updateType(id,"PENDING");
         return payment.execute(apiContext, paymentExecute);
+    }
+
+    public String convertVNDToUSD(BigDecimal amountInVND) {
+        BigDecimal EXCHANGE_RATE = new BigDecimal("25355.00");
+        BigDecimal amountInUSD = amountInVND.divide(EXCHANGE_RATE, 2, RoundingMode.HALF_UP);
+
+        return amountInUSD.setScale(2, RoundingMode.HALF_UP).toString();
     }
 
 }

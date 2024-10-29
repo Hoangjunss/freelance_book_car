@@ -26,7 +26,6 @@ public class PaypalController {
 
     @PostMapping("/pay")
     public ResponseEntity<String> payment(@ModelAttribute("order") Order order) {
-        // Log Order để kiểm tra giá trị
         System.out.println("Received Order: " + order.toString());
 
         try {
@@ -35,7 +34,6 @@ public class PaypalController {
                     "http://localhost:4200/payment-success" + "?vnp_ResponseCode=00&orderId=" + order.getId());
             for (Links link : payment.getLinks()) {
                 if (link.getRel().equals("approval_url")) {
-                    // Trả về URL phê duyệt kèm theo orderId
                     return ResponseEntity.ok(link.getHref() + "&orderId=" + order.getId());
                 }
             }
