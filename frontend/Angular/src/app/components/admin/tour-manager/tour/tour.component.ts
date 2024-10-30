@@ -43,6 +43,7 @@ export class TourComponent implements OnInit{
   imageId?: string;
   imageFile!: File;
   imageUri?: string = 'assets/img/DEFAULT/tour-default.png';
+  isLoading: boolean = false;
 
   // Các tệp ảnh được chọn
   imageFirstFile!: File;
@@ -164,6 +165,7 @@ export class TourComponent implements OnInit{
 
   // On Submit
   onCreate() {
+    this.isLoading = true;
     console.log(this.createTourRequest);
     if (!this.createTourRequest?.name || 
         !this.createTourRequest?.startLocation || 
@@ -221,6 +223,7 @@ export class TourComponent implements OnInit{
       next: (data) => {
         this.createTourResponse = data;
         if (this.createTourResponse) {
+          this.isLoading = false;
           console.log('Tour created successfully:', this.createTourResponse);
           this.notificationComponent.showNotification('success', 'Tạo tour thành công');
           window.location.reload();
@@ -229,6 +232,7 @@ export class TourComponent implements OnInit{
       error: (err) => {
         console.error('Error creating tour:', err.message);
         this.notificationComponent.showNotification('error', 'Có lỗi xảy ra khi tạo tour');
+        this.isLoading = false;
       }
     });
   }
@@ -236,6 +240,7 @@ export class TourComponent implements OnInit{
 
 
   onUpdate() {
+    this.isLoading = true;
     console.log(this.updateTourRequest);
     if(!this.updateTourRequest?.id){
       this.notificationComponent.showNotification('error', 'Không tìm thấy tour cần cập nhật');
@@ -285,6 +290,7 @@ export class TourComponent implements OnInit{
         // Không nên gán data vào updateTourRequest vì chúng khác loại
         console.log('Tour updated successfully:', data);
         this.notificationComponent.showNotification('success', 'Cập nhật tour thành công');
+        this.isLoading = false;
         window.location.reload();
       },
       error: (err) => {

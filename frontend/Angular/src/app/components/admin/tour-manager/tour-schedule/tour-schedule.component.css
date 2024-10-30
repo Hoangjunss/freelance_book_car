@@ -15,3 +15,51 @@
     left: 23%;
     margin-top: 16%;
 }
+
+/* Fullscreen loading overlay */
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7); /* Darker semi-transparent background */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 1050;
+  }
+  
+  /* Spinner animation */
+  .loading-spinner {
+    border: 6px solid rgba(255, 255, 255, 0.3); /* Light border */
+    border-top: 6px solid #fff; /* White top border for animation */
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 20px; /* Space between spinner and message */
+  }
+  
+  /* Spin animation */
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  /* Loading message */
+  .loading-message {
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: 500;
+    text-align: center;
+  }
+  
+@media (min-width: 768px) {
+      .loading-overlay {
+        z-index: 100;
+    }
+  }
+  
+

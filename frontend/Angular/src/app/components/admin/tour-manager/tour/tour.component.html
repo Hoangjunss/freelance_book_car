@@ -1,4 +1,7 @@
-
+<div *ngIf="isLoading" class="loading-overlay">
+  <div class="loading-spinner"></div>
+  <div class="loading-message">Đang xử lý yêu cầu của bạn, vui lòng đợi...</div>
+</div>
 <h2 class="text-center m-2">Tour Manager</h2>
 <app-notification></app-notification>
 
@@ -154,7 +157,7 @@
   style="display: block; background: rgba(0, 0, 0, 0.5);">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content slide-in">
-      <div class="modal-body">
+      <div class="modal-body" *ngIf="!isLoading">
         <form (ngSubmit)="onUpdate()" enctype="multipart/form-data">
           <div class="row">
             <div class="col-md-6 col-sm-12">

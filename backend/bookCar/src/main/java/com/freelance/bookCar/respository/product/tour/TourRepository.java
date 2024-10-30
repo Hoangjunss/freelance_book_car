@@ -11,7 +11,7 @@ import java.util.List;
 public interface TourRepository extends JpaRepository<Tour,Integer> {
 
        //@Query(value = "select * from tour where start_location LIKE '%:name%';", nativeQuery = true)
-       List<Tour> findAllByStartLocation(@Param("name") String location);
+       List<Tour> findAllByStartLocation( String location);
 
        @Query(value = "select * from tour where name LIKE '%:name%';", nativeQuery = true)
        List<Tour> searchAllByLocation(@Param("name") String name);

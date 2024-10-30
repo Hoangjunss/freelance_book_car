@@ -39,6 +39,8 @@ export class TourScheduleComponent implements OnInit {
 
   stateFilter = false;
 
+  isLoading: boolean = false;
+
   tourSelectedId: number=0;
 
   searchQuery='';
