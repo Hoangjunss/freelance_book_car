@@ -1,8 +1,8 @@
-import { AfterViewInit, Component, OnInit, Type } from '@angular/core';
+import { AfterViewInit, Component, Inject, OnInit, PLATFORM_ID, Type } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { LocationDetailComponent } from '../location-detail/location-detail.component';
 import { CarouselModule } from 'ngx-owl-carousel-o';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { LocationListComponent } from '../location-list/location-list.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from '../../../services/auth.interceptor';
@@ -37,7 +37,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
   tourismlink = '';
 
-  constructor(private router: Router, private title: Title, private homeService: HomeService) {
+  constructor(private router: Router, private title: Title, private homeService: HomeService,
+    @Inject(PLATFORM_ID) private platformId: Object) {
     this.title.setTitle("Trang chủ");
   }
 
@@ -45,37 +46,39 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.initIntersectionObserver();
   }
   ngOnInit(): void {
-    this.tabs = [
-      { label: 'Thuê Xe', icon: 'fa-solid fa-car', component: LocationListComponent },
-      { label: 'Thuê Khách Sạn', icon: 'fa-solid fa-hotel', component: LocationListComponent },
-      { label: 'Đặt Vé', icon: 'fa-solid fa-ticket', component: LocationDetailComponent }
-    ];
-    this.selectedTab = this.tabs.find(tab => tab.label === 'Đặt Vé') || this.tabs[0];
-    const storedHomeData = sessionStorage.getItem('homeData');
-    const storedDetailData = sessionStorage.getItem('detailData');
-    const storedFooterData = sessionStorage.getItem('footerData');
+    if (isPlatformBrowser(this.platformId)) {
+      this.tabs = [
+        { label: 'Thuê Xe', icon: 'fa-solid fa-car', component: LocationListComponent },
+        { label: 'Thuê Khách Sạn', icon: 'fa-solid fa-hotel', component: LocationListComponent },
+        { label: 'Đặt Vé', icon: 'fa-solid fa-ticket', component: LocationDetailComponent }
+      ];
+      this.selectedTab = this.tabs.find(tab => tab.label === 'Đặt Vé') || this.tabs[0];
+      const storedHomeData = sessionStorage.getItem('homeData');
+      const storedDetailData = sessionStorage.getItem('detailData');
+      const storedFooterData = sessionStorage.getItem('footerData');
 
-    // Chuyển dữ liệu từ JSON sang đối tượng TypeScript
-  if (storedHomeData) {
-    this.homeData = JSON.parse(storedHomeData);
-  }
-  if (storedDetailData) {
-    this.detailData = JSON.parse(storedDetailData);
-  }
-  if (storedFooterData) {
-    this.footerData = JSON.parse(storedFooterData);
-  }
+      // Chuyển dữ liệu từ JSON sang đối tượng TypeScript
+      if (storedHomeData) {
+        this.homeData = JSON.parse(storedHomeData);
+      }
+      if (storedDetailData) {
+        this.detailData = JSON.parse(storedDetailData);
+      }
+      if (storedFooterData) {
+        this.footerData = JSON.parse(storedFooterData);
+      }
 
-  // Gọi API chỉ khi không có dữ liệu trong sessionStorage
-  if (!storedHomeData) {
-    this.fetchHomeData();
-  }
-  if (!storedDetailData) {
-    this.fetchDetailData();
-  }
-  if (!storedFooterData) {
-    this.fetchFooterData();
-  }
+      // Gọi API chỉ khi không có dữ liệu trong sessionStorage
+      if (!storedHomeData) {
+        this.fetchHomeData();
+      }
+      if (!storedDetailData) {
+        this.fetchDetailData();
+      }
+      if (!storedFooterData) {
+        this.fetchFooterData();
+      }
+    }
   }
 
   selectTab(tab: { label: string, icon: string, component: Type<any> }): void {
