@@ -97,7 +97,7 @@ export class NavbarComponent implements OnInit {
 
   onSearch() {
     if (this.searchQuery) {
-      this.router.navigate(['/search'], { queryParams: { query: this.searchQuery } });
+      this.router.navigate(['/list', this.searchQuery]);
     }
   }
 

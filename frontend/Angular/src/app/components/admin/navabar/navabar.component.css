@@ -107,6 +107,9 @@
         width: 100%;
         margin-left: 0;
     }
+    .mobile-menu-icon {
+        display: none !important;
+    }
 }
 
 @media (max-width: 991.98px) {
@@ -124,6 +127,15 @@
     .content {
         width: 100%;
         margin-left: 0;
+    }
+    .user-avatar {
+        display: none;
+    }
+    .mobile-menu-icon {
+        display: flex !important;
+    }
+    .sidebar-toggler{
+        display: none !important;;
     }
 }
 

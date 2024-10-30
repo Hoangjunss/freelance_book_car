@@ -62,9 +62,24 @@ export class ListComponent implements OnInit {
     }, {} as { [key: string]: GetTourResponse[] });
   }
 
-  getAllTourKeys(): string[] {
-    return Object.keys(this.groupedTours);
-  }
+  getToursByLocation(location: string): GetTourResponse[] | null {
+    const key = Object.keys(this.groupedTours).find(startLocation =>
+        startLocation.includes(location)
+    );
+    return key ? this.groupedTours[key] : null;
+}
+
+getGroupTitleByLocation(location: string): string {
+  const key = Object.keys(this.groupedTours).find(startLocation =>
+      startLocation.includes(location)
+  );
+  return key || location; // Nếu không tìm thấy thì trả về location gốc
+}
+
+
+getAllTourKeys(excludeKey?: string): string[] {
+  return Object.keys(this.groupedTours).filter(key => !excludeKey || key !== excludeKey);
+}
 
   navigateToLocation(location: string) {
     this.router.navigate(['/list', location]);
