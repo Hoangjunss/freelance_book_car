@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { BookingService } from '../../../services/booking/booking.service';
 import { GetBookingResponse } from '../../../models/response/booking/get-booking-response';
 import { RouterLink } from '@angular/router';
@@ -64,18 +64,27 @@ export class HistoryComponent implements OnInit {
     private tourismService: TourismService,
     private hotelBookingService: HotelbookingService,
     private title: Title,
-  ) {this.title.setTitle('Lịch sử đặt hàng'); }
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) { this.title.setTitle('Lịch sử đặt hàng'); }
 
   ngOnInit(): void {
-    this.getBookingByUser();
+    if (isPlatformBrowser(this.platformId)) {
+      this.getBookingByUser();
+    }
   }
 
   viewOrderDetails(orderId: number): void {
     this.getBookingDetail(orderId);
     this.selectedOrder = this.getBookingResponse.find(order => order.id === orderId);
   }
+  sortOrders() {
+    this.getBookingResponse.sort((a, b) => {
+      return new Date(b.dateBook).getTime() - new Date(a.dateBook).getTime();
+    });
+  }
 
   getBookingByUser() {
+
     const idUser = localStorage.getItem('idUser');
     const user = localStorage.getItem('currentUser');
     this.isLoggedIn = !!user;
@@ -84,6 +93,8 @@ export class HistoryComponent implements OnInit {
       next: (data) => {
         if (data && data.length > 0) {
           this.getBookingResponse = data;
+          this.sortOrders(); 
+          console.log(this.sortOrders());
           this.getBookingDetail(data[0].id);
         } else {
           this.products = [];
@@ -148,10 +159,10 @@ export class HistoryComponent implements OnInit {
                 next: (hotelBookingResponse) => {
                   p.startDate = hotelBookingResponse.startDate;
                   p.endDate = hotelBookingResponse.endDate;
-                  console.log("182 "+JSON.stringify(hotelBookingResponse));
+                  console.log("182 " + JSON.stringify(hotelBookingResponse));
                   this.hotelService.getHotelDetailById(hotelBookingResponse.hotel).subscribe({
                     next: (hotelResponse) => {
-                      console.log("185 "+JSON.stringify(hotelResponse));
+                      console.log("185 " + JSON.stringify(hotelResponse));
                       p.name = hotelResponse.name;
                       p.image = hotelResponse.image;
                       p.location = hotelResponse.location;

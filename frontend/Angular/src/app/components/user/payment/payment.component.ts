@@ -129,7 +129,7 @@ export class PaymentComponent implements OnInit {
     const formData = new FormData();
     formData.append('id', this.idBooking.toString());
     formData.append('price', this.totalPrice.toString());
-    formData.append('currency', 'USD');
+    formData.append('currency', 'VND');
     formData.append('method', 'paypal');
     formData.append('intent', 'sale');
     formData.append('description', 'Thanh toán đơn hàng');
