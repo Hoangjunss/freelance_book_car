@@ -31,7 +31,7 @@
                 <td>{{booking.createDate | date:'short'}}</td>
                 <td>
                   <button class="btn btn-warning m-2"  (click)="viewOrderDetails(booking.id)" data-bs-toggle="modal" data-bs-target="#orderDetailsModal">Detail</button>
-                  <button class="btn btn-success m-2" (click)="setTypeBooking(booking.id, 1)">Accept</button>
+                  <button class="btn btn-success m-2" (click)="setTypeBooking(booking.id, 2)">Accept</button>
                   <button class="btn btn-danger m-2" (click)="setTypeBooking(booking.id, 1)">Reject</button>
                 </td>
               </tr>
