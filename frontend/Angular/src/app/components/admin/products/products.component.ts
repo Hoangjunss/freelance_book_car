@@ -20,21 +20,12 @@ import { CreateProductRequest } from '../../../models/AdminSupplier/request/prod
   styleUrls: ['./products.component.css']
 })
 export class ProductComponent implements OnInit{
-  createTourRequest = {
-    name: '',
-    price: 0,
-    description: '',
-    productTypeId: 0,
-    supplierId: 0,
-    images: [] as File[],
-    officialPriceDTOS: [
-      {
-        price: 0,
-        minQuantity: 0,
-        maxQuantity: 0,
-      },
-    ],
-  };
+createTourRequest: any = {
+  name: '',
+  price: 0,
+  description: '',
+  officialPriceDTOS: [],
+};
   
   createTourResponse: CreateTourResponse = new CreateTourResponse();
   updateTourRequest: Product = new Product();
@@ -92,37 +83,31 @@ export class ProductComponent implements OnInit{
   }
 
   onImagesSelected(event: Event): void {
-    const target = event.target as HTMLInputElement;
-    const files = target.files;
-
-    if (files) {
-      Array.from(files).forEach((file) => {
-        this.createTourRequest.images.push(file); // Lưu vào mảng images
+    const input = event.target as HTMLInputElement;
+    if (input.files && this.selectedImages.length < 4) {
+      for (let i = 0; i < input.files.length; i++) {
+        if (this.selectedImages.length >= 4) break;
         const reader = new FileReader();
         reader.onload = (e: any) => {
-          this.selectedImages.push(e.target.result); // Lưu URL để hiển thị
+          this.selectedImages.push(e.target.result);
         };
-        reader.readAsDataURL(file);
-      });
+        reader.readAsDataURL(input.files[i]);
+      }
     }
   }
-
-  // Xóa Official Price
-  removeOfficialPrice(index: number): void {
-    if (index > -1) {
-      this.createTourRequest.officialPriceDTOS.splice(index, 1);
-    }
+  removeImage(index: number): void {
+    this.selectedImages.splice(index, 1);
   }
 
-  // Thêm Official Price
   addOfficialPrice(): void {
-    this.createTourRequest.officialPriceDTOS.push({
-      price: 0,
-      minQuantity: 0,
-      maxQuantity: 0,
-    });
+    if (this.createTourRequest.officialPriceDTOS.length < 4) {
+      this.createTourRequest.officialPriceDTOS.push({ price: 0, minQuantity: 0, maxQuantity: 0 });
+    }
   }
-
+  
+  removeOfficialPrice(index: number): void {
+    this.createTourRequest.officialPriceDTOS.splice(index, 1);
+  }
   closeFormCreate(){
     this.isDisplayCreate = false;
   }
@@ -198,53 +183,25 @@ export class ProductComponent implements OnInit{
 
 
   //On Submit
-  onCreate() {
-    /* console.log(this.createTourRequest);
-    if (!this.createTourRequest?.name || !this.createTourRequest?.startLocation || !this.createTourRequest?.description) {
-      alert('Please fill in all required fields: Name, Location, Description');
-      return;
-    }
-
-    if(this.createTourRequest.isActive == undefined ){
-      this.createTourRequest.isActive = false;
-    }
-  
+  onCreate(): void {
     const formData = new FormData();
-    formData.append('name', this.createTourRequest.name || '');
-    formData.append('description', this.createTourRequest.description || '');
-    formData.append('startLocation', this.createTourRequest.startLocation || '');
-    formData.append('isActive', this.createTourRequest.isActive ? 'true' : 'false');
+    formData.append('name', this.createTourRequest.name);
+    formData.append('price', this.createTourRequest.price.toString());
+    formData.append('description', this.createTourRequest.description);
   
-    if (this.imageFile != undefined) {
-      formData.append('image', this.imageFile);
-    }else{
-      this.createFileFromUrl(this.selectedImage, 'tour-default.png').then(file => {
-        this.imageFile = file; 
-        formData.append('image', this.imageFile);
-      }).catch(error => {
-        console.error('Error creating file from URL:', error);
-      });
-    }
-
-    console.log(this.createTourRequest);
-    formData.forEach((value, key) => {
-      console.log(`${key}: ${value}`);
+    this.selectedImages.forEach((image, index) => {
+      formData.append(`images[${index}]`, image);
     });
   
-    this.tourService.createTour(formData).subscribe({
-      next: (data) => {
-        this.createTourResponse = data;
-        if (this.createTourResponse) {
-          console.log('Tour created successfully:', this.createTourResponse);
-          alert('Tour created successfully');
-          window.location.reload();
-        }
-      },
-      error: (err) => {
-        console.error('Error creating tour:', err.message);
-      }
-    }); */
+    this.createTourRequest.officialPriceDTOS.forEach((price: { price: number; minQuantity: number; maxQuantity: number }, index: number) => {
+      formData.append(`officialPriceDTOS[${index}][price]`, price.price.toString());
+      formData.append(`officialPriceDTOS[${index}][minQuantity]`, price.minQuantity.toString());
+      formData.append(`officialPriceDTOS[${index}][maxQuantity]`, price.maxQuantity.toString());
+    });
+    console.log('FormData:',formData);
+    this.closeFormCreate();
   }
+  
 
   onUpdate(){
 /*     console.log(this.updateTourRequest);

@@ -19,7 +19,7 @@ export class OrdersService {
 
       updateStatusOrder(idOrder: number, idStatus: number): Observable<any>{
         const headers = this.createAuthorizationHeader();
-        return this.httpClient.patch<Apiresponse<any>>(`${this.baseUrl}?idOrder=${idOrder}&idStatus=${idStatus}`, {headers}).pipe(
+        return this.httpClient.put<Apiresponse<any>>(`${this.baseUrl}?idOrder=${idOrder}&idStatus=${idStatus}`, {headers}).pipe(
                   map((response: Apiresponse<any>) => {
                           if (response.success) {
                             return response.data;
