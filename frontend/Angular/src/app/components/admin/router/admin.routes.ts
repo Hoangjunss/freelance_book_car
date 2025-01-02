@@ -17,6 +17,7 @@ import { PageHomeComponent } from "../page/page-home/page-home.component";
 import { BookingPendingComponent } from "../booking/booking-pending/booking-pending.component";
 import { BookingAcceptComponent } from "../booking/booking-accept/booking-accept.component";
 import { BookingCancelComponent } from "../booking/booking-cancel/booking-cancel.component";
+import { ProductComponent } from "../products/products.component";
 
 export const adminRoutes: Routes = [
     {
@@ -116,6 +117,10 @@ export const adminRoutes: Routes = [
                         component: BookingCancelComponent
                     }
                 ]
+            },
+            {
+                path: 'product',
+                component: ProductComponent
             }
         ]
     }

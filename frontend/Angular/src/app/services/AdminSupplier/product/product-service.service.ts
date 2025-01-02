@@ -6,12 +6,13 @@ import { Apiresponse } from '../../../models/response/apiresponse';
 import { map, Observable } from 'rxjs';
 import { CreateProductRequest } from '../../../models/AdminSupplier/request/products/create-product-resquest';
 import { Product } from '../../../models/AdminSupplier/response/products/product';
+import { Page } from '../../../models/page';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductServiceService {
-  private baseUrl = `${environment.apiBaseUrl}/api/v1/hotel`;
+  private baseUrl = `${environment.apiBaseUrl}`;
 
   constructor(private httpClient: HttpClient) { }
   private createAuthorizationHeader(): HttpHeaders {
@@ -54,6 +55,19 @@ export class ProductServiceService {
         map((response: Apiresponse<Product>) => {
           if (response.success) {
             return response.data;
+          } else {
+            throw new Error(response.message);
+          }
+        })
+      );
+    }
+
+    getAllProduct(): Observable<Product[]> {
+      const headers = this.createAuthorizationHeader();
+      return this.httpClient.get<Apiresponse<Page<Product[]>>>(`${this.baseUrl}/supplier/products?productVerifyStatus=Access&page=0&size=2`, {headers}).pipe(
+        map((response: Apiresponse<Page<Product[]>>) => {
+          if (response.success) {
+            return response.data.content;
           } else {
             throw new Error(response.message);
           }
