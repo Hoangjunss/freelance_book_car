@@ -10,6 +10,7 @@ import { UpdateTourRequest } from '../../../models/request/product/tour/tour/upd
 import { UpdateTourResponse } from '../../../models/response/product/tour/tour/update-tour-response';
 import { ProductServiceService } from '../../../services/AdminSupplier/product/product-service.service';
 import { Product } from '../../../models/AdminSupplier/response/products/product';
+import { CreateProductRequest } from '../../../models/AdminSupplier/request/products/create-product-resquest';
 
 @Component({
   selector: 'app-tour',
@@ -19,11 +20,27 @@ import { Product } from '../../../models/AdminSupplier/response/products/product
   styleUrl: './products.component.css'
 })
 export class ProductComponent implements OnInit{
-  createTourRequest: CreateTourRequest = new CreateTourRequest();
+  createTourRequest = {
+    name: '',
+    price: 0,
+    description: '',
+    productTypeId: 0,
+    supplierId: 0,
+    images: [] as File[],
+    officialPriceDTOS: [
+      {
+        price: 0,
+        minQuantity: 0,
+        maxQuantity: 0,
+      },
+    ],
+  };
+  
   createTourResponse: CreateTourResponse = new CreateTourResponse();
   updateTourRequest: Product = new Product();
   updateTourResponse: UpdateTourResponse = new UpdateTourResponse();
 
+  selectedImages: string[] = [];
 
   imageUrl: string = 'assets/img/DEFAULT/tour-default.png';
   getALlTour: Product[] = [];
@@ -72,6 +89,38 @@ export class ProductComponent implements OnInit{
 
   displayFormCreate(){
     this.isDisplayCreate = true;
+  }
+
+  onImagesSelected(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    const files = target.files;
+
+    if (files) {
+      Array.from(files).forEach((file) => {
+        this.createTourRequest.images.push(file); // Lưu vào mảng images
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+          this.selectedImages.push(e.target.result); // Lưu URL để hiển thị
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+  }
+
+  // Xóa Official Price
+  removeOfficialPrice(index: number): void {
+    if (index > -1) {
+      this.createTourRequest.officialPriceDTOS.splice(index, 1);
+    }
+  }
+
+  // Thêm Official Price
+  addOfficialPrice(): void {
+    this.createTourRequest.officialPriceDTOS.push({
+      price: 0,
+      minQuantity: 0,
+      maxQuantity: 0,
+    });
   }
 
   closeFormCreate(){
