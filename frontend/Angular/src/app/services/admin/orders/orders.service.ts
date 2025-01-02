@@ -5,6 +5,8 @@ import { environment } from '../../environment';
 import { isPlatformBrowser } from '@angular/common';
 import { map, Observable } from 'rxjs';
 import { Apiresponse } from '../../../models/response/apiresponse';
+import { OrderDTO } from '../../../models/AdminSupplier/response/orders/orders';
+import { Page } from '../../../models/page';
 
 @Injectable({
   providedIn: 'root'
@@ -28,17 +30,30 @@ export class OrdersService {
                 );
       }
 
-      getOrderOfSupplier(idOrderStatus: number): Observable<any>{
+      getOrderOfSupplier(): Observable<OrderDTO[]>{
         const headers = this.createAuthorizationHeader();
-        return this.httpClient.get<Apiresponse<any>>(`${this.baseUrl}?idOrderStatus=${idOrderStatus}`, {headers}).pipe(
-                  map((response: Apiresponse<any>) => {
+        return this.httpClient.get<Apiresponse<Page<OrderDTO[]>>>(`${this.baseUrl}?OrderStatus=Pending&page=0&size=10`, {headers}).pipe(
+                  map((response: Apiresponse<Page<OrderDTO[]>>) => {
                           if (response.success) {
-                            return response.data;
+                            return response.data.content;
                           } else {
                             throw new Error(response.message);
                           }
                         })
                 );
+      }
+
+      getOrderById(id:number): Observable<OrderDTO>{
+        const headers = this.createAuthorizationHeader();
+        return this.httpClient.get<Apiresponse<OrderDTO>>(`${this.baseUrl}/getId?id=${id}`, {headers}).pipe(
+          map((response: Apiresponse<OrderDTO>) => {
+                  if (response.success) {
+                    return response.data;
+                  } else {
+                    throw new Error(response.message);
+                  }
+                })
+        );
       }
 
       
