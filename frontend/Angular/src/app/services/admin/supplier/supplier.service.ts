@@ -14,11 +14,11 @@ export class SupplierService {
 
     constructor(private httpClient:HttpClient, @Inject(PLATFORM_ID) private platformId: Object) { }
   
-    private baseUrl = `${environment.apiBaseUrl}/api/v1/booking`;
+    private baseUrl = `${environment.apiBaseUrl}/supplier`;
 
     createSupplier(formData: FormData): Observable<SupplyCreateDTOS> {
         const headers = this.createAuthorizationHeader();
-        return this.httpClient.post<Apiresponse<SupplyCreateDTOS>>(`${this.baseUrl}/supplier`, formData, {headers}).pipe(
+        return this.httpClient.post<Apiresponse<SupplyCreateDTOS>>(`${this.baseUrl}`, formData, {headers}).pipe(
           map((response: Apiresponse<SupplyCreateDTOS>) => {
                   if (response.success) {
                     return response.data;
@@ -31,7 +31,7 @@ export class SupplierService {
 
     updateSupplier(formData: FormData): Observable<SupplyUpdateDTOS> {
       const headers = this.createAuthorizationHeader();
-        return this.httpClient.patch<Apiresponse<SupplyUpdateDTOS>>(`${this.baseUrl}/supplier`, formData, {headers}).pipe(
+        return this.httpClient.patch<Apiresponse<SupplyUpdateDTOS>>(`${this.baseUrl}`, formData, {headers}).pipe(
           map((response: Apiresponse<SupplyUpdateDTOS>) => {
                   if (response.success) {
                     return response.data;
@@ -45,7 +45,7 @@ export class SupplierService {
 
     getSupplier(id: number): Observable<SupplyUpdateDTOS>{
       const headers = this.createAuthorizationHeader();
-        return this.httpClient.get<Apiresponse<SupplyUpdateDTOS>>(`${this.baseUrl}/supplier?id=${id}`, {headers}).pipe(
+        return this.httpClient.get<Apiresponse<SupplyUpdateDTOS>>(`${this.baseUrl}?id=${id}`, {headers}).pipe(
           map((response: Apiresponse<SupplyUpdateDTOS>) => {
                   if (response.success) {
                     return response.data;
