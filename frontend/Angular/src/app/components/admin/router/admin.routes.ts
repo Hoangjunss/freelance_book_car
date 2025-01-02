@@ -18,6 +18,7 @@ import { BookingPendingComponent } from "../booking/booking-pending/booking-pend
 import { BookingAcceptComponent } from "../booking/booking-accept/booking-accept.component";
 import { BookingCancelComponent } from "../booking/booking-cancel/booking-cancel.component";
 import { ProductComponent } from "../products/products.component";
+import { OrdersComponent } from "../orders/orders.component";
 
 export const adminRoutes: Routes = [
     {
@@ -121,6 +122,10 @@ export const adminRoutes: Routes = [
             {
                 path: 'product',
                 component: ProductComponent
+            },
+            {
+                path: 'orders',
+                component: OrdersComponent
             }
         ]
     }
