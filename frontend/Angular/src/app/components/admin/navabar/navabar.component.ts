@@ -8,7 +8,7 @@ import { GetCurrentUserResponse } from '../../../models/response/user/get-curren
   standalone: true,
   imports: [RouterOutlet, RouterLink, CommonModule,RouterLinkActive],
   templateUrl: './navabar.component.html',
-  styleUrl: './navabar.component.css'
+  styleUrls:[ './navabar.component.css',  './demo.css']
 })
 export class NavabarComponent {
   isSidebarOpen = false;
