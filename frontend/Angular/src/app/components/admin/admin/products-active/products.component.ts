@@ -11,6 +11,7 @@ import { UpdateTourResponse } from '../../../../models/response/product/tour/tou
 import { ProductServiceService } from '../../../../services/AdminSupplier/product/product-service.service';
 import { Product } from '../../../../models/AdminSupplier/response/products/product';
 import { CreateProductRequest } from '../../../../models/AdminSupplier/request/products/create-product-resquest';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tour',
@@ -50,7 +51,7 @@ createTourRequest: any = {
 
   searchQuery: string='';
 
-  constructor(private tourService:ProductServiceService){}
+  constructor(private tourService:ProductServiceService, private router: Router){}
 
   ngOnInit(): void {
     this.getAllTour(this.currentPage);
@@ -79,7 +80,8 @@ createTourRequest: any = {
   }
 
   displayFormCreate(){
-    this.isDisplayCreate = true;
+    this.router.navigate(['/admin/product/create']);
+
   }
 
   onImagesSelected(event: Event): void {

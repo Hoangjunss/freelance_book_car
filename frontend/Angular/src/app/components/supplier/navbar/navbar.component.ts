@@ -1,37 +1,24 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, Inject, NgModule, OnInit, PLATFORM_ID } from '@angular/core';
+import { Component, PLATFORM_ID } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { GetCurrentUserResponse } from '../../../models/response/user/get-current-user-response';
 
 @Component({
-  selector: 'app-navabar',
+  selector: 'app-navbar',
   standalone: true,
   imports: [RouterOutlet, RouterLink, CommonModule,RouterLinkActive],
-  templateUrl: './navabar.component.html',
+  templateUrl: './navbar.component.html',
   styleUrls:[ './navabar.component.css',  './demo.css']
 })
-export class NavabarComponent implements OnInit{
-  isSidebarOpen = false;
+export class NavbarComponent {
+isSidebarOpen = false;
   CurrentUser: GetCurrentUserResponse = new GetCurrentUserResponse();
-
-  isAdmin = false;
-
-  currentUrl: string = '';
 
   toggleSidebar() {
     this.isSidebarOpen = !this.isSidebarOpen;
   }
 
   constructor( @Inject(PLATFORM_ID) private platformId: Object, private router: Router){}
-  ngOnInit(): void {
-    this.currentUrl = this.router.url;
-    console.log('Current URL:', this.currentUrl);
-    if(this.currentUrl == '/admin'){
-      this.isAdmin = false;
-    }else{
-      this.isAdmin = true;
-    }
-  }
 
   localstore(){
     if (isPlatformBrowser(this.platformId)) {
@@ -55,7 +42,10 @@ export class NavabarComponent implements OnInit{
     localStorage.removeItem('token');
     this.CurrentUser = null; 
 
-    this.router.navigate(['/auth/login']);
   }
 
 }
+function Inject(PLATFORM_ID: any): (target: typeof NavbarComponent, propertyKey: undefined, parameterIndex: 0) => void {
+  throw new Error('Function not implemented.');
+}
+

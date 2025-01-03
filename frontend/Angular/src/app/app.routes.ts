@@ -74,6 +74,10 @@ export const routes: Routes = [
     loadChildren: () => import('./components/admin/router/admin.modules').then(m => m.AdminModule)
   },
   {
+    path: 'supplier',
+    loadChildren: () => import('./components/supplier/router/supplier.modules').then(m => m.SupplierModule)
+  },
+  {
     path: 'booking',
     component: BookingComponent
   },

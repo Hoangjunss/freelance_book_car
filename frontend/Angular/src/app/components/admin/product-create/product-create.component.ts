@@ -89,7 +89,7 @@ export class ProductCreateComponent {
   }
 
   closeFormCreate(): void {
-    this.router.navigate(['/admin/product/productActive']);
+    this.router.navigate(['/admin/admin/product/productAccess']);
   }
 
 
