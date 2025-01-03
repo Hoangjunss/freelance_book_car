@@ -1,1 +1,164 @@
-<p>product-update works!</p>
+<div class="container mt-5">
+    <h2 class="mb-4">Cập nhật sản phẩm</h2>
+  
+    <!-- Thông tin cơ bản -->
+    <div class="form-group">
+      <label for="nameProduct">Tên sản phẩm</label>
+      <input 
+        type="text" 
+        class="form-control" 
+        id="nameProduct" 
+        [(ngModel)]="product.nameProduct" 
+        required 
+      />
+    </div>
+    
+    <div class="form-group">
+      <label for="price">Giá sản phẩm</label>
+      <input 
+        type="number" 
+        class="form-control" 
+        id="price" 
+        [(ngModel)]="product.price" 
+        required 
+      />
+    </div>
+  
+    <div class="form-group">
+      <label for="description">Mô tả sản phẩm</label>
+      <textarea 
+  id="description" 
+  rows="3" 
+  required 
+  class="form-control" 
+  [(ngModel)]="product.description">
+</textarea>
+
+    </div>
+  
+    <div class="form-group">
+      <label for="nameProductType">Loại sản phẩm</label>
+      <input 
+        type="text" 
+        class="form-control" 
+        id="nameProductType" 
+        [(ngModel)]="product.nameProductType" 
+        required 
+      />
+    </div>
+  
+    <div class="form-group">
+      <label for="address">Địa chỉ</label>
+      <input 
+        type="text" 
+        class="form-control" 
+        id="address" 
+        [(ngModel)]="product.address" 
+        required 
+      />
+    </div>
+  
+    <div class="form-group">
+      <label for="nameSupplier">Tên nhà cung cấp</label>
+      <input 
+        type="text" 
+        class="form-control" 
+        id="nameSupplier" 
+        [(ngModel)]="product.nameSupplier" 
+        required 
+      />
+    </div>
+  
+    <!-- Hình ảnh sản phẩm -->
+    <h4 class="mt-4">Hình ảnh sản phẩm</h4>
+    <div class="form-row">
+      <div class="col-md-3" *ngFor="let image of product.listImage; let i = index">
+        <img [src]="image.url" alt="Product Image" class="img-thumbnail" />
+        <button 
+          type="button" 
+          class="btn btn-danger btn-sm mt-2" 
+          (click)="removeImage(i)">
+          Xóa
+        </button>
+        <input 
+          type="file" 
+          class="form-control-file mt-2" 
+          (change)="onSingleImageSelected($event, i)" 
+        />
+      </div>
+    </div>
+    <button 
+      type="button" 
+      class="btn btn-success mt-3" 
+      (click)="addImage()">
+      Thêm ảnh mới
+    </button>
+    
+  
+    <!-- Giá chính thức -->
+    <h4 class="mt-4">Giá chính thức</h4>
+    <div class="form-row">
+      <div class="form-group col-md-3" *ngFor="let price of product.officialPriceDTO; let i = index">
+        <label for="price-{{i}}">Giá {{i + 1}}</label>
+        <input 
+          type="number" 
+          class="form-control" 
+          id="price-{{i}}" 
+          [(ngModel)]="price.price" 
+          required 
+        />
+  
+        <label for="minQuantity-{{i}}">Số lượng tối thiểu</label>
+        <input 
+          type="number" 
+          class="form-control" 
+          id="minQuantity-{{i}}" 
+          [(ngModel)]="price.minQuantity" 
+          required 
+        />
+  
+        <label for="maxQuantity-{{i}}">Số lượng tối đa</label>
+        <input 
+          type="number" 
+          class="form-control" 
+          id="maxQuantity-{{i}}" 
+          [(ngModel)]="price.maxQuantity" 
+          required 
+        />
+      </div>
+    </div>
+  
+    <!-- Trạng thái -->
+    <h4 class="mt-4">Trạng thái sản phẩm</h4>
+    <div class="form-group">
+      <label for="productStatusActivity">Trạng thái hoạt động</label>
+      <select 
+        class="form-control" 
+        id="productStatusActivity" 
+        [(ngModel)]="product.productStatusActivity">
+        <option value="Active">Active</option>
+        <option value="Inactive">Inactive</option>
+      </select>
+    </div>
+  
+    <div class="form-group">
+      <label for="productStatusVerify">Trạng thái xác minh</label>
+      <select 
+        class="form-control" 
+        id="productStatusVerify" 
+        [(ngModel)]="product.productStatusVerify">
+        <option value="Access">Access</option>
+        <option value="Pending">Pending</option>
+        <option value="Denied">Denied</option>
+      </select>
+    </div>
+  
+    <!-- Nút cập nhật -->
+    <button 
+      type="button" 
+      class="btn btn-primary mt-4" 
+      (click)="onUpdate()">
+      Cập nhật
+    </button>
+  </div>
+  

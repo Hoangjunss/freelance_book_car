@@ -49,9 +49,9 @@ export class ProductServiceService {
         })
       );
     }
-    getProductId(formData: FormData): Observable<Product> {
+    getProductId(id: number): Observable<Product> {
       const headers = this.createAuthorizationHeader();
-      return this.httpClient.patch<Apiresponse<Product>>(`${this.baseUrl}`, formData, {headers}).pipe(
+      return this.httpClient.get<Apiresponse<Product>>(`${this.baseUrl}/products/${id}`, {headers}).pipe(
         map((response: Apiresponse<Product>) => {
           if (response.success) {
             return response.data;
