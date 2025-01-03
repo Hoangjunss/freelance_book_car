@@ -12,7 +12,7 @@ import { HotelBookingComponent } from "../hotel-manager/hotel-booking/hotel-book
 import { HotelStatisticsComponent } from "../hotel-manager/hotel-statistics/hotel-statistics.component";
 import { PromotionComponent } from "../promotion-manager/promotion/promotion.component";
 import { VoucherComponent } from "../promotion-manager/voucher/voucher.component";
-import { StatisticsComponent } from "../statistics/statistics.component";
+
 import { PageHomeComponent } from "../page/page-home/page-home.component";
 import { BookingPendingComponent } from "../booking/booking-pending/booking-pending.component";
 import { BookingAcceptComponent } from "../booking/booking-accept/booking-accept.component";
@@ -26,6 +26,11 @@ import { SupportComponent } from "../support/support.component";
 import { ThanhvienComponent } from "../thanhvien/thanhvien.component";
 import { ProductCreateComponent } from "../product-create/product-create.component";
 import { ProductUpdateComponent } from "../product-update/product-update.component";
+import { LienheAdminComponent } from "../admin/lienhe/lienhe.component";
+import { SupportAdminComponent } from "../admin/support/support.component";
+import { ThanhvienAdminComponent } from "../admin/thanhvien/thanhvien.component";
+import { ProductActiveAdminComponent } from "../admin/products-active/products.component";
+import { ProductPendingAdminComponent } from "../admin/products-pending/products.component";
 
 export const adminRoutes: Routes = [
     {
@@ -96,10 +101,7 @@ export const adminRoutes: Routes = [
                     }
                 ]
             },
-            {
-                path: 'statistics',
-                component: StatisticsComponent
-            },
+           
             {
                 path: 'page-manager',
                 children: [
@@ -175,6 +177,39 @@ export const adminRoutes: Routes = [
             {
                 path: 'thanhvien',
                component:ThanhvienComponent
+            },
+            {
+                path: 'admin',
+                children: [
+                    {
+                        path: 'product',
+                children: [
+                    {
+                        path: 'productAccess',
+                        component: ProductActiveAdminComponent
+                    },
+                    {
+                        path: 'productPending',
+                        component: ProductPendingAdminComponent
+                    },
+                   
+                ]
+                    },
+                    {
+                        path: 'lienhe',
+                        component: LienheAdminComponent
+                       
+                    },
+                    {
+                        path: 'support',
+                        component: SupportAdminComponent
+                    },
+                    {
+                        path: 'thanhvien',
+                       component:ThanhvienAdminComponent
+                    },
+                   
+                ]
             }
         ]
     }
