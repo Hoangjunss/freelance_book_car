@@ -26,10 +26,11 @@ export class NavabarComponent implements OnInit{
   ngOnInit(): void {
     this.currentUrl = this.router.url;
     console.log('Current URL:', this.currentUrl);
-    if(this.currentUrl == '/admin'){
-      this.isAdmin = false;
-    }else{
+    if(this.currentUrl == '/admin/admin'){
+      alert("1");
       this.isAdmin = true;
+    }else{
+      this.isAdmin = false;
     }
   }
 

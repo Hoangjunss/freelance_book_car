@@ -14,7 +14,7 @@ export class SupplierService {
 
     constructor(private httpClient:HttpClient, @Inject(PLATFORM_ID) private platformId: Object) { }
   
-    private baseUrl = `${environment.apiBaseUrl}/supplier`;
+    private baseUrl = `${environment.apiBaseUrl}`;
 
     createSupplier(formData: FormData): Observable<SupplyCreateDTOS> {
         const headers = this.createAuthorizationHeader();

@@ -15,7 +15,7 @@ import { Supplier } from '../../../models/AdminSupplier/response/supplier/suppli
 })
 export class SupplierServiceService {
 
- private baseUrl = `${environment.apiBaseUrl}/api/v1/hotel`;
+ private baseUrl = `${environment.apiBaseUrl}`;
  
    constructor(private httpClient: HttpClient) { }
    private createAuthorizationHeader(): HttpHeaders {

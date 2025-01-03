@@ -27,7 +27,7 @@ createTourRequest: any = {
   description: '',
   officialPriceDTOS: [],
 };
-  
+selectProduct: any;
   createTourResponse: CreateTourResponse = new CreateTourResponse();
   updateTourRequest: Product = new Product();
   updateTourResponse: UpdateTourResponse = new UpdateTourResponse();
@@ -65,11 +65,27 @@ createTourRequest: any = {
     this.currentPage = page;
     this.updatePagedData();
   }
+  
 
   updatePagedData() {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
     this.pagedData = this.filterTour.slice(startIndex, endIndex);
+  }
+
+  displayFromDetail(id: number): void{
+    this.selectProduct = this.getProductDetail(id);
+    
+  }
+
+  getProductDetail(id: number){
+    this.tourService.getProductId(id).subscribe({
+      next: (data)=>{
+        if(data){
+          this.selectProduct = data;
+        }
+      }
+    })
   }
   
 
