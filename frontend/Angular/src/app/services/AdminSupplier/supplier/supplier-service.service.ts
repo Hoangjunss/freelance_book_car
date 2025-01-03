@@ -28,9 +28,9 @@ export class SupplierServiceService {
      }
      return new HttpHeaders();
    }
-     getProductGroup(): Observable<Supplier[]> {
+     getSypplierActive(): Observable<Supplier[]> {
        const headers = this.createAuthorizationHeader();
-       return this.httpClient.patch<Apiresponse<Supplier[]>>(`${this.baseUrl}`,  {headers}).pipe(
+       return this.httpClient.patch<Apiresponse<Supplier[]>>(`${this.baseUrl}/admin/supplier?verifyStatus=Active&page=0&size=10`,  {headers}).pipe(
          map((response: Apiresponse<Supplier[]>) => {
            if (response.success) {
              return response.data;
@@ -40,4 +40,28 @@ export class SupplierServiceService {
          })
        );
      }
+     getSypplierPending(): Observable<Supplier[]> {
+      const headers = this.createAuthorizationHeader();
+      return this.httpClient.patch<Apiresponse<Supplier[]>>(`${this.baseUrl}/admin/supplier?verifyStatus=Pending&page=0&size=10`,  {headers}).pipe(
+        map((response: Apiresponse<Supplier[]>) => {
+          if (response.success) {
+            return response.data;
+          } else {
+            throw new Error(response.message);
+          }
+        })
+      );
+    }
+    getSypplierBlock(): Observable<Supplier[]> {
+      const headers = this.createAuthorizationHeader();
+      return this.httpClient.patch<Apiresponse<Supplier[]>>(`${this.baseUrl}/admin/supplier?verifyStatus=Block&page=0&size=10`,  {headers}).pipe(
+        map((response: Apiresponse<Supplier[]>) => {
+          if (response.success) {
+            return response.data;
+          } else {
+            throw new Error(response.message);
+          }
+        })
+      );
+    }
 }
