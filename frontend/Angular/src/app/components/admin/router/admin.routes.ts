@@ -21,6 +21,9 @@ import { ProductActiveComponent } from "../products-active/products.component";
 import { ProductPendingComponent } from "../products-pending/products.component";
 import { OrdersPendingComponent } from "../orders-pending/orders.component";
 import { OrdersAccessComponent } from "../orders-access/orders.component";
+import { LienheComponent } from "../lienhe/lienhe.component";
+import { SupportComponent } from "../support/support.component";
+import { ThanhvienComponent } from "../thanhvien/thanhvien.component";
 
 export const adminRoutes: Routes = [
     {
@@ -149,7 +152,20 @@ export const adminRoutes: Routes = [
                     },
                    
                 ]
+            },
+            {
+                path: 'lienhe',
+                component: LienheComponent
+               
+            },
+            {
+                path: 'support',
+                component: SupportComponent
+            },
+            {
+                path: 'thanhvien',
+               component:ThanhvienComponent
             }
         ]
     }
-]
+];
