@@ -32,7 +32,8 @@ import { ThanhvienAdminComponent } from "../admin/thanhvien/thanhvien.component"
 import { ProductActiveAdminComponent } from "../admin/products-active/products.component";
 import { ProductPendingAdminComponent } from "../admin/products-pending/products.component";
 import { UserAdminComponent } from "../admin/user/user.component";
-import { SupplierAdminComponent } from "../admin/supplier/supplier.component";
+import { SupplierPendingAdminComponent } from "../admin/supplier-pending/supplier.component";
+import { SupplierAccessAdminComponent } from "../admin/supplier-access/supplier.component";
 
 export const adminRoutes: Routes = [
     {
@@ -216,7 +217,17 @@ export const adminRoutes: Routes = [
                     },
                     {
                         path: 'supplier',
-                       component:SupplierAdminComponent
+                        children: [
+                            {
+                                path: 'pending',
+                                component: SupplierPendingAdminComponent
+                            },
+                            {
+                                path: 'active',
+                                component: SupplierAccessAdminComponent
+                            },
+                           
+                        ]
                     },
                    
                 ]

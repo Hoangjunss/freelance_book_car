@@ -21,7 +21,7 @@ import { SupplierServiceService } from '../../../../services/AdminSupplier/suppl
   templateUrl: './supplier.component.html',
   styleUrls: ['./supplier.component.css']
 })
-export class SupplierAdminComponent implements OnInit{
+export class SupplierPendingAdminComponent implements OnInit{
 createTourRequest: any = {
   name: '',
   price: 0,
@@ -253,7 +253,7 @@ createTourRequest: any = {
 
   //Get all Tour
   getAllTour(){
-    this.tourService.getSypplierActive().subscribe({
+    this.tourService.getSypplierPending().subscribe({
       next: (data) => {
         this.getALlTour = data;
         this.filterTour = this.getALlTour;
