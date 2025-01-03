@@ -17,7 +17,7 @@ import { CreateProductRequest } from '../../../models/AdminSupplier/request/prod
   standalone: true,
   imports: [CommonModule, FormsModule, NoDataFoundComponent],
   templateUrl: './products.component.html',
-  styleUrls: ['./products.component.css','./styles.min.css']
+  styleUrls: ['./products.component.css']
 })
 export class ProductComponent implements OnInit{
 createTourRequest: any = {
