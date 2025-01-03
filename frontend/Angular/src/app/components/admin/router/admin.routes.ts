@@ -187,16 +187,16 @@ export const adminRoutes: Routes = [
                     {
                         path: 'product',
                 children: [
-                    {
-                        path: 'productAccess',
-                        component: ProductActiveAdminComponent
-                    },
-                    {
-                        path: 'productPending',
-                        component: ProductPendingAdminComponent
-                    },
+                        {
+                            path: 'productAccess',
+                            component: ProductActiveAdminComponent
+                        },
+                        {
+                            path: 'productPending',
+                            component: ProductPendingAdminComponent
+                        },
                    
-                ]
+                    ]
                     },
                     {
                         path: 'lienhe',
