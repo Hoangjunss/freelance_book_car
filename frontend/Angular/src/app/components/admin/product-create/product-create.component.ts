@@ -31,6 +31,14 @@ export class ProductCreateComponent {
       maxQuantity: number;
     }[]
   };
+  imageUrls: string[] = [];
+  onImageSelected1(event: any, index: number) { 
+    const file = event.target.files[0]; 
+    if (file) { const reader = new FileReader(); reader.onload = (e: any) => {
+       this.imageUrls[index] = e.target.result;
+       }; reader.readAsDataURL(file);
+       } 
+      }
 
   officialPrices = Array.from({ length: 4 }, () => ({
     price: 0,

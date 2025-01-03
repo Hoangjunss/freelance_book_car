@@ -1,69 +1,151 @@
+<div class="row d-flex" style="display: flex;
+ flex-wrap: wrap;
+ flex-direction: row;
+ box-sizing: border-box;
+">
+  <div class="col-3 col-m-6 col-sm-6">
+    <div class="counter bg-primary">
+      <p>
+        <i class="fas fa-tasks"></i>
+      </p>
+      <h3>100+</h3>
+      <p>To do</p>
+    </div>
+  </div>
+  <div class="col-3 col-m-6 col-sm-6">
+    <div class="counter bg-warning">
+      <p>
+        <i class="fas fa-spinner"></i>
+      </p>
+      <h3>100+</h3>
+      <p>In progress</p>
+    </div>
+  </div>
+  <div class="col-3 col-m-6 col-sm-6">
+    <div class="counter bg-success">
+      <p>
+        <i class="fas fa-check-circle"></i>
+      </p>
+      <h3>100+</h3>
+      <p>Completed</p>
+    </div>
+  </div>
+  <div class="col-3 col-m-6 col-sm-6">
+    <div class="counter bg-danger">
+      <p>
+        <i class="fas fa-bug"></i>
+      </p>
+      <h3>100+</h3>
+      <p>Issues</p>
+    </div>
+  </div>
+</div>
+<div class="container-fuild" style="border-radius: 10px;">
+  <div class="banner-1 d-flex" style="background-color: #add2ef;">      
+     <div  class="d-block col-2">
+      <h2>Asizon Membership</h2>
+      <h6>xem thêm lợi ích</h6>
+     </div>
+      <div class="benefit-1 col-3 counter-1 " style="background-color:white;">
+          <img src="path-to-icon1.png" alt="Icon 1" class="w-30 img-fuild">
+          <div class="d-block" style="color: #000000;">
+          <p >Quyền ưu tiên chọn mua trước vụ  </p>
+          <p>Giúp tối ưu chi phí</p>
+      </div>
+      </div>
+      <div class="benefit-1 col-3 counter-1  " style="background-color: white;">
+          <img src="path-to-icon2.png" alt="Icon 2" class="w-30 img-fuild">
+          <div class="d-block" style="color: #000000;">
+          <p>Ưu đãi giao hàng, hỗ trợ giao nhanh </p>
+          <p>Tạo lợi thế cạnh tranh</p>
+      </div>
+      </div>
+      <div class="benefit-1 col-3 counter-1  d-flex" style="background-color: white;">
+          <img src="path-to-icon3.png" alt="Icon 3" class="w-30 img-fuild">
+          <div class="d-block" style="color: #000000;">
+              <p>Hỗ trợ ưu đãi dưới dạng voucher giảm giá </p>
+              <p>Giá tốt tối ưu chi phí cho thành viên Asizon</p>
+          </div>
+          
+      </div>
+      
+  </div>
+</div>
 <div class="container mt-5">
-    <h2 class="text-center mb-4">Create New Product</h2>
-    <form (ngSubmit)="onCreate()" class="border p-4 rounded shadow">
+  <h2 class="text-center mb-4">Create New Product</h2>
+  <form (ngSubmit)="onCreate()" class="border p-4 rounded shadow">
       <div class="row">
-        <!-- Left Column -->
-        <div class="col-md-6">
-          <h5 class="mb-3">Product Information</h5>
-          <div class="form-group">
-            <label for="name">Product Name</label>
-            <input type="text" class="form-control" id="name" [(ngModel)]="createProductRequest.name" name="name" placeholder="Enter product name" required>
+          <!-- Left Column -->
+          <div class="col-md-6">
+              <div class="form-section">
+                  <h5>Product Information</h5>
+                  <div class="form-group">
+                      <label for="name">Product Name</label>
+                      <input type="text" class="form-control" id="name" [(ngModel)]="createProductRequest.name" name="name" placeholder="Enter product name" required>
+                  </div>
+  
+                  <div class="form-group">
+                      <label for="price">Price</label>
+                      <input type="number" class="form-control" id="price" [(ngModel)]="createProductRequest.price" name="price" placeholder="Enter price" required>
+                  </div>
+  
+                
+  
+                  <div class="form-group">
+                      <label for="productTypeId">Product Type</label>
+                      <select class="form-control" id="productTypeId" [(ngModel)]="createProductRequest.productTypeId" name="productTypeId" required>
+                          <option *ngFor="let type of productTypes" [value]="type.id">{{ type.name }}</option>
+                      </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea class="form-control" id="description" [(ngModel)]="createProductRequest.description" name="description" placeholder="Enter description" style="height: 100%; min-height: 200px; resize: none;"></textarea>
+                </div>
+                 <!-- Official Prices -->
+              <div class="form-section ">
+                <h5>Official Prices (Exactly 4)</h5>
+                <div class="form-row d-flex" *ngFor="let index of [0, 1, 2, 3]">
+                    <div class="form-group col-md-4" >
+                        <label for="price-{{index}}">Price {{index + 1}}</label>
+                        <input type="number" class="form-control" id="price-{{index}}" [(ngModel)]="officialPrices[index].price" name="price-{{index}}" required>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="minQuantity-{{index}}">Min Quantity</label>
+                        <input type="number" class="form-control" id="minQuantity-{{index}}" [(ngModel)]="officialPrices[index].minQuantity" name="minQuantity-{{index}}" required>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="maxQuantity-{{index}}">Max Quantity</label>
+                        <input type="number" class="form-control" id="maxQuantity-{{index}}" [(ngModel)]="officialPrices[index].maxQuantity" name="maxQuantity-{{index}}" required>
+                    </div>
+                </div>
+            </div>
+              </div>
           </div>
   
-          <div class="form-group">
-            <label for="price">Price</label>
-            <input type="number" class="form-control" id="price" [(ngModel)]="createProductRequest.price" name="price" placeholder="Enter price" required>
-          </div>
+          <!-- Right Column -->
+          <div class="col-md-6">
+              <!-- Upload Images -->
+              <div class="form-section">
+                  <h5>Upload Product Images (Exactly 4)</h5>
+                  <div class="form-group">
+                    <div class="form-group"  *ngFor="let index of [0, 1, 2, 3]">
+                        <label for="image-{{index}}">Image {{index + 1}}</label>
+                        <input type="file" class="form-control-file" id="image-{{index}}" (change)="onImageSelected1($event, index)" required>
+                        <img *ngIf="imageUrls[index]" [src]="imageUrls[index]" alt="Selected Image" class="img-thumbnail mt-2" width="100">
+                        <img *ngIf="!imageUrls[index]" src="../../../../assets/img/DEFAULT/default-user.png" alt="Default Image" class="img-thumbnail mt-2" width="150">
+                    </div>
+                    
+                  </div>
+              </div>
   
-          <div class="form-group">
-            <label for="description">Description</label>
-            <textarea class="form-control" id="description" [(ngModel)]="createProductRequest.description" name="description" placeholder="Enter description"></textarea>
+             
           </div>
-  
-          <div class="form-group">
-            <label for="productTypeId">Product Type</label>
-            <select class="form-control" id="productTypeId" [(ngModel)]="createProductRequest.productTypeId" name="productTypeId" required>
-              <option *ngFor="let type of productTypes" [value]="type.id">{{ type.name }}</option>
-            </select>
-          </div>
-        </div>
-  
-        <!-- Right Column -->
-        <div class="col-md-6">
-          <!-- Upload Images -->
-    <h5 class="mb-3">Upload Product Images (Exactly 4)</h5>
-    <div class="form-group">
-      <div *ngFor="let index of [0, 1, 2, 3]" class="mb-2">
-        <label for="image-{{index}}">Image {{index + 1}}</label>
-        <input type="file" class="form-control-file" id="image-{{index}}" (change)="onImageSelected($event, index)" required>
-      </div>
-    </div>
-
-    <!-- Official Prices -->
-    <h5 class="mt-4">Official Prices (Exactly 4)</h5>
-    <div class="form-row">
-      <div class="form-group col-md-4" *ngFor="let index of [0, 1, 2, 3]">
-        <label for="price-{{index}}">Price {{index + 1}}</label>
-        <input type="number" class="form-control" id="price-{{index}}" [(ngModel)]="officialPrices[index].price" name="price-{{index}}" required>
-     
-      <div class="form-group col-md-4">
-        <label for="minQuantity-{{index}}">Min Quantity</label>
-        <input type="number" class="form-control" id="minQuantity-{{index}}" [(ngModel)]="officialPrices[index].minQuantity" name="minQuantity-{{index}}" required>
-      </div>
-      <div class="form-group col-md-4">
-        <label for="maxQuantity-{{index}}">Max Quantity</label>
-        <input type="number" class="form-control" id="maxQuantity-{{index}}" [(ngModel)]="officialPrices[index].maxQuantity" name="maxQuantity-{{index}}" required>
-      </div>
-    </div>
-    </div>
-        </div>
       </div>
   
       <!-- Actions -->
       <div class="text-center mt-4">
-        <button type="button" class="btn btn-secondary" (click)="closeFormCreate()">Cancel</button>
-        <button type="submit" class="btn btn-primary">Save</button>
+          <button type="button" class="btn btn-custom btn-custom-secondary" (click)="closeFormCreate()">Cancel</button>
+          <button type="submit" class="btn btn-custom btn-custom-primary">Save</button>
       </div>
-    </form>
-  </div>
-  
+  </form>
+</div>
