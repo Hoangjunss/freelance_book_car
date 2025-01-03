@@ -21,7 +21,7 @@ import { SupplierServiceService } from '../../../../services/AdminSupplier/suppl
   templateUrl: './supplier.component.html',
   styleUrls: ['./supplier.component.css']
 })
-export class ProductPendingComponent implements OnInit{
+export class SupplierAdminComponent implements OnInit{
 createTourRequest: any = {
   name: '',
   price: 0,

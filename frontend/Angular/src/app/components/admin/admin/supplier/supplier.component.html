@@ -1,1 +1,147 @@
-<p>supplier works!</p>
+<div class="row d-flex" style="display: flex;
+ flex-wrap: wrap;
+ flex-direction: row;
+ box-sizing: border-box;
+">
+  <div class="col-3 col-m-6 col-sm-6">
+    <div class="counter bg-primary">
+      <p>
+        <i class="fas fa-tasks"></i>
+      </p>
+      <h3>100+</h3>
+      <p>To do</p>
+    </div>
+  </div>
+  <div class="col-3 col-m-6 col-sm-6">
+    <div class="counter bg-warning">
+      <p>
+        <i class="fas fa-spinner"></i>
+      </p>
+      <h3>100+</h3>
+      <p>In progress</p>
+    </div>
+  </div>
+  <div class="col-3 col-m-6 col-sm-6">
+    <div class="counter bg-success">
+      <p>
+        <i class="fas fa-check-circle"></i>
+      </p>
+      <h3>100+</h3>
+      <p>Completed</p>
+    </div>
+  </div>
+  <div class="col-3 col-m-6 col-sm-6">
+    <div class="counter bg-danger">
+      <p>
+        <i class="fas fa-bug"></i>
+      </p>
+      <h3>100+</h3>
+      <p>Issues</p>
+    </div>
+  </div>
+</div>
+<div class="container-fuild" style="border-radius: 10px;">
+  <div class="banner-1 d-flex" style="background-color: #add2ef;">      
+     <div  class="d-block col-2">
+      <h2>Asizon Membership</h2>
+      <h6>xem thêm lợi ích</h6>
+     </div>
+      <div class="benefit-1 col-3 counter-1 " style="background-color:white;">
+          <img src="path-to-icon1.png" alt="Icon 1" class="w-30 img-fuild">
+          <div class="d-block" style="color: #000000;">
+          <p >Quyền ưu tiên chọn mua trước vụ  </p>
+          <p>Giúp tối ưu chi phí</p>
+      </div>
+      </div>
+      <div class="benefit-1 col-3 counter-1  " style="background-color: white;">
+          <img src="path-to-icon2.png" alt="Icon 2" class="w-30 img-fuild">
+          <div class="d-block" style="color: #000000;">
+          <p>Ưu đãi giao hàng, hỗ trợ giao nhanh </p>
+          <p>Tạo lợi thế cạnh tranh</p>
+      </div>
+      </div>
+      <div class="benefit-1 col-3 counter-1  d-flex" style="background-color: white;">
+          <img src="path-to-icon3.png" alt="Icon 3" class="w-30 img-fuild">
+          <div class="d-block" style="color: #000000;">
+              <p>Hỗ trợ ưu đãi dưới dạng voucher giảm giá </p>
+              <p>Giá tốt tối ưu chi phí cho thành viên Asizon</p>
+          </div>
+          
+      </div>
+      
+  </div>
+</div>
+<h2 class="text-center m-2">Supplier Manager</h2>
+<button type="button" class="m-3 btn btn-success ml-auto" (click)="displayFormCreate()">Add Supplier</button>
+<div class="row">
+  <div class="col-lg-12 d-flex align-items-stretch">
+    <div class="card w-100">
+      <div class="card-body p-4">
+        <h5 class="card-title fw-semibold mb-4">Recent Suppliers</h5>
+        <div class="table-responsive">
+          <table class="table text-nowrap mb-0 align-middle">
+            <thead class="text-dark fs-4">
+              <tr>
+                <th class="border-bottom-0">
+                  <h6 class="fw-semibold mb-0">Id</h6>
+                </th>
+                <th class="border-bottom-0">
+                  <h6 class="fw-semibold mb-0">Name</h6>
+                </th>
+                <th class="border-bottom-0">
+                  <h6 class="fw-semibold mb-0">Status</h6>
+                </th>
+                <th class="border-bottom-0">
+                  <h6 class="fw-semibold mb-0">Address</h6>
+                </th>
+                <th class="border-bottom-0">
+                  <h6 class="fw-semibold mb-0">Email</h6>
+                </th>
+                <th class="border-bottom-0">
+                  <h6 class="fw-semibold mb-0">Phone</h6>
+                </th>
+                <th class="border-bottom-0">
+                  <h6 class="fw-semibold mb-0">Supplier Status</h6>
+                </th>
+                <th class="border-bottom-0">
+                  <h6 class="fw-semibold mb-0">Actions</h6>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let supplier of pagedData">
+                <td class="border-bottom-0">
+                  <h6 class="fw-semibold mb-0">{{ supplier.id }}</h6>
+                </td>
+                <td class="border-bottom-0">
+                  <h6 class="fw-semibold mb-1">{{ supplier.nameSupply }}</h6>
+                  <img src="{{supplier.image}}" class="img-thumbnail" style="width: 100px; height: auto;">                      
+                </td>
+                <td class="border-bottom-0">
+                  <p class="mb-0 fw-normal">{{ supplier.status ? 'Active' : 'Inactive' }}</p>
+                </td>
+                <td class="border-bottom-0">
+                  <p class="mb-0 fw-normal">{{ supplier.address }}</p>
+                </td>
+                <td class="border-bottom-0">
+                  <p class="mb-0 fw-normal">{{ supplier.email }}</p>
+                </td>
+                <td class="border-bottom-0">
+                  <p class="mb-0 fw-normal">{{ supplier.phone }}</p>
+                </td>
+                <td class="border-bottom-0">
+                  <span class="badge {{ supplier.supplierStatus === 'Active' ? 'bg-success' : 'bg-danger' }} rounded-3 fw-semibold">
+                    {{ supplier.supplierStatus }}
+                  </span>
+                </td>
+                <td class="border-bottom-0">
+                  <button class="btn btn-warning m-2" (click)="displayFormUpdate(supplier)">Edit</button>
+                </td>
+              </tr> 
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
