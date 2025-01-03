@@ -17,8 +17,10 @@ import { PageHomeComponent } from "../page/page-home/page-home.component";
 import { BookingPendingComponent } from "../booking/booking-pending/booking-pending.component";
 import { BookingAcceptComponent } from "../booking/booking-accept/booking-accept.component";
 import { BookingCancelComponent } from "../booking/booking-cancel/booking-cancel.component";
-import { ProductComponent } from "../products/products.component";
-import { OrdersComponent } from "../orders/orders.component";
+import { ProductActiveComponent } from "../products-active/products.component";
+import { ProductPendingComponent } from "../products-pending/products.component";
+import { OrdersPendingComponent } from "../orders-pending/orders.component";
+import { OrdersAccessComponent } from "../orders-access/orders.component";
 
 export const adminRoutes: Routes = [
     {
@@ -121,11 +123,32 @@ export const adminRoutes: Routes = [
             },
             {
                 path: 'product',
-                component: ProductComponent
+                children: [
+                    {
+                        path: 'productActive',
+                        component: ProductActiveComponent
+                    },
+                    {
+                        path: 'productPending',
+                        component: ProductPendingComponent
+                    },
+                   
+                ]
+              
             },
             {
                 path: 'orders',
-                component: OrdersComponent
+                children: [
+                    {
+                        path: 'ordersAccess',
+                        component: OrdersAccessComponent
+                    },
+                    {
+                        path: 'ordersPending',
+                        component: OrdersPendingComponent
+                    },
+                   
+                ]
             }
         ]
     }

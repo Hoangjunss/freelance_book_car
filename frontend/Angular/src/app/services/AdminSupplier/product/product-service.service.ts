@@ -62,7 +62,19 @@ export class ProductServiceService {
       );
     }
 
-    getAllProduct(): Observable<Product[]> {
+    getAllProductPending(): Observable<Product[]> {
+      const headers = this.createAuthorizationHeader();
+      return this.httpClient.get<Apiresponse<Page<Product[]>>>(`${this.baseUrl}/supplier/products?productVerifyStatus=Pending&page=0&size=2`, {headers}).pipe(
+        map((response: Apiresponse<Page<Product[]>>) => {
+          if (response.success) {
+            return response.data.content;
+          } else {
+            throw new Error(response.message);
+          }
+        })
+      );
+    }
+    getAllProductAccess(): Observable<Product[]> {
       const headers = this.createAuthorizationHeader();
       return this.httpClient.get<Apiresponse<Page<Product[]>>>(`${this.baseUrl}/supplier/products?productVerifyStatus=Access&page=0&size=2`, {headers}).pipe(
         map((response: Apiresponse<Page<Product[]>>) => {

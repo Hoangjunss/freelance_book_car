@@ -19,7 +19,7 @@ import { CreateProductRequest } from '../../../models/AdminSupplier/request/prod
   templateUrl: './products.component.html',
   styleUrls: ['./products.component.css']
 })
-export class ProductComponent implements OnInit{
+export class ProductPendingComponent implements OnInit{
 createTourRequest: any = {
   name: '',
   price: 0,
@@ -251,7 +251,7 @@ createTourRequest: any = {
 
   //Get all Tour
   getAllTour(){
-    this.tourService.getAllProduct().subscribe({
+    this.tourService.getAllProductPending().subscribe({
       next: (data) => {
         this.getALlTour = data;
         this.filterTour = this.getALlTour;

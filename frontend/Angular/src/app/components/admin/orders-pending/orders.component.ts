@@ -24,7 +24,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.css'
 })
-export class OrdersComponent {
+export class OrdersPendingComponent {
   getBookingResponse: GetBookingResponse[] = [];
     updateBookingResponse: UpdateBookingResponse = new UpdateBookingResponse();
   
@@ -79,7 +79,7 @@ export class OrdersComponent {
     }
   
     getAll(){
-      this.bookingService.getOrderOfSupplier().subscribe({
+      this.bookingService.getOrderOfSupplierPending().subscribe({
         next: (data) => {
           this.getBookingResponse = data;
           this.updatePagedData();
@@ -88,7 +88,7 @@ export class OrdersComponent {
     }
   
     getAllOrders(){
-      this.bookingService.getOrderOfSupplier().subscribe({
+      this.bookingService.getOrderOfSupplierPending().subscribe({
         next: (data) => {
           this.getBookingResponse = data;
           this.updatePagedData();

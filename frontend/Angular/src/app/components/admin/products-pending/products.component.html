@@ -1,0 +1,350 @@
+<!-- <h2 class="text-center m-2">Product Manager</h2>
+
+<nav class="d-flex navbar navbar-expand-lg navbar-light bg-light navbackground">
+  <div class="form-inline my-2 my-lg-0 mr-auto">
+    <input [(ngModel)]="searchQuery" style="margin-left: 10px;" name="searchQuery" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
+      (keyup.enter)="searchTour()">
+    <button class="btn btn-outline-success my-2 my-sm-0" (click)="searchTour()">Search</button>
+    <button class="btn btn-outline-success my-2 my-sm-0">Show all</button>
+  </div>
+  <button type="button" class="m-3 btn btn-success ml-auto" (click)="displayFormCreate()">Add Product</button>
+</nav>
+
+
+<div *ngIf="getALlTour.length > 0; else noData" class="container">
+  <h6 class="mb-4">Responsive Table with Pagination</h6>
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>ID</th>
+          <th>Giá sản phẩm</th>
+          <th>Trạng thái</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let tour of pagedData">
+          <th scope="row">{{ tour.nameProduct }}
+            <img src="{{tour.listImage[0].url}}">
+          </th>
+          <td>{{ tour.id }}</td>
+          <td>{{ tour.price }}</td>
+          <td>{{tour.productStatusActivity}}</td>
+          <td>
+            <button class="btn btn-warning m-2" (click)="displayFromUpdate(tour)">Edit</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <a class="page-link" (click)="goToPage(currentPage - 1)">Previous</a>
+        </li>
+        <li class="page-item" *ngFor="let page of pages" [class.active]="currentPage === page">
+          <a class="page-link" (click)="goToPage(page)">{{ page }}</a>
+        </li>
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <a class="page-link" (click)="goToPage(currentPage + 1)">Next</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>
+
+
+<div *ngIf="isDisplayCreate" class="modal fade show" tabindex="-1" role="dialog"
+  style="display: block; background: rgba(0, 0, 0, 0.5);">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content slide-in">
+      <div class="modal-body">
+        <form (ngSubmit)="onCreate()">
+          <div class="row">
+            <div class="col-md-6 col-sm-12">
+              <h5 class="modal-title">Product Information</h5>
+              <button type="button" class="close" aria-label="Close" (click)="closeFormCreate()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+
+         
+              <div class="form-group">
+                <label for="name">Product Name</label>
+                <input type="text" class="form-control" id="name" [(ngModel)]="createTourRequest!.name" name="name"
+                  placeholder="Enter product name" required>
+              </div>
+
+              <div class="form-group">
+                <label for="price">Price</label>
+                <input type="number" class="form-control" id="price" [(ngModel)]="createTourRequest!.price" name="price"
+                  placeholder="Enter price" required>
+              </div>
+
+              
+              <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control" id="description" [(ngModel)]="createTourRequest!.description"
+                  name="description" placeholder="Enter description"></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="productTypeId">Product Type</label>
+                <select class="form-control" id="productTypeId" [(ngModel)]="createTourRequest!.productTypeId"
+                  name="productTypeId">
+                  <option *ngFor="let type of productTypes" [value]="type.id">{{ type.name }}</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="supplierId">Supplier</label>
+                <select class="form-control" id="supplierId" [(ngModel)]="createTourRequest!.supplierId"
+                  name="supplierId">
+                  <option *ngFor="let supplier of suppliers" [value]="supplier.id">{{ supplier.name }}</option>
+                </select>
+              </div> 
+            </div>
+
+            <div class="col-md-6 col-sm-12">
+              
+              <div class="form-group">
+                <label for="images">Upload Product Images (Max 4)</label>
+                <input type="file" class="form-control-file" id="images" (change)="onImagesSelected($event)" multiple>
+              </div>
+              <div class="mt-3">
+                <div *ngFor="let image of selectedImages; let i = index" class="mt-2 position-relative">
+                  <img [src]="image" alt="Selected Product Image" class="img-fluid rounded"
+                    style="max-height: 150px;">
+                  <button type="button" class="btn btn-danger btn-sm position-absolute" 
+                    style="top: 5px; right: 5px;" 
+                    (click)="removeImage(i)">
+                    Xóa
+                  </button>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label>Official Prices (Max 4)</label>
+                <div *ngFor="let price of createTourRequest!.officialPriceDTOS; let i = index" class="border p-2 mb-2">
+                  <div class="form-group">
+                    <label for="price-{{i}}">Price</label>
+                    <input type="number" class="form-control" id="price-{{i}}"
+                      [(ngModel)]="createTourRequest!.officialPriceDTOS[i].price" name="price-{{i}}" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="minQuantity-{{i}}">Min Quantity</label>
+                    <input type="number" class="form-control" id="minQuantity-{{i}}"
+                      [(ngModel)]="createTourRequest!.officialPriceDTOS[i].minQuantity" name="minQuantity-{{i}}">
+                  </div>
+                  <div class="form-group">
+                    <label for="maxQuantity-{{i}}">Max Quantity</label>
+                    <input type="number" class="form-control" id="maxQuantity-{{i}}"
+                      [(ngModel)]="createTourRequest!.officialPriceDTOS[i].maxQuantity" name="maxQuantity-{{i}}">
+                  </div>
+                  <button type="button" class="btn btn-danger btn-sm mt-2"
+                    (click)="removeOfficialPrice(i)">Remove</button>
+                </div>
+                <button type="button" class="btn btn-primary btn-sm mt-3" [disabled]="createTourRequest!.officialPriceDTOS.length >= 4"
+                  (click)="addOfficialPrice()">Add Official Price</button>
+              </div>
+
+              <button type="button" class="m-1 btn btn-secondary" (click)="closeFormCreate()">Cancel</button>
+              <button type="submit" class="m-1 btn btn-primary">Save</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<div *ngIf="isDisplayUpdate" class="modal fade show" tabindex="-1" role="dialog"
+  style="display: block; background: rgba(0, 0, 0, 0.5);">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content slide-in">
+      <div class="modal-body">
+        <form (ngSubmit)="onUpdate()">
+          <div class="row">
+         
+            <div class="col-md-6 col-sm-12">
+              <h5 class="modal-title">Tour Information</h5>
+              <button type="button" class="close" aria-label="Close" (click)="closeFormUpdate()">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              <input type="hidden" class="form-control" id="id" [(ngModel)]="updateTourRequest!.id" name="id">
+              <div class="form-group">
+                <label for="nameProduct">Product Name</label>
+                <input type="text" class="form-control" id="nameProduct" [(ngModel)]="updateTourRequest!.nameProduct" 
+                  name="nameProduct" placeholder="Enter product name">
+              </div>
+              <div class="form-group">
+                <label for="price">Price</label>
+                <input type="number" class="form-control" id="price" [(ngModel)]="updateTourRequest!.price" 
+                  name="price" placeholder="Enter price">
+              </div>
+              <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control" id="description" [(ngModel)]="updateTourRequest!.description"
+                  name="description" placeholder="Enter description"></textarea>
+              </div>
+              <div class="form-group">
+                <label for="nameProductType">Product Type</label>
+                <input type="text" class="form-control" id="nameProductType" [(ngModel)]="updateTourRequest!.nameProductType" 
+                  name="nameProductType" placeholder="Enter product type">
+              </div>
+              <div class="form-group">
+                <label for="address">Address</label>
+                <input type="text" class="form-control" id="address" [(ngModel)]="updateTourRequest!.address" 
+                  name="address" placeholder="Enter address">
+              </div>
+              <div class="form-group">
+                <label for="nameSupplier">Supplier Name</label>
+                <input type="text" class="form-control" id="nameSupplier" [(ngModel)]="updateTourRequest!.nameSupplier" 
+                  name="nameSupplier" placeholder="Enter supplier name">
+              </div>
+            </div>
+            
+     
+            <div class="col-md-6 col-sm-12">
+              <div class="form-group">
+                <label for="tourImage">Upload Tour Image</label>
+                <input type="file" class="form-control-file" id="tourImage" (change)="onImageSelected($event)">
+              </div>
+              <div class="mt-3">
+                <img *ngIf="imageUri" [src]="imageUri" alt="Selected Tour Image" class="mt-3 img-fluid rounded"
+                  style="max-height: 300px;">
+                <img *ngIf="!imageUri" src="assets/img/DEFAULT/tour-default.png" alt="Default Tour Image"
+                  class="mt-3 img-fluid rounded" style="max-height: 300px;">
+              </div>
+              <div class="form-group">
+                <label for="officialPriceDTO">Official Price Range</label>
+                <ul>
+                  <li *ngFor="let priceDTO of updateTourRequest!.officialPriceDTO">
+                    Min: <input type="text" class="form-control" id="minQuantity" [(ngModel)]="priceDTO.minQuantity" name="minQuantity"> Max:<input type="text" class="form-control" id="maxQuantity" [(ngModel)]="priceDTO.maxQuantity" name="maxQuantity"> Price:<input type="text" class="form-control" id="priceDTO" [(ngModel)]="priceDTO.price" name="priceDTO">
+                  </li>
+                </ul>
+              </div>
+              <div class="form-group">
+                <label for="status">Status</label>
+                <input type="text" class="form-control" id="status" [(ngModel)]="updateTourRequest!.productStatusActivity"
+                  name="productStatusActivity" placeholder="Enter activity status">
+                <input type="text" class="form-control mt-2" id="verify" [(ngModel)]="updateTourRequest!.productStatusVerify"
+                  name="productStatusVerify" placeholder="Enter verification status">
+              </div>
+              <button type="button" class="m-1 btn btn-secondary" (click)="closeFormUpdate()">Cancel</button>
+              <button type="submit" class="m-1 btn btn-primary">Save</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+ -->
+ <div class="row d-flex" style="display: flex;
+ flex-wrap: wrap;
+ flex-direction: row;
+ box-sizing: border-box;
+">
+  <div class="col-3 col-m-6 col-sm-6">
+    <div class="counter bg-primary">
+      <p>
+        <i class="fas fa-tasks"></i>
+      </p>
+      <h3>100+</h3>
+      <p>To do</p>
+    </div>
+  </div>
+  <div class="col-3 col-m-6 col-sm-6">
+    <div class="counter bg-warning">
+      <p>
+        <i class="fas fa-spinner"></i>
+      </p>
+      <h3>100+</h3>
+      <p>In progress</p>
+    </div>
+  </div>
+  <div class="col-3 col-m-6 col-sm-6">
+    <div class="counter bg-success">
+      <p>
+        <i class="fas fa-check-circle"></i>
+      </p>
+      <h3>100+</h3>
+      <p>Completed</p>
+    </div>
+  </div>
+  <div class="col-3 col-m-6 col-sm-6">
+    <div class="counter bg-danger">
+      <p>
+        <i class="fas fa-bug"></i>
+      </p>
+      <h3>100+</h3>
+      <p>Issues</p>
+    </div>
+  </div>
+</div>
+ <h2 class="text-center m-2">Product Manager</h2>
+ <button type="button" class="m-3 btn btn-success ml-auto" (click)="displayFormCreate()">Add Product</button>
+ <div class="row">
+       
+  <div class="col-lg-12 d-flex align-items-stretch">
+    <div class="card w-100">
+      <div class="card-body p-4">
+        <h5 class="card-title fw-semibold mb-4">Recent Transactions</h5>
+        <div class="table-responsive">
+          <table class="table text-nowrap mb-0 align-middle">
+            <thead class="text-dark fs-4">
+              <tr>
+                <th class="border-bottom-0">
+                  <h6 class="fw-semibold mb-0">Id</h6>
+                </th>
+                <th class="border-bottom-0">
+                  <h6 class="fw-semibold mb-0">Assigned</h6>
+                </th>
+                <th class="border-bottom-0">
+                  <h6 class="fw-semibold mb-0">Name</h6>
+                </th>
+                <th class="border-bottom-0">
+                  <h6 class="fw-semibold mb-0">Priority</h6>
+                </th>
+                <th class="border-bottom-0">
+                  <h6 class="fw-semibold mb-0">Budget</h6>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              
+              <tr  *ngFor="let tour of pagedData">
+                <td class="border-bottom-0"><h6 class="fw-semibold mb-0">{{ tour.id }}</h6></td>
+                <td class="border-bottom-0">
+                    <h6 class="fw-semibold mb-1">{{ tour.nameProduct }}</h6>
+                    <img src="{{tour.listImage[0].url}}">                      
+                </td>
+                <td class="border-bottom-0">
+                  <p class="mb-0 fw-normal">{{tour.productStatusActivity}}</p>
+                </td>
+                <td class="border-bottom-0">
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="badge bg-primary rounded-3 fw-semibold">{{ tour.price }}</span>
+                  </div>
+                </td>
+                <td class="border-bottom-0">
+                   <button class="btn btn-warning m-2" (click)="displayFromUpdate(tour)">Edit</button>
+                </td>
+              </tr> 
+                                   
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #noData>
+  <app-no-data-found></app-no-data-found>
+</ng-template>
