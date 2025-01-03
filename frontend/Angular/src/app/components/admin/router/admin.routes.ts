@@ -24,6 +24,8 @@ import { OrdersAccessComponent } from "../orders-access/orders.component";
 import { LienheComponent } from "../lienhe/lienhe.component";
 import { SupportComponent } from "../support/support.component";
 import { ThanhvienComponent } from "../thanhvien/thanhvien.component";
+import { ProductCreateComponent } from "../product-create/product-create.component";
+import { ProductUpdateComponent } from "../product-update/product-update.component";
 
 export const adminRoutes: Routes = [
     {
@@ -135,6 +137,14 @@ export const adminRoutes: Routes = [
                         path: 'productPending',
                         component: ProductPendingComponent
                     },
+                    {
+                        path: 'create',
+                        component: ProductCreateComponent
+                    },
+                    {
+                        path: 'update',
+                        component: ProductUpdateComponent
+                    }
                    
                 ]
               
