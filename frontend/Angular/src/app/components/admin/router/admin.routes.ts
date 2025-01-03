@@ -18,7 +18,7 @@ import { BookingPendingComponent } from "../booking/booking-pending/booking-pend
 import { BookingAcceptComponent } from "../booking/booking-accept/booking-accept.component";
 import { BookingCancelComponent } from "../booking/booking-cancel/booking-cancel.component";
 import { ProductActiveComponent } from "../products-active/products.component";
-import { ProductPendingComponent } from "../products-pending/products.component";
+import { ProductPendingComponent } from "../product-pending/product-pending.component";
 import { OrdersPendingComponent } from "../orders-pending/orders.component";
 import { OrdersAccessComponent } from "../orders-access/orders.component";
 import { LienheComponent } from "../lienhe/lienhe.component";

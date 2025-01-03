@@ -11,13 +11,14 @@ import { UpdateTourResponse } from '../../../models/response/product/tour/tour/u
 import { ProductServiceService } from '../../../services/AdminSupplier/product/product-service.service';
 import { Product } from '../../../models/AdminSupplier/response/products/product';
 import { CreateProductRequest } from '../../../models/AdminSupplier/request/products/create-product-resquest';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tour',
   standalone: true,
   imports: [CommonModule, FormsModule, NoDataFoundComponent],
-  templateUrl: './products.component.html',
-  styleUrls: ['./products.component.css']
+  templateUrl: './product-pending.component.html',
+  styleUrls: ['./product-pending.component.css']
 })
 export class ProductPendingComponent implements OnInit{
 createTourRequest: any = {
@@ -41,17 +42,18 @@ createTourRequest: any = {
   isDisplayUpdate: boolean = false;
   isDisplayCreate: boolean = false;
   tour?: GetTourResponse;
-  currentPage: number = 0;
+  currentPage: number = 1;
   pageSize: number = 5;
   pagedData: any[] = [];
-  
   imageId?: string;
   imageFile!: File;
   imageUri?: string = 'assets/img/DEFAULT/tour-default.png';
 
+  totalPages = 0; // Tổng số trang
+
   searchQuery: string='';
 
-  constructor(private tourService:ProductServiceService){}
+  constructor(private tourService:ProductServiceService, private router: Router){}
 
   ngOnInit(): void {
     this.getAllTour(this.currentPage);
@@ -67,31 +69,17 @@ createTourRequest: any = {
   updatePagedData() {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
-    this.pagedData = this.filterTour;
+    this.pagedData = this.filterTour.slice(startIndex, endIndex);
   }
   
-
-  get totalPages(): number {
-    return Math.ceil(this.filterTour.length / this.pageSize);
-  }
 
   get pages(): number[] {
     return Array(this.totalPages).fill(0).map((x, i) => i + 1);
   }
 
   displayFormCreate(){
-    this.isDisplayCreate = true;
+    this.router.navigate(['/admin/product/create']);
   }
-  nextPage() { 
-    this.currentPage++;
-     this.getAllTour(this.currentPage);
-     }
-      prevPage() {
-       if (this.currentPage > 0) { 
-        this.currentPage--;
-         this.getAllTour(this.currentPage); 
-        } 
-      }
 
   onImagesSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
@@ -261,8 +249,8 @@ createTourRequest: any = {
   }
 
   //Get all Tour
-  getAllTour(page: number){
-    this.tourService.getAllProductPending(page).subscribe({
+  getAllTour(page:number){
+    this.tourService.getAllProductAccess(page).subscribe({
       next: (data) => {
         this.getALlTour = data;
         this.filterTour = this.getALlTour;
@@ -273,6 +261,17 @@ createTourRequest: any = {
       }
     })
   }
+  nextPage() { 
+    this.currentPage++;
+     this.getAllTour(this.currentPage);
+     }
+      prevPage() {
+       if (this.currentPage > 0) { 
+        this.currentPage--;
+         this.getAllTour(this.currentPage); 
+        } 
+      }
+
 
 
 
