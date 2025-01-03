@@ -112,21 +112,9 @@ createTourRequest: any = {
   }
 
   displayFromUpdate(tour: Product){
-    this.updateTourRequest =  {
-      id: tour.id,
-      nameProduct: tour.nameProduct,
-      price: tour.price,
-      description: tour.description,
-      nameProductType: tour.nameProductType,
-      address: tour.address,
-      nameSupplier: tour.nameSupplier,
-      listImage: tour.listImage,
-      officialPriceDTO: tour.officialPriceDTO, // Thêm thuộc tính
-      productStatusActivity: tour.productStatusActivity, // Thêm thuộc tính
-      productStatusVerify: tour.productStatusVerify // Thêm thuộc tính
-    }
-    this.imageUri = tour.listImage[0].url;
-    this.isDisplayUpdate = true;
+    this.router.navigate(['/admin/product/update'], {
+      queryParams: { id: tour.id }
+    });
   }
 
   closeFormUpdate(){

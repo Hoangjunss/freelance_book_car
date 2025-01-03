@@ -28,10 +28,14 @@ export class ProductUpdateComponent implements OnInit {
       this.product.id = params['id'];
       if (!this.product.id) {
         alert('ID không tồn tại trong URL!');
-        this.router.navigate(['/admin/product']);
+        //this.router.navigate(['/admin/product']);
       }
       this.getProductById(this.product.id);
     });
+  }
+
+  closeFormCreate(): void {
+    this.router.navigate(['/admin/product/productAccess']);
   }
 
   getProductById(id:number){

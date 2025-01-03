@@ -135,7 +135,7 @@ export const adminRoutes: Routes = [
                 path: 'product',
                 children: [
                     {
-                        path: 'productActive',
+                        path: 'productAccess',
                         component: ProductActiveComponent
                     },
                     {

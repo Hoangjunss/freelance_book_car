@@ -310,6 +310,48 @@
   </div>
 </div>
 
+<div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-labelledby="orderDetailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content slide-in">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="orderDetailsModalLabel">Chi tiết đơn hàng #{{ selectedOrder?.id }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        
+        <div class="order-summary mb-4">
+          <h6 class="section-title">Thông tin đơn hàng</h6>
+          <p><strong>Mã đơn hàng:</strong> {{ selectedOrder?.id }}</p>
+          <p><strong>Họ và tên:</strong> {{ selectedOrder?.user?.fullname }}</p>
+          <p><strong>Số điện thoại:</strong> {{ selectedOrder?.user?.phone }}</p>
+          <p><strong>Email:</strong> {{ selectedOrder?.user?.email }}</p>
+          <p><strong>Trạng thái:</strong> {{ selectedOrder?.orderStatus }}</p>
+          <p><strong>Số lượng sản phẩm:</strong> {{ selectedOrder?.quantity }}</p>
+          <p><strong>Tổng giá trị:</strong> {{ selectedOrder?.totalPrice | number }} đ</p>
+          <p><strong>Ngày tạo:</strong> {{ selectedOrder?.createDate | date:'dd/MM/yyyy HH:mm' }}</p>
+          <p><strong>Địa chỉ giao hàng:</strong> {{ selectedOrder?.address }}</p>
+        </div>
+
+   
+        <div class="order-details">
+          <h6 class="section-title">Chi tiết sản phẩm</h6>
+          <div *ngFor="let detail of selectedOrder?.orderDetailSDTO" class="product-card row mb-4 shadow-sm p-3 rounded">
+            <div class="col-md-3 text-center">
+              <img *ngIf="detail?.image" [src]="detail.image" alt="Product image"
+                class="img-fluid rounded product-image">
+            </div>
+            <div class="col-md-9">
+              <h5 class="product-name">{{ detail?.nameProduct }}</h5>
+              <p><strong>Số lượng:</strong> {{ detail?.quantity }}</p>
+              <p><strong>Giá:</strong> {{ detail?.price | number }} đ</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <ng-template #noData>
     <app-no-data-found></app-no-data-found>
   </ng-template>
