@@ -11,6 +11,7 @@ import { UpdateTourResponse } from '../../../models/response/product/tour/tour/u
 import { ProductServiceService } from '../../../services/AdminSupplier/product/product-service.service';
 import { Product } from '../../../models/AdminSupplier/response/products/product';
 import { CreateProductRequest } from '../../../models/AdminSupplier/request/products/create-product-resquest';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tour',
@@ -41,16 +42,18 @@ createTourRequest: any = {
   isDisplayUpdate: boolean = false;
   isDisplayCreate: boolean = false;
   tour?: GetTourResponse;
-  currentPage: number = 0;
+  currentPage: number = 1;
   pageSize: number = 5;
   pagedData: any[] = [];
   imageId?: string;
   imageFile!: File;
   imageUri?: string = 'assets/img/DEFAULT/tour-default.png';
 
+  totalPages = 0; // Tổng số trang
+
   searchQuery: string='';
 
-  constructor(private tourService:ProductServiceService){}
+  constructor(private tourService:ProductServiceService, private router: Router){}
 
   ngOnInit(): void {
     this.getAllTour(this.currentPage);
@@ -70,16 +73,12 @@ createTourRequest: any = {
   }
   
 
-  get totalPages(): number {
-    return Math.ceil(this.filterTour.length / this.pageSize);
-  }
-
   get pages(): number[] {
     return Array(this.totalPages).fill(0).map((x, i) => i + 1);
   }
 
   displayFormCreate(){
-    this.isDisplayCreate = true;
+    this.router.navigate(['/admin/product/create']);
   }
 
   onImagesSelected(event: Event): void {

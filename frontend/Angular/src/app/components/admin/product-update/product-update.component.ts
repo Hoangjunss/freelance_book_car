@@ -83,6 +83,19 @@ export class ProductUpdateComponent implements OnInit {
     formData.forEach((value, key) => {
       console.log(`${key}: ${value}`);
     });
+
+    this.productService.updateProduct(formData).subscribe({
+      next: (response) => {
+        if (response) {
+          console.log('Product updated successfully:', response);
+          alert('Product updated successfully');
+          //this.router.navigate(['/admin/product']);
+        }
+      },
+      error: (error) => {
+        console.log('Error:', error);
+      }
+    })
     // Gửi formData đến server qua service
   }
 

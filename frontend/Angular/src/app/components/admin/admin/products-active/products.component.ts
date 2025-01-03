@@ -41,7 +41,7 @@ createTourRequest: any = {
   isDisplayUpdate: boolean = false;
   isDisplayCreate: boolean = false;
   tour?: GetTourResponse;
-  currentPage: number = 0;
+  currentPage: number = 1;
   pageSize: number = 5;
   pagedData: any[] = [];
   imageId?: string;

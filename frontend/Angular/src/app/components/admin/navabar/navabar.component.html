@@ -58,15 +58,17 @@
                 <div class="collapse" id="base">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="components/avatars.html">
+                      <a routerLink="admin/product/productAccess" routerLinkActive="active">
                         <span class="sub-item">Sản phẩm đang bán</span>
                       </a>
                     </li>
                     <li>
-                      <a href="components/buttons.html">
+                      <a routerLink="admin/product/productPending" routerLinkActive="active">
                         <span class="sub-item">Sản phẩm đang kiểm duyệt</span>
                       </a>
                     </li>
+
+     <!--<a routerLink="tourism-manager/tourism" routerLinkActive="active" class="dropdown-item"> -->
                    
                    
                   </ul>
@@ -81,12 +83,12 @@
                 <div class="collapse" id="sidebarLayouts">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a href="sidebar-style-2.html">
+                      <a routerLink="orders/ordersAccess" routerLinkActive="active">
                         <span class="sub-item">Đơn Hàng Đã Duyệt</span>
                       </a>
                     </li>
                     <li>
-                      <a href="icon-menu.html">
+                      <a routerLink="orders/ordersPending" routerLinkActive="active">
                         <span class="sub-item">Đơn Hàng Đang Xác Nhận</span>
                       </a>
                     </li>
@@ -131,7 +133,7 @@
                 </div>
               </li>
               <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#tables">
+                <a data-bs-toggle="collapse"routerLink="admin/thanhvien" routerLinkActive="active">
                   <i class="fas fa-table"></i>
                   <p>Thành viên</p>
                   
@@ -140,7 +142,7 @@
               </li>
              
               <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#tables">
+                <a data-bs-toggle="collapse"routerLink="admin/lienhe" routerLinkActive="active">
                   <i class="fas fa-table"></i>
                   <p>Liên Hệ</p>
                  
@@ -149,7 +151,7 @@
               </li>
              
               <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#tables">
+                <a data-bs-toggle="collapse"routerLink="admin/support" routerLinkActive="active">
                   <i class="fas fa-table"></i>
                   <p>Asizon Support</p>
                  

@@ -328,56 +328,37 @@
         <h5 class="card-title fw-semibold mb-4">Recent Transactions</h5>
         <div class="table-responsive">
           <table class="table text-nowrap mb-0 align-middle">
-            <thead class="text-dark fs-4">
+            <thead>
               <tr>
-                <th class="border-bottom-0">
-                  <h6 class="fw-semibold mb-0">Id</h6>
-                </th>
-                <th class="border-bottom-0">
-                  <h6 class="fw-semibold mb-0">Assigned</h6>
-                </th>
-                <th class="border-bottom-0">
-                  <h6 class="fw-semibold mb-0">Name</h6>
-                </th>
-                <th class="border-bottom-0">
-                  <h6 class="fw-semibold mb-0">Priority</h6>
-                </th>
-                <th class="border-bottom-0">
-                  <h6 class="fw-semibold mb-0">Budget</h6>
-                </th>
+                <th>Id</th>
+                <th>Assigned</th>
+                <th>Name</th>
+                <th>Priority</th>
+                <th>Budget</th>
               </tr>
             </thead>
             <tbody>
-              
-              <tr  *ngFor="let tour of pagedData">
-                <td class="border-bottom-0"><h6 class="fw-semibold mb-0">{{ tour.id }}</h6></td>
-                <td class="border-bottom-0">
-                    <h6 class="fw-semibold mb-1">{{ tour.nameProduct }}</h6>
-                    <img src="{{tour.listImage[0].url}}">                      
+              <tr *ngFor="let tour of pagedData">
+                <td>{{ tour.id }}</td>
+                <td>
+                  <h6 class="fw-semibold mb-1">{{ tour.nameProduct }}</h6>
+                  <img [src]="tour.listImage[0]?.url" alt="Product Image">
                 </td>
-                <td class="border-bottom-0">
-                  <p class="mb-0 fw-normal">{{tour.productStatusActivity}}</p>
+                <td>{{ tour.productStatusActivity }}</td>
+                <td>
+                  <span class="badge bg-primary">{{ tour.price }}</span>
                 </td>
-                <td class="border-bottom-0">
-                  <div class="d-flex align-items-center gap-2">
-                    <span class="badge bg-primary rounded-3 fw-semibold">{{ tour.price }}</span>
-                  </div>
+                <td>
+                  <button class="btn btn-warning m-2" (click)="displayFromUpdate(tour)">Edit</button>
                 </td>
-                <td class="border-bottom-0">
-                   <button class="btn btn-warning m-2" (click)="displayFromUpdate(tour)">Edit</button>
-                </td>
-              </tr> 
-                                   
+              </tr>
             </tbody>
           </table>
-        </div>
-        <div class="d-flex justify-content-between mt-3"> 
-          <button class="btn btn-primary" (click)="prevPage()">Previous</button> 
-          <button class="btn btn-primary" (click)="nextPage()">Next</button> 
         </div>
       </div>
     </div>
   </div>
+</div>
 </div>
 
 <ng-template #noData>
