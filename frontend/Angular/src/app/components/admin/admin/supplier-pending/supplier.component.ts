@@ -43,7 +43,7 @@ createTourRequest: any = {
   isDisplayUpdate: boolean = false;
   isDisplayCreate: boolean = false;
   tour?: GetTourResponse;
-  currentPage: number = 1;
+  currentPage: number = 0;
   pageSize: number = 5;
   pagedData: any[] = [];
   imageId?: string;
@@ -55,7 +55,7 @@ createTourRequest: any = {
   constructor(private tourService:SupplierServiceService){}
 
   ngOnInit(): void {
-    this.getAllTour();
+    this.getAllTour(this.currentPage);
     this.updatePagedData();
     console.log(this.selectedImage);
   }
@@ -68,7 +68,7 @@ createTourRequest: any = {
   updatePagedData() {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
-    this.pagedData = this.filterTour.slice(startIndex, endIndex);
+    this.pagedData = this.filterTour;
   }
   
 
@@ -252,8 +252,8 @@ createTourRequest: any = {
   }
 
   //Get all Tour
-  getAllTour(){
-    this.tourService.getSypplierPending().subscribe({
+  getAllTour(page:number){
+    this.tourService.getSypplierPending(page).subscribe({
       next: (data) => {
         this.getALlTour = data;
         this.filterTour = this.getALlTour;
@@ -264,6 +264,17 @@ createTourRequest: any = {
       }
     })
   }
+  nextPage() { 
+    this.currentPage++;
+     this.getAllTour(this.currentPage);
+     }
+      prevPage() {
+       if (this.currentPage > 0) { 
+        this.currentPage--;
+         this.getAllTour(this.currentPage); 
+        } 
+      }
+
 
 
 

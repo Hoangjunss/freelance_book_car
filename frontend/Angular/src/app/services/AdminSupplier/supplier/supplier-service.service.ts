@@ -28,9 +28,9 @@ export class SupplierServiceService {
      }
      return new HttpHeaders();
    }
-     getSypplierActive(): Observable<Supplier[]> {
+     getSypplierActive(page:number): Observable<Supplier[]> {
        const headers = this.createAuthorizationHeader();
-       return this.httpClient.patch<Apiresponse<Supplier[]>>(`${this.baseUrl}/admin/supplier?verifyStatus=Active&page=0&size=10`,  {headers}).pipe(
+       return this.httpClient.patch<Apiresponse<Supplier[]>>(`${this.baseUrl}/admin/supplier?verifyStatus=Active&page=${page}&size=10`,  {headers}).pipe(
          map((response: Apiresponse<Supplier[]>) => {
            if (response.success) {
              return response.data;
@@ -40,9 +40,9 @@ export class SupplierServiceService {
          })
        );
      }
-     getSypplierPending(): Observable<Supplier[]> {
+     getSypplierPending(page:number): Observable<Supplier[]> {
       const headers = this.createAuthorizationHeader();
-      return this.httpClient.patch<Apiresponse<Supplier[]>>(`${this.baseUrl}/admin/supplier?verifyStatus=Pending&page=0&size=10`,  {headers}).pipe(
+      return this.httpClient.patch<Apiresponse<Supplier[]>>(`${this.baseUrl}/admin/supplier?verifyStatus=Pending&page=${page}&size=10`,  {headers}).pipe(
         map((response: Apiresponse<Supplier[]>) => {
           if (response.success) {
             return response.data;

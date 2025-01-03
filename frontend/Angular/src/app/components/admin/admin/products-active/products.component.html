@@ -245,7 +245,6 @@
   </div>
 </div>
  -->
-
  <div class="row d-flex" style="display: flex;
  flex-wrap: wrap;
  flex-direction: row;
@@ -287,7 +286,6 @@
       <p>Issues</p>
     </div>
   </div>
-  
 </div>
 <div class="container-fuild" style="border-radius: 10px;">
   <div class="banner-1 d-flex" style="background-color: #add2ef;">      
@@ -320,7 +318,6 @@
       
   </div>
 </div>
-<div>
  <h2 class="text-center m-2">Product Manager</h2>
  <button type="button" class="m-3 btn btn-success ml-auto" (click)="displayFormCreate()">Add Product</button>
  <div class="row">
@@ -374,10 +371,13 @@
             </tbody>
           </table>
         </div>
+        <div class="d-flex justify-content-between mt-3"> 
+          <button class="btn btn-primary" (click)="prevPage()">Previous</button> 
+          <button class="btn btn-primary" (click)="nextPage()">Next</button> 
+        </div>
       </div>
     </div>
   </div>
-</div>
 </div>
 
 <ng-template #noData>

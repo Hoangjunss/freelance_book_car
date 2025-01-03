@@ -62,9 +62,9 @@ export class ProductServiceService {
       );
     }
 
-    getAllProductPending(): Observable<Product[]> {
+    getAllProductPending(page:number): Observable<Product[]> {
       const headers = this.createAuthorizationHeader();
-      return this.httpClient.get<Apiresponse<Page<Product[]>>>(`${this.baseUrl}/supplier/products?productVerifyStatus=Pending&page=0&size=2`, {headers}).pipe(
+      return this.httpClient.get<Apiresponse<Page<Product[]>>>(`${this.baseUrl}/supplier/products?productVerifyStatus=Pending&page=${page}&size=2`, {headers}).pipe(
         map((response: Apiresponse<Page<Product[]>>) => {
           if (response.success) {
             return response.data.content;
@@ -74,9 +74,9 @@ export class ProductServiceService {
         })
       );
     }
-    getAllProductAccess(): Observable<Product[]> {
+    getAllProductAccess(page:number): Observable<Product[]> {
       const headers = this.createAuthorizationHeader();
-      return this.httpClient.get<Apiresponse<Page<Product[]>>>(`${this.baseUrl}/supplier/products?productVerifyStatus=Access&page=0&size=2`, {headers}).pipe(
+      return this.httpClient.get<Apiresponse<Page<Product[]>>>(`${this.baseUrl}/supplier/products?productVerifyStatus=Access&page=${page}&size=2`, {headers}).pipe(
         map((response: Apiresponse<Page<Product[]>>) => {
           if (response.success) {
             return response.data.content;

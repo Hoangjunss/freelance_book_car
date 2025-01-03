@@ -30,9 +30,9 @@ export class OrdersService {
                 );
       }
 
-      getOrderOfSupplierAccess(): Observable<OrderDTO[]>{
+      getOrderOfSupplierAccess(page:number): Observable<OrderDTO[]>{
         const headers = this.createAuthorizationHeader();
-        return this.httpClient.get<Apiresponse<Page<OrderDTO[]>>>(`${this.baseUrl}?OrderStatus=Access&page=0&size=10`, {headers}).pipe(
+        return this.httpClient.get<Apiresponse<Page<OrderDTO[]>>>(`${this.baseUrl}?OrderStatus=Access&page=${page}&size=10`, {headers}).pipe(
                   map((response: Apiresponse<Page<OrderDTO[]>>) => {
                           if (response.success) {
                             return response.data.content;
@@ -42,9 +42,9 @@ export class OrdersService {
                         })
                 );
       }
-      getOrderOfSupplierPending(): Observable<OrderDTO[]>{
+      getOrderOfSupplierPending(page:number): Observable<OrderDTO[]>{
         const headers = this.createAuthorizationHeader();
-        return this.httpClient.get<Apiresponse<Page<OrderDTO[]>>>(`${this.baseUrl}?OrderStatus=Pending&page=0&size=10`, {headers}).pipe(
+        return this.httpClient.get<Apiresponse<Page<OrderDTO[]>>>(`${this.baseUrl}?OrderStatus=Pending&page=${page}&size=10`, {headers}).pipe(
                   map((response: Apiresponse<Page<OrderDTO[]>>) => {
                           if (response.success) {
                             return response.data.content;

@@ -36,7 +36,7 @@ export class OrdersAccessComponent {
     isUserInfo = false;
     isUserJoin = false;
   
-    currentPage: number = 1;
+    currentPage: number = 0;
     pageSize: number = 5;
     pagedData: any[] = [];
   
@@ -55,7 +55,7 @@ export class OrdersAccessComponent {
     ){}
   
     ngOnInit(): void {
-      this.getAll();
+      this.getAll(this.currentPage);
       this.updatePagedData();
     }
   
@@ -67,8 +67,19 @@ export class OrdersAccessComponent {
     updatePagedData() {
       const startIndex = (this.currentPage - 1) * this.pageSize;
       const endIndex = startIndex + this.pageSize;
-      this.pagedData = this.getBookingResponse.slice(startIndex, endIndex);
+      this.pagedData = this.getBookingResponse;
     }
+    nextPage() { 
+      this.currentPage++;
+       this.getAll(this.currentPage);
+       }
+        prevPage() {
+         if (this.currentPage > 0) { 
+          this.currentPage--;
+           this.getAll(this.currentPage); 
+          } 
+        }
+  
   
     get totalPages(): number {
       return Math.ceil(this.getBookingResponse.length / this.pageSize);
@@ -78,8 +89,8 @@ export class OrdersAccessComponent {
       return Array(this.totalPages).fill(0).map((x, i) => i + 1);
     }
   
-    getAll(){
-      this.bookingService.getOrderOfSupplierAccess().subscribe({
+    getAll(page:number){
+      this.bookingService.getOrderOfSupplierAccess(page).subscribe({
         next: (data) => {
           this.getBookingResponse = data;
           this.updatePagedData();
@@ -88,7 +99,7 @@ export class OrdersAccessComponent {
     }
   
     getAllOrders(){
-      this.bookingService.getOrderOfSupplierAccess().subscribe({
+      this.bookingService.getOrderOfSupplierAccess(this.currentPage).subscribe({
         next: (data) => {
           this.getBookingResponse = data;
           this.updatePagedData();

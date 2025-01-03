@@ -31,9 +31,9 @@ export class UserService {
       }
       return new HttpHeaders();
     }
-      getUser(): Observable<User[]> {
+      getUser(page:number): Observable<User[]> {
         const headers = this.createAuthorizationHeader();
-        return this.httpClient.patch<Apiresponse<User[]>>(`${this.baseUrl}/admin/user?page=0&size=10`,  {headers}).pipe(
+        return this.httpClient.patch<Apiresponse<User[]>>(`${this.baseUrl}/admin/user?page=${page}&size=10`,  {headers}).pipe(
           map((response: Apiresponse<User[]>) => {
             if (response.success) {
               return response.data;
