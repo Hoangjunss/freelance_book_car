@@ -69,7 +69,7 @@ createTourRequest: any = {
   updatePagedData() {
     const startIndex = (this.currentPage - 1) * this.pageSize;
     const endIndex = startIndex + this.pageSize;
-    this.pagedData = this.filterTour.slice(startIndex, endIndex);
+    this.pagedData = this.filterTour;
   }
   
 

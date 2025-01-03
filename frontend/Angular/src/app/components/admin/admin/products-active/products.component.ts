@@ -27,6 +27,8 @@ createTourRequest: any = {
   description: '',
   officialPriceDTOS: [],
 };
+
+selectProduct: any;
   
   createTourResponse: CreateTourResponse = new CreateTourResponse();
   updateTourRequest: Product = new Product();
@@ -278,5 +280,19 @@ createTourRequest: any = {
 
 
 
+  displayFromDetail(id: number): void{
+    this.selectProduct = this.getProductDetail(id);
+    
+  }
+
+  getProductDetail(id: number){
+    this.tourService.getProductId(id).subscribe({
+      next: (data)=>{
+        if(data){
+          this.selectProduct = data;
+        }
+      }
+    })
+  }
 
 }

@@ -343,7 +343,7 @@
                   <h6 class="fw-semibold mb-0">Priority</h6>
                 </th>
                 <th class="border-bottom-0">
-                  <h6 class="fw-semibold mb-0">Budget</h6>
+                  <h6 class="fw-semibold mb-0">Action</h6>
                 </th>
               </tr>
             </thead>
@@ -364,7 +364,8 @@
                   </div>
                 </td>
                 <td class="border-bottom-0">
-                   <button class="btn btn-warning m-2" (click)="displayFromUpdate(tour)">Edit</button>
+                  <button class="btn btn-warning m-2" (click)="displayFromDetail(tour.id)" data-bs-toggle="modal" data-bs-target="#orderDetailsModal">Detail</button>
+                    <button class="btn btn-danger m-2" (click)="acceptProduct(tour.id)">Accept</button>
                 </td>
               </tr> 
                                    
@@ -374,6 +375,60 @@
         <div class="d-flex justify-content-between mt-3"> 
           <button class="btn btn-primary" (click)="prevPage()">Previous</button> 
           <button class="btn btn-primary" (click)="nextPage()">Next</button> 
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="orderDetailsModal" tabindex="-1" aria-labelledby="orderDetailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content slide-in">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title" id="orderDetailsModalLabel">Chi tiết sản phẩm #{{ selectProduct?.id }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Thông tin sản phẩm -->
+        <div class="product-summary mb-4">
+          <h6 class="section-title">Thông tin sản phẩm</h6>
+          <p><strong>Mã sản phẩm:</strong> {{ selectProduct?.id }}</p>
+          <p><strong>Tên sản phẩm:</strong> {{ selectProduct?.nameProduct }}</p>
+          <p><strong>Giá:</strong> {{ selectProduct?.price | number }} đ</p>
+          <p><strong>Mô tả:</strong> {{ selectProduct?.description }}</p>
+          <p><strong>Loại sản phẩm:</strong> {{ selectProduct?.nameProductType }}</p>
+          <p><strong>Địa chỉ cung cấp:</strong> {{ selectProduct?.address }}</p>
+          <p><strong>Nhà cung cấp:</strong> {{ selectProduct?.nameSupplier }}</p>
+          <p><strong>Trạng thái:</strong> {{ selectProduct?.productStatusActivity }} - {{ selectProduct?.productStatusVerify }}</p>
+        </div>
+
+        <!-- Hình ảnh sản phẩm -->
+        <div class="product-images mb-4">
+          <h6 class="section-title">Hình ảnh sản phẩm</h6>
+          <div class="d-flex flex-wrap">
+            <img *ngFor="let image of selectProduct?.listImage" [src]="image.url" class="img-thumbnail m-2" alt="Product Image" style="width: 120px; height: 120px;">
+          </div>
+        </div>
+
+        <!-- Giá theo số lượng -->
+        <div class="product-prices">
+          <h6 class="section-title">Bảng giá theo số lượng</h6>
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>Số lượng tối thiểu</th>
+                <th>Số lượng tối đa</th>
+                <th>Giá</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let price of selectProduct?.officialPriceDTO">
+                <td>{{ price.minQuantity }}</td>
+                <td>{{ price.maxQuantity }}</td>
+                <td>{{ price.price | number }} đ</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
