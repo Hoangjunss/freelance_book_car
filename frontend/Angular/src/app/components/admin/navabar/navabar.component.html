@@ -58,12 +58,12 @@
                 <div class="collapse" id="base">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a routerLink="product/productAccess" routerLinkActive="active">
+                      <a routerLink="admin/product/productAccess" routerLinkActive="active">
                         <span class="sub-item">Sản phẩm đang bán</span>
                       </a>
                     </li>
                     <li>
-                      <a routerLink="product/productPending" routerLinkActive="active">
+                      <a routerLink="admin/product/productPending" routerLinkActive="active">
                         <span class="sub-item">Sản phẩm đang kiểm duyệt</span>
                       </a>
                     </li>
@@ -77,19 +77,19 @@
               <li class="nav-item">
                 <a data-bs-toggle="collapse" href="#sidebarLayouts">
                   <i class="fas fa-th-list"></i>
-                  <p>Đơn Hàng</p>
+                  <p>Nhà Cung Cấp</p>
                   <span class="caret"></span>
                 </a>
                 <div class="collapse" id="sidebarLayouts">
                   <ul class="nav nav-collapse">
                     <li>
-                      <a routerLink="orders/ordersAccess" routerLinkActive="active">
-                        <span class="sub-item">Đơn Hàng Đã Duyệt</span>
+                      <a routerLink="admin/supplier/pending" routerLinkActive="active">
+                        <span class="sub-item">Nhà Cung Cấp Đang Chờ Duyệt </span>
                       </a>
                     </li>
                     <li>
-                      <a routerLink="orders/ordersPending" routerLinkActive="active">
-                        <span class="sub-item">Đơn Hàng Đang Xác Nhận</span>
+                      <a routerLink="admin/supplier/active" routerLinkActive="active">
+                        <span class="sub-item">Nhà Cung Cấp Đã Xác Nhận</span>
                       </a>
                     </li>
                   </ul>
@@ -112,28 +112,15 @@
                 </div>
               </li>
               <li class="nav-item">
-                <a data-bs-toggle="collapse" href="#tables">
+                <a  routerLink="admin/supplier/active" routerLinkActive="active" >
                   <i class="fas fa-table"></i>
-                  <p>Tables</p>
-                  <span class="caret"></span>
+                  <p>Người Dùng</p>
+                  
                 </a>
-                <div class="collapse" id="tables">
-                  <ul class="nav nav-collapse">
-                    <li>
-                      <a href="tables/tables.html">
-                        <span class="sub-item">Basic Table</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="tables/datatables.html">
-                        <span class="sub-item">Datatables</span>
-                      </a>
-                    </li>
-                  </ul>
-                </div>
+               
               </li>
               <li class="nav-item">
-                <a data-bs-toggle="collapse"routerLink="thanhvien" routerLinkActive="active">
+                <a data-bs-toggle="collapse"routerLink="admin/thanhvien" routerLinkActive="active">
                   <i class="fas fa-table"></i>
                   <p>Thành viên</p>
                   
@@ -142,7 +129,7 @@
               </li>
              
               <li class="nav-item">
-                <a data-bs-toggle="collapse"routerLink="lienhe" routerLinkActive="active">
+                <a data-bs-toggle="collapse"routerLink="admin/lienhe" routerLinkActive="active">
                   <i class="fas fa-table"></i>
                   <p>Liên Hệ</p>
                  
@@ -151,7 +138,7 @@
               </li>
              
               <li class="nav-item">
-                <a data-bs-toggle="collapse"routerLink="support" routerLinkActive="active">
+                <a data-bs-toggle="collapse"routerLink="admin/support" routerLinkActive="active">
                   <i class="fas fa-table"></i>
                   <p>Asizon Support</p>
                  
