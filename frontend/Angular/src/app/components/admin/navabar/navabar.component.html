@@ -1,6 +1,6 @@
 
-<div *ngIf="isAdmin" class="container-fluid position-relative bg-white d-flex p-0">
-    <div class="sidebar position-relative " style="height: 100vh;"   data-background-color="white" [ngClass]="{'open': isSidebarOpen}">
+<div *ngIf="isAdmin" class="container-fluid position-relative bg-white d-flex p-0 w-20">
+    <div class="sidebar position-relative w-20" style="height: 100vh;"   data-background-color="white" [ngClass]="{'open': isSidebarOpen}">
         <div class="sidebar-logo">
           <!-- Logo Header -->
           <div class="logo-header" data-background-color="white">
@@ -149,12 +149,12 @@
           </div>
         </div>
       </div>
-        <div style="width: 100vw;  padding: 10px;">
+        <div style="width: 100vw;  padding: 30px;">
         <router-outlet></router-outlet>
       </div>
     </div>
 
-    <div *ngIf="!isAdmin" class="container-fluid position-relative bg-white d-flex p-0">
+    <div *ngIf="!isAdmin" class="container-fluid position-relative bg-white d-flex p-0 w-20">
       <div class="sidebar position-relative " style="height: 100vh;"   data-background-color="white" [ngClass]="{'open': isSidebarOpen}">
           <div class="sidebar-logo">
             <!-- Logo Header -->
