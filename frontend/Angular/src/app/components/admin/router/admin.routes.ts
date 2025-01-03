@@ -31,6 +31,7 @@ import { SupportAdminComponent } from "../admin/support/support.component";
 import { ThanhvienAdminComponent } from "../admin/thanhvien/thanhvien.component";
 import { ProductActiveAdminComponent } from "../admin/products-active/products.component";
 import { ProductPendingAdminComponent } from "../admin/products-pending/products.component";
+import { UserComponent } from "../admin/user/user.component";
 
 export const adminRoutes: Routes = [
     {
@@ -207,6 +208,10 @@ export const adminRoutes: Routes = [
                     {
                         path: 'thanhvien',
                        component:ThanhvienAdminComponent
+                    },
+                    {
+                        path: 'user',
+                       component:UserComponent
                     },
                    
                 ]
