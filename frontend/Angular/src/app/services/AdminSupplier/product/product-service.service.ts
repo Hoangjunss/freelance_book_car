@@ -39,7 +39,7 @@ export class ProductServiceService {
     }
     updateProduct(formData: FormData): Observable<CreateProductRequest> {
       const headers = this.createAuthorizationHeader();
-      return this.httpClient.patch<Apiresponse<CreateProductRequest>>(`${this.baseUrl}`, formData, {headers}).pipe(
+      return this.httpClient.patch<Apiresponse<CreateProductRequest>>(`${this.baseUrl}/products`, formData, {headers}).pipe(
         map((response: Apiresponse<CreateProductRequest>) => {
           if (response.success) {
             return response.data;
