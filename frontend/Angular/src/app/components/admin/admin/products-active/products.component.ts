@@ -266,7 +266,7 @@ selectProduct: any;
 
   //Get all Tour
   getAllTour(page:number){
-    this.tourService.getAllProductAccess(page).subscribe({
+    this.tourService.getAdminAllProductAccess(page).subscribe({
       next: (data) => {
         this.getALlTour = data;
         this.filterTour = this.getALlTour;

@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NoDataFoundComponent } from '../no-data-found/no-data-found.component';
 import { ProductServiceService } from '../../../services/AdminSupplier/product/product-service.service';
 import { Product } from '../../../models/AdminSupplier/response/products/product';
 import { CreateProductRequest } from '../../../models/AdminSupplier/request/products/create-product-resquest';
 import { Router } from '@angular/router';
+import { ProductGroup } from '../../../models/AdminSupplier/response/danhmucsanpham/product-group';
 
 @Component({
   selector: 'app-product-create',
@@ -14,7 +15,9 @@ import { Router } from '@angular/router';
   templateUrl: './product-create.component.html',
   styleUrl: './product-create.component.css'
 })
-export class ProductCreateComponent {
+export class ProductCreateComponent implements OnInit {
+
+
 
   constructor(private productService: ProductServiceService, private router: Router){}
 
@@ -31,6 +34,39 @@ export class ProductCreateComponent {
       maxQuantity: number;
     }[]
   };
+  ngOnInit(): void {
+    this.getProductGroup();
+   ;
+   
+  }
+  getProductGroup(){
+    this.productService.GetProductGroup().subscribe({
+      next: (data) => {
+        this.productGroup = data;
+      
+      },
+      error: (err) => {
+        console.error('Error getting tours:', err.message);
+      }
+    })
+  }
+  getProductType(productGroupId:number){
+    this.productService.GetProductType(productGroupId).subscribe({
+      next: (data) => {
+        this.productTypes = data;
+      
+      },
+      error: (err) => {
+        console.error('Error getting tours:', err.message);
+      }
+    })
+  }
+  onProductGroupChange(event: any) { 
+    const selectedId = event.target.value; 
+    this.selectedProductGroupId = selectedId; 
+    this.getProductType(selectedId); 
+    console.log('productType')
+  }
   imageUrls: string[] = [];
   onImageSelected1(event: any, index: number) { 
     const file = event.target.files[0]; 
@@ -50,10 +86,12 @@ export class ProductCreateComponent {
   selectedImages: (string | ArrayBuffer | null)[] = [];
 
   product: Product = new Product();
+ isProductGroup=false;
+  productTypes : any[]=[];
+  selectedProductGroupId: number | null =null;
 
-  productTypes = [{ id: 1, name: 'Type 1' }, { id: 2, name: 'Type 2' }];
 
-
+  productGroup: any[] = [];
   onImagesSelected(event: any): void {
     const files: FileList = event.target.files;
     this.selectedImages = [];

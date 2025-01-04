@@ -263,7 +263,7 @@ selectProduct: any;
 
   //Get all Tour
   getAllTour(page: number){
-    this.tourService.getAllProductPending(page).subscribe({
+    this.tourService.getAdminAllProductPending(page).subscribe({
       next: (data) => {
         this.getALlTour = data;
         this.filterTour = this.getALlTour;
@@ -277,7 +277,13 @@ selectProduct: any;
 
 
   acceptProduct(id: number){
-    alert('Product id: '+ id);
+    this.tourService.AccecptProduct(id).subscribe({
+      next: (data)=>{
+        if(data){
+          this.selectProduct = data;
+        }
+      }
+    })
   }
 
 
